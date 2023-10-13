@@ -40,6 +40,9 @@ class ChartFragment : Fragment() {
     }
 
     private fun initViewModel() = with(viewModel) { //뷰 모델 제어
+        liveDummyEntryListInChart.observe(viewLifecycleOwner){
+
+        }
 
     }
 

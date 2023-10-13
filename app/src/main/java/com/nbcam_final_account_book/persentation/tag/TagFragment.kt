@@ -5,12 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.nbcam_final_account_book.databinding.TagFragmentBinding
 
 
 class TagFragment : Fragment() {
     private var _binding: TagFragmentBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this@TagFragment
+        )[TagViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,9 +30,16 @@ class TagFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initView()
+        initViewModel()
     }
 
     private fun initView() = with(binding) {
 
+    }
+
+    private fun initViewModel() = with(viewModel) {
+        liveDummyTagInTag.observe(viewLifecycleOwner) {
+
+        }
     }
 }

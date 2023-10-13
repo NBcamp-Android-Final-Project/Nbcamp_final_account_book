@@ -37,6 +37,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initViewModel()
     }
 
     private fun initView() = with(binding) { //레이아웃 제어
@@ -44,7 +45,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun initViewModel() = with(viewModel) { //뷰 모델 제어
+        liveEntryDummyDataInHome.observe(viewLifecycleOwner) {
 
+        }
     }
 
 }

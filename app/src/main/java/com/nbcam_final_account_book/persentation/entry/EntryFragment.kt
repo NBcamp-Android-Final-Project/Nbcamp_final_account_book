@@ -38,6 +38,8 @@ class EntryFragment : Fragment() {
     }
 
     private fun initViewModel() = with(viewModel) {
+        dummyLiveEntryList.observe(viewLifecycleOwner){
 
+        }
     }
 }

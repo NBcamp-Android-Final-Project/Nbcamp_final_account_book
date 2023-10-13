@@ -5,12 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.nbcam_final_account_book.databinding.EditTagFragmentBinding
 
 
 class EditTagFragment : Fragment() {
     private var _binding: EditTagFragmentBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this@EditTagFragment
+        )[EditTagViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

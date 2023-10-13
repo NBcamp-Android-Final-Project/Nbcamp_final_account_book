@@ -36,4 +36,9 @@ class EditTagFragment : Fragment() {
     private fun initView() = with(binding) {
 
     }
+    private fun initViewModel() = with(viewModel){
+        liveDummyTagInEditTag.observe(viewLifecycleOwner){
+
+        }
+    }
 }

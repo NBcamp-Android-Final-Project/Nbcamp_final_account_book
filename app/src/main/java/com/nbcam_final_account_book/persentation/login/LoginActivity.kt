@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -60,9 +61,10 @@ class LoginActivity : AppCompatActivity() {
 
 
         if (nowCurrentUser != null) {
-            Log.d("유저", nowCurrentUser.toString())
+            Log.d("유저", nowCurrentUser.email.toString())
             toMainActivity()
         }
+
 
         loginBtnLogin.setOnClickListener {
             val currentUser = auth.currentUser
@@ -131,8 +133,13 @@ class LoginActivity : AppCompatActivity() {
     private fun initViewModel() {
         viewModel = ViewModelProvider(
             this@LoginActivity,
-            LoginViewModelFactory(this@LoginActivity)
+            LoginViewModelFactory()
         )[LoginViewModel::class.java]
+
+        with(viewModel) {
+
+
+        }
 
 
     }

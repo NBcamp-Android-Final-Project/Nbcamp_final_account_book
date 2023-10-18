@@ -1,5 +1,6 @@
 package com.nbcam_final_account_book.persentation.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -7,9 +8,11 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MainActivityBinding
 import com.nbcam_final_account_book.persentation.entry.EntryActivity
+import com.nbcam_final_account_book.persentation.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,8 +36,16 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun initView() = with(binding) {
+		val auth = FirebaseAuth.getInstance()
 		//toolbar 연결
 		setSupportActionBar(mainToolbar)
+
+		mainLogOut.setOnClickListener{
+			auth.signOut()
+			val intent = Intent(this@MainActivity, LoginActivity::class.java)
+			startActivity(intent)
+			finish()
+		}
 
 		//bottom navigation 연결
 		val navHostFragment = supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment

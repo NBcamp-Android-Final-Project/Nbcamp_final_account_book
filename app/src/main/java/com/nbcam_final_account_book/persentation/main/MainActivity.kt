@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
 		//bottom navigation 연결
 		val navHostFragment = supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment
 		val navController = navHostFragment.navController
-//		val navController = findNavController(R.id.main_fragment)
 		val appBarConfiguration = AppBarConfiguration(
 			setOf(
 				R.id.menu_home, R.id.menu_statistics, R.id.menu_chat, R.id.menu_more

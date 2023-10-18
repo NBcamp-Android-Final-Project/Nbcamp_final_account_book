@@ -16,7 +16,7 @@ import java.lang.Exception
 class FireBaseRepositoryImpl(
 
 ) : FireBaseRepository {
-    override suspend fun getUser(): String {
+    override fun getUser(): String {
         val user = FirebaseAuth.getInstance().currentUser
         return user?.uid ?: ""
     }

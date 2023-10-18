@@ -7,7 +7,7 @@ import com.nbcam_final_account_book.persentation.tag.TagModel
 
 interface FireBaseRepository {
 
-    suspend fun getUser(): String
+    fun getUser(): String
     suspend fun getAllEntry(
         user: String,
         template: String,

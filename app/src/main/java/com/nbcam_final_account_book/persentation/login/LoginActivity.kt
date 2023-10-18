@@ -17,7 +17,6 @@ import com.nbcam_final_account_book.persentation.main.MainActivity
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: LoginActivityBinding
-    private lateinit var viewModel: LoginViewModel
 
     private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,8 +25,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initView()
-        initViewModel()
-
     }
 
     private fun initView() = with(binding) {
@@ -91,11 +88,6 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(
-            this@LoginActivity
-        )[LoginViewModel::class.java]
-    }
 
     private fun toMainActivity() {
         val intent = Intent(this@LoginActivity, MainActivity::class.java)

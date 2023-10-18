@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 클릭 시의 이미지 (pressed 상태) -->
+    <item android:drawable="@drawable/ic_calendar_selected_arrow_left" android:state_pressed="true" />
+
+    <!-- 기본 이미지 (default 상태) -->
+    <item android:drawable="@drawable/ic_calendar_unselected_arrow_left" />
+</selector>

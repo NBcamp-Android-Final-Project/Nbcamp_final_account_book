@@ -10,7 +10,7 @@ import com.nbcam_final_account_book.data.model.local.TemplateEntity
 interface TemplateDao {
 
     @Query("SELECT * FROM template_table")
-    fun getTemplateList(): List<TemplateEntity>
+    suspend fun getTemplateList(): List<TemplateEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTemplate(item: TemplateEntity)

@@ -15,6 +15,11 @@
         <activity
             android:name=".persentation.login.LoginActivity"
             android:exported="true" >
+            android:name=".persentation.entry.EntryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".persentation.main.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

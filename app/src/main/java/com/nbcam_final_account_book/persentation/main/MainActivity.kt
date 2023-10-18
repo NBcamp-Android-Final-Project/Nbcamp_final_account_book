@@ -1,10 +1,11 @@
 package com.nbcam_final_account_book.persentation.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MainActivityBinding
+import com.nbcam_final_account_book.persentation.entry.EntryActivity
 
 class MainActivity : AppCompatActivity() {
 

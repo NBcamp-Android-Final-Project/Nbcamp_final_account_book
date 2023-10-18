@@ -4,8 +4,11 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.nbcam_final_account_book.data.model.local.TemplateEntity
+import com.nbcam_final_account_book.data.model.local.toResponse
 import com.nbcam_final_account_book.data.model.remote.ResponseEntryModel
 import com.nbcam_final_account_book.data.model.remote.ResponseTagModel
+import com.nbcam_final_account_book.data.model.remote.ResponseTemplateModel
 import com.nbcam_final_account_book.persentation.entry.EntryModel
 import com.nbcam_final_account_book.persentation.entry.toResponse
 import com.nbcam_final_account_book.persentation.tag.TagModel
@@ -226,6 +229,74 @@ class FireBaseRepositoryImpl(
                 for (userSnapshot in snapshot.children) {
                     val itemKey = userSnapshot.key ?: ""
                     val getData = userSnapshot.getValue(TagModel::class.java)
+
+                    getData?.let {
+                        val responseEntryModel = getData.toResponse(itemKey)
+
+                        responseList.add(responseEntryModel)
+                    }
+                }
+                return responseList
+            } else {
+                return emptyList()
+            }
+        } catch (e: Exception) {
+
+            Log.e("FirebaseRepo", "Tag 데이터 가져오기 중 오류 발생")
+            return emptyList()
+        }
+    }
+
+    override suspend fun getAllTemplate(user: String): List<ResponseTemplateModel> {
+
+        val database = Firebase.database
+        val path = "$user/TemplateList"
+
+        try {
+            val snapshot = database.getReference(path).get().await()
+
+            if (snapshot.exists()) {
+                val responseList = mutableListOf<ResponseTemplateModel>()
+                for (userSnapshot in snapshot.children) {
+                    val itemKey = userSnapshot.key ?: ""
+                    val getData = userSnapshot.getValue(TemplateEntity::class.java)
+
+                    getData?.let {
+                        val responseEntryModel = getData.toResponse(itemKey)
+
+                        responseList.add(responseEntryModel)
+                    }
+                }
+                return responseList
+            } else {
+                return emptyList()
+            }
+        } catch (e: Exception) {
+
+            Log.e("FirebaseRepo", "Tag 데이터 가져오기 중 오류 발생")
+            return emptyList()
+        }
+
+    }
+
+    override suspend fun setTemplate(
+        user: String,
+        item: TemplateEntity
+    ): List<ResponseTemplateModel> {
+        val database = Firebase.database
+        val path = "$user/TemplateList"
+        val myRef = database.getReference(path)
+
+        myRef.push().setValue(item)
+
+        try {
+            val snapshot = database.getReference(path).get().await()
+
+            if (snapshot.exists()) {
+                val responseList = mutableListOf<ResponseTemplateModel>()
+                for (userSnapshot in snapshot.children) {
+                    val itemKey = userSnapshot.key ?: ""
+                    val getData = userSnapshot.getValue(TemplateEntity::class.java)
 
                     getData?.let {
                         val responseEntryModel = getData.toResponse(itemKey)

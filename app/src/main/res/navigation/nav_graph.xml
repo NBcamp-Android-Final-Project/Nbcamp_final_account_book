@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/menu_home">
+
+    <fragment
+        android:id="@+id/menu_home"
+        android:name="com.nbcam_final_account_book.persentation.home.HomeFragment"
+        android:label="home"
+        tools:layout="@layout/home_fragment" />
+    <fragment
+        android:id="@+id/menu_statistics"
+        android:name="com.nbcam_final_account_book.persentation.chart.ChartFragment"
+        android:label="chart"
+        tools:layout="@layout/chart_fragment" />
+    <fragment
+        android:id="@+id/menu_chat"
+        android:name="com.nbcam_final_account_book.persentation.chat.ChatFragment"
+        android:label="chat"
+        tools:layout="@layout/chat_fragment" />
+    <fragment
+        android:id="@+id/menu_more"
+        android:name="com.nbcam_final_account_book.persentation.more.MoreFragment"
+        android:label="more"
+        tools:layout="@layout/more_fragment" />
+</navigation>

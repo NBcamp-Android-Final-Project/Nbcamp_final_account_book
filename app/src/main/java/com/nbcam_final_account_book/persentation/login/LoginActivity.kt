@@ -31,12 +31,12 @@ class LoginActivity : AppCompatActivity() {
         auth = Firebase.auth // 항상 가장 먼저 초기화 해줘야 함
 
         val nowCurrentUser = auth.currentUser
-
-
-        if (nowCurrentUser != null) {
-            Log.d("유저", nowCurrentUser.toString())
-            toMainActivity()
-        }
+//
+//
+//        if (nowCurrentUser != null) {
+//            Log.d("유저", nowCurrentUser.toString())
+//            toMainActivity()
+//        }
 
         loginBtnLogin.setOnClickListener {
             val currentUser = auth.currentUser

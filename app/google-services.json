@@ -12,7 +12,20 @@
           "package_name": "com.nbcam_final_account_book"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1073898028283-9jnhq5urst0q4dbusuce8jk8dov72dbi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nbcam_final_account_book",
+            "certificate_hash": "f118a4006f0710654bc2d6561ed87f33e3a0088e"
+          }
+        },
+        {
+          "client_id": "1073898028283-f8iprpa00pb4ubmg4dbn2e2tvj6icjc3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDPwEu3-tIPLbOEdH9Un4C31__tQ9oaB7M"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1073898028283-f8iprpa00pb4ubmg4dbn2e2tvj6icjc3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

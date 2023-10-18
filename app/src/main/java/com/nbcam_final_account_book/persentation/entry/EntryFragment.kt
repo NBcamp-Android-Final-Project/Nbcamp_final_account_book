@@ -15,7 +15,8 @@ class EntryFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(
-            this
+            this,
+            EntryViewModelFactory()
         )[EntryViewModel::class.java]
     }
 

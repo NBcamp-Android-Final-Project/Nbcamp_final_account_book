@@ -6,15 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridView
 import androidx.lifecycle.ViewModelProvider
-import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.HomeFragmentBinding
-import java.time.LocalDate
 import java.util.Calendar
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener{
 
 
     private var _binding: HomeFragmentBinding? = null
@@ -38,6 +35,32 @@ class HomeFragment : Fragment() {
 
         updateCalendarHeader()
         updateDays()
+
+        // 이전/다음 버튼 클릭 리스너 설정
+        binding.ivPrev.setOnClickListener {
+            currentMonth--
+            if (currentMonth < 0) {
+                currentMonth = 11
+                currentYear--
+            }
+            updateCalendarHeader()
+            updateDays()
+        }
+
+        binding.ivNext.setOnClickListener {
+            currentMonth++
+            if (currentMonth > 11) {
+                currentMonth = 0
+                currentYear++
+            }
+            updateCalendarHeader()
+            updateDays()
+        }
+
+        // DatePickerDialog 보여주기
+        binding.tvMonthYear.setOnClickListener {
+            showDatePickerDialog()
+        }
 
         return binding.root
 
@@ -69,6 +92,19 @@ class HomeFragment : Fragment() {
 
         val adapter = CalendarAdapter(requireContext(), days)
         binding.gridCalendar.adapter = adapter
+    }
+
+    private fun showDatePickerDialog() {
+        val datePickerDialog = SpinnerDatePickerDialog()
+        datePickerDialog.setOnDateSetListener(this)
+        datePickerDialog.show(parentFragmentManager, "DatePickerDialog")
+    }
+
+    override fun onDateSet(year: Int, month: Int) {
+        currentYear = year
+        currentMonth = month
+        updateCalendarHeader()
+        updateDays()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -5,4 +5,6 @@
     <string name="nav_menu_chart_title">차트</string>
     <string name="nav_menu_chat_title">채팅</string>
     <string name="nav_menu_more_title">더 보기</string>
+
+    <string name="google_login_default_url">1073898028283-f8iprpa00pb4ubmg4dbn2e2tvj6icjc3.apps.googleusercontent.com</string>
 </resources>

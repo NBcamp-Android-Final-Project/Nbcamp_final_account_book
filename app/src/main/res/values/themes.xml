@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.Nbcam_Final_Account_Book" parent="Base.Theme.Nbcam_Final_Account_Book" />
+
+    <style name="RoundCornerBottomSheetDialogTheme" parent="Theme.Material3.Light.BottomSheetDialog">
+        <item name="background">@drawable/shape_bottom_sheet</item>
+        <item name="behavior_draggable">false</item>
+    </style>
+
 </resources>

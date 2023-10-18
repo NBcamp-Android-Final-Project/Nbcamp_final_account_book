@@ -9,6 +9,9 @@ import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
@@ -20,6 +23,7 @@ class EntryActivity : AppCompatActivity() {
 
 	private val binding by lazy { ActivityEntryBinding.inflate(layoutInflater) }
 	private val viewPagerAdapter by lazy { ViewPagerAdapter(this) }
+	private lateinit var viewModel: EntryViewModel
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -30,10 +34,38 @@ class EntryActivity : AppCompatActivity() {
 
 		// 뒤로 가기 콜백
 		this.onBackPressedDispatcher.addCallback(this, callback)
+
+		initViewModel()
+	}
+
+	private fun initViewModel() {
+
+		viewModel = ViewModelProvider(
+			this@EntryActivity,
+			EntryViewModelFactory()
+		)[EntryViewModel::class.java]
+
+		with(viewModel) {
+
+			dummyLiveEntryList.observe(this@EntryActivity, Observer { newData ->
+
+			})
+
+		}
+
 	}
 
 	private fun initView() = with(binding) {
+		tvCategory.setOnClickListener {
+			onClickBottomSheet()
+		}
+	}
 
+	// 카테고리 클릭 시 bottom sheet 출력
+	private fun onClickBottomSheet() {
+		val modal = ModalBottomFragment()
+		modal.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
+		modal.show(supportFragmentManager, ModalBottomFragment.TAG)
 	}
 
 	// viewpager <-> tablayout 연결
@@ -47,14 +79,20 @@ class EntryActivity : AppCompatActivity() {
 				override fun onPageSelected(position: Int) {
 					when (position) {
 						0 -> {
-							setSwipeAnim(android.R.color.holo_green_light, com.nbcam_final_account_book.R.color.primary)
+							setSwipeAnim(
+								android.R.color.holo_green_light,
+								com.nbcam_final_account_book.R.color.primary
+							)
 //							amount = edtNum.text.toString()
 //							val absAmount = abs(amount?.toInt() ?: 0)
 //							edtNum.setText(abs(amount))
 						}
 
 						1 -> {
-							setSwipeAnim(com.nbcam_final_account_book.R.color.primary, android.R.color.holo_green_light)
+							setSwipeAnim(
+								com.nbcam_final_account_book.R.color.primary,
+								android.R.color.holo_green_light
+							)
 //							edtNum.setText(abs(amount) * -1)
 						}
 					}

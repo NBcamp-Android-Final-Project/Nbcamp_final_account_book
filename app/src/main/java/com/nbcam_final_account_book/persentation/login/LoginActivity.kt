@@ -27,6 +27,7 @@ import com.nbcam_final_account_book.persentation.main.MainActivity
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: LoginActivityBinding
+    private lateinit var viewModel: LoginViewModel
 
     private lateinit var auth: FirebaseAuth
 
@@ -36,7 +37,6 @@ class LoginActivity : AppCompatActivity() {
         binding = LoginActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initView()
         launcher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(),
             ActivityResultCallback { result ->
@@ -47,18 +47,22 @@ class LoginActivity : AppCompatActivity() {
                 }
 
             })
+
+        initView()
+        initViewModel()
+
     }
 
     private fun initView() = with(binding) {
         auth = Firebase.auth // 항상 가장 먼저 초기화 해줘야 함
 
         val nowCurrentUser = auth.currentUser
-//
-//
-//        if (nowCurrentUser != null) {
-//            Log.d("유저", nowCurrentUser.toString())
-//            toMainActivity()
-//        }
+
+
+        if (nowCurrentUser != null) {
+            Log.d("유저", nowCurrentUser.toString())
+            toMainActivity()
+        }
 
         loginBtnLogin.setOnClickListener {
             val currentUser = auth.currentUser
@@ -124,6 +128,15 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(
+            this@LoginActivity,
+            LoginViewModelFactory(this@LoginActivity)
+        )[LoginViewModel::class.java]
+
+
+    }
+
 
     private fun toMainActivity() {
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
@@ -146,7 +159,7 @@ class LoginActivity : AppCompatActivity() {
                             "Google login successful",
                             Toast.LENGTH_SHORT
                         ).show()
-                      toMainActivity()
+                        toMainActivity()
                     } else {
                         Toast.makeText(
                             this@LoginActivity,
@@ -157,6 +170,7 @@ class LoginActivity : AppCompatActivity() {
                 }
         } catch (e: ApiException) {
             Toast.makeText(this@LoginActivity, "Google login failed", Toast.LENGTH_SHORT).show()
+            Log.e("구글.로그인.에러", "로그인 에러 ")
         }
     }
 

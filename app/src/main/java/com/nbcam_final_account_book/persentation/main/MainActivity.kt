@@ -40,14 +40,6 @@ class MainActivity : AppCompatActivity() {
 		//toolbar 연결
 		setSupportActionBar(mainToolbar)
 
-		//임시 로그아웃 버튼
-		mainLogOut.setOnClickListener{
-			auth.signOut()
-			val intent = Intent(this@MainActivity, LoginActivity::class.java)
-			startActivity(intent)
-			finish()
-		}
-
 		//bottom navigation 연결
 		val navHostFragment = supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment
 		val navController = navHostFragment.navController

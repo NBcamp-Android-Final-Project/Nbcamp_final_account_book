@@ -3,8 +3,8 @@ package com.nbcam_final_account_book.data.model
 import androidx.lifecycle.MutableLiveData
 import com.nbcam_final_account_book.persentation.entry.EntryModel
 import com.nbcam_final_account_book.persentation.tag.TagModel
-import com.nbcam_final_account_book.unit.Unit.TYPE_INCOME
-import com.nbcam_final_account_book.unit.Unit.TYPE_PAY
+import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_INCOME
+import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_PAY
 
 object DummyData {
 
@@ -19,7 +19,7 @@ object DummyData {
                 add(
                     EntryModel(
                         id = i.toLong(),
-                        type = TYPE_INCOME,
+                        type = INPUT_TYPE_INCOME,
                         dateTime = "2023-10-0{$i`}",
                         value = "100000 +${i * 1000}",
                         tag = "",
@@ -31,7 +31,7 @@ object DummyData {
                 add(
                     EntryModel(
                         id = i.toLong(),
-                        type = TYPE_PAY,
+                        type = INPUT_TYPE_PAY,
                         dateTime = "2023-10-0{$i`}",
                         value = "1000 +${i * 1000}",
                         tag = "",

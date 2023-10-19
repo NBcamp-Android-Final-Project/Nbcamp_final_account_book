@@ -41,7 +41,12 @@ class LockActivity : AppCompatActivity() {
         }
 
         lockBtnLocksetting.setOnClickListener {
-            loadFragment(lockSettingFragment)
+            if (lockSettingFragment.isAdded) {
+                loadFragment(lockSettingFragment)
+            } else {
+                lockSettingFragment = LockSettingFragment()
+                loadFragment(lockSettingFragment)
+            }
         }
     }
 

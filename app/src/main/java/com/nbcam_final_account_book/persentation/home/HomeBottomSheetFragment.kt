@@ -23,6 +23,10 @@ class HomeBottomSheetFragment(private val entries: List<EntryModel>, private val
         return binding.root
     }
 
+    companion object {
+        const val TAG = "BasicBottomModalSheet"
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = EntryAdapter(entries)

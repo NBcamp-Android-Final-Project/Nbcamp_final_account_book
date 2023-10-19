@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MoreFragmentBinding
-import com.nbcam_final_account_book.persentation.lock.LockActivity
+import com.nbcam_final_account_book.persentation.lock.LockSettingActivity
 import com.nbcam_final_account_book.persentation.login.LoginActivity
 
 
@@ -45,7 +45,7 @@ class MoreFragment : Fragment() {
 
     private fun initView() = with(binding) { //레이 아웃 제어
         moreBtnLock.setOnClickListener {
-            val intent = Intent(requireContext(), LockActivity::class.java)
+            val intent = Intent(requireContext(), LockSettingActivity::class.java)
             startActivity(intent)
         }
 

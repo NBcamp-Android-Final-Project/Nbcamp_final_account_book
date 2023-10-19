@@ -6,73 +6,73 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:clickable="true"
-    tools:context=".persentation.lock.locksetting.LockSettingFragment">
+    tools:context=".persentation.lock.pin.PinFragment">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/locksetting_guideline_horizontal1"
+        android:id="@+id/pin_guideline_horizontal1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/locksetting_guideline_horizontal2"
+        android:id="@+id/pin_guideline_horizontal2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.3" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/locksetting_guideline_horizontal3"
+        android:id="@+id/pin_guideline_horizontal3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.35" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/locksetting_guideline_horizontal4"
+        android:id="@+id/pin_guideline_horizontal4"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.42" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/locksetting_guideline_horizontal5"
+        android:id="@+id/pin_guideline_horizontal5"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.95" />
 
     <TextView
-        android:id="@+id/locksetting_tv_pin"
+        android:id="@+id/pin_tv_pin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="암호"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locksetting_guideline_horizontal1" />
+        app:layout_constraintTop_toBottomOf="@+id/pin_guideline_horizontal1" />
 
     <TextView
-        android:id="@+id/locksetting_tv_alert"
+        android:id="@+id/pin_tv_alert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locksetting_guideline_horizontal2" />
+        app:layout_constraintTop_toBottomOf="@+id/pin_guideline_horizontal2" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/locksetting_line"
+        android:id="@+id/pin_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/locksetting_guideline_horizontal4"
+        app:layout_constraintBottom_toTopOf="@+id/pin_guideline_horizontal4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locksetting_guideline_horizontal3">
+        app:layout_constraintTop_toBottomOf="@+id/pin_guideline_horizontal3">
 
         <ImageView
-            android:id="@+id/locksetting_iv_line1"
+            android:id="@+id/pin_iv_line_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="0dp"
@@ -84,49 +84,49 @@
             tools:ignore="contentDescription" />
 
         <ImageView
-            android:id="@+id/locksetting_iv_line2"
+            android:id="@+id/pin_iv_line_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="0dp"
             android:paddingEnd="30dp"
             android:src="@drawable/ic_line"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/locksetting_iv_line1"
+            app:layout_constraintStart_toEndOf="@+id/pin_iv_line_1"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="contentDescription" />
 
         <ImageView
-            android:id="@+id/locksetting_iv_line3"
+            android:id="@+id/pin_iv_line_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="0dp"
             android:paddingEnd="30dp"
             android:src="@drawable/ic_line"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/locksetting_iv_line2"
+            app:layout_constraintStart_toEndOf="@+id/pin_iv_line_2"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="contentDescription" />
 
         <ImageView
-            android:id="@+id/locksetting_iv_line4"
+            android:id="@+id/pin_iv_line_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_line"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/locksetting_iv_line3"
+            app:layout_constraintStart_toEndOf="@+id/pin_iv_line_3"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="contentDescription" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
-        android:id="@+id/locksetting_numpad"
+        android:id="@+id/pin_numpad"
         layout="@layout/number_pad"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
-        app:layout_constraintBottom_toTopOf="@id/locksetting_guideline_horizontal5"
+        app:layout_constraintBottom_toTopOf="@id/pin_guideline_horizontal5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

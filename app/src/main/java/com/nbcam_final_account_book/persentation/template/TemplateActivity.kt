@@ -1,6 +1,7 @@
 package com.nbcam_final_account_book.persentation.template
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -33,21 +34,25 @@ class TemplateActivity : AppCompatActivity() {
 
         templateEdtInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                TODO("Not yet implemented")
+
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                TODO("Not yet implemented")
+
             }
 
             override fun afterTextChanged(s: Editable?) {
 
                 val text = s.toString()
-
-                if (isEnable(text)) {
-                    templateTvError.text = "불가능"
-                } else {
-                    templateTvError.text = "가능"
+                if (text == "") {
+                    templateTvError.setTextColor(Color.BLUE)
+                    templateTvError.text = "제목을 지어주세요"
+                } else if (isEnable(text)) {
+                    templateTvError.setTextColor(Color.RED)
+                    templateTvError.text = "불가능한 문자가 포함되어있습니다 : '#' , '[' , ']' , '$' , '.' "
+                } else if (!isEnable(text)) {
+                    templateTvError.setTextColor(Color.BLUE)
+                    templateTvError.text = "가능한 형식 입니다"
                 }
             }
 
@@ -66,6 +71,7 @@ class TemplateActivity : AppCompatActivity() {
                     .show()
             } else {
 
+                insertFirstTemplate(templateTitle)
                 saveIsFirst(isFirst)
                 toMainActivity()
             }
@@ -95,6 +101,10 @@ class TemplateActivity : AppCompatActivity() {
 
     private fun saveIsFirst(isFirst: Boolean) = with(viewModel) {
         saveIsFirst(isFirst)
+    }
+
+    private fun insertFirstTemplate(title: String) = with(viewModel) {
+        insertFirstTemplate(title)
     }
 
     private fun isEnable(input: String): Boolean {

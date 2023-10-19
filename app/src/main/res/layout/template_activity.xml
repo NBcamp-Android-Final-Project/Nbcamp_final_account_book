@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:hint="가계부 이름을 입력해 주세요"
+        android:inputType="text"
         android:maxLines="1"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

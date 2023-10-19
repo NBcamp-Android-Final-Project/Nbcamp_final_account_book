@@ -34,8 +34,11 @@ class ModalBottomFragment : BottomSheetDialogFragment() {
 	private fun initView() = with(binding) {
 
 		btnSave.setOnClickListener {
+//			val entry = EntryActivity()
+//			val amount: String? = entry.findViewById<EditText>(R.id.edt_num).text?.toString()
+//			Log.d("amount", "$amount")
+
 			dismiss()
-			requireActivity().finish()
 		}
 	}
 

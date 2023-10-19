@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MoreFragmentBinding
 import com.nbcam_final_account_book.persentation.lock.LockActivity
 import com.nbcam_final_account_book.persentation.login.LoginActivity
@@ -15,8 +17,8 @@ import com.nbcam_final_account_book.persentation.login.LoginActivity
 
 class MoreFragment : Fragment() {
 
-    private var _binding: MoreFragmentBinding? = null
-    private val binding get() = _binding!!
+	private var _binding: MoreFragmentBinding? = null
+	private val binding get() = _binding!!
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -33,20 +35,35 @@ class MoreFragment : Fragment() {
         _binding = MoreFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
+	override fun onCreateView(
+		inflater: LayoutInflater, container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View {
+		_binding = MoreFragmentBinding.inflate(inflater, container, false)
+		return binding.root
+	}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initViewModel()
     }
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+		initView()
+	}
 
-    private fun initView() = with(binding) { //레이 아웃 제어
-        moreBtnLock.setOnClickListener {
-            val intent = Intent(requireContext(), LockActivity::class.java)
-            startActivity(intent)
-        }
+	private fun initView() = with(binding) { //레이 아웃 제어
+		moreBtnLock.setOnClickListener {
+			val intent = Intent(requireContext(), LockActivity::class.java)
+			startActivity(intent)
+		}
 
+		moreBtnTag.setOnClickListener {
+			findNavController().navigate(R.id.action_menu_more_to_tagFragment)
+		}
 
+`
         moreBtnLogout.setOnClickListener {
             val auth = FirebaseAuth.getInstance()
             auth.signOut()
@@ -65,4 +82,11 @@ class MoreFragment : Fragment() {
     private fun cleanRoom() = with(viewModel){
         cleanTemplateListInRoom()
     }
+		moreBtnLogout.setOnClickListener {
+			val auth = FirebaseAuth.getInstance()
+			auth.signOut()
+			val intent = Intent(requireContext(), LoginActivity::class.java)
+			startActivity(intent)
+		}
+	}
 }

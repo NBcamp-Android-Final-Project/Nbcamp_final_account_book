@@ -24,5 +24,18 @@
         android:id="@+id/menu_more"
         android:name="com.nbcam_final_account_book.persentation.more.MoreFragment"
         android:label="more"
-        tools:layout="@layout/more_fragment" />
+        tools:layout="@layout/more_fragment" >
+        <action
+            android:id="@+id/action_menu_more_to_tagFragment"
+            app:destination="@id/tagFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tagFragment"
+        android:name="com.nbcam_final_account_book.persentation.tag.TagFragment"
+        android:label="tag_fragment"
+        tools:layout="@layout/tag_fragment" >
+        <action
+            android:id="@+id/action_tagFragment_to_menu_more"
+            app:destination="@id/menu_more" />
+    </fragment>
 </navigation>

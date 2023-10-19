@@ -16,6 +16,9 @@
             android:name=".persentation.template.TemplateActivity"
             android:exported="false" />
         <activity
+            android:name=".persentation.entry.CategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".persentation.lock.LockActivity"
             android:exported="false" />
         <activity
@@ -35,6 +38,7 @@
             android:name=".persentation.entry.EntryActivity"
             android:exported="false" />
 
+            android:exported="true" />
     </application>
 
 </manifest>

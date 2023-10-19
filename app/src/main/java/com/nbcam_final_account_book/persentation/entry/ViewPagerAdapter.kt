@@ -1,18 +1,33 @@
 package com.nbcam_final_account_book.persentation.entry
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.viewpager2.adapter.FragmentStateAdapter
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.nbcam_final_account_book.databinding.ItemEntrySwipeBinding
 
-class ViewPagerAdapter(activity : FragmentActivity) : FragmentStateAdapter(activity) {
+class ViewPagerAdapter : RecyclerView.Adapter<ViewPagerAdapter.ViewHolder>() {
 
-	private val fragments = arrayOf(FirstFragment(), SecondFragment())
+	private val string = arrayOf("지출", "수입")
 
-	override fun getItemCount(): Int {
-		return fragments.size
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerAdapter.ViewHolder {
+		val view = ItemEntrySwipeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+		return ViewHolder(view)
 	}
 
-	override fun createFragment(position: Int): Fragment {
-		return fragments[position]
+	override fun onBindViewHolder(holder: ViewPagerAdapter.ViewHolder, position: Int) {
+		holder.onBind(string[position])
+	}
+
+	override fun getItemCount(): Int = 2
+
+	inner class ViewHolder(binding: ItemEntrySwipeBinding) : RecyclerView.ViewHolder(binding.root) {
+
+		private val title = binding.tvTitle
+//		private val minus = binding.icMinus
+
+		fun onBind(item: String) {
+			title.text = item
+//			if (itemCount == 2) minus.visibility = View.GONE
+		}
 	}
 }

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -15,14 +16,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayoutMediator
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.ActivityEntryBinding
 
 class EntryActivity : AppCompatActivity() {
 
 	private val binding by lazy { ActivityEntryBinding.inflate(layoutInflater) }
-	private val viewPagerAdapter by lazy { ViewPagerAdapter(this) }
+	private val viewPagerAdapter by lazy { ViewPagerAdapter() }
 	private lateinit var viewModel: EntryViewModel
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +70,8 @@ class EntryActivity : AppCompatActivity() {
 
 	// viewpager <-> tablayout 연결
 	private fun initViewPager() = with(binding) {
+//		var amount: String? = binding.edtNum.text.toString()
+
 		viewpager.run {
 			offscreenPageLimit = 1
 			getChildAt(0).overScrollMode = android.view.View.OVER_SCROLL_NEVER
@@ -83,8 +85,9 @@ class EntryActivity : AppCompatActivity() {
 								android.R.color.holo_green_light,
 								com.nbcam_final_account_book.R.color.primary
 							)
-//							amount = edtNum.text.toString()
-//							val absAmount = abs(amount?.toInt() ?: 0)
+							ivMinus.visibility = View.VISIBLE
+							var amount: String? = binding.edtNum.text.toString()
+//							var absAmount = amount?.let { abs(it.toInt()) }
 //							edtNum.setText(abs(amount))
 						}
 
@@ -93,18 +96,13 @@ class EntryActivity : AppCompatActivity() {
 								com.nbcam_final_account_book.R.color.primary,
 								android.R.color.holo_green_light
 							)
+							ivMinus.visibility = View.GONE
 //							edtNum.setText(abs(amount) * -1)
 						}
 					}
 				}
 			})
 		}
-		TabLayoutMediator(tablayout, viewpager) { tab, position ->
-			when (position) {
-				0 -> tab.text = "지출"
-				1 -> tab.text = "수입"
-			}
-		}.attach()
 	}
 
 	// 스와이프 시 배경색 전환 애니메이션

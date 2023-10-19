@@ -37,7 +37,7 @@ class MoreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        initView()
+        initViewModel()
     }
 
     private fun initView() = with(binding) { //레이 아웃 제어

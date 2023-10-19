@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tv_category"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,6 +10,10 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingStart="120dp"
+        android:paddingEnd="120dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -18,9 +22,22 @@
         app:layout_constraintVertical_bias="0.5"
         tools:background="@color/primary" />
 
+    <ImageView
+        android:id="@+id/iv_minus"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edt_num"
+        app:layout_constraintEnd_toStartOf="@+id/edt_num"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/edt_num"
+        app:srcCompat="@drawable/ic_minus" />
+
     <EditText
         android:id="@+id/edt_num"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
@@ -28,7 +45,7 @@
         android:cursorVisible="false"
         android:enabled="false"
         android:hint="0"
-        android:maxLength="10"
+        android:maxLength="15"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@android:color/black"
@@ -37,23 +54,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/viewpager" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tablayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintBottom_toTopOf="@+id/edt_num"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:tabIndicator="@android:color/transparent"
-        app:tabRippleColor="@android:color/transparent"
-        app:tabSelectedTextColor="#B2C8ED"
-        app:tabTextAppearance="@style/TextAppearance.Material3.HeadlineLarge"
-        app:tabTextColor="@color/white">
-
-    </com.google.android.material.tabs.TabLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -70,34 +70,52 @@
         app:layout_constraintGuide_percent="0.4" />
 
     <FrameLayout
-        android:layout_width="0dp"
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_category"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewpager">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/holo_purple"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="금액을 입력해주세요 (참고 가계부에서는 현재 시간 출력)"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
         <com.konaire.numerickeyboard.NumericKeyboard
             android:id="@+id/num_pad"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:paddingTop="20dp"
             app:field="@id/edt_num"
-            app:fieldMaxLength="10"
+            app:fieldMaxLength="15"
             app:keyHeight="90dp"
             app:keyTextColor="@android:color/holo_blue_dark" />
+
     </FrameLayout>
 
     <TextView
+        android:id="@+id/tv_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/shape_bottom_sheet"
+        android:elevation="50dp"
+        android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:text="카테고리"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

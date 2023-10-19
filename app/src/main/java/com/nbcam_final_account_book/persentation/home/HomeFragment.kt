@@ -11,13 +11,15 @@ import com.nbcam_final_account_book.databinding.HomeFragmentBinding
 import java.util.Calendar
 
 
-class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener{
+class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
 
 
     private var _binding: HomeFragmentBinding? = null
+    private val binding get() = _binding!!
+    private var days = mutableListOf<Day>()
     private var currentMonth: Int = Calendar.getInstance().get(Calendar.MONTH)
     private var currentYear: Int = Calendar.getInstance().get(Calendar.YEAR)
-    private val binding get() = _binding!!
+
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -31,7 +33,6 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener{
     ): View {
 
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
-        Log.d("호출", binding.root.toString())
 
         updateCalendarHeader()
         updateDays()
@@ -71,7 +72,7 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener{
     }
 
     private fun updateDays() {
-        val days = mutableListOf<Day>()
+        days.clear()
 
         val calendar = Calendar.getInstance().apply {
             set(Calendar.YEAR, currentYear)
@@ -82,7 +83,8 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener{
 
         // 월의 첫 번째 날짜가 무슨 요일인지에 따라 빈 칸을 추가
         for (i in 1 until firstDayOfMonth) {
-            days.add(Day(0, false)) // 날짜를 0으로 설정하여 빈 칸을 나타냄
+            // 날짜를 0으로 설정하여 빈 칸을 나타냄
+            days.add(Day(0, false))
         }
 
         val maxDaysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
@@ -119,8 +121,6 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener{
 
     private fun initViewModel() = with(viewModel) { //뷰 모델 제어
         liveEntryDummyDataInHome.observe(viewLifecycleOwner) {
-
         }
     }
-
 }

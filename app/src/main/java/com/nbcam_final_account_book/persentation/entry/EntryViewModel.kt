@@ -23,7 +23,7 @@ class EntryViewModel(
     fun getAllEntryListFromFirebase(template: String, type: String) {
         viewModelScope.launch {
             val resultList =
-                fireRepo.getAllEntry(fireRepo.getUser(), template = template, type = type)
+                fireRepo.getAllEntry(fireRepo.getUser(), template = template, path = type)
 
             _liveEntryList.value = resultList
         }

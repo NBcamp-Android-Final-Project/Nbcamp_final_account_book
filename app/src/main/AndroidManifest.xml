@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Nbcam_Final_Account_Book"
         tools:targetApi="31">
-
+        <activity
+            android:name=".persentation.lock.LockActivity"
+            android:exported="false" />
         <activity
             android:name=".persentation.login.LoginActivity"
             android:exported="true">
@@ -22,7 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".persentation.main.MainActivity"
             android:exported="false" />

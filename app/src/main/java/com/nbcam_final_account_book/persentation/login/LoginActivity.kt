@@ -45,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
 
         isFirst = load
         Log.d("로드.create", isFirst.toString())
-//        isFirst = true
+        isFirst = true
 
         launcher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(),

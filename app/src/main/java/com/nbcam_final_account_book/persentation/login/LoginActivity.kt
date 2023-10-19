@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
-    private var isFirst: Boolean = true
+    private var isFirst: Boolean = true //앱 최초 실행 판정
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LoginActivityBinding.inflate(layoutInflater)
@@ -60,9 +60,6 @@ class LoginActivity : AppCompatActivity() {
         initView()
 
 
-
-
-
     }
 
     private fun initView() = with(binding) {
@@ -84,6 +81,7 @@ class LoginActivity : AppCompatActivity() {
             val email = loginEdtEmail.text.toString()
             val password = loginEdtPassword.text.toString()
 
+            //email&password 로그인
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this@LoginActivity) { task ->
@@ -125,6 +123,7 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
+        // google 로그인
         loginBtnGoogle.setOnClickListener {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.google_login_default_url))

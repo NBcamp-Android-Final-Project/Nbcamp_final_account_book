@@ -11,6 +11,8 @@ object DummyData {
     val liveDummyEntry: MutableLiveData<List<EntryModel>> = MutableLiveData()
     val liveDummyTag: MutableLiveData<List<TagModel>> = MutableLiveData()
 
+    var currentTemplate : String = "template"
+
     init {
         liveDummyEntry.value = arrayListOf<EntryModel>().apply {
             for (i in 1..9) {

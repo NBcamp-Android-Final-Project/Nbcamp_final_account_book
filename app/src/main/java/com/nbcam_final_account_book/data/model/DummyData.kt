@@ -20,19 +20,19 @@ object DummyData {
                     EntryModel(
                         id = i.toLong(),
                         type = INPUT_TYPE_INCOME,
-                        dateTime = "2023-10-0{$i`}",
+                        dateTime = "2023-10-0${i}",
                         value = "100000 +${i * 1000}",
                         tag = "",
                         title = "월급",
                     )
                 )
             }
-            for (i in 0..9) {
+            for (i in 1..9) {
                 add(
                     EntryModel(
                         id = i.toLong(),
                         type = INPUT_TYPE_PAY,
-                        dateTime = "2023-10-0{$i`}",
+                        dateTime = "2023-10-0${i}",
                         value = "1000 +${i * 1000}",
                         tag = "",
                         title = "포카칩",
@@ -41,7 +41,7 @@ object DummyData {
             }
         }
         liveDummyTag.value = arrayListOf<TagModel>().apply {
-            for (i in 0..9) {
+            for (i in 1..9) {
                 add(
                     TagModel(
                         id = i,

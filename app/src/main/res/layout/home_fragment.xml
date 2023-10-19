@@ -10,6 +10,7 @@
         android:id="@+id/iv_prev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
         android:src="@drawable/ic_calendar_selector_arrow_left"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,6 +21,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="2023년 10월"
+        android:paddingVertical="10dp"
         app:layout_constraintStart_toEndOf="@+id/iv_prev"
         app:layout_constraintEnd_toStartOf="@+id/iv_next"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,6 +30,7 @@
         android:id="@+id/iv_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
         android:src="@drawable/ic_calendar_selector_arrow_right"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

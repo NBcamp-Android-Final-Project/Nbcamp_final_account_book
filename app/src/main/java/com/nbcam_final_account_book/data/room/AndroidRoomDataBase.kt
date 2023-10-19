@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 
-@Database(entities = [TemplateEntity::class], version = 1)
+@Database(entities = [TemplateEntity::class], version = 2)
 abstract class AndroidRoomDataBase : RoomDatabase() {
 
     abstract fun templateDao(): TemplateDao

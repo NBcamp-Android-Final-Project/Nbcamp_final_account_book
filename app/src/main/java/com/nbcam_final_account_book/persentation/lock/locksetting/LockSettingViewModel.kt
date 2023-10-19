@@ -11,7 +11,7 @@ class LockSettingViewModel(sharedProvider: SharedProvider): ViewModel() {
         const val LOCK_PASSWORD = "lockPassword"
     }
 
-    private val sharedPreferences = sharedProvider.setSharedPrefUserToken(APP_LOCK_PASSWORD)
+    private val sharedPreferences = sharedProvider.setSharedPref(APP_LOCK_PASSWORD)
 
     fun arePasswordMatching(password1: String, password2: String): Boolean {
         return password1 == password2

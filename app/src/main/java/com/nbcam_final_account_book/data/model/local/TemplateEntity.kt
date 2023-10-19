@@ -10,6 +10,8 @@ data class TemplateEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Int,
+    @ColumnInfo(name = "key")
+    val key: String = "",
     @ColumnInfo(name = "template")
     val templateTitle: String
 )

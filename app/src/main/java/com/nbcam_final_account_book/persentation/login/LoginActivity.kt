@@ -24,19 +24,28 @@ import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.LoginActivityBinding
 import com.nbcam_final_account_book.databinding.MainActivityBinding
 import com.nbcam_final_account_book.persentation.main.MainActivity
+import com.nbcam_final_account_book.persentation.template.TemplateActivity
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: LoginActivityBinding
     private lateinit var viewModel: LoginViewModel
-
     private lateinit var auth: FirebaseAuth
-
     private lateinit var launcher: ActivityResultLauncher<Intent>
+
+    private var isFirst: Boolean = true //앱 최초 실행 판정
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LoginActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        initViewModel()
+
+        val load = loadisFirst()
+
+        isFirst = load
+        Log.d("로드.create", isFirst.toString())
+        isFirst = true
 
         launcher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(),
@@ -50,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
             })
 
         initView()
-        initViewModel()
+
 
     }
 
@@ -59,6 +68,7 @@ class LoginActivity : AppCompatActivity() {
 
         val nowCurrentUser = auth.currentUser
 
+        Log.d("로드", isFirst.toString())
 
         if (nowCurrentUser != null) {
             Log.d("유저", nowCurrentUser.email.toString())
@@ -72,8 +82,8 @@ class LoginActivity : AppCompatActivity() {
             val email = loginEdtEmail.text.toString()
             val password = loginEdtPassword.text.toString()
 
-            Log.d("에러", "$email $password")
-
+            //TODO viewmodel로 옮겨보자!(후순위)
+            //email&password 로그인
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this@LoginActivity) { task ->
@@ -84,7 +94,9 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            toMainActivity()
+                            if (isFirst) toTemplateActivity()
+                            else toMainActivity()
+
                         } else {
                             Toast.makeText(
                                 this@LoginActivity,
@@ -113,6 +125,7 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
+        // google 로그인
         loginBtnGoogle.setOnClickListener {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.google_login_default_url))
@@ -133,7 +146,7 @@ class LoginActivity : AppCompatActivity() {
     private fun initViewModel() {
         viewModel = ViewModelProvider(
             this@LoginActivity,
-            LoginViewModelFactory()
+            LoginViewModelFactory(this@LoginActivity)
         )[LoginViewModel::class.java]
 
         with(viewModel) {
@@ -151,6 +164,16 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
+    private fun toTemplateActivity() {
+        val intent = Intent(this@LoginActivity, TemplateActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun loadisFirst(): Boolean = with(viewModel) {
+        loadSharedisFirst()
+    }
+
     private fun googleSignInResult(task: Task<GoogleSignInAccount>) {
         try {
 
@@ -166,7 +189,9 @@ class LoginActivity : AppCompatActivity() {
                             "Google login successful",
                             Toast.LENGTH_SHORT
                         ).show()
-                        toMainActivity()
+
+                        if (isFirst) toTemplateActivity()
+                        else toMainActivity()
                     } else {
                         Toast.makeText(
                             this@LoginActivity,

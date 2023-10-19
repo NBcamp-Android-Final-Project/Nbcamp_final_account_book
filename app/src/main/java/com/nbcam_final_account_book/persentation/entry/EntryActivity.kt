@@ -70,7 +70,6 @@ class EntryActivity : AppCompatActivity() {
 
 	// viewpager <-> tablayout 연결
 	private fun initViewPager() = with(binding) {
-//		var amount: String? = binding.edtNum.text.toString()
 
 		viewpager.run {
 			offscreenPageLimit = 1
@@ -86,9 +85,6 @@ class EntryActivity : AppCompatActivity() {
 								com.nbcam_final_account_book.R.color.primary
 							)
 							ivMinus.visibility = View.VISIBLE
-							var amount: String? = binding.edtNum.text.toString()
-//							var absAmount = amount?.let { abs(it.toInt()) }
-//							edtNum.setText(abs(amount))
 						}
 
 						1 -> {
@@ -97,7 +93,6 @@ class EntryActivity : AppCompatActivity() {
 								android.R.color.holo_green_light
 							)
 							ivMinus.visibility = View.GONE
-//							edtNum.setText(abs(amount) * -1)
 						}
 					}
 				}

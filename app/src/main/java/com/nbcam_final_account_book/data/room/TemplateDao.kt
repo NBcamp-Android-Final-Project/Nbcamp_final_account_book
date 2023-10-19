@@ -21,4 +21,8 @@ interface TemplateDao {
     @Query("DELETE FROM template_table")
     suspend fun deleteAllTemplate()
 
+    @Query("SELECT * FROM template_table LIMIT 1")
+    suspend fun getFirstTemplate(): TemplateEntity
+
+
 }

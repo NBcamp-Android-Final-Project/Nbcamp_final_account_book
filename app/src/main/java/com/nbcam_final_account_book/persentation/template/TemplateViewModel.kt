@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
+import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
@@ -14,7 +16,8 @@ import kotlinx.coroutines.launch
 
 class TemplateViewModel(
     private val roomRepo: RoomRepository,
-    private val sharedProvider: SharedProvider
+    private val sharedProvider: SharedProvider,
+    private val fireRepo: FireBaseRepository
 ) : ViewModel() {
 
     fun saveIsFirst(isFirst: Boolean) {
@@ -31,6 +34,11 @@ class TemplateViewModel(
         }
     }
 
+    fun addTemplateFirst() {
+        viewModelScope.launch {
+            fireRepo.setTemplate(fireRepo.getUser(), roomRepo.selectFirstTemplate())
+        }
+    }
 }
 
 class TemplateViewModelFactory(
@@ -42,7 +50,8 @@ class TemplateViewModelFactory(
                 RoomRepositoryImpl(
                     AndroidRoomDataBase.getInstance(context)
                 ),
-                SharedProviderImpl(context)
+                SharedProviderImpl(context),
+                FireBaseRepositoryImpl()
             ) as T
         } else {
             throw IllegalArgumentException("Not found ViewModel class.")

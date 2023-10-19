@@ -1,24 +1,27 @@
 package com.nbcam_final_account_book.persentation.template
 
+import android.content.ContentUris
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.TemplateActivityBinding
 import com.nbcam_final_account_book.persentation.main.MainActivity
 import java.util.regex.Pattern
 
 class TemplateActivity : AppCompatActivity() {
 
+    //TODO 다중 템플릿을 구현해야합니다
+
     private lateinit var binding: TemplateActivityBinding
     private lateinit var viewModel: TemplateViewModel
     private val isFirst = false
+
+    // 생각 2 = 템플릿 안에 데이터가 없으면 처음 로그인 하는 것이다.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,9 +74,11 @@ class TemplateActivity : AppCompatActivity() {
                     .show()
             } else {
 
-                insertFirstTemplate(templateTitle)
                 saveIsFirst(isFirst)
+                insertFirstTemplate(templateTitle) // room DB에 삽입
                 toMainActivity()
+                addFirstTemplateToFirebase() // firebase에 삽입
+
             }
 
 
@@ -105,6 +110,10 @@ class TemplateActivity : AppCompatActivity() {
 
     private fun insertFirstTemplate(title: String) = with(viewModel) {
         insertFirstTemplate(title)
+    }
+
+    private fun addFirstTemplateToFirebase() = with(viewModel) {
+        addTemplateFirst()
     }
 
     private fun isEnable(input: String): Boolean {

@@ -35,7 +35,6 @@
             android:name=".persentation.entry.EntryActivity"
             android:exported="false" />
 
-
     </application>
 
 </manifest>

@@ -31,13 +31,12 @@ class ModalBottomFragment : BottomSheetDialogFragment() {
 		initCategory()
 	}
 
-	private fun initView() {
-//		val offsetFromTop = 100
-//		(dialog as BottomSheetDialog).behavior.apply {
-//			isFitToContents = false
-//			expandedOffset = offsetFromTop
-//			state = BottomSheetBehavior.STATE_EXPANDED
-//		}
+	private fun initView() = with(binding) {
+
+		btnSave.setOnClickListener {
+			dismiss()
+			requireActivity().finish()
+		}
 	}
 
 	private fun initCategory() {

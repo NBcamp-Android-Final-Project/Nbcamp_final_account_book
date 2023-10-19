@@ -3,12 +3,14 @@ package com.nbcam_final_account_book.persentation.template
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import com.nbcam_final_account_book.persentation.login.LoginViewModel
+import kotlinx.coroutines.launch
 
 class TemplateViewModel(
     private val roomRepo: RoomRepository,
@@ -21,6 +23,12 @@ class TemplateViewModel(
 
         editor.putBoolean("key_isFirst", isFirst)
         editor.apply()
+    }
+
+    fun insertFirstTemplate(title: String) {
+        viewModelScope.launch {
+            roomRepo.insertFirstTemplate(title)
+        }
     }
 
 }

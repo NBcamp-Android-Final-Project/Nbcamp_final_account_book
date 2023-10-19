@@ -10,7 +10,7 @@
         android:id="@+id/login_constrain_container"
         android:layout_width="0dp"
         android:layout_height="150dp"
-        android:background="#DEE5F1"
+        android:background="@color/cheon_primary_selected_home_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -62,13 +62,14 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="40dp"
-        android:backgroundTint="#DEE5F1"
+        android:backgroundTint="@color/cheon_primary_selected_home_icon"
         android:text="로그인"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_edt_password" />
+
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/login_btn_google"

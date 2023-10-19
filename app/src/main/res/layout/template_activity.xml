@@ -10,7 +10,7 @@
         android:id="@+id/template_constrain_container"
         android:layout_width="0dp"
         android:layout_height="150dp"
-        android:background="#DEE5F1"
+        android:background="@color/cheon_primary_selected_home_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -58,6 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="40dp"
+        android:backgroundTint="@color/cheon_primary_selected_home_icon"
         android:text="확인"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

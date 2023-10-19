@@ -41,7 +41,7 @@ object DummyData {
             }
         }
         liveDummyTag.value = arrayListOf<TagModel>().apply {
-            for (i in 0..9) {
+            for (i in 1..9) {
                 add(
                     TagModel(
                         id = i,

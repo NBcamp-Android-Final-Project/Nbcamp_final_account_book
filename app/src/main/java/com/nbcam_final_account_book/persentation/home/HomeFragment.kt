@@ -1,7 +1,6 @@
 package com.nbcam_final_account_book.persentation.home
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -56,6 +55,17 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
             }
             updateCalendarHeader()
             updateDays()
+        }
+
+        binding.gridCalendar.setOnItemClickListener { parent, view, position, id ->
+            val day = days[position].date
+            if (day != 0) {
+                val clickedDate = "${currentYear}-" + String.format("%02d", currentMonth + 1) + "-" + String.format("%02d", day)
+                val relatedEntries = viewModel.getListAll().filter { it.dateTime.contains(clickedDate) }
+
+                val bottomSheetFragment = HomeBottomSheetFragment(relatedEntries)
+                bottomSheetFragment.show(parentFragmentManager, "BottomSheetFragment")
+            }
         }
 
         // DatePickerDialog 보여주기

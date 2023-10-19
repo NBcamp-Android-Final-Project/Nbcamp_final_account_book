@@ -5,35 +5,26 @@ import androidx.lifecycle.ViewModelProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 
 class LockSettingViewModel(sharedProvider: SharedProvider): ViewModel() {
-    private val sharedPreferences = sharedProvider.setSharedPref("AppLockPassword")
 
-    private var firstInput: String? = null
-
-    fun validateAndSavePassword(password: String): Boolean{
-        val savedPassword = sharedPreferences.getString("lockPassword", "")
-//        return password == savedPassword
-        if (firstInput == null) {
-            firstInput = password
-            return false
-        } else if (password == savedPassword && password == firstInput) {
-            savePassword(password)
-            return true
-        }
-        return false
+    companion object {
+        const val APP_LOCK_PASSWORD = "AppLockPassword"
+        const val LOCK_PASSWORD = "lockPassword"
     }
 
-    private fun savePassword(password:String) {
+    private val sharedPreferences = sharedProvider.setSharedPrefUserToken(APP_LOCK_PASSWORD)
+
+    fun arePasswordMatching(password1: String, password2: String): Boolean {
+        return password1 == password2
+    }
+
+    fun savePassword(password: String) {
         val editor = sharedPreferences.edit()
-        editor.putString("lockPassword", password)
+        editor.putString(LOCK_PASSWORD, password)
         editor.apply()
     }
 
-    fun isFirstInput(): Boolean {
-        return firstInput == null
-    }
-
-    fun setFirstInputPassword(password: String) {
-        firstInput = password
+    fun getSavedPassword(): String? {
+        return sharedPreferences.getString(LOCK_PASSWORD, null)
     }
 }
 

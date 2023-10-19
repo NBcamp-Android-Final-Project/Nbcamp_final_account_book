@@ -28,9 +28,7 @@ class LoginViewModel(
         return if (email != null && password != null) {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
-
                     isSuccess = task.isSuccessful
-
                 }
             isSuccess
         } else {

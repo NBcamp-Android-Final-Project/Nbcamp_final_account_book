@@ -82,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
             val email = loginEdtEmail.text.toString()
             val password = loginEdtPassword.text.toString()
 
+            //TODO viewmodel로 옮겨보자!(후순위)
             //email&password 로그인
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 auth.signInWithEmailAndPassword(email, password)

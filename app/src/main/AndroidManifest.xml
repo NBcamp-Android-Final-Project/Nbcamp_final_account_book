@@ -16,6 +16,9 @@
             android:name=".persentation.template.TemplateActivity"
             android:exported="false" />
         <activity
+            android:name=".persentation.lock.LockActivity"
+            android:exported="false" />
+        <activity
             android:name=".persentation.login.LoginActivity"
             android:exported="true">
             <intent-filter>
@@ -24,12 +27,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".persentation.main.MainActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".persentation.entry.EntryActivity"
             android:exported="false" />
+
+
     </application>
 
 </manifest>

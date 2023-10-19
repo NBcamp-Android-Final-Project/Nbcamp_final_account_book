@@ -6,24 +6,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.databinding.HomeBottomSheetItemBinding
 import com.nbcam_final_account_book.persentation.entry.EntryModel
 
-class EntryAdapter(private val entries: List<EntryModel>) : RecyclerView.Adapter<EntryAdapter.EntryViewHolder>() {
+class EntryAdapter(var entries: List<EntryModel>) : RecyclerView.Adapter<EntryAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntryViewHolder {
+    inner class ViewHolder(val binding: HomeBottomSheetItemBinding) : RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = HomeBottomSheetItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return EntryViewHolder(binding)
+        return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: EntryViewHolder, position: Int) {
-        holder.bind(entries[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val entry = entries[position]
+        holder.binding.tvCategory.text = entry.tag
+        holder.binding.tvTitle.text = entry.title
+        holder.binding.tvValue.text = entry.value
     }
 
-    override fun getItemCount() = entries.size
+    override fun getItemCount(): Int = entries.size
 
-    class EntryViewHolder(private val binding: HomeBottomSheetItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(entry: EntryModel) {
-            binding.tvCategory.text = entry.tag
-            binding.tvTitle.text = entry.title
-            binding.tvValue.text = entry.value
-        }
+    fun updateData(newEntries: List<EntryModel>) {
+        this.entries = newEntries
+        notifyDataSetChanged()  // 알림을 보내 데이터가 변경되었음을 RecyclerView에 알림
     }
 }

@@ -1,4 +1,4 @@
-package com.nbcam_final_account_book.persentation.lock.locksetting
+package com.nbcam_final_account_book.persentation.lock.pin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

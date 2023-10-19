@@ -1,4 +1,4 @@
-package com.nbcam_final_account_book.persentation.lock.locksetting
+package com.nbcam_final_account_book.persentation.lock.pin
 
 import android.os.Bundle
 import android.util.Log
@@ -13,15 +13,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
-import com.nbcam_final_account_book.databinding.LockSettingFragmentBinding
+import com.nbcam_final_account_book.databinding.PinFragmentBinding
 
-class LockSettingFragment : Fragment() {
+class PinFragment : Fragment() {
 
     companion object {
         const val LOCK_SETTING = "LockSettingFragment"
     }
 
-    private var _binding: LockSettingFragmentBinding? = null
+    private var _binding: PinFragmentBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: LockSettingViewModel
@@ -40,7 +40,7 @@ class LockSettingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = LockSettingFragmentBinding.inflate(inflater, container, false)
+        _binding = PinFragmentBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(
             this,
             LockSettingViewModelFactory(SharedProviderImpl(requireContext()))

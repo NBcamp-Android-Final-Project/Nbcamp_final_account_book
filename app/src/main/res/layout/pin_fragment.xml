@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:clickable="true"
-    tools:context=".persentation.lock.locksetting.LockSettingFragment">
+    tools:context=".persentation.lock.pin.PinFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/locksetting_guideline_horizontal1"

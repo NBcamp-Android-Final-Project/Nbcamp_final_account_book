@@ -1,27 +1,29 @@
 package com.nbcam_final_account_book.persentation.lock
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.nbcam_final_account_book.R
-import com.nbcam_final_account_book.databinding.LockActivityBinding
-import com.nbcam_final_account_book.persentation.lock.locksetting.LockSettingFragment
+import com.nbcam_final_account_book.databinding.LockSettingActivityBinding
+import com.nbcam_final_account_book.persentation.lock.pin.PinFragment
 
-class LockActivity : AppCompatActivity() {
+class LockSettingActivity : AppCompatActivity() {
 
-    private lateinit var binding: LockActivityBinding
-    private lateinit var lockSettingFragment: LockSettingFragment
+    private lateinit var binding: LockSettingActivityBinding
+    private lateinit var lockSettingFragment: PinFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = LockActivityBinding.inflate(layoutInflater)
+        binding = LockSettingActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        lockSettingFragment = LockSettingFragment()
+        lockSettingFragment = PinFragment()
         initView()
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         finish()
     }
@@ -48,7 +50,7 @@ class LockActivity : AppCompatActivity() {
             if (lockSettingFragment.isAdded) {
                 loadFragment(lockSettingFragment)
             } else {
-                lockSettingFragment = LockSettingFragment()
+                lockSettingFragment = PinFragment()
                 loadFragment(lockSettingFragment)
             }
         }

@@ -16,7 +16,7 @@
             android:name=".persentation.template.TemplateActivity"
             android:exported="false" />
         <activity
-            android:name=".persentation.lock.LockActivity"
+            android:name=".persentation.lock.LockSettingActivity"
             android:exported="false" />
         <activity
             android:name=".persentation.login.LoginActivity"

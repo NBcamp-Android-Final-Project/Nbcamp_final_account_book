@@ -77,7 +77,7 @@ class TemplateActivity : AppCompatActivity() {
                 saveIsFirst(isFirst)
                 insertFirstTemplate(templateTitle) // room DB에 삽입
                 toMainActivity()
-                addFirstTemplateToFirebase() // firebase에 삽입
+
 
             }
 
@@ -110,9 +110,6 @@ class TemplateActivity : AppCompatActivity() {
 
     private fun insertFirstTemplate(title: String) = with(viewModel) {
         insertFirstTemplate(title)
-    }
-
-    private fun addFirstTemplateToFirebase() = with(viewModel) {
         addTemplateFirst()
     }
 

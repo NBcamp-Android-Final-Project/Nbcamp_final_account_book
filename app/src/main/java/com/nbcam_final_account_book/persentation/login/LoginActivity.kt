@@ -1,5 +1,6 @@
 package com.nbcam_final_account_book.persentation.login
 
+import android.content.ContentUris
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,6 +26,10 @@ import com.nbcam_final_account_book.databinding.LoginActivityBinding
 import com.nbcam_final_account_book.databinding.MainActivityBinding
 import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
 
@@ -94,8 +99,14 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            if (isFirst) toTemplateActivity()
-                            else toMainActivity()
+                            CoroutineScope(Dispatchers.Main).launch {
+                                if (isFirstLogin()) {
+                                    toMainActivity()
+                                } else {
+                                    toTemplateActivity()
+                                }
+                            }
+
 
                         } else {
                             Toast.makeText(
@@ -173,6 +184,13 @@ class LoginActivity : AppCompatActivity() {
     private fun loadisFirst(): Boolean = with(viewModel) {
         loadSharedisFirst()
     }
+
+    private suspend fun isFirstLogin(): Boolean {
+        val data = viewModel.getAllTemplateSize()
+
+        return data > 0
+    }
+
 
     private fun googleSignInResult(task: Task<GoogleSignInAccount>) {
         try {

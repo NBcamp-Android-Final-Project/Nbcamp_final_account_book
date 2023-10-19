@@ -37,9 +37,12 @@ class MoreFragment : Fragment() {
         }
 
 
-        moreBtnLogout.setOnClickListener{
+        moreBtnLogout.setOnClickListener {
             val auth = FirebaseAuth.getInstance()
             auth.signOut()
+
+            requireActivity().finish()
+
             val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
         }

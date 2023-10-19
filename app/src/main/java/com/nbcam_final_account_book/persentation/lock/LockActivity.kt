@@ -22,6 +22,10 @@ class LockActivity : AppCompatActivity() {
         initView()
     }
 
+    override fun onBackPressed() {
+        finish()
+    }
+
     fun initView() = with(binding) {
         lockRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {

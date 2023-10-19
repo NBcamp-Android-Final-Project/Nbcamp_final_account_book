@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 
 class LockSettingViewModel(sharedProvider: SharedProvider): ViewModel() {
-    private val sharedPreferences = sharedProvider.setSharedPrefUserToken("AppLockPassword")
+    private val sharedPreferences = sharedProvider.setSharedPref("AppLockPassword")
 
     private var firstInput: String? = null
 

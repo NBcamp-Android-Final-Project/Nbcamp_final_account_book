@@ -4,6 +4,6 @@ import android.content.SharedPreferences
 
 interface SharedProvider {
 
-    fun setSharedPrefUserToken(name: String): SharedPreferences
+    fun setSharedPref(name: String): SharedPreferences
 
 }

@@ -27,11 +27,11 @@ class FireBaseRepositoryImpl(
     override suspend fun getAllEntry(
         user: String,
         template: String,
-        type: String
+        path: String
     ): List<ResponseEntryModel> {
 
         val database = Firebase.database
-        val path = "$user/$template$type"
+        val path = "$user/$template$path"
 
         try {
             val snapshot = database.getReference(path).get().await()
@@ -62,12 +62,12 @@ class FireBaseRepositoryImpl(
     override suspend fun setEntry(
         user: String,
         template: String,
-        type: String,
+        path: String,
         item: EntryModel
     ): List<ResponseEntryModel> {
 
         val database = Firebase.database
-        val path = "$user/$template$type"
+        val path = "$user/$template$path"
         val myRef = database.getReference(path)
 
         myRef.push().setValue(item)
@@ -101,11 +101,11 @@ class FireBaseRepositoryImpl(
     override suspend fun deleteEntry(
         user: String,
         template: String,
-        type: String,
+        path: String,
         item: ResponseEntryModel
     ): List<ResponseEntryModel> {
         val database = Firebase.database
-        val path = "$user/$template$type"
+        val path = "$user/$template$path"
         val myRef = database.getReference(path)
 
         myRef.child(item.key).removeValue()
@@ -139,10 +139,10 @@ class FireBaseRepositoryImpl(
     override suspend fun getAllTag(
         user: String,
         template: String,
-        type: String
+        path: String
     ): List<ResponseTagModel> {
         val database = Firebase.database
-        val path = "$user/$template$type"
+        val path = "$user/$template$path"
 
         try {
             val snapshot = database.getReference(path).get().await()
@@ -173,11 +173,11 @@ class FireBaseRepositoryImpl(
     override suspend fun setTag(
         user: String,
         template: String,
-        type: String,
+        path: String,
         item: TagModel
     ): List<ResponseTagModel> {
         val database = Firebase.database
-        val path = "$user/$template$type"
+        val path = "$user/$template$path"
         val myRef = database.getReference(path)
 
         myRef.push().setValue(item)
@@ -212,11 +212,11 @@ class FireBaseRepositoryImpl(
     override suspend fun deleteTag(
         user: String,
         template: String,
-        type: String,
+        path: String,
         item: ResponseTagModel
     ): List<ResponseTagModel> {
         val database = Firebase.database
-        val path = "$user/$template$type"
+        val path = "$user/$template$path"
         val myRef = database.getReference(path)
 
         myRef.child(item.key).removeValue()

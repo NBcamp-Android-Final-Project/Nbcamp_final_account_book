@@ -11,7 +11,7 @@ object DummyData {
     val liveDummyEntry: MutableLiveData<List<EntryModel>> = MutableLiveData()
     val liveDummyTag: MutableLiveData<List<TagModel>> = MutableLiveData()
 
-    var currentTemplate : String = "template"
+    var currentTemplate: String = "template"
 
     init {
         liveDummyEntry.value = arrayListOf<EntryModel>().apply {
@@ -21,8 +21,8 @@ object DummyData {
                         id = i.toLong(),
                         type = INPUT_TYPE_INCOME,
                         dateTime = "2023-10-0${i}",
-                        value = "100000 +${i * 1000}",
-                        tag = "",
+                        value = " ${100000 + i * 1000}",
+                        tag = "월급",
                         title = "월급",
                     )
                 )
@@ -33,8 +33,8 @@ object DummyData {
                         id = i.toLong(),
                         type = INPUT_TYPE_PAY,
                         dateTime = "2023-10-0${i}",
-                        value = "1000 +${i * 1000}",
-                        tag = "",
+                        value = "${1000 + i * 1000}",
+                        tag = "간식비",
                         title = "포카칩",
                     )
                 )

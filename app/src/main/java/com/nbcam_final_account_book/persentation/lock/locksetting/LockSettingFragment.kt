@@ -17,6 +17,10 @@ import com.nbcam_final_account_book.databinding.LockSettingFragmentBinding
 
 class LockSettingFragment : Fragment() {
 
+    companion object {
+        const val LOCK_SETTING = "LockSettingFragment"
+    }
+
     private var _binding: LockSettingFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -27,9 +31,10 @@ class LockSettingFragment : Fragment() {
     private lateinit var numberButtons: Array<AppCompatButton>
     private lateinit var btnDelete: AppCompatImageButton
 
-    private var password = ""
+    private var password1 = ""
+    private var password2 = ""
     private var currentLine = 0
-    private lateinit var num: String
+    private var isSecondInput = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,8 +63,16 @@ class LockSettingFragment : Fragment() {
             locksettingIvLine1, locksettingIvLine2, locksettingIvLine3, locksettingIvLine4
         )
         numberButtons = arrayOf(
-            locksettingNumpad.lockBtn1, locksettingNumpad.lockBtn2, locksettingNumpad.lockBtn3, locksettingNumpad.lockBtn4, locksettingNumpad.lockBtn5,
-            locksettingNumpad.lockBtn6, locksettingNumpad.lockBtn7, locksettingNumpad.lockBtn8, locksettingNumpad.lockBtn9, locksettingNumpad.lockBtn0
+            locksettingNumpad.lockBtn1,
+            locksettingNumpad.lockBtn2,
+            locksettingNumpad.lockBtn3,
+            locksettingNumpad.lockBtn4,
+            locksettingNumpad.lockBtn5,
+            locksettingNumpad.lockBtn6,
+            locksettingNumpad.lockBtn7,
+            locksettingNumpad.lockBtn8,
+            locksettingNumpad.lockBtn9,
+            locksettingNumpad.lockBtn0
         )
         btnDelete = locksettingNumpad.lockBtnDelete
 
@@ -69,12 +82,12 @@ class LockSettingFragment : Fragment() {
 
     private fun setDeleteButtonListener() {
         btnDelete.setOnClickListener {
-            if (password.isNotEmpty() && password.length <= 4) {
-                // 삭제 버튼을 누를 때 비밀번호 문자열에서 마지막 문자 제거
-                password = password.dropLast(1)
-                Log.d("DeletedPassword", "After: $password")
-
-                // 해당 라인의 이미지 리소스를 원래대로 되돌림 (ic_line)
+            if (isSecondInput && password2.isNotEmpty() && password2.length <= 4) {
+                password2 = password2.dropLast(1)
+                ivLine[currentLine - 1].setImageResource(R.drawable.ic_line)
+                currentLine--
+            } else if (!isSecondInput && password1.isNotEmpty() && password1.length <= 4) {
+                password1 = password1.dropLast(1)
                 ivLine[currentLine - 1].setImageResource(R.drawable.ic_line)
                 currentLine--
             }
@@ -84,21 +97,44 @@ class LockSettingFragment : Fragment() {
     private fun setNumberButtonListeners() {
         for (btn in numberButtons) {
             btn.setOnClickListener {
-                num = btn.text.toString()
-                if (password.length < 4) {
-                    password += num
-                    ivLine[password.length - 1].setImageResource(R.drawable.ic_circle)
+                val num = btn.text.toString()
+                if (!isSecondInput && password1.length < 4) { // 첫 번째 입력
+                    password1 += num
+                    ivLine[currentLine].setImageResource(R.drawable.ic_circle)
                     currentLine++
-                    Log.d("KeyPadClick", "Clicked: $num")
+
+                    if (password1.length == 4) {
+                        Log.d(LOCK_SETTING, "First Input: $password1")
+                        resetInput()
+                        isSecondInput = true
+                        tvAlert.text = "확인을 위해 한번 더 입력해주세요."
+                    }
+                } else if (isSecondInput && password2.length < 4) {  // 두 번째 입력
+                    password2 += num
+                    ivLine[currentLine].setImageResource(R.drawable.ic_circle)
+                    currentLine++
+
+                    if (password2.length == 4) { // 두 번째 비밀번호가 4자리 입력되면
+                        Log.d(LOCK_SETTING, "First / Second Input: $password1 / $password2")
+
+                        if (viewModel.arePasswordMatching(password1, password2)) {
+                            viewModel.savePassword(password1)
+                            parentFragmentManager.beginTransaction().remove(this).commit()
+                        } else {
+                            tvAlert.text = "비밀번호가 일치하지 않습니다.\n처음부터 다시 시도해주세요."
+                            password1 = ""
+                            password2 = ""
+                            resetInput()
+                        }
+                        isSecondInput = false
+                    }
                 }
             }
         }
     }
 
     private fun resetInput() {
-        password = ""
         currentLine = 0
-
         for (i in 0 until 4) {
             ivLine[i].setImageResource(R.drawable.ic_line)
         }

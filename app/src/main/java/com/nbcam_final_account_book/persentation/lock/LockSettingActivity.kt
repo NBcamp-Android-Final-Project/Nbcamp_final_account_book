@@ -12,14 +12,14 @@ import com.nbcam_final_account_book.persentation.lock.pin.PinFragment
 class LockSettingActivity : AppCompatActivity() {
 
     private lateinit var binding: LockSettingActivityBinding
-    private lateinit var lockSettingFragment: PinFragment
+    private lateinit var pinFragment: PinFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LockSettingActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        lockSettingFragment = PinFragment()
+        pinFragment = PinFragment()
         initView()
     }
 
@@ -29,36 +29,36 @@ class LockSettingActivity : AppCompatActivity() {
     }
 
     fun initView() = with(binding) {
-        lockRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+        locksettingRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.lock_btn_none -> {
-                    lockDivider1.visibility = View.GONE
-                    lockSwitchFingerprint.visibility = View.GONE
-                    lockTvPinEdit.visibility = View.GONE
+                R.id.locksetting_btn_none -> {
+                    locksettingDivider1.visibility = View.GONE
+                    locksettingSwitchFingerprint.visibility = View.GONE
+                    locksettingTvPinEdit.visibility = View.GONE
                 }
-                R.id.lock_btn_locksetting -> {
-                    lockDivider1.visibility = View.VISIBLE
-                    lockSwitchFingerprint.visibility = View.VISIBLE
-                    lockTvPinEdit.visibility = View.VISIBLE
+                R.id.locksetting_btn_pin -> {
+                    locksettingDivider1.visibility = View.VISIBLE
+                    locksettingSwitchFingerprint.visibility = View.VISIBLE
+                    locksettingTvPinEdit.visibility = View.VISIBLE
 
-                    loadFragment(lockSettingFragment)
+                    loadFragment(pinFragment)
                 }
             }
         }
 
-        lockBtnLocksetting.setOnClickListener {
-            if (lockSettingFragment.isAdded) {
-                loadFragment(lockSettingFragment)
+        locksettingBtnPin.setOnClickListener {
+            if (pinFragment.isAdded) {
+                loadFragment(pinFragment)
             } else {
-                lockSettingFragment = PinFragment()
-                loadFragment(lockSettingFragment)
+                pinFragment = PinFragment()
+                loadFragment(pinFragment)
             }
         }
     }
 
     private fun loadFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.lock_fragment_container, fragment)
+        transaction.replace(R.id.locksetting_fragment_container, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }

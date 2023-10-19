@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 
-class LockSettingViewModel(sharedProvider: SharedProvider): ViewModel() {
+class PinViewModel(sharedProvider: SharedProvider): ViewModel() {
 
     companion object {
         const val APP_LOCK_PASSWORD = "AppLockPassword"
@@ -13,11 +13,11 @@ class LockSettingViewModel(sharedProvider: SharedProvider): ViewModel() {
 
     private val sharedPreferences = sharedProvider.setSharedPref(APP_LOCK_PASSWORD)
 
-    fun arePasswordMatching(password1: String, password2: String): Boolean {
+    fun arePinMatching(password1: String, password2: String): Boolean {
         return password1 == password2
     }
 
-    fun savePassword(password: String) {
+    fun savePin(password: String) {
         val editor = sharedPreferences.edit()
         editor.putString(LOCK_PASSWORD, password)
         editor.apply()
@@ -28,10 +28,10 @@ class LockSettingViewModel(sharedProvider: SharedProvider): ViewModel() {
     }
 }
 
-class LockSettingViewModelFactory(private val sharedProvider: SharedProvider) : ViewModelProvider.Factory {
+class PinViewModelFactory(private val sharedProvider: SharedProvider) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LockSettingViewModel::class.java)) {
-            return LockSettingViewModel(sharedProvider) as T
+        if (modelClass.isAssignableFrom(PinViewModel::class.java)) {
+            return PinViewModel(sharedProvider) as T
         }
         throw IllegalArgumentException("Not found ViewModel class.")
     }

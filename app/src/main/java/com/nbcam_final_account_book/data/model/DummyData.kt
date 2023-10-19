@@ -13,14 +13,12 @@ object DummyData {
 
     init {
         liveDummyEntry.value = arrayListOf<EntryModel>().apply {
-            for (i in 0..9) {
+            for (i in 1..9) {
                 add(
                     EntryModel(
                         id = i.toLong(),
                         type = TYPE_INCOME,
-                        year = "2023",
-                        month = "10",
-                        day = "14",
+                        dateTime = "2023-10-0{$i`}",
                         value = "100000 +${i * 1000}",
                         tag = "",
                         title = "월급",
@@ -32,9 +30,7 @@ object DummyData {
                     EntryModel(
                         id = i.toLong(),
                         type = TYPE_PAY,
-                        year = "2023",
-                        month = "10",
-                        day = "14",
+                        dateTime = "2023-10-0{$i`}",
                         value = "1000 +${i * 1000}",
                         tag = "",
                         title = "포카칩",

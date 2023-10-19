@@ -18,4 +18,7 @@ interface TemplateDao {
     @Query("DELETE FROM template_table WHERE id = :id")
     suspend fun deleteTemplate(id: Int)
 
+    @Query("DELETE FROM template_table")
+    suspend fun deleteAllTemplate()
+
 }

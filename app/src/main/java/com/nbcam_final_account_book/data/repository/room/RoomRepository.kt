@@ -8,6 +8,7 @@ interface RoomRepository {
     suspend fun insertFirstTemplate(text: String)
     suspend fun insertTemplate(item: TemplateEntity): List<TemplateEntity>
     suspend fun deleteTemplate(item: TemplateEntity): List<TemplateEntity>
+    suspend fun deleteAllTemplate()
 
 
 }

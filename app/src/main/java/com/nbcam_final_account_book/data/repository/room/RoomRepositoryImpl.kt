@@ -36,5 +36,11 @@ class RoomRepositoryImpl(
         return dao.getTemplateList()
     }
 
+    override suspend fun deleteAllTemplate() {
+        val dao = database?.templateDao() ?: throw IllegalStateException("test fail")
+
+        dao.deleteAllTemplate()
+    }
+
 
 }

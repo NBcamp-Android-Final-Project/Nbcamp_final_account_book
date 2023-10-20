@@ -1,4 +1,4 @@
-package com.nbcam_final_account_book.persentation.lock
+package com.nbcam_final_account_book.persentation.lock.locksetting
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/lockSettingFragment"
-        android:name="com.nbcam_final_account_book.persentation.lock.LockSettingFragment"
+        android:name="com.nbcam_final_account_book.persentation.lock.locksetting.LockSettingFragment"
         android:label="lock_setting_fragment"
         tools:layout="@layout/lock_setting_fragment" >
         <action

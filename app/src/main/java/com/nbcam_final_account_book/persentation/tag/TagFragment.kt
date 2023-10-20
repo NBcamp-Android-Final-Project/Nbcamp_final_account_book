@@ -18,6 +18,8 @@ class TagFragment : Fragment() {
 		)[TagViewModel::class.java]
 	}
 
+
+
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -31,6 +33,7 @@ class TagFragment : Fragment() {
 
 		initView()
 		initViewModel()
+
 	}
 
 	private fun initView() = with(binding) {

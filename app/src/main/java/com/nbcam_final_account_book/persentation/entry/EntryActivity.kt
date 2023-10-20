@@ -5,19 +5,18 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager2.widget.CompositePageTransformer
-import androidx.viewpager2.widget.MarginPageTransformer
-import androidx.viewpager2.widget.ViewPager2
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.ActivityEntryBinding
+import java.text.DecimalFormat
 
 class EntryActivity : AppCompatActivity() {
 
@@ -29,13 +28,12 @@ class EntryActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
-		initView()
-		initViewPager()
-
 		// 뒤로 가기 콜백
 		this.onBackPressedDispatcher.addCallback(this, callback)
 
+		initView()
 		initViewModel()
+		editTextFormat()
 	}
 
 	private fun initViewModel() {
@@ -50,14 +48,31 @@ class EntryActivity : AppCompatActivity() {
 			dummyLiveEntryList.observe(this@EntryActivity, Observer { newData ->
 
 			})
-
 		}
-
 	}
 
 	private fun initView() = with(binding) {
-		tvCategory.setOnClickListener {
+
+		// 날짜 클릭 시 다이얼로그 출력
+		tvDate.setOnClickListener {
+
+		}
+
+		// 수입 버튼
+		btnIncome.setOnClickListener {
+			setSwipeAnim(android.R.color.holo_green_light, R.color.primary)
 			onClickBottomSheet()
+		}
+
+		// 지출 버튼
+		btnSpending.setOnClickListener {
+			setSwipeAnim(R.color.primary, android.R.color.holo_green_light)
+			onClickBottomSheet()
+		}
+
+		ivCancel.setOnClickListener {
+			finish()
+			overridePendingTransition(R.anim.slide_down_enter, R.anim.slide_down_exit)
 		}
 	}
 
@@ -68,39 +83,7 @@ class EntryActivity : AppCompatActivity() {
 		modal.show(supportFragmentManager, ModalBottomFragment.TAG)
 	}
 
-	// viewpager <-> tablayout 연결
-	private fun initViewPager() = with(binding) {
-
-		viewpager.run {
-			offscreenPageLimit = 1
-			getChildAt(0).overScrollMode = android.view.View.OVER_SCROLL_NEVER
-			CompositePageTransformer().addTransformer(MarginPageTransformer(8))
-			adapter = viewPagerAdapter
-			registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-				override fun onPageSelected(position: Int) {
-					when (position) {
-						0 -> {
-							setSwipeAnim(
-								android.R.color.holo_green_light,
-								com.nbcam_final_account_book.R.color.primary
-							)
-							ivMinus.visibility = View.VISIBLE
-						}
-
-						1 -> {
-							setSwipeAnim(
-								com.nbcam_final_account_book.R.color.primary,
-								android.R.color.holo_green_light
-							)
-							ivMinus.visibility = View.GONE
-						}
-					}
-				}
-			})
-		}
-	}
-
-	// 스와이프 시 배경색 전환 애니메이션
+	// 배경색 전환 애니메이션 (안 쓸듯?)
 	private fun setSwipeAnim(fromColor: Int, toColor: Int) {
 		val valueAnimator = ValueAnimator.ofObject(
 			ArgbEvaluator(),
@@ -108,19 +91,38 @@ class EntryActivity : AppCompatActivity() {
 			ContextCompat.getColor(this, toColor)
 		)
 		valueAnimator.duration = 250
-		valueAnimator.addUpdateListener { animator -> binding.viewpager.setBackgroundColor(animator.animatedValue as Int) }
+		valueAnimator.addUpdateListener { animator -> binding.linearAnim.setBackgroundColor(animator.animatedValue as Int) }
 		valueAnimator.start()
+	}
+
+	// EditText 화폐 단위
+	private fun editTextFormat() {
+		val decimalFormat = DecimalFormat("#,###")
+		var result: String = ""
+
+		binding.edtNum.addTextChangedListener(object : TextWatcher {
+			override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+			override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+				if (!TextUtils.isEmpty(charSequence.toString()) && charSequence.toString() != result) {
+					result =
+						decimalFormat.format(charSequence.toString().replace(",", "").toDouble())
+					binding.edtNum.setText(result)
+					binding.edtNum.setSelection(result.length)
+				}
+			}
+
+			override fun afterTextChanged(p0: Editable?) {}
+		})
 	}
 
 	// 뒤로 가기 콜백 인스턴스 생성
 	private val callback = object : OnBackPressedCallback(true) {
 		override fun handleOnBackPressed() {
 			finish()
-			overridePendingTransition(
-				R.anim.slide_down_enter,
-				R.anim.slide_down_exit
-			)  // 뒤로 가기 애니메이션
-			Log.e(TAG, "...onBack...")
+
+			// 뒤로 가기 애니메이션
+			overridePendingTransition(R.anim.slide_down_enter, R.anim.slide_down_exit)
 		}
 	}
 

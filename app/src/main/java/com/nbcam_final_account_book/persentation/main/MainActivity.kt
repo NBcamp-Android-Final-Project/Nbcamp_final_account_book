@@ -1,6 +1,5 @@
 package com.nbcam_final_account_book.persentation.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -11,8 +10,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MainActivityBinding
-import com.nbcam_final_account_book.persentation.entry.EntryActivity
-import com.nbcam_final_account_book.persentation.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,12 +47,5 @@ class MainActivity : AppCompatActivity() {
 		)
 		setupActionBarWithNavController(navController, appBarConfiguration)
 		mainBottomNavi.setupWithNavController(navController)
-
-		// 임시 fab 클릭 이벤트 (추후 삭제 or 수정 예정)
-		fab.setOnClickListener {
-			val intent = EntryActivity.newIntent(this@MainActivity)
-			startActivity(intent)
-			overridePendingTransition(R.anim.slide_up_enter, R.anim.slide_up_exit)  // overrideActivityTransition 으로 변경 예정
-		}
 	}
 }

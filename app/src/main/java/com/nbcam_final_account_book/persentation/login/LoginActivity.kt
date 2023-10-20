@@ -77,7 +77,14 @@ class LoginActivity : AppCompatActivity() {
 
         if (nowCurrentUser != null) {
             Log.d("유저", nowCurrentUser.email.toString())
-            toMainActivity()
+            CoroutineScope(Dispatchers.Main).launch {
+                if (isFirstLogin()) {
+                    toMainActivity()
+                } else {
+                    toTemplateActivity()
+                }
+            }
+//            toMainActivity() // 테스팅을 위한 코드
         }
 
 
@@ -208,7 +215,7 @@ class LoginActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                    toTemplateActivity()
+                        toTemplateActivity()
 
                     } else {
                         Toast.makeText(

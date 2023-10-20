@@ -57,6 +57,18 @@ class TemplateViewModel(
     fun logout() { // firebase 로그아웃
         fireRepo.logout()
     }
+
+   fun setFirstBudget(budget: String) {
+        viewModelScope.launch {
+            val templateModel = roomRepo.selectFirstTemplate()
+            val template = "${templateModel.templateTitle}-${templateModel.id}"
+            fireRepo.setBudget(
+                user = fireRepo.getUser(),
+                template = template,
+                budget = budget
+            )
+        }
+    }
 }
 
 class TemplateViewModelFactory(

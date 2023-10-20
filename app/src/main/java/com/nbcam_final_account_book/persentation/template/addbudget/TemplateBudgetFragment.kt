@@ -11,14 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.TemplateBudgetFragmentBinding
-import com.nbcam_final_account_book.persentation.login.LoginActivity
 import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateViewModel
-import com.nbcam_final_account_book.persentation.template.TemplateViewModelFactory
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.NumberFormatException
 import java.text.DecimalFormat
 
@@ -108,8 +107,14 @@ class TemplateBudgetFragment : Fragment() {
             val intent = Intent(requireContext(), MainActivity::class.java)
 
             insertFirstTemplate()
+            addTemplateFirst()
             startActivity(intent)
             requireActivity().finish()
+            GlobalScope.launch {
+                kotlinx.coroutines.delay(100)
+                setFirstBudget(budget = number.toString())
+            }
+
 
         }
 
@@ -120,14 +125,18 @@ class TemplateBudgetFragment : Fragment() {
         _binding = null
     }
 
-    private fun logout() {
-        viewModel.logout()
-    }
 
     private fun insertFirstTemplate() = with(viewModel) {
         val title = getCurrentTitle()
         insertFirstTemplate(title) // 무조건 먼저 실행 되어 룸에 삽입 되어야 함
-        addTemplateFirst()
+    }
+
+    private fun addTemplateFirst(){
+        viewModel.addTemplateFirst()
+    }
+
+    private fun setFirstBudget(budget: String) {
+        viewModel.setFirstBudget(budget)
     }
 
 

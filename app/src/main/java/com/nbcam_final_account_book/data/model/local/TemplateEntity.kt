@@ -9,11 +9,11 @@ import com.nbcam_final_account_book.data.model.remote.ResponseTemplateModel
 data class TemplateEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Int,
+    val id: Int = 0,
     @ColumnInfo(name = "key")
     val key: String = "",
     @ColumnInfo(name = "template")
-    val templateTitle: String
+    val templateTitle: String = ""
 )
 
 fun TemplateEntity.toResponse(key: String): ResponseTemplateModel {

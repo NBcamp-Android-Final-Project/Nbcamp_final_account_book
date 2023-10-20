@@ -75,6 +75,7 @@ class LoginActivity : AppCompatActivity() {
 
         Log.d("로드", isFirst.toString())
 
+        //TODO 첫 로그인 판정 중 화면 조작할 수 없도록 로딩 화면 필요
         if (nowCurrentUser != null) {
             Log.d("유저", nowCurrentUser.email.toString())
             CoroutineScope(Dispatchers.Main).launch {

@@ -15,40 +15,34 @@ interface FireBaseRepository {
     suspend fun getAllEntry(
         user: String,
         template: String,
-        path: String
     ): List<ResponseEntryModel>
 
     suspend fun setEntry(
         user: String,
         template: String,
-        path: String,
         item: EntryModel
     ): List<ResponseEntryModel>
 
     suspend fun deleteEntry(
         user: String,
         template: String,
-        path: String,
         item: ResponseEntryModel
     ): List<ResponseEntryModel>
 
     suspend fun getAllTag(
         user: String,
         template: String,
-        path: String
     ): List<ResponseTagModel>
 
     suspend fun setTag(
         user: String,
         template: String,
-        path: String,
         item: TagModel
     ): List<ResponseTagModel>
 
     suspend fun deleteTag(
         user: String,
         template: String,
-        path: String,
         item: ResponseTagModel
     ): List<ResponseTagModel>
 

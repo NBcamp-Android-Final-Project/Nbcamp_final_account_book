@@ -76,20 +76,31 @@ class TemplateAddFragment : Fragment() {
 
             val templateTitle = templateAddEdtInput.text.toString()
 
-            if (isEnable(templateTitle)) {
+            if (templateTitle.isNotEmpty()){
+                if (isEnable(templateTitle)) {
+                    Toast.makeText(
+                        requireContext(),
+                        "금지된 문자가 포함되어 있습니다.",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                } else {
+
+                    insertFirstTemplate(templateTitle) // room DB에 삽입
+                    addFirstTemplateToFirebase() // firebase에 삽입
+                    findNavController().navigate(R.id.action_templateAddFragment_to_templateBudgetFragment)
+
+                }
+            }else{
                 Toast.makeText(
                     requireContext(),
-                    "금지된 문자가 포함되어 있습니다.",
+                    "제목을 입력해주세요.",
                     Toast.LENGTH_LONG
                 )
                     .show()
-            } else {
-
-                insertFirstTemplate(templateTitle) // room DB에 삽입
-                addFirstTemplateToFirebase() // firebase에 삽입
-                findNavController().navigate(R.id.action_templateAddFragment_to_templateBudgetFragment)
 
             }
+
 
         }
     }

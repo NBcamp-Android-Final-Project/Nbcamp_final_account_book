@@ -216,7 +216,15 @@ class LoginActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        toTemplateActivity()
+                        CoroutineScope(Dispatchers.Main).launch {
+                            if (isFirstLogin()) {
+                                toMainActivity()
+                            } else {
+                                toTemplateActivity()
+                            }
+                        }
+
+//                        toTemplateActivity() // 테스팅 코드
 
                     } else {
                         Toast.makeText(

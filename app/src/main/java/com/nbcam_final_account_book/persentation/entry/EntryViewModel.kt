@@ -20,14 +20,7 @@ class EntryViewModel(
     private val _liveEntryList: MutableLiveData<List<ResponseEntryModel>> = MutableLiveData()
     val liveEntryList: LiveData<List<ResponseEntryModel>> get() = _liveEntryList
 
-    fun getAllEntryListFromFirebase(template: String, type: String) {
-        viewModelScope.launch {
-            val resultList =
-                fireRepo.getAllEntry(fireRepo.getUser(), template = template, path = type)
 
-            _liveEntryList.value = resultList
-        }
-    }
 
 
 }

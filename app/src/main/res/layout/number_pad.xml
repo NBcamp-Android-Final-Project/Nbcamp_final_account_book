@@ -8,7 +8,7 @@
     android:useDefaultMargins="false">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/lock_btn1"
+        android:id="@+id/btn1"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
@@ -17,7 +17,7 @@
         android:textColor="@color/black" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/lock_btn2"
+        android:id="@+id/btn_2"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
@@ -26,7 +26,7 @@
         android:textColor="@color/black" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/lock_btn3"
+        android:id="@+id/btn_3"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
@@ -35,7 +35,7 @@
         android:textColor="@color/black" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/lock_btn4"
+        android:id="@+id/btn_4"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
@@ -44,7 +44,7 @@
         android:textColor="@color/black" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/lock_btn5"
+        android:id="@+id/btn_5"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
@@ -53,7 +53,7 @@
         android:textColor="@color/black" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/lock_btn6"
+        android:id="@+id/btn_6"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
@@ -62,7 +62,7 @@
         android:textColor="@color/black" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/lock_btn7"
+        android:id="@+id/btn_7"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
@@ -71,7 +71,7 @@
         android:textColor="@color/black" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/lock_btn8"
+        android:id="@+id/btn_8"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
@@ -80,7 +80,7 @@
         android:textColor="@color/black" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/lock_btn9"
+        android:id="@+id/btn_9"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
@@ -89,7 +89,7 @@
         android:textColor="@color/black" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/lock_btn0"
+        android:id="@+id/btn_0"
         android:layout_rowWeight="1"
         android:layout_column="1"
         android:layout_columnWeight="1"
@@ -99,7 +99,7 @@
         android:textColor="@color/black" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/lock_btn_delete"
+        android:id="@+id/btn_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_rowWeight="1"

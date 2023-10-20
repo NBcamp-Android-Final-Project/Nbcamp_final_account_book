@@ -13,7 +13,6 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
-import com.nbcam_final_account_book.persentation.login.LoginViewModel
 import kotlinx.coroutines.launch
 
 class TemplateViewModel(
@@ -43,19 +42,19 @@ class TemplateViewModel(
         editor.apply()
     }
 
-    fun insertFirstTemplate(title: String) {
+    fun insertFirstTemplate(title: String) { // room에 첫 템플릿 삽입
         viewModelScope.launch {
             roomRepo.insertFirstTemplate(title)
         }
     }
 
-    fun addTemplateFirst() {
+    fun addTemplateFirst() { // firebase에 템플릿 삽입
         viewModelScope.launch {
             fireRepo.setTemplate(fireRepo.getUser(), roomRepo.selectFirstTemplate())
         }
     }
 
-    fun logout() {
+    fun logout() { // firebase 로그아웃
         fireRepo.logout()
     }
 }

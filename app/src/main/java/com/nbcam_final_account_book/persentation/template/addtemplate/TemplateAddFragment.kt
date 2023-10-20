@@ -13,15 +13,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.TemplateAddFragmentBinding
 import com.nbcam_final_account_book.persentation.login.LoginActivity
-import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateViewModel
-import com.nbcam_final_account_book.persentation.template.TemplateViewModelFactory
 import java.util.regex.Pattern
 
 
@@ -89,7 +85,7 @@ class TemplateAddFragment : Fragment() {
                 val text = s.toString()
                 if (text == "") {
                     templateAddTvError.setTextColor(Color.BLUE)
-                    templateAddTvError.text = "제목을 지어주세요"
+                    templateAddTvError.text = "회원님만의 가계부 이름을 만들어 주세요."
                 } else if (isEnable(text)) {
                     templateAddTvError.setTextColor(Color.RED)
                     templateAddTvError.text = "불가능한 문자가 포함되어있습니다 : '#' , '[' , ']' , '$' , '.' "
@@ -114,10 +110,8 @@ class TemplateAddFragment : Fragment() {
                     )
                         .show()
                 } else {
-
                     updateTitle(title = templateTitle)
                     findNavController().navigate(R.id.action_templateAddFragment_to_templateBudgetFragment)
-
                 }
             } else {
                 Toast.makeText(
@@ -136,8 +130,6 @@ class TemplateAddFragment : Fragment() {
     private fun updateTitle(title: String) {
         viewModel.updateLiveTitle(title)
     }
-
-
 
     private fun isEnable(input: String): Boolean {
         val pattern = Pattern.compile("[#\\[\\].$]")

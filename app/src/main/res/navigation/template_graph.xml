@@ -18,5 +18,9 @@
         android:id="@+id/templateBudgetFragment"
         android:name="com.nbcam_final_account_book.persentation.template.addbudget.TemplateBudgetFragment"
         android:label="template_budget_fragment"
-        tools:layout="@layout/template_budget_fragment" />
+        tools:layout="@layout/template_budget_fragment" >
+        <action
+            android:id="@+id/action_templateBudgetFragment_to_templateAddFragment"
+            app:destination="@id/templateAddFragment" />
+    </fragment>
 </navigation>

@@ -44,6 +44,11 @@ class TemplateAddFragment : Fragment() {
         initViewModel()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun initView() = with(binding) {
 
         templateAddEdtInput.addTextChangedListener(object : TextWatcher {
@@ -105,13 +110,9 @@ class TemplateAddFragment : Fragment() {
         }
     }
 
+
     private fun initViewModel() = with(viewModel) {
 
-    }
-
-
-    private fun saveIsFirst(isFirst: Boolean) = with(viewModel) {
-        saveIsFirst(isFirst)
     }
 
     private fun insertFirstTemplate(title: String) = with(viewModel) {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/template_graph"
+    app:startDestination="@id/templateAddFragment">
+
+    <fragment
+        android:id="@+id/templateAddFragment"
+        android:name="com.nbcam_final_account_book.persentation.template.addtemplate.TemplateAddFragment"
+        android:label="template_add_fragment"
+        tools:layout="@layout/template_add_fragment" >
+        <action
+            android:id="@+id/action_templateAddFragment_to_templateBudgetFragment"
+            app:destination="@id/templateBudgetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/templateBudgetFragment"
+        android:name="com.nbcam_final_account_book.persentation.template.addbudget.TemplateBudgetFragment"
+        android:label="template_budget_fragment"
+        tools:layout="@layout/template_budget_fragment" />
+</navigation>

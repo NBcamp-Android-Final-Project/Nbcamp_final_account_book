@@ -7,4 +7,6 @@
     <string name="nav_menu_more_title">더 보기</string>
 
     <string name="google_login_default_url">1073898028283-f8iprpa00pb4ubmg4dbn2e2tvj6icjc3.apps.googleusercontent.com</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

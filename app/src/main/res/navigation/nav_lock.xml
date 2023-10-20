@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_lock"
+    app:startDestination="@id/lockSettingFragment">
+
+    <fragment
+        android:id="@+id/lockSettingFragment"
+        android:name="com.nbcam_final_account_book.persentation.lock.locksetting.LockSettingFragment"
+        android:label="lock_setting_fragment"
+        tools:layout="@layout/lock_setting_fragment" >
+        <action
+            android:id="@+id/action_lockSettingFragment_to_pinFragment"
+            app:destination="@id/pinFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pinFragment"
+        android:name="com.nbcam_final_account_book.persentation.lock.pin.PinFragment"
+        android:label="pin_fragment"
+        tools:layout="@layout/pin_fragment" />
+</navigation>

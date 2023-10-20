@@ -273,7 +273,7 @@ class FireBaseRepositoryImpl(
             }
         } catch (e: Exception) {
 
-            Log.e("FirebaseRepo", "Tag 데이터 가져오기 중 오류 발생")
+            Log.e("FirebaseRepo", "Template 데이터 가져오기 중 오류 발생")
             return emptyList()
         }
 
@@ -310,7 +310,7 @@ class FireBaseRepositoryImpl(
             }
         } catch (e: Exception) {
 
-            Log.e("FirebaseRepo", "Tag 데이터 가져오기 중 오류 발생")
+            Log.e("FirebaseRepo", "Template 데이터 가져오기 중 오류 발생")
             return emptyList()
         }
     }

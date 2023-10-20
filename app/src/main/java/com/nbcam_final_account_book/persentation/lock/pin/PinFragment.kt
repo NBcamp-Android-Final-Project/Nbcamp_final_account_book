@@ -11,6 +11,8 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import com.nbcam_final_account_book.databinding.PinFragmentBinding
@@ -25,6 +27,7 @@ class PinFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: PinViewModel
+    private lateinit var navController: NavController
 
     private lateinit var tvAlert: TextView
     private lateinit var ivLine: Array<ImageView>
@@ -48,6 +51,11 @@ class PinFragment : Fragment() {
 
         initView()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = findNavController()
     }
 
     override fun onDestroy() {
@@ -119,7 +127,7 @@ class PinFragment : Fragment() {
 
                         if (viewModel.arePinMatching(pin1, pin2)) {
                             viewModel.savePin(pin1)
-                            parentFragmentManager.beginTransaction().remove(this).commit()
+                            navController.popBackStack(R.id.lockSettingFragment, false)
                         } else {
                             tvAlert.text = "비밀번호가 일치하지 않습니다.\n처음부터 다시 시도해주세요."
                             pin1 = ""

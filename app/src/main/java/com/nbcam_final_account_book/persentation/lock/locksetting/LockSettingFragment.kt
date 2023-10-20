@@ -11,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import com.nbcam_final_account_book.databinding.LockSettingFragmentBinding
+import com.nbcam_final_account_book.persentation.lock.locksetting.LockSettingViewModel.Companion.NONE
+import com.nbcam_final_account_book.persentation.lock.locksetting.LockSettingViewModel.Companion.PIN
 
 class LockSettingFragment : Fragment() {
 
@@ -52,17 +54,26 @@ class LockSettingFragment : Fragment() {
                     locksettingDivider1.visibility = View.GONE
                     locksettingSwitchFingerprint.visibility = View.GONE
                     locksettingTvPinEdit.visibility = View.GONE
+                    viewModel.setLockType(NONE)
                 }
                 R.id.locksetting_btn_pin -> {
                     locksettingDivider1.visibility = View.VISIBLE
                     locksettingSwitchFingerprint.visibility = View.VISIBLE
                     locksettingTvPinEdit.visibility = View.VISIBLE
+                    viewModel.setLockType(PIN)
                 }
             }
         }
 
         locksettingBtnPin.setOnClickListener {
             navController.navigate(R.id.pinFragment)
+        }
+
+        viewModel.selectedLockType.observe(viewLifecycleOwner) { lockType ->
+            when (lockType) {
+                NONE -> locksettingRadioGroup.check(R.id.locksetting_btn_none)
+                PIN -> locksettingRadioGroup.check(R.id.locksetting_btn_pin)
+            }
         }
     }
 }

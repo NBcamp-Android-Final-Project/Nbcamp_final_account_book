@@ -1,5 +1,6 @@
 package com.nbcam_final_account_book.persentation.login
 
+import android.content.ContentUris
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,6 +26,10 @@ import com.nbcam_final_account_book.databinding.LoginActivityBinding
 import com.nbcam_final_account_book.databinding.MainActivityBinding
 import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
 
@@ -70,9 +75,17 @@ class LoginActivity : AppCompatActivity() {
 
         Log.d("로드", isFirst.toString())
 
+        //TODO 첫 로그인 판정 중 화면 조작할 수 없도록 로딩 화면 필요
         if (nowCurrentUser != null) {
             Log.d("유저", nowCurrentUser.email.toString())
-            toMainActivity()
+            CoroutineScope(Dispatchers.Main).launch {
+                if (isFirstLogin()) {
+                    toMainActivity()
+                } else {
+                    toTemplateActivity()
+                }
+            }
+//            toMainActivity() // 테스팅을 위한 코드
         }
 
 
@@ -94,8 +107,14 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
 
-                            if (isFirst) toTemplateActivity()
-                            else toMainActivity()
+                            CoroutineScope(Dispatchers.Main).launch {
+                                if (isFirstLogin()) {
+                                    toMainActivity()
+                                } else {
+                                    toTemplateActivity()
+                                }
+                            }
+
 
                         } else {
                             Toast.makeText(
@@ -174,6 +193,13 @@ class LoginActivity : AppCompatActivity() {
         loadSharedisFirst()
     }
 
+    private suspend fun isFirstLogin(): Boolean {
+        val data = viewModel.getAllTemplateSize()
+
+        return data > 0
+    }
+
+
     private fun googleSignInResult(task: Task<GoogleSignInAccount>) {
         try {
 
@@ -190,8 +216,16 @@ class LoginActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        if (isFirst) toTemplateActivity()
-                        else toMainActivity()
+                        CoroutineScope(Dispatchers.Main).launch {
+                            if (isFirstLogin()) {
+                                toMainActivity()
+                            } else {
+                                toTemplateActivity()
+                            }
+                        }
+
+//                        toTemplateActivity() // 테스팅 코드
+
                     } else {
                         Toast.makeText(
                             this@LoginActivity,

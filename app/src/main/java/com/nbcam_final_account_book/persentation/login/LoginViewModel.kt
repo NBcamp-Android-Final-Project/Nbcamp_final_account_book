@@ -12,7 +12,9 @@ import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class LoginViewModel(
@@ -28,15 +30,11 @@ class LoginViewModel(
         return sharedPref.getBoolean("key_isFirst", false)
     }
 
-    fun getAllTemplateSize(){
+    suspend fun getAllTemplateSize(): Int = withContext(Dispatchers.IO) {
 
-        val resultList: List<ResponseTemplateModel> = emptyList()
+        val list = firebaseRepo.getAllTemplate(firebaseRepo.getUser())
 
-        viewModelScope.launch {
-            val list = firebaseRepo.getAllTemplate(firebaseRepo.getUser())
-
-        }
-
+        list.size
 
     }
 

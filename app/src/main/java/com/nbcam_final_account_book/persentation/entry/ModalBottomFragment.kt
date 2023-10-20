@@ -10,11 +10,13 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nbcam_final_account_book.databinding.FragmentModalBottomBinding
+import com.nbcam_final_account_book.persentation.tag.TagRecyclerAdapter
 
 class ModalBottomFragment : BottomSheetDialogFragment() {
 
 	private lateinit var binding: FragmentModalBottomBinding
 	private val displayInfo by lazy { requireActivity().applicationContext.resources.displayMetrics }
+	private val adapter by lazy { TagRecyclerAdapter() }
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -28,12 +30,17 @@ class ModalBottomFragment : BottomSheetDialogFragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 		initView()
-		initCategory()
+		initBottomSheetHeight()
+		initTag()
 	}
 
 	private fun initView() = with(binding) {
 
-		btnSave.setOnClickListener {
+		ivTagAdd.setOnClickListener {
+//			findNavController().navigate(R.id.action_modalBottomFragment_to_tagFragment)
+		}
+
+		ivSave.setOnClickListener {
 //			val entry = EntryActivity()
 //			val amount: String? = entry.findViewById<EditText>(R.id.edt_num).text?.toString()
 //			Log.d("amount", "$amount")
@@ -42,7 +49,11 @@ class ModalBottomFragment : BottomSheetDialogFragment() {
 		}
 	}
 
-	private fun initCategory() {
+	private fun initTag() {
+		binding.rvTagContainer.adapter = adapter
+	}
+
+	private fun initBottomSheetHeight() {
 
 		view?.viewTreeObserver?.addOnGlobalLayoutListener(object :
 			ViewTreeObserver.OnGlobalLayoutListener {
@@ -58,8 +69,8 @@ class ModalBottomFragment : BottomSheetDialogFragment() {
 				val newHeight =
 					activity?.window?.decorView?.measuredHeight?.minus(
 						activity?.window?.decorView?.measuredHeight?.times(
-							if (displayInfo.heightPixels > 2000) 0.3
-							else 0.4
+							if (displayInfo.heightPixels > 2000) 0.25
+							else 0.35
 						)!!
 					)
 				val viewGroupLayoutParams = bottomSheet.layoutParams

@@ -18,7 +18,6 @@ class HomeBottomSheetFragment(private val entries: List<EntryModel>, private val
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dialog?.window?.setBackgroundDrawableResource(R.drawable.bottom_sheet_background)
         _binding = HomeBottomSheetBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -40,10 +39,6 @@ class HomeBottomSheetFragment(private val entries: List<EntryModel>, private val
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun getTheme(): Int {
-        return R.style.CustomBottomSheetDialogTheme
     }
 }
 

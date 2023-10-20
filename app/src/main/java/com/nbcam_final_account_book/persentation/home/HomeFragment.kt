@@ -70,9 +70,7 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
                 bottomSheetFragment.show(parentFragmentManager, "BottomSheetFragment")
             }
         }
-
-
-
+        
         // DatePickerDialog 보여주기
         binding.tvMonthYear.setOnClickListener {
             showDatePickerDialog()

@@ -16,6 +16,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/ic_calendar_selector_arrow_left" />
+
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="0dp"
@@ -32,6 +39,7 @@
             android:layout_gravity="center_vertical|end"
             android:layout_weight="1"
             android:src="@android:drawable/ic_input_add"/>
+
 
     </LinearLayout>
 

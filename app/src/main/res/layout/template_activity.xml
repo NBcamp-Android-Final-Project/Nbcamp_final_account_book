@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".persentation.login.LoginActivity">
+    tools:context=".persentation.template.TemplateActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/login_constrain_container"
+        android:id="@+id/template_constrain_container"
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:background="#DEE5F1"
@@ -20,7 +20,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="로그인"
+            android:text="가계부 이름"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,56 +29,39 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
-        android:id="@+id/login_edt_email"
+        android:id="@+id/template_edt_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="50dp"
-        android:hint="email"
+        android:hint="가계부 이름을 입력해 주세요"
         android:inputType="text"
         android:maxLines="1"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_constrain_container" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/login_edt_password"
+    <TextView
+        android:id="@+id/template_tv_error"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
-        android:hint="password"
-        android:inputType="text"
-        android:maxLines="1"
-        android:textSize="20sp"
+        android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_edt_email" />
+        app:layout_constraintTop_toBottomOf="@+id/template_edt_input" />
 
     <Button
-        android:id="@+id/login_btn_login"
+        android:id="@+id/template_btn_ok"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="40dp"
-        android:backgroundTint="#DEE5F1"
-        android:text="로그인"
-        android:textColor="@color/black"
+        android:text="확인"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_edt_password" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/login_btn_google"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_btn_login" />
-
+        app:layout_constraintTop_toBottomOf="@+id/template_edt_input" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

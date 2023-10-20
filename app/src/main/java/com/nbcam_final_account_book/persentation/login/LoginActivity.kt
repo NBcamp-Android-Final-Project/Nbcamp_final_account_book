@@ -208,8 +208,8 @@ class LoginActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        if (isFirst) toTemplateActivity()
-                        else toMainActivity()
+                    toTemplateActivity()
+
                     } else {
                         Toast.makeText(
                             this@LoginActivity,

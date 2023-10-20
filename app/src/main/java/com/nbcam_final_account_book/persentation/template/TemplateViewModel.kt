@@ -39,6 +39,10 @@ class TemplateViewModel(
             fireRepo.setTemplate(fireRepo.getUser(), roomRepo.selectFirstTemplate())
         }
     }
+
+    fun logout(){
+        fireRepo.logout()
+    }
 }
 
 class TemplateViewModelFactory(

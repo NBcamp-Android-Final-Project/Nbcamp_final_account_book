@@ -53,4 +53,8 @@ interface FireBaseRepository {
     suspend fun getAllTemplate(user: String): List<ResponseTemplateModel>
 
     suspend fun setTemplate(user: String, item: TemplateEntity): List<ResponseTemplateModel>
+
+    suspend fun setBudget(user: String, template: String, path: String)
+
+    fun logout()
 }

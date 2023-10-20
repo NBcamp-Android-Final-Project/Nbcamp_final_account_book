@@ -315,5 +315,14 @@ class FireBaseRepositoryImpl(
         }
     }
 
+    override suspend fun setBudget(user: String, template: String, path: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun logout() {
+        val auth = FirebaseAuth.getInstance()
+        auth.signOut()
+    }
+
 
 }

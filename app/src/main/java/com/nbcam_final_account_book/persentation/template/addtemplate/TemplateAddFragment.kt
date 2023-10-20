@@ -1,5 +1,7 @@
 package com.nbcam_final_account_book.persentation.template.addtemplate
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -9,10 +11,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.TemplateAddFragmentBinding
+import com.nbcam_final_account_book.persentation.login.LoginActivity
+import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateViewModel
 import com.nbcam_final_account_book.persentation.template.TemplateViewModelFactory
 import java.util.regex.Pattern
@@ -21,6 +27,7 @@ import java.util.regex.Pattern
 class TemplateAddFragment : Fragment() {
 
     private var _binding: TemplateAddFragmentBinding? = null
+    private lateinit var onBackPressedCallback: OnBackPressedCallback
     private val binding get() = _binding!!
     private val viewModel by lazy {
         ViewModelProvider(
@@ -29,11 +36,11 @@ class TemplateAddFragment : Fragment() {
         )[TemplateViewModel::class.java]
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = TemplateAddFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -42,6 +49,23 @@ class TemplateAddFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initViewModel()
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val intent = Intent(requireContext(), LoginActivity::class.java)
+                logout()
+                startActivity(intent)
+                requireActivity().finish()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        onBackPressedCallback.remove()
     }
 
     override fun onDestroyView() {
@@ -81,7 +105,7 @@ class TemplateAddFragment : Fragment() {
 
             val templateTitle = templateAddEdtInput.text.toString()
 
-            if (templateTitle.isNotEmpty()){
+            if (templateTitle.isNotEmpty()) {
                 if (isEnable(templateTitle)) {
                     Toast.makeText(
                         requireContext(),
@@ -127,5 +151,9 @@ class TemplateAddFragment : Fragment() {
         val pattern = Pattern.compile("[#\\[\\].$]")
 
         return pattern.matcher(input).find()
+    }
+
+    private fun logout() {
+        viewModel.logout()
     }
 }

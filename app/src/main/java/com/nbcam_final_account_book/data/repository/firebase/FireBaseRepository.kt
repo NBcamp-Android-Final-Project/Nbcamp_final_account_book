@@ -8,7 +8,7 @@ import com.nbcam_final_account_book.persentation.entry.EntryModel
 import com.nbcam_final_account_book.persentation.tag.TagModel
 
 interface FireBaseRepository {
-    //template는 "${$item.templateTitle}-${item.id}" 형식으로 지정한다.
+    // template는 "${$item.templateTitle}-${item.id}" 형식으로 지정한다.
     // item은 TemplateEntity 형태다
 
     fun getUser(): String

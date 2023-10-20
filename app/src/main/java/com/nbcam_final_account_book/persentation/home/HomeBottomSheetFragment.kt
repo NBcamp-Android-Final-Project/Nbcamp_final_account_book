@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.HomeBottomSheetBinding
 import com.nbcam_final_account_book.persentation.entry.EntryModel
 
@@ -19,6 +20,10 @@ class HomeBottomSheetFragment(private val entries: List<EntryModel>, private val
     ): View {
         _binding = HomeBottomSheetBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    companion object {
+        const val TAG = "BasicBottomModalSheet"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

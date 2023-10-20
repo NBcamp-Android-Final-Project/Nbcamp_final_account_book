@@ -81,9 +81,7 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
 		binding.tvMonthYear.setOnClickListener {
 			showDatePickerDialog()
 		}
-
 		return binding.root
-
 	}
 
 	private fun updateCalendarHeader() {

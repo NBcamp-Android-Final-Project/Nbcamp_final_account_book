@@ -21,10 +21,9 @@ import java.util.regex.Pattern
 class TemplateActivity : FragmentActivity() {
 
     //TODO 다중 템플릿을 구현해야합니다
+    //TODO 진입 시 경로를 파악하고 해당 템플릿을 재사용 할 수 있도록 만들어야합니다.(esnum class이용 등)
 
     private lateinit var binding: TemplateActivityBinding
-
-    // 생각 2 = 템플릿 안에 데이터가 없으면 처음 로그인 하는 것이다.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

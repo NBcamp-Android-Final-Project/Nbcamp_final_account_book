@@ -1,6 +1,8 @@
 package com.nbcam_final_account_book.persentation.template
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -19,6 +21,19 @@ class TemplateViewModel(
     private val sharedProvider: SharedProvider,
     private val fireRepo: FireBaseRepository
 ) : ViewModel() {
+
+    private val _liveTitle: MutableLiveData<String?> = MutableLiveData()
+    val liveTitle: LiveData<String?> get() = _liveTitle
+
+    fun updateLiveTitle(title: String?) {
+        if (title != null) {
+            _liveTitle.value = title
+        }
+    }
+
+    fun getCurrentTitle(): String {
+        return liveTitle.value.toString()
+    }
 
     fun saveIsFirst(isFirst: Boolean) {
         val sharedPref = sharedProvider.setSharedPref("name_isFirst")
@@ -40,7 +55,7 @@ class TemplateViewModel(
         }
     }
 
-    fun logout(){
+    fun logout() {
         fireRepo.logout()
     }
 }

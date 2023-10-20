@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -29,12 +30,8 @@ class TemplateAddFragment : Fragment() {
     private var _binding: TemplateAddFragmentBinding? = null
     private lateinit var onBackPressedCallback: OnBackPressedCallback
     private val binding get() = _binding!!
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            TemplateViewModelFactory(requireContext())
-        )[TemplateViewModel::class.java]
-    }
+
+    private val viewModel: TemplateViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,10 +45,12 @@ class TemplateAddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        initViewModel()
     }
+
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        //백버튼 콜백 제어
         onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val intent = Intent(requireContext(), LoginActivity::class.java)
@@ -65,6 +64,7 @@ class TemplateAddFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
+        //백버튼 콜백 해제
         onBackPressedCallback.remove()
     }
 
@@ -115,12 +115,11 @@ class TemplateAddFragment : Fragment() {
                         .show()
                 } else {
 
-                    insertFirstTemplate(templateTitle) // room DB에 삽입
-                    addFirstTemplateToFirebase() // firebase에 삽입
+                    updateTitle(title = templateTitle)
                     findNavController().navigate(R.id.action_templateAddFragment_to_templateBudgetFragment)
 
                 }
-            }else{
+            } else {
                 Toast.makeText(
                     requireContext(),
                     "제목을 입력해주세요.",
@@ -134,18 +133,11 @@ class TemplateAddFragment : Fragment() {
         }
     }
 
-
-    private fun initViewModel() = with(viewModel) {
-
+    private fun updateTitle(title: String) {
+        viewModel.updateLiveTitle(title)
     }
 
-    private fun insertFirstTemplate(title: String) = with(viewModel) {
-        insertFirstTemplate(title)
-    }
 
-    private fun addFirstTemplateToFirebase() = with(viewModel) {
-        addTemplateFirst()
-    }
 
     private fun isEnable(input: String): Boolean {
         val pattern = Pattern.compile("[#\\[\\].$]")

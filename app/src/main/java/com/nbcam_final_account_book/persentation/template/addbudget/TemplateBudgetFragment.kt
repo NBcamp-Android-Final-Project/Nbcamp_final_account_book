@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.R
@@ -26,12 +27,8 @@ class TemplateBudgetFragment : Fragment() {
     private var _binding: TemplateBudgetFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var onBackPressedCallback: OnBackPressedCallback
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            TemplateViewModelFactory(requireContext())
-        )[TemplateViewModel::class.java]
-    }
+
+    private val viewModel: TemplateViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,11 +40,10 @@ class TemplateBudgetFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        //백버튼 콜백 제어
         onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-
                 findNavController().navigate(R.id.action_templateBudgetFragment_to_templateAddFragment)
-
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
@@ -55,6 +51,7 @@ class TemplateBudgetFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
+        //백버튼 콜백 해ㅈ
         onBackPressedCallback.remove()
     }
 
@@ -109,6 +106,8 @@ class TemplateBudgetFragment : Fragment() {
             }
 
             val intent = Intent(requireContext(), MainActivity::class.java)
+
+            insertFirstTemplate()
             startActivity(intent)
             requireActivity().finish()
 
@@ -125,11 +124,9 @@ class TemplateBudgetFragment : Fragment() {
         viewModel.logout()
     }
 
-    private fun insertFirstTemplate(title: String) = with(viewModel) {
-        insertFirstTemplate(title)
-    }
-
-    private fun addFirstTemplateToFirebase() = with(viewModel) {
+    private fun insertFirstTemplate() = with(viewModel) {
+        val title = getCurrentTitle()
+        insertFirstTemplate(title) // 무조건 먼저 실행 되어 룸에 삽입 되어야 함
         addTemplateFirst()
     }
 

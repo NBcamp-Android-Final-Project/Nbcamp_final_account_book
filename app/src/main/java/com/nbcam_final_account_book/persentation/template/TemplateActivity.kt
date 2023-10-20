@@ -24,6 +24,7 @@ class TemplateActivity : FragmentActivity() {
     //TODO 진입 시 경로를 파악하고 해당 템플릿을 재사용 할 수 있도록 만들어야합니다.(esnum class이용 등)
 
     private lateinit var binding: TemplateActivityBinding
+    private lateinit var viewModel: TemplateViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +32,7 @@ class TemplateActivity : FragmentActivity() {
         setContentView(binding.root)
 
         initView()
+        initViewModel()
 
     }
 
@@ -42,4 +44,12 @@ class TemplateActivity : FragmentActivity() {
 
     }
 
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(
+            this,
+            TemplateViewModelFactory(this@TemplateActivity)
+        )[TemplateViewModel::class.java]
+
+
+    }
 }

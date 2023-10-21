@@ -1,6 +1,5 @@
-package com.nbcam_final_account_book.persentation.login
+package com.nbcam_final_account_book.persentation.firstpage
 
-import android.content.ContentUris
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,7 +8,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -22,18 +20,16 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
-import com.nbcam_final_account_book.databinding.LoginActivityBinding
-import com.nbcam_final_account_book.databinding.MainActivityBinding
+import com.nbcam_final_account_book.databinding.FirstActivityBinding
 import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class LoginActivity : AppCompatActivity() {
+class FirstActivity : AppCompatActivity() {
 
-    private lateinit var binding: LoginActivityBinding
+    private lateinit var binding: FirstActivityBinding
     private lateinit var viewModel: LoginViewModel
     private lateinit var auth: FirebaseAuth
     private lateinit var launcher: ActivityResultLauncher<Intent>
@@ -41,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
     private var isFirst: Boolean = true //앱 최초 실행 판정
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = LoginActivityBinding.inflate(layoutInflater)
+        binding = FirstActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initViewModel()
@@ -99,10 +95,10 @@ class LoginActivity : AppCompatActivity() {
             //email&password 로그인
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this@LoginActivity) { task ->
+                    .addOnCompleteListener(this@FirstActivity) { task ->
                         if (task.isSuccessful) {
                             Toast.makeText(
-                                this@LoginActivity,
+                                this@FirstActivity,
                                 "로그인 성공",
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -118,7 +114,7 @@ class LoginActivity : AppCompatActivity() {
 
                         } else {
                             Toast.makeText(
-                                this@LoginActivity,
+                                this@FirstActivity,
                                 "이메일 혹은 비밀번호를 확인해주세요",
                                 Toast.LENGTH_SHORT
                             )
@@ -131,7 +127,7 @@ class LoginActivity : AppCompatActivity() {
 
             } else {
                 Toast.makeText(
-                    this@LoginActivity,
+                    this@FirstActivity,
                     "이메일 혹은 비밀번호를 확인해주세요",
                     Toast.LENGTH_SHORT
                 )
@@ -152,7 +148,7 @@ class LoginActivity : AppCompatActivity() {
                 .build()
 
             val googleSignInClient: GoogleSignInClient =
-                GoogleSignIn.getClient(this@LoginActivity, gso)
+                GoogleSignIn.getClient(this@FirstActivity, gso)
 
             val signInIntent = googleSignInClient.signInIntent
 
@@ -164,8 +160,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(
-            this@LoginActivity,
-            LoginViewModelFactory(this@LoginActivity)
+            this@FirstActivity,
+            LoginViewModelFactory(this@FirstActivity)
         )[LoginViewModel::class.java]
 
         with(viewModel) {
@@ -178,13 +174,13 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun toMainActivity() {
-        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        val intent = Intent(this@FirstActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
 
     private fun toTemplateActivity() {
-        val intent = Intent(this@LoginActivity, TemplateActivity::class.java)
+        val intent = Intent(this@FirstActivity, TemplateActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -208,34 +204,34 @@ class LoginActivity : AppCompatActivity() {
 
             val credential = GoogleAuthProvider.getCredential(idToken, null)
             auth.signInWithCredential(credential)
-                .addOnCompleteListener(this@LoginActivity) { firebaseTask ->
+                .addOnCompleteListener(this@FirstActivity) { firebaseTask ->
                     if (firebaseTask.isSuccessful) {
                         Toast.makeText(
-                            this@LoginActivity,
+                            this@FirstActivity,
                             "Google login successful",
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        CoroutineScope(Dispatchers.Main).launch {
-                            if (isFirstLogin()) {
-                                toMainActivity()
-                            } else {
-                                toTemplateActivity()
-                            }
-                        }
+//                        CoroutineScope(Dispatchers.Main).launch {
+//                            if (isFirstLogin()) {
+//                                toMainActivity()
+//                            } else {
+//                                toTemplateActivity()
+//                            }
+//                        }
 
-//                        toTemplateActivity() // 테스팅 코드
+                        toTemplateActivity() // 테스팅 코드
 
                     } else {
                         Toast.makeText(
-                            this@LoginActivity,
+                            this@FirstActivity,
                             "Firebase login failed",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
         } catch (e: ApiException) {
-            Toast.makeText(this@LoginActivity, "Google login failed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@FirstActivity, "Google login failed", Toast.LENGTH_SHORT).show()
             Log.e("구글.로그인.에러", "로그인 에러 ")
         }
     }

@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MoreFragmentBinding
 import com.nbcam_final_account_book.persentation.lock.LockActivity
-import com.nbcam_final_account_book.persentation.login.LoginActivity
+import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
 
 
 class MoreFragment : Fragment() {
@@ -58,7 +58,7 @@ class MoreFragment : Fragment() {
             auth.signOut()
 
             cleanRoom()
-            val intent = Intent(requireContext(), LoginActivity::class.java)
+            val intent = Intent(requireContext(), FirstActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
         }

@@ -16,7 +16,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.TemplateAddFragmentBinding
-import com.nbcam_final_account_book.persentation.login.LoginActivity
+import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
 import com.nbcam_final_account_book.persentation.template.TemplateViewModel
 import java.util.regex.Pattern
 
@@ -49,7 +49,7 @@ class TemplateAddFragment : Fragment() {
         //백버튼 콜백 제어
         onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val intent = Intent(requireContext(), LoginActivity::class.java)
+                val intent = Intent(requireContext(), FirstActivity::class.java)
                 logout()
                 startActivity(intent)
                 requireActivity().finish()

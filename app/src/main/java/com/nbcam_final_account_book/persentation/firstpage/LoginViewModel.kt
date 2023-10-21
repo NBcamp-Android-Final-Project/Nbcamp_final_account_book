@@ -1,19 +1,15 @@
-package com.nbcam_final_account_book.persentation.login
+package com.nbcam_final_account_book.persentation.firstpage
 
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import com.nbcam_final_account_book.data.model.remote.ResponseEntryModel
-import com.nbcam_final_account_book.data.model.remote.ResponseTemplateModel
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 

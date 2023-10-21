@@ -1,15 +1,18 @@
-package com.nbcam_final_account_book.persentation.login
+package com.nbcam_final_account_book.persentation.firstpage.login
 
-import android.content.ContentUris
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -22,50 +25,47 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
-import com.nbcam_final_account_book.databinding.LoginActivityBinding
-import com.nbcam_final_account_book.databinding.MainActivityBinding
+import com.nbcam_final_account_book.databinding.FirstLoginFragmentBinding
+import com.nbcam_final_account_book.databinding.TemplateBudgetFragmentBinding
+import com.nbcam_final_account_book.persentation.firstpage.LoginViewModel
+import com.nbcam_final_account_book.persentation.firstpage.LoginViewModelFactory
 import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class LoginActivity : AppCompatActivity() {
 
-    private lateinit var binding: LoginActivityBinding
-    private lateinit var viewModel: LoginViewModel
+class LoginFragment : Fragment() {
+
+    private var _binding: FirstLoginFragmentBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel : LoginViewModel by activityViewModels()
     private lateinit var auth: FirebaseAuth
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
     private var isFirst: Boolean = true //앱 최초 실행 판정
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = LoginActivityBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FirstLoginFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        initViewModel()
-
-        val load = loadisFirst()
-
-        isFirst = load
-        Log.d("로드.create", isFirst.toString())
-//        isFirst = true
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         launcher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(),
             ActivityResultCallback { result ->
 
-                if (result.resultCode == RESULT_OK) {
+                if (result.resultCode == AppCompatActivity.RESULT_OK) {
                     val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                     googleSignInResult(task)
                 }
 
             })
-
         initView()
-
-
     }
 
     private fun initView() = with(binding) {
@@ -74,20 +74,6 @@ class LoginActivity : AppCompatActivity() {
         val nowCurrentUser = auth.currentUser
 
         Log.d("로드", isFirst.toString())
-
-        //TODO 첫 로그인 판정 중 화면 조작할 수 없도록 로딩 화면 필요
-        if (nowCurrentUser != null) {
-            Log.d("유저", nowCurrentUser.email.toString())
-            CoroutineScope(Dispatchers.Main).launch {
-                if (isFirstLogin()) {
-                    toMainActivity()
-                } else {
-                    toTemplateActivity()
-                }
-            }
-//            toMainActivity() // 테스팅을 위한 코드
-        }
-
 
         loginBtnLogin.setOnClickListener {
             val currentUser = auth.currentUser
@@ -99,10 +85,10 @@ class LoginActivity : AppCompatActivity() {
             //email&password 로그인
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this@LoginActivity) { task ->
+                    .addOnCompleteListener() { task ->
                         if (task.isSuccessful) {
                             Toast.makeText(
-                                this@LoginActivity,
+                                requireContext(),
                                 "로그인 성공",
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -118,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
 
                         } else {
                             Toast.makeText(
-                                this@LoginActivity,
+                                requireContext(),
                                 "이메일 혹은 비밀번호를 확인해주세요",
                                 Toast.LENGTH_SHORT
                             )
@@ -131,7 +117,7 @@ class LoginActivity : AppCompatActivity() {
 
             } else {
                 Toast.makeText(
-                    this@LoginActivity,
+                    requireContext(),
                     "이메일 혹은 비밀번호를 확인해주세요",
                     Toast.LENGTH_SHORT
                 )
@@ -152,7 +138,7 @@ class LoginActivity : AppCompatActivity() {
                 .build()
 
             val googleSignInClient: GoogleSignInClient =
-                GoogleSignIn.getClient(this@LoginActivity, gso)
+                GoogleSignIn.getClient(requireContext(), gso)
 
             val signInIntent = googleSignInClient.signInIntent
 
@@ -162,31 +148,18 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(
-            this@LoginActivity,
-            LoginViewModelFactory(this@LoginActivity)
-        )[LoginViewModel::class.java]
-
-        with(viewModel) {
-
-
-        }
-
-
-    }
 
 
     private fun toMainActivity() {
-        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        val intent = Intent(requireContext(), MainActivity::class.java)
         startActivity(intent)
-        finish()
+        requireActivity().finish()
     }
 
     private fun toTemplateActivity() {
-        val intent = Intent(this@LoginActivity, TemplateActivity::class.java)
+        val intent = Intent(requireContext(), TemplateActivity::class.java)
         startActivity(intent)
-        finish()
+        requireActivity().finish()
     }
 
     private fun loadisFirst(): Boolean = with(viewModel) {
@@ -208,10 +181,10 @@ class LoginActivity : AppCompatActivity() {
 
             val credential = GoogleAuthProvider.getCredential(idToken, null)
             auth.signInWithCredential(credential)
-                .addOnCompleteListener(this@LoginActivity) { firebaseTask ->
+                .addOnCompleteListener() { firebaseTask ->
                     if (firebaseTask.isSuccessful) {
                         Toast.makeText(
-                            this@LoginActivity,
+                            requireContext(),
                             "Google login successful",
                             Toast.LENGTH_SHORT
                         ).show()
@@ -228,16 +201,17 @@ class LoginActivity : AppCompatActivity() {
 
                     } else {
                         Toast.makeText(
-                            this@LoginActivity,
+                            requireContext(),
                             "Firebase login failed",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
         } catch (e: ApiException) {
-            Toast.makeText(this@LoginActivity, "Google login failed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Google login failed", Toast.LENGTH_SHORT).show()
             Log.e("구글.로그인.에러", "로그인 에러 ")
         }
     }
+
 
 }

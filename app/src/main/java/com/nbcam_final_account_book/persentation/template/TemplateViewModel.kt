@@ -42,25 +42,15 @@ class TemplateViewModel(
         editor.apply()
     }
 
-    fun insertFirstTemplate(title: String) { // room에 첫 템플릿 삽입
+    fun insertFirstTemplate(title: String,budget: String) {
+        // room에 데이터 삽입
+        // 이후 firebase에 데이터 삽입
         viewModelScope.launch {
             roomRepo.insertFirstTemplate(title)
-        }
-    }
 
-    fun addTemplateFirst() { // firebase에 템플릿 삽입
-        viewModelScope.launch {
-            fireRepo.setTemplate(fireRepo.getUser(), roomRepo.selectFirstTemplate())
-        }
-    }
-
-    fun logout() { // firebase 로그아웃
-        fireRepo.logout()
-    }
-
-   fun setFirstBudget(budget: String) {
-        viewModelScope.launch {
             val templateModel = roomRepo.selectFirstTemplate()
+            fireRepo.setTemplate(fireRepo.getUser(), templateModel)
+
             val template = "${templateModel.templateTitle}-${templateModel.id}"
             fireRepo.setBudget(
                 user = fireRepo.getUser(),
@@ -69,6 +59,12 @@ class TemplateViewModel(
             )
         }
     }
+
+    fun logout() { // firebase 로그아웃
+        fireRepo.logout()
+    }
+
+
 }
 
 class TemplateViewModelFactory(

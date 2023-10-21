@@ -19,7 +19,7 @@
             android:name=".persentation.lock.LockActivity"
             android:exported="false" />
         <activity
-            android:name=".persentation.login.LoginActivity"
+            android:name=".persentation.firstpage.FirstActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

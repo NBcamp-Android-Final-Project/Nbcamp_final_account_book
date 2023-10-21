@@ -106,14 +106,9 @@ class TemplateBudgetFragment : Fragment() {
 
             val intent = Intent(requireContext(), MainActivity::class.java)
 
-            insertFirstTemplate()
-            addTemplateFirst()
+            insertFirstTemplate(number.toString())
             startActivity(intent)
             requireActivity().finish()
-            GlobalScope.launch {
-                kotlinx.coroutines.delay(100)
-                setFirstBudget(budget = number.toString())
-            }
 
 
         }
@@ -125,18 +120,10 @@ class TemplateBudgetFragment : Fragment() {
         _binding = null
     }
 
-
-    private fun insertFirstTemplate() = with(viewModel) {
+    //Todo 함수 캡슐화 : 하나로 합치기
+    private fun insertFirstTemplate(budget: String) = with(viewModel) {
         val title = getCurrentTitle()
-        insertFirstTemplate(title) // 무조건 먼저 실행 되어 룸에 삽입 되어야 함
-    }
-
-    private fun addTemplateFirst(){
-        viewModel.addTemplateFirst()
-    }
-
-    private fun setFirstBudget(budget: String) {
-        viewModel.setFirstBudget(budget)
+        insertFirstTemplate(title, budget) // 무조건 먼저 실행 되어 룸에 삽입 되어야 함
     }
 
 

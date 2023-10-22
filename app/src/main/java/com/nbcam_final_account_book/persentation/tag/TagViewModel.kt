@@ -8,3 +8,8 @@ class TagViewModel:ViewModel() {
 
     val liveDummyTagInTag : LiveData<List<TagModel>> get() = liveDummyTag
 }
+
+data class Tag(
+    val icon: Int,
+    val title: String
+)

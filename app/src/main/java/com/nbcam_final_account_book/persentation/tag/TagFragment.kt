@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.TagFragmentBinding
+import com.nbcam_final_account_book.persentation.entry.ModalTagListAdapter
 
 
 class TagFragment : Fragment() {
@@ -18,6 +22,16 @@ class TagFragment : Fragment() {
 		ViewModelProvider(
 			this@TagFragment
 		)[TagViewModel::class.java]
+	}
+
+	private val tagListAdapter by lazy {
+		ModalTagListAdapter(onItemClick = { position ->
+			onItemClickEvent(position)
+		})
+	}
+
+	private fun onItemClickEvent(position: Int) {
+		Toast.makeText(requireActivity(), "$position 번째 클릭", Toast.LENGTH_SHORT).show()
 	}
 
 	override fun onCreateView(
@@ -33,12 +47,12 @@ class TagFragment : Fragment() {
 
 		initView()
 		initViewModel()
-
+		initTag()
 	}
 
 	private fun initView() = with(binding) {
 		ivBack.setOnClickListener {
-			// 뒤로 가기
+			findNavController().navigate(R.id.action_tagFragment_to_menu_more)
 		}
 	}
 
@@ -46,5 +60,32 @@ class TagFragment : Fragment() {
 		liveDummyTagInTag.observe(viewLifecycleOwner) {
 
 		}
+	}
+
+	private fun initTag() {
+
+		// 임시 데이터
+		val newList = mutableListOf<Tag>()
+		newList.apply {
+			add(Tag(R.drawable.ic_tag, "달력"))
+			add(Tag(R.drawable.ic_chart, "차트"))
+			add(Tag(R.drawable.ic_help, "도움"))
+			add(Tag(R.drawable.ic_home, "집"))
+			add(Tag(R.drawable.ic_lock, "잠금"))
+			add(Tag(R.drawable.ic_more_vert, "수직"))
+			add(Tag(R.drawable.ic_mypage, "페이지"))
+			add(Tag(R.drawable.ic_backup, "백업"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+		}
+
+		binding.rvTagManageContainer.adapter = tagListAdapter
+		tagListAdapter.submitList(newList)
 	}
 }

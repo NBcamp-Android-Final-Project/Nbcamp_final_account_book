@@ -1,6 +1,5 @@
 package com.nbcam_final_account_book.persentation.tag
 
-import android.nfc.Tag
 import com.nbcam_final_account_book.data.model.remote.ResponseTagModel
 
 data class TagModel(
@@ -16,5 +15,4 @@ fun TagModel.toResponse(key: String): ResponseTagModel {
         img = img,
         tagName = tagName
     )
-
 }

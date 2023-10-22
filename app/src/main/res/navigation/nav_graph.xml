@@ -37,9 +37,6 @@
         <action
             android:id="@+id/action_tagFragment_to_menu_more"
             app:destination="@id/menu_more" />
-        <action
-            android:id="@+id/action_tagFragment_to_modalBottomFragment"
-            app:destination="@id/modalBottomFragment" />
     </fragment>
     <dialog
         android:id="@+id/modalBottomFragment"
@@ -47,7 +44,7 @@
         android:label="fragment_modal_bottom"
         tools:layout="@layout/fragment_modal_bottom" >
         <action
-            android:id="@+id/action_modalBottomFragment_to_tagFragment"
-            app:destination="@id/tagFragment" />
+            android:id="@+id/action_modalBottomFragment_to_menu_more"
+            app:destination="@id/menu_more" />
     </dialog>
 </navigation>

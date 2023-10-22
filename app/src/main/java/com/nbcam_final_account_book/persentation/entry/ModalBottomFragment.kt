@@ -4,25 +4,38 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.FrameLayout
+import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.FragmentModalBottomBinding
-import com.nbcam_final_account_book.persentation.tag.TagRecyclerAdapter
+import com.nbcam_final_account_book.persentation.tag.Tag
 
 class ModalBottomFragment : BottomSheetDialogFragment() {
+	private val displayInfo by lazy { requireActivity().applicationContext.resources.displayMetrics }   // 디스플레이 높이 정보
 
 	private lateinit var binding: FragmentModalBottomBinding
-	private val displayInfo by lazy { requireActivity().applicationContext.resources.displayMetrics }
-	private val adapter by lazy { TagRecyclerAdapter() }
+
+	private val tagListAdapter by lazy {
+		ModalTagListAdapter(onItemClick = { position ->
+			onItemClickEvent(position)
+		})
+	}
+
+	private fun onItemClickEvent(position: Int) {
+		Toast.makeText(requireActivity(), "$position 번째 클릭", Toast.LENGTH_SHORT).show()
+	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
 		binding = FragmentModalBottomBinding.inflate(inflater, container, false)
+//		initBottomSheetHeight()
+
 		return binding.root
 	}
 
@@ -30,33 +43,58 @@ class ModalBottomFragment : BottomSheetDialogFragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 		initView()
-		initBottomSheetHeight()
 		initTag()
 	}
 
 	private fun initView() = with(binding) {
 
+		// 마이페이지 - 태그 관리 액티비티로 이동
 		ivTagAdd.setOnClickListener {
-//			findNavController().navigate(R.id.action_modalBottomFragment_to_tagFragment)
+//			(activity as MainActivity).intentToMore()
+//			findNavController().navigate(R.id.action_modalBottomFragment_to_menu_more)
 		}
 
 		ivSave.setOnClickListener {
-//			val entry = EntryActivity()
-//			val amount: String? = entry.findViewById<EditText>(R.id.edt_num).text?.toString()
-//			Log.d("amount", "$amount")
+			// Firebase RTDB 에 `태그`, `결제 수단`, `메모`, `금액` 저장 후, ModalBottomSheet 및 EntryActivity 종료
+		}
 
+		ivCancel.setOnClickListener {
 			dismiss()
 		}
 	}
 
 	private fun initTag() {
-		binding.rvTagContainer.adapter = adapter
+
+		// 임시 데이터
+		val newList = mutableListOf<Tag>()
+		newList.apply {
+			add(Tag(R.drawable.ic_tag, "달력"))
+			add(Tag(R.drawable.ic_chart, "차트"))
+			add(Tag(R.drawable.ic_help, "도움"))
+			add(Tag(R.drawable.ic_home, "집"))
+			add(Tag(R.drawable.ic_lock, "잠금"))
+			add(Tag(R.drawable.ic_more_vert, "수직"))
+			add(Tag(R.drawable.ic_mypage, "페이지"))
+			add(Tag(R.drawable.ic_backup, "백업"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+		}
+
+		binding.rvTagContainer.adapter = tagListAdapter
+		tagListAdapter.submitList(newList)
 	}
 
+	// 기기 디스플레이 높이 기준으로 ModalBottomSheet 높이 계산
 	private fun initBottomSheetHeight() {
 
 		view?.viewTreeObserver?.addOnGlobalLayoutListener(object :
-			ViewTreeObserver.OnGlobalLayoutListener {
+			OnGlobalLayoutListener {
 			override fun onGlobalLayout() {
 
 				view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -70,7 +108,7 @@ class ModalBottomFragment : BottomSheetDialogFragment() {
 					activity?.window?.decorView?.measuredHeight?.minus(
 						activity?.window?.decorView?.measuredHeight?.times(
 							if (displayInfo.heightPixels > 2000) 0.25
-							else 0.35
+							else 0.4
 						)!!
 					)
 				val viewGroupLayoutParams = bottomSheet.layoutParams
@@ -86,6 +124,13 @@ class ModalBottomFragment : BottomSheetDialogFragment() {
 	}
 
 	companion object {
-		const val TAG = "ModalBottomSheet"
+		val TAG = ModalBottomFragment::class.simpleName
 	}
+
+	fun interface IntentToMore {
+		fun addFragment()
+	}
+
+	var intentToMore: IntentToMore? = null
 }
+

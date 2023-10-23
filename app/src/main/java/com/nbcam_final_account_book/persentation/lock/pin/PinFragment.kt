@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -68,8 +69,16 @@ class PinFragment : Fragment() {
             pinNumpad.btn0
         )
 
-        setNumberButtonListeners()
-        setDeleteButtonListener()
+        if (sharedViewModel.isEdit) {
+            Toast.makeText(requireContext(), "비밀번호 변경", Toast.LENGTH_SHORT).show()
+            // TODO: 기본 비밀번호를 입력 받고 난 후 새로운 비밀번호를 설정할 수 있도록 해야함
+            setNumberButtonListeners()
+            setDeleteButtonListener()
+        } else {
+            Toast.makeText(requireContext(), "비밀번호 새로운 설정", Toast.LENGTH_SHORT).show()
+            setNumberButtonListeners()
+            setDeleteButtonListener()
+        }
     }
 
     private fun setDeleteButtonListener() = with(binding) {

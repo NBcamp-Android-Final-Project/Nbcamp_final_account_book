@@ -15,6 +15,12 @@ class LockSharedViewModel(application: Application) : AndroidViewModel(applicati
 
     private val sharedPrefs: SharedPreferences = application.getSharedPreferences(MY_Prefs, Application.MODE_PRIVATE)
 
+    var isEdit = false // 클릭한 버튼 정보를 저장하는 변수
+
+    fun setEditFlag(isEdit: Boolean) {
+        this.isEdit = isEdit
+    }
+
     private val _pin = MutableLiveData<String>()
     val pin: LiveData<String> get() = _pin
 

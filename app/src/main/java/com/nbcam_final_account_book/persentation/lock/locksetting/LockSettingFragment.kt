@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -45,21 +46,30 @@ class LockSettingFragment : Fragment() {
         locksettingRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.locksetting_btn_none -> {
-                    locksettingDivider1.visibility = View.GONE
-                    locksettingSwitchFingerprint.visibility = View.GONE
+                    /*locksettingDivider1.visibility = View.GONE
+                    locksettingSwitchFingerprint.visibility = View.GONE*/
                     locksettingTvPinEdit.visibility = View.GONE
                     sharedViewModel.clearPin()
                 }
 
                 R.id.locksetting_btn_pin -> {
-                    locksettingDivider1.visibility = View.VISIBLE
-                    locksettingSwitchFingerprint.visibility = View.VISIBLE
+                    /*locksettingDivider1.visibility = View.VISIBLE
+                    locksettingSwitchFingerprint.visibility = View.VISIBLE*/
                     locksettingTvPinEdit.visibility = View.VISIBLE
                 }
             }
         }
 
         locksettingBtnPin.setOnClickListener {
+            if (sharedViewModel.pin.value.isNullOrEmpty()) { // 저장된 비밀번호가 없는 경우에만 PinFragment로 이동
+                navController.navigate(R.id.pinFragment)
+            } else {
+                Toast.makeText(requireContext(), "저장된 비밀번호가 있음", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        locksettingTvPinEdit.setOnClickListener {
+            sharedViewModel.setEditFlag(true)
             navController.navigate(R.id.pinFragment)
         }
     }

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -16,8 +15,6 @@ import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.MainActivityBinding
 import com.nbcam_final_account_book.persentation.budget.BudgetModel
-import com.nbcam_final_account_book.persentation.entry.ModalBottomFragment
-import com.nbcam_final_account_book.persentation.more.MoreFragment
 import com.nbcam_final_account_book.persentation.template.addbudget.TemplateBudgetFragment
 import com.nbcam_final_account_book.unit.ReturnSettingModel
 
@@ -103,14 +100,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-    // More 액티비티 이동
-    fun intentToMore(): ModalBottomFragment.IntentToMore =
-        ModalBottomFragment.IntentToMore {
-            supportFragmentManager.commit {
-                add(R.id.main_fragment, MoreFragment())
-            }
-        }
 
     private fun updateTemplate(item: TemplateEntity?) {
         viewModel.updateCurrentTemplate(item)

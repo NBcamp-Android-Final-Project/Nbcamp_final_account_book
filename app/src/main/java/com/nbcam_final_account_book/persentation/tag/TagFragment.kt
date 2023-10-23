@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.TagFragmentBinding
 
 
@@ -18,6 +19,16 @@ class TagFragment : Fragment() {
 		ViewModelProvider(
 			this@TagFragment
 		)[TagViewModel::class.java]
+	}
+
+	private val tagListAdapter by lazy {
+		TagListAdapter(onItemClick = { position ->
+			onItemClickEvent(position)
+		})
+	}
+
+	private fun onItemClickEvent(position: Int) {
+
 	}
 
 	override fun onCreateView(
@@ -33,12 +44,12 @@ class TagFragment : Fragment() {
 
 		initView()
 		initViewModel()
-
+		initTag()
 	}
 
 	private fun initView() = with(binding) {
 		ivBack.setOnClickListener {
-			// 뒤로 가기
+//			findNavController().navigate(R.id.action_tagFragment_to_menu_more)
 		}
 	}
 
@@ -46,5 +57,35 @@ class TagFragment : Fragment() {
 		liveDummyTagInTag.observe(viewLifecycleOwner) {
 
 		}
+	}
+
+	private fun initTag() {
+
+		// 임시 데이터
+		val newList = mutableListOf<Tag>()
+		newList.apply {
+			add(Tag(R.drawable.ic_tag, "달력"))
+			add(Tag(R.drawable.ic_chart, "차트"))
+			add(Tag(R.drawable.ic_help, "도움"))
+			add(Tag(R.drawable.ic_home, "집"))
+			add(Tag(R.drawable.ic_lock, "잠금"))
+			add(Tag(R.drawable.ic_more_vert, "수직"))
+			add(Tag(R.drawable.ic_mypage, "페이지"))
+			add(Tag(R.drawable.ic_backup, "백업"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+			add(Tag(R.drawable.ic_check, "확인"))
+		}
+
+		binding.rvTagManageContainer.apply {
+			setHasFixedSize(true)
+			adapter = tagListAdapter
+		}
+		tagListAdapter.submitList(newList)
 	}
 }

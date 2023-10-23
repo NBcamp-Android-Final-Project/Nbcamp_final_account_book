@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.nbcam_final_account_book.data.model.local.DataEntity
+import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
@@ -18,6 +19,7 @@ import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import com.nbcam_final_account_book.persentation.budget.BudgetModel
 import com.nbcam_final_account_book.persentation.entry.EntryModel
 import com.nbcam_final_account_book.persentation.tag.TagModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainViewModel(
@@ -26,8 +28,7 @@ class MainViewModel(
 ) : ViewModel() {
 
     //EntryLiveData
-    private val _mainLiveEntryList: MutableLiveData<List<EntryModel>> = MutableLiveData()
-    val mainLiveEntryList: LiveData<List<EntryModel>> get() = _mainLiveEntryList
+    val mainLiveEntryList: LiveData<List<EntryEntity>> get() = roomRepo.getAllEntry()
 
     //TagLiveData
     private val _mainLiveTagList: MutableLiveData<List<TagModel>> = MutableLiveData()
@@ -44,10 +45,13 @@ class MainViewModel(
     init {
         if (loadSharedPrefCurrentUser() != null) {
             _mainLiveCurrentTemplate.value = loadSharedPrefCurrentUser()
+//            loadData()
         }
     }
 
-
+    fun getCurrentTemplate(): TemplateEntity? {
+        return mainLiveCurrentTemplate.value
+    }
 
 
     fun updateCurrentTemplate(item: TemplateEntity?) {
@@ -61,10 +65,11 @@ class MainViewModel(
         currentList.add(item)
         _mainBudgetList.value = currentList
     }
+
     fun insertData() {
         viewModelScope.launch {
             val id = mainLiveCurrentTemplate.value?.id ?: return@launch
-            val jsonEntry = Gson().toJson(_mainLiveEntryList.value.orEmpty())
+            val jsonEntry = Gson().toJson(mainLiveEntryList.value.orEmpty())
             val jsonTag = Gson().toJson(_mainLiveTagList.value.orEmpty())
             val jsonBudget = Gson().toJson(_mainBudgetList.value.orEmpty())
 
@@ -79,11 +84,39 @@ class MainViewModel(
         }
     }
 
-    fun loadData(){
-        viewModelScope.launch{
+    //TODO 역 직렬화해서 room database에 직접 뿌리는 형태로 바꿀 것.
+    private fun loadData() {
+        val currentTemplate = _mainLiveCurrentTemplate.value ?: return
 
+        viewModelScope.launch {
+            val loadData = roomRepo.getAllData(currentTemplate.id)
+            if (loadData != null) {
+
+                val loadEntry: List<EntryEntity> =
+                    Gson().fromJson(
+                        loadData.entryList,
+                        object : TypeToken<List<EntryEntity>>() {}.type
+                    )
+
+                val loadTag: List<TagModel> =
+                    Gson().fromJson(
+                        loadData.tagList,
+                        object : TypeToken<List<TagModel>>() {}.type
+                    )
+
+                val loadBudget: List<BudgetModel> =
+                    Gson().fromJson(
+                        loadData.budgetList,
+                        object : TypeToken<List<BudgetModel>>() {}.type
+                    )
+
+//                mainLiveEntryList.value = loadEntry
+                _mainLiveTagList.value = loadTag
+                _mainBudgetList.value = loadBudget
+            }
         }
     }
+
 
     //SharedPref
     fun saveSharedPrefCurrentUser(item: TemplateEntity?) {

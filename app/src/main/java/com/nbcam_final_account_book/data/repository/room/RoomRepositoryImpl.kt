@@ -1,6 +1,8 @@
 package com.nbcam_final_account_book.data.repository.room
 
+import androidx.lifecycle.LiveData
 import com.nbcam_final_account_book.data.model.local.DataEntity
+import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import java.util.UUID
@@ -59,10 +61,23 @@ class RoomRepositoryImpl(
         dao.insertData(item)
     }
 
-    override suspend fun getAllData(key: String): DataEntity {
+
+    override suspend fun getAllData(key: String): DataEntity? {
         val dao = database?.dataDao() ?: throw IllegalStateException("test fail")
 
         return dao.getDataById(key)
+    }
+
+    //Entry
+    override fun getAllEntry(): LiveData<List<EntryEntity>> {
+        val dao = database?.entryDao() ?: throw IllegalStateException("test fail")
+        return dao.getAllEntry()
+    }
+
+    override suspend fun insertEntry(item: EntryEntity) {
+        val dao = database?.entryDao() ?: throw IllegalStateException("test fail")
+
+        dao.insertEntry(item)
     }
 
 

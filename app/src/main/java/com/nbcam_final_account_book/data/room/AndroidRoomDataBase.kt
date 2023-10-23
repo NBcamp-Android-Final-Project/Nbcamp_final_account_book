@@ -5,15 +5,21 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.nbcam_final_account_book.data.model.local.DataEntity
+import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.room.dao.DataDao
+import com.nbcam_final_account_book.data.room.dao.EntryDao
 import com.nbcam_final_account_book.data.room.dao.TemplateDao
 
-@Database(entities = [TemplateEntity::class, DataEntity::class], version = 9)
+@Database(
+    entities = [TemplateEntity::class, DataEntity::class, EntryEntity::class],
+    version = 10
+)
 abstract class AndroidRoomDataBase : RoomDatabase() {
 
     abstract fun templateDao(): TemplateDao
     abstract fun dataDao(): DataDao
+    abstract fun entryDao(): EntryDao
 
 
     companion object {

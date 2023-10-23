@@ -1,12 +1,15 @@
 package com.nbcam_final_account_book.persentation.entry
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +23,15 @@ class EntryFragment : Fragment() {
 	private var _binding: FragmentEntryBinding? = null
 	private val binding get() = _binding!!
 	private lateinit var viewModel: EntryViewModel
+
+	private val registerLauncher =
+		registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+			if (result.resultCode == Activity.RESULT_OK) {
+				val entryData = result.data?.getStringExtra("entry")
+			} else {
+
+			}
+		}
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +50,8 @@ class EntryFragment : Fragment() {
 	}
 
 	private fun initView() = with(binding) {
+		val amount = edtNum.text
+		Log.d("amount", amount.toString())
 
 		// 수입 버튼
 		btnIncome.setOnClickListener {

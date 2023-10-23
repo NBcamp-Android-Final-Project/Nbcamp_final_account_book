@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.ItemTagBinding
 
 class TagListAdapter(private val onItemClick: (Int) -> Unit) :
@@ -22,7 +21,7 @@ class TagListAdapter(private val onItemClick: (Int) -> Unit) :
 		}
 
 	}) {
-	private val selectedItems = mutableListOf<Tag>()
+	private val selectedItems = arrayOf(1)
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val view = ItemTagBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -48,12 +47,9 @@ class TagListAdapter(private val onItemClick: (Int) -> Unit) :
 	}
 
 	private fun selectItem(binding: ItemTagBinding, tag: Tag) {
-		if (selectedItems.contains(tag)) {
-			selectedItems.remove(tag)
-			changeBackgroundColor(binding, R.color.calendar_sunday)
+		if (selectedItems.isEmpty()) {
+			selectedItems.plus(tag.icon)
 		} else {
-			selectedItems.add(tag)
-			changeBackgroundColor(binding, R.color.primary)
 			binding.ivIsChecked.visibility = View.VISIBLE
 		}
 	}

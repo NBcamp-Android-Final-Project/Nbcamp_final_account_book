@@ -11,7 +11,7 @@ import com.nbcam_final_account_book.data.model.local.TemplateEntity
 interface DataDao {
 
     @Query("SELECT * FROM data_table WHERE data_id = :id")
-    suspend fun getDataById(id: String): DataEntity // id = TemplateEntity.id
+    suspend fun getDataById(id: String): DataEntity? // id = TemplateEntity.id
 
     @Insert
     suspend fun insertData(entity: DataEntity) // DataEntity.id = TemplateEntity.id

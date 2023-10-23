@@ -85,21 +85,33 @@ class MainViewModel(
 
         viewModelScope.launch {
             val loadData = roomRepo.getAllData(currentTemplate.id)
+            if (loadData != null) {
 
-            val loadEntry: List<EntryModel> =
-                Gson().fromJson(loadData.entryList, object : TypeToken<List<EntryModel>>() {}.type)
+                val loadEntry: List<EntryModel> =
+                    Gson().fromJson(
+                        loadData.entryList,
+                        object : TypeToken<List<EntryModel>>() {}.type
+                    )
 
-            val loadTag: List<TagModel> =
-                Gson().fromJson(loadData.tagList, object : TypeToken<List<TagModel>>() {}.type)
+                val loadTag: List<TagModel> =
+                    Gson().fromJson(
+                        loadData.tagList,
+                        object : TypeToken<List<TagModel>>() {}.type
+                    )
 
-            val loadBudget: List<BudgetModel> =
-                Gson().fromJson(loadData.tagList, object : TypeToken<List<BudgetModel>>() {}.type)
+                val loadBudget: List<BudgetModel> =
+                    Gson().fromJson(
+                        loadData.budgetList,
+                        object : TypeToken<List<BudgetModel>>() {}.type
+                    )
 
-            _mainLiveEntryList.value = loadEntry
-            _mainLiveTagList.value = loadTag
-            _mainBudgetList.value = loadBudget
+                _mainLiveEntryList.value = loadEntry
+                _mainLiveTagList.value = loadTag
+                _mainBudgetList.value = loadBudget
+            }
         }
     }
+
 
     //SharedPref
     fun saveSharedPrefCurrentUser(item: TemplateEntity?) {

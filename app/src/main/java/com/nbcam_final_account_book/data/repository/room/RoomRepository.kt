@@ -16,7 +16,7 @@ interface RoomRepository {
 
     //DataEntity
     suspend fun insertData(item: DataEntity)
-    suspend fun getAllData(key: String): DataEntity
+    suspend fun getAllData(key: String): DataEntity?
 
 
 }

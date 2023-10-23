@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
+            android:saveEnabled="false"
             android:text="선택 안함" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
@@ -29,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
+            android:saveEnabled="false"
             android:text="비밀번호" />
     </RadioGroup>
 

@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class DataEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "data_id")
-    val id: Int = 0,
+    val id: String = "",
     @ColumnInfo("data_entryList")
     val entryList: String = "",
     @ColumnInfo(name = "data_tagList")

@@ -15,6 +15,8 @@ import com.nbcam_final_account_book.databinding.MainActivityBinding
 import com.nbcam_final_account_book.persentation.entry.ModalBottomFragment
 import com.nbcam_final_account_book.persentation.more.MoreFragment
 
+
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActivityBinding
@@ -42,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() = with(binding) {
         val auth = FirebaseAuth.getInstance()
+
         //toolbar 연결
         setSupportActionBar(mainToolbar)
 
@@ -59,9 +62,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(this@MainActivity)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this@MainActivity,
+            MainViewModelFactory(this@MainActivity)
+        )[MainViewModel::class.java]
 
+        with(viewModel){
 
+        }
 
     }
 

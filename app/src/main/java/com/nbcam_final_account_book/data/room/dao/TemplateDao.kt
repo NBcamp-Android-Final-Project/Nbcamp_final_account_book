@@ -25,8 +25,8 @@ interface TemplateDao {
     @Query("DELETE FROM template_table")
     suspend fun deleteAllTemplate() // 메서드 이름 변경
 
-    @Query("SELECT * FROM template_table LIMIT 1")
-    suspend fun getFirstTemplate(): TemplateEntity
+    @Query("SELECT * FROM template_table WHERE id = :id")
+    suspend fun getFirstTemplate(id: String): TemplateEntity
 
 
 }

@@ -2,12 +2,8 @@ package com.nbcam_final_account_book.persentation.template.addbudget
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
@@ -15,7 +11,10 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
-import kotlinx.coroutines.launch
+import com.nbcam_final_account_book.persentation.budget.BudgetModel
+import com.nbcam_final_account_book.unit.ReturnSettingModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class TemplateBudgetViewModel(
     private val roomRepo: RoomRepository,
@@ -23,32 +22,31 @@ class TemplateBudgetViewModel(
     private val fireRepo: FireBaseRepository
 ) : ViewModel() {
 
-    private val _liveTemplateEntity: MutableLiveData<TemplateEntity> = MutableLiveData()
-    val liveTemplateEntity: LiveData<TemplateEntity> get() = _liveTemplateEntity
-    fun insertFirstTemplate(title: String, budget: String) {
+
+    suspend fun insertTemplate(title: String, budget: String) = withContext(Dispatchers.IO) {
 
 
-        viewModelScope.launch {
-            roomRepo.insertFirstTemplate(title)  // room에 데이터 삽입
+        val key = roomRepo.insertFirstTemplate(title)  // room에 데이터 삽입
 
-            val templateModel = roomRepo.selectFirstTemplate()
-            _liveTemplateEntity.value = templateModel
-            Log.d("현재.모델", templateModel.toString())
-            fireRepo.setTemplate(fireRepo.getUser(), templateModel)   // 이후 firebase에 데이터 삽입
+        val templateModel = roomRepo.selectFirstTemplate(key)
+        Log.d("삽입.Template 모델", templateModel.toString())
+        fireRepo.setTemplate(fireRepo.getUser(), templateModel)   // 이후 firebase에 데이터 삽입
 
-            val template = "${templateModel.templateTitle}-${templateModel.id}"
-            fireRepo.setBudget(
-                user = fireRepo.getUser(),
-                template = template,
-                budget = budget
-            )
+        val template = "${templateModel.templateTitle}-${templateModel.id}"
+        val resultBudget = BudgetModel(budget = budget)
+        fireRepo.setBudget(
+            user = fireRepo.getUser(),
+            template = template,
+            budget = BudgetModel(budget = budget)
+        )
 
-        }
+        ReturnSettingModel(
+            templateModel,
+            resultBudget
+        )
+
     }
 
-    fun getModel(): TemplateEntity? {
-        return liveTemplateEntity.value
-    }
 }
 
 class TemplateBudgetViewModelFactory(

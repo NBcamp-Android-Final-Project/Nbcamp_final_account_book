@@ -15,17 +15,20 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.R
-import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.TemplateBudgetFragmentBinding
 import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateViewModel
+import com.nbcam_final_account_book.unit.ReturnSettingModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.NumberFormatException
 import java.text.DecimalFormat
 
 class TemplateBudgetFragment : Fragment() {
 
     companion object {
-        const val EXTRA_TEMPLATE = "extra_template"
+        const val EXTRA_RESULT = "extra_result"
     }
 
     private var _binding: TemplateBudgetFragmentBinding? = null
@@ -115,15 +118,16 @@ class TemplateBudgetFragment : Fragment() {
                 0
             }
 
+            CoroutineScope(Dispatchers.Main).launch {
+                val model = insertFirstTemplate(number.toString())
 
-
-            insertFirstTemplate(number.toString())
-            val intent = Intent(requireContext(), MainActivity::class.java).apply {
-//                putExtra(EXTRA_TEMPLATE,getModel())
+                val intent = Intent(requireContext(), MainActivity::class.java).apply {
+                    putExtra(EXTRA_RESULT, model)
+                }
+                Log.d("인텐트", model.toString())
+                startActivity(intent)
+                requireActivity().finish()
             }
-//            Log.d("인텐트", getModel().toString())
-            startActivity(intent)
-            requireActivity().finish()
 
 
         }
@@ -136,13 +140,9 @@ class TemplateBudgetFragment : Fragment() {
     }
 
 
-    private fun insertFirstTemplate(budget: String) {
+    private suspend fun insertFirstTemplate(budget: String): ReturnSettingModel {
         val title = sharedViewModel.getCurrentTitle()
-        viewModel.insertFirstTemplate(title, budget) // 무조건 먼저 실행 되어 룸에 삽입 되어야 함
-    }
-
-    private fun getModel(): TemplateEntity? {
-        return viewModel.getModel()
+        return viewModel.insertTemplate(title, budget) // 무조건 먼저 실행 되어 룸에 삽입 되어야 함
     }
 
 

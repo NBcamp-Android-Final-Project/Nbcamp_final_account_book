@@ -7,6 +7,7 @@ import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.model.remote.ResponseEntryModel
 import com.nbcam_final_account_book.data.model.remote.ResponseTagModel
+import com.nbcam_final_account_book.persentation.budget.BudgetModel
 import com.nbcam_final_account_book.persentation.entry.EntryModel
 import com.nbcam_final_account_book.persentation.entry.toResponse
 import com.nbcam_final_account_book.persentation.tag.TagModel
@@ -249,7 +250,7 @@ class FireBaseRepositoryImpl(
         try {
             val snapshot = database.getReference(path).get().await()
 
-            if (snapshot.exists()) {
+            return if (snapshot.exists()) {
                 val responseList = mutableListOf<TemplateEntity>()
                 for (userSnapshot in snapshot.children) {
                     val getData = userSnapshot.getValue(TemplateEntity::class.java)
@@ -259,9 +260,9 @@ class FireBaseRepositoryImpl(
                         responseList.add(getData)
                     }
                 }
-                return responseList
+                responseList
             } else {
-                return emptyList()
+                emptyList()
             }
         } catch (e: Exception) {
 
@@ -302,7 +303,7 @@ class FireBaseRepositoryImpl(
     }
 
 
-    override suspend fun setBudget(user: String, template: String, budget: String) {
+    override suspend fun setBudget(user: String, template: String, budget: BudgetModel) {
         val database = Firebase.database
         val path = "$user/$template/$PATH_BUDGET"
         val myRef = database.getReference(path)
@@ -310,21 +311,32 @@ class FireBaseRepositoryImpl(
         myRef.push().setValue(budget)
     }
 
-    override suspend fun getBudget(user: String, template: String): String? {
+    override suspend fun getBudget(user: String, template: String): List<BudgetModel> {
         val database = Firebase.database
         val path = "$user/$template/$PATH_BUDGET"
         val myRef = database.getReference(path)
 
-        return try {
-            val snapshot = myRef.get().await()
+        try {
+            val snapshot = database.getReference(path).get().await()
+
             if (snapshot.exists()) {
-                snapshot.getValue(String::class.java)
+                val responseList = mutableListOf<BudgetModel>()
+                for (userSnapshot in snapshot.children) {
+                    val getData = userSnapshot.getValue(BudgetModel::class.java)
+
+                    getData?.let {
+
+                        responseList.add(getData)
+                    }
+                }
+                return responseList
             } else {
-                null
+                return emptyList()
             }
         } catch (e: Exception) {
-            Log.e("FirebaseRepo", "Budget 데이터 가져오기 중 오류 발생", e)
-            null
+
+            Log.e("FirebaseRepo", "BudgetModel 데이터 가져오기 중 오류 발생")
+            return emptyList()
         }
     }
 

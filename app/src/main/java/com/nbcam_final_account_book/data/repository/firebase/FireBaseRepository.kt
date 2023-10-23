@@ -3,8 +3,10 @@ package com.nbcam_final_account_book.data.repository.firebase
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.model.remote.ResponseEntryModel
 import com.nbcam_final_account_book.data.model.remote.ResponseTagModel
+import com.nbcam_final_account_book.persentation.budget.BudgetModel
 import com.nbcam_final_account_book.persentation.entry.EntryModel
 import com.nbcam_final_account_book.persentation.tag.TagModel
+import java.time.chrono.ThaiBuddhistEra
 
 interface FireBaseRepository {
     // template는 "${$item.templateTitle}-${item.id}" 형식으로 지정한다.
@@ -49,9 +51,9 @@ interface FireBaseRepository {
 
     suspend fun setTemplate(user: String, item: TemplateEntity): List<TemplateEntity>
 
-    suspend fun setBudget(user: String, template: String, budget: String)
+    suspend fun setBudget(user: String, template: String, budget: BudgetModel)
 
-    suspend fun getBudget(user: String, template: String): String?
+    suspend fun getBudget(user: String, template: String): List<BudgetModel>
 
 
     fun logout()

@@ -14,11 +14,12 @@ class RoomRepositoryImpl(
         return dao.getTemplateList()
     }
 
-    override suspend fun insertFirstTemplate(text: String) {
+    override suspend fun insertFirstTemplate(text: String): String {
         val dao = database?.templateDao() ?: throw IllegalStateException("test fail")
         val customKey = UUID.randomUUID().toString()
 
         dao.insertTemplate(TemplateEntity(id = customKey, templateTitle = text))
+        return customKey
     }
 
     override suspend fun insertTemplate(text: String): List<TemplateEntity> {
@@ -46,16 +47,22 @@ class RoomRepositoryImpl(
         dao.deleteAllTemplate()
     }
 
-    override suspend fun selectFirstTemplate(): TemplateEntity {
+    override suspend fun selectFirstTemplate(key: String): TemplateEntity {
         val dao = database?.templateDao() ?: throw IllegalStateException("test fail")
 
-        return dao.getFirstTemplate()
+        return dao.getFirstTemplate(key)
     }
 
     override suspend fun insertData(item: DataEntity) {
         val dao = database?.dataDao() ?: throw IllegalStateException("test fail")
 
         dao.insertData(item)
+    }
+
+    override suspend fun getAllData(key: String): DataEntity {
+        val dao = database?.dataDao() ?: throw IllegalStateException("test fail")
+
+        return dao.getDataById(key)
     }
 
 

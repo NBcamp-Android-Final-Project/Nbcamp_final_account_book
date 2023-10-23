@@ -13,6 +13,7 @@ import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import com.nbcam_final_account_book.persentation.budget.BudgetModel
 import com.nbcam_final_account_book.unit.ReturnSettingModel
+import com.nbcam_final_account_book.unit.Unit.setIdBudget
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -29,6 +30,11 @@ class TemplateBudgetViewModel(
         val key = roomRepo.insertFirstTemplate(title)  // room에 데이터 삽입
 
         val templateModel = roomRepo.selectFirstTemplate(key)
+        val budgetModel = BudgetModel(
+            id = setIdBudget(),
+            budget = budget
+        )
+
         Log.d("삽입.Template 모델", templateModel.toString())
         fireRepo.setTemplate(fireRepo.getUser(), templateModel)   // 이후 firebase에 데이터 삽입
 
@@ -37,7 +43,7 @@ class TemplateBudgetViewModel(
         fireRepo.setBudget(
             user = fireRepo.getUser(),
             template = template,
-            budget = BudgetModel(budget = budget)
+            budget = budgetModel
         )
 
         ReturnSettingModel(

@@ -5,6 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class BudgetModel(
-    val id: Int = 0,
+    val id: Long = 0,
     val budget: String, // 예산값
 ) : Parcelable

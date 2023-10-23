@@ -10,8 +10,9 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
         android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,6 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:contentDescription="@null"
             android:src="@drawable/ic_calendar_selector_arrow_left" />
 
         <TextView
@@ -35,23 +37,33 @@
 
         <ImageView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
             android:layout_weight="1"
-            android:src="@android:drawable/ic_input_add"/>
+            android:contentDescription="@null"
+            android:src="@drawable/ic_modify" />
 
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end"
+            android:layout_weight="1"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_bottom_sheet_add" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tv_tag_manage_container"
+        android:id="@+id/rv_tag_manage_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingTop="8dp"
+        android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        tools:listitem="@layout/item_tag_manage" />
+        app:spanCount="5"
+        tools:listitem="@layout/item_tag" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

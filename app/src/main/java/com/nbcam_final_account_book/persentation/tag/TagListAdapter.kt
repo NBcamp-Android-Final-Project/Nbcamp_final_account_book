@@ -1,15 +1,16 @@
-package com.nbcam_final_account_book.persentation.entry
+package com.nbcam_final_account_book.persentation.tag
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.databinding.ItemTagBinding
-import com.nbcam_final_account_book.persentation.tag.Tag
 
-class ModalTagListAdapter(private val onItemClick: (Int) -> Unit) :
-	ListAdapter<Tag, ModalTagListAdapter.ViewHolder>(object :
+class TagListAdapter(private val onItemClick: (Int) -> Unit) :
+	ListAdapter<Tag, TagListAdapter.ViewHolder>(object :
 		DiffUtil.ItemCallback<Tag>() {
 		override fun areItemsTheSame(oldItem: Tag, newItem: Tag): Boolean {
 			return oldItem.title == newItem.title
@@ -20,6 +21,8 @@ class ModalTagListAdapter(private val onItemClick: (Int) -> Unit) :
 		}
 
 	}) {
+	private val selectedItems = arrayOf(1)
+
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val view = ItemTagBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 		return ViewHolder(view)
@@ -38,7 +41,20 @@ class ModalTagListAdapter(private val onItemClick: (Int) -> Unit) :
 
 			itemView.setOnClickListener {
 				onItemClick(adapterPosition)
+				selectItem(binding, item)
 			}
 		}
+	}
+
+	private fun selectItem(binding: ItemTagBinding, tag: Tag) {
+		if (selectedItems.isEmpty()) {
+			selectedItems.plus(tag.icon)
+		} else {
+			binding.ivIsChecked.visibility = View.VISIBLE
+		}
+	}
+
+	private fun changeBackgroundColor(binding: ItemTagBinding, resId: Int) {
+		binding.root.setBackgroundColor(ContextCompat.getColor(binding.root.context, resId))
 	}
 }

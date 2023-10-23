@@ -361,6 +361,24 @@ class FireBaseRepositoryImpl(
         myRef.push().setValue(budget)
     }
 
+    suspend fun getBudget(user: String, template: String): String? {
+        val database = Firebase.database
+        val path = "$user/$template/$PATH_BUDGET"
+        val myRef = database.getReference(path)
+
+        return try {
+            val snapshot = myRef.get().await()
+            if (snapshot.exists()) {
+                snapshot.getValue(String::class.java)
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseRepo", "Budget 데이터 가져오기 중 오류 발생", e)
+            null
+        }
+    }
+
     override fun logout() {
         val auth = FirebaseAuth.getInstance()
         auth.signOut()

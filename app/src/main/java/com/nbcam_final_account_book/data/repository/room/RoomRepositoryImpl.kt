@@ -1,5 +1,6 @@
 package com.nbcam_final_account_book.data.repository.room
 
+import com.nbcam_final_account_book.data.model.local.DataEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import java.util.UUID
@@ -48,6 +49,12 @@ class RoomRepositoryImpl(
         val dao = database?.templateDao() ?: throw IllegalStateException("test fail")
 
         return dao.getFirstTemplate()
+    }
+
+    override suspend fun insertData(item: DataEntity) {
+        val dao = database?.dataDao() ?: throw IllegalStateException("test fail")
+
+        dao.insertData(item)
     }
 
 

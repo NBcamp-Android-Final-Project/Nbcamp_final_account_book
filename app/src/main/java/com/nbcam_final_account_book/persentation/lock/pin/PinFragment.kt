@@ -35,16 +35,10 @@ class PinFragment : Fragment() {
     private var currentLine = 0
     private var isSecondInput = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("PinFragment", "현재 위치: onCreate")
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("PinFragment", "현재 위치: onCreateView")
         _binding = PinFragmentBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -52,20 +46,17 @@ class PinFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("PinFragment", "현재 위치: onViewCreated")
         navController = findNavController()
         initView()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("PinFragment", "현재 위치: onDestroy")
         _binding = null
     }
 
     private fun initView() = with(binding) {
         pinTvAlert.text = "가계부 비밀번호를 입력해주세요."
-
         ivLine = arrayOf(
             pinIvLine1, pinIvLine2, pinIvLine3, pinIvLine4
         )
@@ -124,8 +115,7 @@ class PinFragment : Fragment() {
                         Log.d(PIN, "First / Second Input: $pin1 / $pin2")
 
                         if (pin1 == pin2) {
-                            sharedViewModel.savePassword(pin2)
-
+                            sharedViewModel.savePin(pin2)
                             navController.popBackStack(R.id.lockSettingFragment, false)
                         } else {
                             pinTvAlert.text = "비밀번호가 일치하지 않습니다.\n처음부터 다시 시도해주세요."

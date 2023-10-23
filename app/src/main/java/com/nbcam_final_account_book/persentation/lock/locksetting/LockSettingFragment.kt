@@ -18,14 +18,13 @@ class LockSettingFragment : Fragment() {
     private var _binding: LockSettingFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: LockSharedViewModel by activityViewModels()
+    private val sharedViewModel: LockSharedViewModel by activityViewModels()
     private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("LockSettingFragment", "현재 위치: onCreateView")
         _binding = LockSettingFragmentBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -33,7 +32,6 @@ class LockSettingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("LockSettingFragment", "현재 위치: onViewCreated")
         navController = findNavController()
         initView()
         initViewModel()
@@ -41,7 +39,6 @@ class LockSettingFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("LockSettingFragment", "현재 위치: onDestroy")
         _binding = null
     }
 
@@ -52,7 +49,7 @@ class LockSettingFragment : Fragment() {
                     locksettingDivider1.visibility = View.GONE
                     locksettingSwitchFingerprint.visibility = View.GONE
                     locksettingTvPinEdit.visibility = View.GONE
-                    viewModel.clearPassword()
+                    sharedViewModel.clearPin()
                 }
 
                 R.id.locksetting_btn_pin -> {
@@ -69,13 +66,12 @@ class LockSettingFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        viewModel.isPinSet.observe(viewLifecycleOwner) {
-            binding.locksettingBtnNone.isChecked = !it
+        sharedViewModel.isPinSet.observe(viewLifecycleOwner) {
             binding.locksettingBtnPin.isChecked = it
         }
 
-        viewModel.password.observe(viewLifecycleOwner) { password ->
-            Log.d("LockSettingFragment", "password: $password")
+        sharedViewModel.pin.observe(viewLifecycleOwner) { pin ->
+            Log.d("LockSettingFragment", "pin: $pin")
         }
     }
 }

@@ -361,7 +361,7 @@ class FireBaseRepositoryImpl(
         myRef.push().setValue(budget)
     }
 
-    suspend fun getBudget(user: String, template: String): String? {
+    override suspend fun getBudget(user: String, template: String): String? {
         val database = Firebase.database
         val path = "$user/$template/$PATH_BUDGET"
         val myRef = database.getReference(path)

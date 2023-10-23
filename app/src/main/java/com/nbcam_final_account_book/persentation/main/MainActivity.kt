@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.MainActivityBinding
+import com.nbcam_final_account_book.persentation.budget.BudgetModel
 import com.nbcam_final_account_book.persentation.entry.ModalBottomFragment
 import com.nbcam_final_account_book.persentation.more.MoreFragment
 import com.nbcam_final_account_book.persentation.template.addbudget.TemplateBudgetFragment
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity() {
             val extraEntity = extraTemplate?.templateEntity
             val extraBudget = extraTemplate?.budgetModel
             updateTemplate(extraEntity)
+            addBudget(extraBudget)
         }
 
 
@@ -113,6 +115,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateTemplate(item: TemplateEntity?) {
         viewModel.updateCurrentTemplate(item)
+    }
+
+    private fun addBudget(item: BudgetModel?) {
+        viewModel.addBudget(item)
     }
 
 

@@ -71,6 +71,13 @@ class MainViewModel(
         _mainLiveCurrentTemplate.value = item
     }
 
+    fun addBudget(item: BudgetModel?) {
+        if (item == null) return
+        val currentList = mainBudgetList.value.orEmpty().toMutableList()
+        currentList.add(item)
+        _mainBudgetList.value = currentList
+    }
+
     //SharedPref
     fun saveSharedPrefCurrentUser(item: TemplateEntity?) {
         if (item == null) return

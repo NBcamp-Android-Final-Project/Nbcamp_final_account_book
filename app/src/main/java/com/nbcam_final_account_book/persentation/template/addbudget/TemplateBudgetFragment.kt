@@ -5,29 +5,40 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.R
+import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.TemplateBudgetFragmentBinding
 import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.lang.NumberFormatException
 import java.text.DecimalFormat
 
 class TemplateBudgetFragment : Fragment() {
 
+    companion object {
+        const val EXTRA_TEMPLATE = "extra_template"
+    }
+
     private var _binding: TemplateBudgetFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var onBackPressedCallback: OnBackPressedCallback
 
-    private val viewModel: TemplateViewModel by activityViewModels()
+    private val viewModel: TemplateBudgetViewModel by lazy {
+        ViewModelProvider(
+            this@TemplateBudgetFragment,
+            TemplateBudgetViewModelFactory(requireContext())
+        )[TemplateBudgetViewModel::class.java]
+    }
+    private val sharedViewModel: TemplateViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,9 +115,13 @@ class TemplateBudgetFragment : Fragment() {
                 0
             }
 
-            val intent = Intent(requireContext(), MainActivity::class.java)
+
 
             insertFirstTemplate(number.toString())
+            val intent = Intent(requireContext(), MainActivity::class.java).apply {
+//                putExtra(EXTRA_TEMPLATE,getModel())
+            }
+//            Log.d("인텐트", getModel().toString())
             startActivity(intent)
             requireActivity().finish()
 
@@ -120,10 +135,14 @@ class TemplateBudgetFragment : Fragment() {
         _binding = null
     }
 
-    //Todo 함수 캡슐화 : 하나로 합치기
-    private fun insertFirstTemplate(budget: String) = with(viewModel) {
-        val title = getCurrentTitle()
-        insertFirstTemplate(title, budget) // 무조건 먼저 실행 되어 룸에 삽입 되어야 함
+
+    private fun insertFirstTemplate(budget: String) {
+        val title = sharedViewModel.getCurrentTitle()
+        viewModel.insertFirstTemplate(title, budget) // 무조건 먼저 실행 되어 룸에 삽입 되어야 함
+    }
+
+    private fun getModel(): TemplateEntity? {
+        return viewModel.getModel()
     }
 
 

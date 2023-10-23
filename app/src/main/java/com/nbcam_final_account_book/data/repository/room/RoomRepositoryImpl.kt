@@ -21,11 +21,12 @@ class RoomRepositoryImpl(
         dao.insertTemplate(TemplateEntity(id = customKey, templateTitle = text))
     }
 
-    override suspend fun insertTemplate(item: TemplateEntity): List<TemplateEntity> {
+    override suspend fun insertTemplate(text: String): List<TemplateEntity> {
 
         val dao = database?.templateDao() ?: throw IllegalStateException("test fail")
+        val customKey = UUID.randomUUID().toString()
 
-        dao.insertTemplate(item)
+        dao.insertTemplate(TemplateEntity(id = customKey, templateTitle = text))
 
         return dao.getTemplateList()
     }

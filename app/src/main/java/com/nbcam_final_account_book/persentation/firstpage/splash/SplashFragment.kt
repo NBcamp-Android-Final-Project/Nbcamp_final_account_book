@@ -61,6 +61,7 @@ class SplashFragment : Fragment() {
 
     private suspend fun isFirstLogin(): Boolean {
         val data = viewModel.getAllTemplateSize()
+        Log.d("listsize", data.toString())
 
         return data > 0
     }

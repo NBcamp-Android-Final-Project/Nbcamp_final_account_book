@@ -1,9 +1,12 @@
 package com.nbcam_final_account_book.persentation.main
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -11,10 +14,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
+import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.MainActivityBinding
 import com.nbcam_final_account_book.persentation.entry.ModalBottomFragment
 import com.nbcam_final_account_book.persentation.more.MoreFragment
-
+import com.nbcam_final_account_book.persentation.template.addbudget.TemplateBudgetFragment
+import com.nbcam_final_account_book.unit.ReturnSettingModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,13 +27,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: MainActivityBinding
     private lateinit var viewModel: MainViewModel
 
+    private val extraTemplate: ReturnSettingModel? by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(
+                TemplateBudgetFragment.EXTRA_RESULT,
+                ReturnSettingModel::class.java
+            )
+        } else {
+            intent.getParcelableExtra<ReturnSettingModel>(TemplateBudgetFragment.EXTRA_RESULT)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initView()
         initViewModel()
+        initView()
+
     }
 
 
@@ -43,7 +60,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() = with(binding) {
-        val auth = FirebaseAuth.getInstance()
+
+        Log.d("도착", extraTemplate.toString())
+        if (extraTemplate != null) {
+            val extraEntity = extraTemplate?.templateEntity
+            val extraBudget = extraTemplate?.budgetModel
+            updateTemplate(extraEntity)
+        }
+
 
         //toolbar 연결
         setSupportActionBar(mainToolbar)
@@ -67,8 +91,10 @@ class MainActivity : AppCompatActivity() {
             MainViewModelFactory(this@MainActivity)
         )[MainViewModel::class.java]
 
-        with(viewModel){
-
+        with(viewModel) {
+            mainLiveCurrentTemplate.observe(this@MainActivity, Observer { it->
+                Log.d("옵저빙.템플릿", it.toString())
+            })
         }
 
     }
@@ -80,6 +106,12 @@ class MainActivity : AppCompatActivity() {
                 add(R.id.main_fragment, MoreFragment())
             }
         }
+
+    fun updateTemplate(item: TemplateEntity?) {
+        viewModel.updateCurrentTemplate(item)
+    }
+
+
 }
 
 

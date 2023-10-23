@@ -250,7 +250,7 @@ class FireBaseRepositoryImpl(
         try {
             val snapshot = database.getReference(path).get().await()
 
-            if (snapshot.exists()) {
+            return if (snapshot.exists()) {
                 val responseList = mutableListOf<TemplateEntity>()
                 for (userSnapshot in snapshot.children) {
                     val getData = userSnapshot.getValue(TemplateEntity::class.java)
@@ -260,9 +260,9 @@ class FireBaseRepositoryImpl(
                         responseList.add(getData)
                     }
                 }
-                return responseList
+                responseList
             } else {
-                return emptyList()
+                emptyList()
             }
         } catch (e: Exception) {
 

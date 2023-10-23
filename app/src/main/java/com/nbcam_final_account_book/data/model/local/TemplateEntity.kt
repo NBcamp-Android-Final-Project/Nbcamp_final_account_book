@@ -11,7 +11,7 @@ data class TemplateEntity(
     @ColumnInfo(name = "id")
     val id: Int = 0,
     @ColumnInfo(name = "key")
-    val key: String = "",
+    val key: String = "Undefined",
     @ColumnInfo(name = "template")
     val templateTitle: String = ""
 )
@@ -27,7 +27,9 @@ data class TemplateEntity(
 // 3. 현재는 여러번 통신해도 상관 없지 않을 것 같다.
 // 4. 유니크한 키값을 어떻게 만들 수 있을까? <-datatime기준으로도 만들 수 있음
 // datetiem을 받아서 16진수로 변환해볼까? <<
-//  useruid+YYYY-mm-dd-까지 해서< 숫자를 16진수로 변환 한다면? 고유값
+// useruid+YYYY-mm-dd-까지 해서< 숫자를 16진수로 변환 한다면? 고유값
+// offline에서 로그인 회원은 그냥 uid를 저장해 두면 되는 건데
+// 비회원은 로그인이 안되었으니 firebase랑 연결 자체는 못할 것 같기는 함. <<
 
 fun TemplateEntity.toResponse(key: String): ResponseTemplateModel {
 

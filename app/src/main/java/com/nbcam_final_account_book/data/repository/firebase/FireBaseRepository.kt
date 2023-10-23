@@ -58,6 +58,8 @@ interface FireBaseRepository {
 
     suspend fun setBudget(user: String, template: String, budget: String)
 
+    suspend fun getBudget(user: String, template: String): String?
+
 
     fun logout()
 }

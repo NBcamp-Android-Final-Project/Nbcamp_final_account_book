@@ -189,15 +189,15 @@ class LoginFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        CoroutineScope(Dispatchers.Main).launch {
-                            if (isFirstLogin()) {
-                                toMainActivity()
-                            } else {
-                                toTemplateActivity()
-                            }
-                        }
+//                        CoroutineScope(Dispatchers.Main).launch {
+//                            if (isFirstLogin()) {
+//                                toMainActivity()
+//                            } else {
+//                                toTemplateActivity()
+//                            }
+//                        }
 
-//                        toTemplateActivity() // 테스팅 코드
+                        toTemplateActivity() // 테스팅 코드
 
                     } else {
                         Toast.makeText(

@@ -33,7 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:hint="예산을 입력해 주세요"
+        android:hint="초기 예산을 입력해 주세요"
         android:inputType="number"
         android:maxLength="15"
         android:maxLines="1"

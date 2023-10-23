@@ -39,6 +39,8 @@ class SplashFragment : Fragment() {
     }
 
     private fun initView() = with(binding) {
+
+        //TODO viewmodel 수준으로 옮기기
         val auth = FirebaseAuth.getInstance()
         val nowCurrentUser = auth.currentUser
 

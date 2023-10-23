@@ -6,18 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.R
-import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import com.nbcam_final_account_book.databinding.PinFragmentBinding
 import com.nbcam_final_account_book.persentation.lock.LockSharedViewModel
-import com.nbcam_final_account_book.persentation.lock.LockViewModelFactory
 
 class PinFragment : Fragment() {
 
@@ -28,14 +24,11 @@ class PinFragment : Fragment() {
     private var _binding: PinFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var sharedViewModel: LockSharedViewModel
-    private lateinit var viewModel: PinViewModel
+    private val sharedViewModel: LockSharedViewModel by activityViewModels()
     private lateinit var navController: NavController
 
-    private lateinit var tvAlert: TextView
     private lateinit var ivLine: Array<ImageView>
     private lateinit var numberButtons: Array<AppCompatButton>
-    private lateinit var btnDelete: AppCompatImageButton
 
     private var pin1 = ""
     private var pin2 = ""
@@ -53,8 +46,6 @@ class PinFragment : Fragment() {
     ): View {
         Log.d("PinFragment", "현재 위치: onCreateView")
         _binding = PinFragmentBinding.inflate(inflater, container, false)
-        sharedViewModel = ViewModelProvider(this, LockViewModelFactory(SharedProviderImpl(requireContext())))[LockSharedViewModel::class.java]
-        viewModel = ViewModelProvider(this, PinViewModelFactory(SharedProviderImpl(requireContext())))[PinViewModel::class.java]
 
         return binding.root
     }
@@ -72,15 +63,8 @@ class PinFragment : Fragment() {
         _binding = null
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d("PinFragment", "현재 위치: onDestroyView")
-    }
-
-
     private fun initView() = with(binding) {
-        tvAlert = pinTvAlert
-        tvAlert.text = "가계부 비밀번호를 입력해주세요."
+        pinTvAlert.text = "가계부 비밀번호를 입력해주세요."
 
         ivLine = arrayOf(
             pinIvLine1, pinIvLine2, pinIvLine3, pinIvLine4
@@ -97,14 +81,13 @@ class PinFragment : Fragment() {
             pinNumpad.btn9,
             pinNumpad.btn0
         )
-        btnDelete = pinNumpad.btnDelete
 
         setNumberButtonListeners()
         setDeleteButtonListener()
     }
 
-    private fun setDeleteButtonListener() {
-        btnDelete.setOnClickListener {
+    private fun setDeleteButtonListener() = with(binding) {
+        pinNumpad.btnDelete.setOnClickListener {
             if (isSecondInput && pin2.isNotEmpty() && pin2.length <= 4) {
                 pin2 = pin2.dropLast(1)
                 ivLine[currentLine - 1].setImageResource(R.drawable.ic_line)
@@ -117,7 +100,7 @@ class PinFragment : Fragment() {
         }
     }
 
-    private fun setNumberButtonListeners() {
+    private fun setNumberButtonListeners() = with(binding) {
         for (btn in numberButtons) {
             btn.setOnClickListener {
                 val num = btn.text.toString()
@@ -130,7 +113,7 @@ class PinFragment : Fragment() {
                         Log.d(PIN, "First Input: $pin1")
                         resetInput()
                         isSecondInput = true
-                        tvAlert.text = "확인을 위해 한번 더 입력해주세요."
+                        pinTvAlert.text = "확인을 위해 한번 더 입력해주세요."
                     }
                 } else if (isSecondInput && pin2.length < 4) {  // 두 번째 입력
                     pin2 += num
@@ -140,18 +123,12 @@ class PinFragment : Fragment() {
                     if (pin2.length == 4) { // 두 번째 비밀번호가 4자리 입력되면
                         Log.d(PIN, "First / Second Input: $pin1 / $pin2")
 
-                        if (viewModel.arePinMatching(pin1, pin2)) {
+                        if (pin1 == pin2) {
                             sharedViewModel.savePassword(pin2)
-                            /*sharedViewModel.password.observe(viewLifecycleOwner) { password ->
-                                Log.d("PinFragment", "Password: $password")
-                            }*/
-                            sharedViewModel.setIsPinSet(true)
-                            /*sharedViewModel.isPinSet.observe(viewLifecycleOwner) { isPinSet ->
-                                Log.d("PinFragment", "!!!!!!!isPinSet: $isPinSet")
-                            }*/
+
                             navController.popBackStack(R.id.lockSettingFragment, false)
                         } else {
-                            tvAlert.text = "비밀번호가 일치하지 않습니다.\n처음부터 다시 시도해주세요."
+                            pinTvAlert.text = "비밀번호가 일치하지 않습니다.\n처음부터 다시 시도해주세요."
                             pin1 = ""
                             pin2 = ""
                             resetInput()

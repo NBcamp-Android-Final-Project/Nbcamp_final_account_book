@@ -4,10 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 
-class LockSharedViewModel(private val sharedProvider: SharedProvider) : ViewModel() {
+class LockSharedViewModel() : ViewModel() {
     private val _password = MutableLiveData<String>()
     val password: LiveData<String> get() = _password
 
@@ -16,13 +14,12 @@ class LockSharedViewModel(private val sharedProvider: SharedProvider) : ViewMode
 
     init {
         _password.value = loadPassword()
-        _isPinSet.value = _password.value!!.isNotEmpty()
+        _isPinSet.value = _password.value?.isNotEmpty() ?: false
     }
 
     fun savePassword(pin: String) {
         _password.value = pin
-        val isPasswordSet = pin.isNotEmpty()
-        _isPinSet.value = isPasswordSet
+        _isPinSet.value = pin.isNotEmpty()
 
         Log.d("LockSharedViewModel", "이때 호출 된다!!!!")
         Log.d("LockSharedViewModel", "_password: ${_password.value}")
@@ -42,16 +39,8 @@ class LockSharedViewModel(private val sharedProvider: SharedProvider) : ViewMode
         return _isPinSet.value ?: false
     }
 
-    fun loadPassword(): String {
+    private fun loadPassword(): String {
+        //TODO: sharedPreferences에서 저장된 비밀번호 로드해오기
         return _password.value ?: ""
-    }
-}
-
-class LockViewModelFactory(private val sharedProvider: SharedProvider) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LockSharedViewModel::class.java)) {
-            return LockSharedViewModel(sharedProvider) as T
-        }
-        throw IllegalArgumentException("Not found ViewModel class.")
     }
 }

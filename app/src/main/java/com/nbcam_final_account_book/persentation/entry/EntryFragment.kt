@@ -11,96 +11,89 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.FragmentEntryBinding
+import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_INCOME
+import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_PAY
 import java.text.DecimalFormat
 
 class EntryFragment : Fragment() {
 
-	private var _binding: FragmentEntryBinding? = null
-	private val binding get() = _binding!!
-	private lateinit var viewModel: EntryViewModel
+    private var _binding: FragmentEntryBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: EntryViewModel by activityViewModels()
 
-	private val registerLauncher =
-		registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-			if (result.resultCode == Activity.RESULT_OK) {
-				val entryData = result.data?.getStringExtra("entry")
-			} else {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentEntryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-			}
-		}
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		_binding = FragmentEntryBinding.inflate(inflater, container, false)
-		return binding.root
-	}
+        editTextFormat()
+        initView()
 
-	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
+    }
 
-		initView()
-		initViewModel()
-		editTextFormat()
-	}
+    private fun initView() = with(binding) {
+        val amount = edtNum.text.toString()
+        Log.d("amount", amount.toString())
 
-	private fun initView() = with(binding) {
-		val amount = edtNum.text
-		Log.d("amount", amount.toString())
+        // 수입 버튼
 
-		// 수입 버튼
-		btnIncome.setOnClickListener {
-			findNavController().navigate(R.id.action_entryFragment2_to_entryDetailFragment)
-		}
+            btnIncome.setOnClickListener {
+                val amount1 = edtNum.text.toString()
+                updateData(amount = amount1, type = INPUT_TYPE_INCOME)
+                findNavController().navigate(R.id.action_entryFragment2_to_entryDetailFragment)
+            }
 
-		// 지출 버튼
-		btnSpending.setOnClickListener {
-			findNavController().navigate(R.id.action_entryFragment2_to_entryDetailFragment)
-		}
+            // 지출 버튼
+            btnSpending.setOnClickListener {
+                val amount2 = edtNum.text.toString()
+                updateData(amount = amount2, type = INPUT_TYPE_PAY)
+                findNavController().navigate(R.id.action_entryFragment2_to_entryDetailFragment)
+            }
 
-		binding.ivBack.setOnClickListener {
+            binding.ivBack.setOnClickListener {
+                requireActivity().finish()
+            }
 
-		}
-	}
 
-	private fun initViewModel() {
+    }
 
-		viewModel = ViewModelProvider(
-			this,
-			EntryViewModelFactory()
-		)[EntryViewModel::class.java]
+    private fun updateData(amount: String, type: String) {
 
-		with(viewModel) {
+        viewModel.updateAmount(amount = amount, type = type)
 
-			dummyLiveEntryList.observe(requireActivity(), Observer { newData ->
+    }
 
-			})
-		}
-	}
 
-	// EditText 화폐 단위
-	private fun editTextFormat() {
-		val decimalFormat = DecimalFormat("#,###")
-		var result: String = ""
+    // EditText 화폐 단위
+    private fun editTextFormat() {
+        val decimalFormat = DecimalFormat("#,###")
+        var result: String = ""
 
-		binding.edtNum.addTextChangedListener(object : TextWatcher {
-			override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        binding.edtNum.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-			override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
-				if (!TextUtils.isEmpty(charSequence.toString()) && charSequence.toString() != result) {
-					result =
-						decimalFormat.format(charSequence.toString().replace(",", "").toDouble())
-					binding.edtNum.setText(result)
-					binding.edtNum.setSelection(result.length)
-				}
-			}
+            override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (!TextUtils.isEmpty(charSequence.toString()) && charSequence.toString() != result) {
+                    result =
+                        decimalFormat.format(charSequence.toString().replace(",", "").toDouble())
+                    binding.edtNum.setText(result)
+                    binding.edtNum.setSelection(result.length)
+                }
+            }
 
-			override fun afterTextChanged(p0: Editable?) {}
-		})
-	}
+            override fun afterTextChanged(p0: Editable?) {}
+        })
+    }
 }

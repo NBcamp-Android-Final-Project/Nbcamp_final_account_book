@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.nbcam_final_account_book.data.model.local.DataEntity
+import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
@@ -27,8 +28,7 @@ class MainViewModel(
 ) : ViewModel() {
 
     //EntryLiveData
-    private val _mainLiveEntryList: MutableLiveData<List<EntryModel>> = MutableLiveData()
-    val mainLiveEntryList: LiveData<List<EntryModel>> get() = _mainLiveEntryList
+    val mainLiveEntryList: LiveData<List<EntryEntity>> get() = roomRepo.getAllEntry()
 
     //TagLiveData
     private val _mainLiveTagList: MutableLiveData<List<TagModel>> = MutableLiveData()
@@ -45,8 +45,12 @@ class MainViewModel(
     init {
         if (loadSharedPrefCurrentUser() != null) {
             _mainLiveCurrentTemplate.value = loadSharedPrefCurrentUser()
-            loadData()
+//            loadData()
         }
+    }
+
+    fun getCurrentTemplate(): TemplateEntity? {
+        return mainLiveCurrentTemplate.value
     }
 
 
@@ -65,7 +69,7 @@ class MainViewModel(
     fun insertData() {
         viewModelScope.launch {
             val id = mainLiveCurrentTemplate.value?.id ?: return@launch
-            val jsonEntry = Gson().toJson(_mainLiveEntryList.value.orEmpty())
+            val jsonEntry = Gson().toJson(mainLiveEntryList.value.orEmpty())
             val jsonTag = Gson().toJson(_mainLiveTagList.value.orEmpty())
             val jsonBudget = Gson().toJson(_mainBudgetList.value.orEmpty())
 
@@ -87,10 +91,10 @@ class MainViewModel(
             val loadData = roomRepo.getAllData(currentTemplate.id)
             if (loadData != null) {
 
-                val loadEntry: List<EntryModel> =
+                val loadEntry: List<EntryEntity> =
                     Gson().fromJson(
                         loadData.entryList,
-                        object : TypeToken<List<EntryModel>>() {}.type
+                        object : TypeToken<List<EntryEntity>>() {}.type
                     )
 
                 val loadTag: List<TagModel> =
@@ -105,7 +109,7 @@ class MainViewModel(
                         object : TypeToken<List<BudgetModel>>() {}.type
                     )
 
-                _mainLiveEntryList.value = loadEntry
+//                mainLiveEntryList.value = loadEntry
                 _mainLiveTagList.value = loadTag
                 _mainBudgetList.value = loadBudget
             }

@@ -11,6 +11,7 @@ import com.nbcam_final_account_book.data.model.local.TemplateEntity
 @Dao
 interface DataDao {
 
+
     @Query("SELECT * FROM data_table WHERE data_id = :id")
     suspend fun getDataById(id: String): DataEntity? // id = TemplateEntity.id
 

@@ -21,15 +21,19 @@ class MainViewModel(
     private val roomRepo: RoomRepository
 ) : ViewModel() {
 
+    //EntryLiveData
     private val _mainLiveEntryList: MutableLiveData<List<EntryModel>> = MutableLiveData()
     val mainLiveEntryList: LiveData<List<EntryModel>> get() = _mainLiveEntryList
 
+    //TagLiveData
     private val _mainLiveTagList: MutableLiveData<List<TagModel>> = MutableLiveData()
     val mainLiveTagList: LiveData<List<TagModel>> get() = _mainLiveTagList
 
+    //BudgetLiveData
     private val _mainBudgetList: MutableLiveData<List<BudgetModel>> = MutableLiveData()
     val mainBudgetList: LiveData<List<BudgetModel>> get() = _mainBudgetList
 
+    //CurrentTemplateData
     private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
     val mainLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _mainLiveCurrentTemplate
 

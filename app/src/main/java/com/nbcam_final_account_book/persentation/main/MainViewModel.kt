@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
+import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.persentation.entry.EntryModel
 import com.nbcam_final_account_book.persentation.tag.TagModel
 
@@ -14,5 +15,10 @@ class MainViewModel : ViewModel() {
 
     private val _mainLiveTagList: MutableLiveData<List<TagModel>> = MutableLiveData()
     val mainLiveTagList: LiveData<List<TagModel>> get() = _mainLiveTagList
+
+    private val mainLiveCurrentTemplate: MutableLiveData<TemplateEntity> = MutableLiveData()
+
+
+
 
 }

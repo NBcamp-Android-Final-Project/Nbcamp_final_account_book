@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 
 @Dao
@@ -14,6 +15,9 @@ interface TemplateDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTemplate(item: TemplateEntity)
+
+    @Update
+    suspend fun updateTemplate(item: TemplateEntity)
 
     @Query("DELETE FROM template_table WHERE id = :id")
     suspend fun deleteTemplate(id: Int)

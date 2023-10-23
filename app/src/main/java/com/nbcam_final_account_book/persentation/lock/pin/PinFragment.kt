@@ -16,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import com.nbcam_final_account_book.databinding.PinFragmentBinding
+import com.nbcam_final_account_book.persentation.lock.LockSharedViewModel
+import com.nbcam_final_account_book.persentation.lock.LockViewModelFactory
 
 class PinFragment : Fragment() {
 
@@ -26,6 +28,7 @@ class PinFragment : Fragment() {
     private var _binding: PinFragmentBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var sharedViewModel: LockSharedViewModel
     private lateinit var viewModel: PinViewModel
     private lateinit var navController: NavController
 
@@ -39,29 +42,41 @@ class PinFragment : Fragment() {
     private var currentLine = 0
     private var isSecondInput = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("PinFragment", "현재 위치: onCreate")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("PinFragment", "현재 위치: onCreateView")
         _binding = PinFragmentBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(
-            this,
-            PinViewModelFactory(SharedProviderImpl(requireContext()))
-        )[PinViewModel::class.java]
+        sharedViewModel = ViewModelProvider(this, LockViewModelFactory(SharedProviderImpl(requireContext())))[LockSharedViewModel::class.java]
+        viewModel = ViewModelProvider(this, PinViewModelFactory(SharedProviderImpl(requireContext())))[PinViewModel::class.java]
 
-        initView()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("PinFragment", "현재 위치: onViewCreated")
         navController = findNavController()
+        initView()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d("PinFragment", "현재 위치: onDestroy")
         _binding = null
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("PinFragment", "현재 위치: onDestroyView")
+    }
+
 
     private fun initView() = with(binding) {
         tvAlert = pinTvAlert
@@ -126,7 +141,14 @@ class PinFragment : Fragment() {
                         Log.d(PIN, "First / Second Input: $pin1 / $pin2")
 
                         if (viewModel.arePinMatching(pin1, pin2)) {
-                            viewModel.savePin(pin1)
+                            sharedViewModel.savePassword(pin2)
+                            /*sharedViewModel.password.observe(viewLifecycleOwner) { password ->
+                                Log.d("PinFragment", "Password: $password")
+                            }*/
+                            sharedViewModel.setIsPinSet(true)
+                            /*sharedViewModel.isPinSet.observe(viewLifecycleOwner) { isPinSet ->
+                                Log.d("PinFragment", "!!!!!!!isPinSet: $isPinSet")
+                            }*/
                             navController.popBackStack(R.id.lockSettingFragment, false)
                         } else {
                             tvAlert.text = "비밀번호가 일치하지 않습니다.\n처음부터 다시 시도해주세요."

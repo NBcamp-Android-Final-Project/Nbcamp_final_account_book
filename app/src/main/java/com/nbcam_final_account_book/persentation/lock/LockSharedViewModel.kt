@@ -1,11 +1,20 @@
 package com.nbcam_final_account_book.persentation.lock
 
-import android.util.Log
+import android.app.Application
+import android.content.SharedPreferences
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 
-class LockSharedViewModel : ViewModel() {
+class LockSharedViewModel(application: Application) : AndroidViewModel(application) {
+
+    companion object {
+        const val MY_Prefs = "MyPrefs"
+        const val PIN_KEY = "pin_key"
+    }
+
+    private val sharedPrefs: SharedPreferences = application.getSharedPreferences(MY_Prefs, Application.MODE_PRIVATE)
+
     private val _pin = MutableLiveData<String>()
     val pin: LiveData<String> get() = _pin
 
@@ -17,23 +26,26 @@ class LockSharedViewModel : ViewModel() {
         _isPinSet.value = _pin.value?.isNotEmpty() ?: false
     }
 
-    fun savePin(pin: String) {
-        _pin.value = pin
-        _isPinSet.value = pin.isNotEmpty()
+    fun savePin(num: String) {
+        _pin.value = num
+        _isPinSet.value = num.isNotEmpty()
 
-        Log.d("LockSharedViewModel", "이때 호출 된다!!!!")
-        Log.d("LockSharedViewModel", "_pin: ${_pin.value}")
-        Log.d("LockSharedViewModel", "_isPinSet: ${_isPinSet.value}")
+        val editor = sharedPrefs.edit()
+        editor.putString(PIN_KEY, num)
+        editor.apply()
     }
 
     fun clearPin() {
         _pin.value = ""
         _isPinSet.value = false
+
+        val editor = sharedPrefs.edit()
+        editor.putString(PIN_KEY, "")
+        editor.apply()
     }
 
 
     private fun loadPassword(): String {
-        //TODO: sharedPreferences에서 저장된 비밀번호 로드해오기
-        return _pin.value ?: ""
+        return sharedPrefs.getString(PIN_KEY, "") ?: ""
     }
 }

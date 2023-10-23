@@ -1,7 +1,6 @@
 package com.nbcam_final_account_book.persentation.lock.pin
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +15,6 @@ import com.nbcam_final_account_book.databinding.PinFragmentBinding
 import com.nbcam_final_account_book.persentation.lock.LockSharedViewModel
 
 class PinFragment : Fragment() {
-
-    companion object {
-        const val PIN = "PinFragment"
-    }
 
     private var _binding: PinFragmentBinding? = null
     private val binding get() = _binding!!
@@ -101,7 +96,6 @@ class PinFragment : Fragment() {
                     currentLine++
 
                     if (pin1.length == 4) {
-                        Log.d(PIN, "First Input: $pin1")
                         resetInput()
                         isSecondInput = true
                         pinTvAlert.text = "확인을 위해 한번 더 입력해주세요."
@@ -112,8 +106,6 @@ class PinFragment : Fragment() {
                     currentLine++
 
                     if (pin2.length == 4) { // 두 번째 비밀번호가 4자리 입력되면
-                        Log.d(PIN, "First / Second Input: $pin1 / $pin2")
-
                         if (pin1 == pin2) {
                             sharedViewModel.savePin(pin2)
                             navController.popBackStack(R.id.lockSettingFragment, false)

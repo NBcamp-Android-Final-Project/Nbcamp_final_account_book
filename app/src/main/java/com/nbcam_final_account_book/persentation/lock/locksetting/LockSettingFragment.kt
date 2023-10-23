@@ -1,7 +1,6 @@
 package com.nbcam_final_account_book.persentation.lock.locksetting
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,10 +67,6 @@ class LockSettingFragment : Fragment() {
     private fun initViewModel() {
         sharedViewModel.isPinSet.observe(viewLifecycleOwner) {
             binding.locksettingBtnPin.isChecked = it
-        }
-
-        sharedViewModel.pin.observe(viewLifecycleOwner) { pin ->
-            Log.d("LockSettingFragment", "pin: $pin")
         }
     }
 }

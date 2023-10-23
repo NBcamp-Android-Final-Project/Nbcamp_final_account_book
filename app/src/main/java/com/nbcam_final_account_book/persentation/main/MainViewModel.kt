@@ -84,6 +84,7 @@ class MainViewModel(
         }
     }
 
+    //TODO 역 직렬화해서 room database에 직접 뿌리는 형태로 바꿀 것.
     private fun loadData() {
         val currentTemplate = _mainLiveCurrentTemplate.value ?: return
 

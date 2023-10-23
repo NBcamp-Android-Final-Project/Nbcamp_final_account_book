@@ -23,13 +23,13 @@ class TemplateBudgetViewModel(
 ) : ViewModel() {
 
 
-    suspend fun insertFirstTemplate(title: String, budget: String) = withContext(Dispatchers.IO) {
+    suspend fun insertTemplate(title: String, budget: String) = withContext(Dispatchers.IO) {
 
 
-        roomRepo.insertFirstTemplate(title)  // room에 데이터 삽입
+        val key = roomRepo.insertFirstTemplate(title)  // room에 데이터 삽입
 
-        val templateModel = roomRepo.selectFirstTemplate()
-        Log.d("현재.모델", templateModel.toString())
+        val templateModel = roomRepo.selectFirstTemplate(key)
+        Log.d("삽입.Template 모델", templateModel.toString())
         fireRepo.setTemplate(fireRepo.getUser(), templateModel)   // 이후 firebase에 데이터 삽입
 
         val template = "${templateModel.templateTitle}-${templateModel.id}"
@@ -41,7 +41,7 @@ class TemplateBudgetViewModel(
         )
 
         ReturnSettingModel(
-           templateModel,
+            templateModel,
             resultBudget
         )
 

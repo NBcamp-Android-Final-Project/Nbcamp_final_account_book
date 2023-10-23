@@ -142,7 +142,7 @@ class TemplateBudgetFragment : Fragment() {
 
     private suspend fun insertFirstTemplate(budget: String): ReturnSettingModel {
         val title = sharedViewModel.getCurrentTitle()
-        return viewModel.insertFirstTemplate(title, budget) // 무조건 먼저 실행 되어 룸에 삽입 되어야 함
+        return viewModel.insertTemplate(title, budget) // 무조건 먼저 실행 되어 룸에 삽입 되어야 함
     }
 
 

@@ -59,9 +59,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(this@MainActivity)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this@MainActivity,
+            MainViewModel.MainViewModelFactory(this@MainActivity)
+        )[MainViewModel::class.java]
 
+        with(viewModel) {
 
+        }
 
     }
 

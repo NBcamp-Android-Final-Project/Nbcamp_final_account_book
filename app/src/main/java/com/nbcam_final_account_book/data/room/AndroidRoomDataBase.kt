@@ -9,7 +9,7 @@ import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.room.dao.DataDao
 import com.nbcam_final_account_book.data.room.dao.TemplateDao
 
-@Database(entities = [TemplateEntity::class, DataEntity::class], version = 6)
+@Database(entities = [TemplateEntity::class, DataEntity::class], version = 8)
 abstract class AndroidRoomDataBase : RoomDatabase() {
 
     abstract fun templateDao(): TemplateDao

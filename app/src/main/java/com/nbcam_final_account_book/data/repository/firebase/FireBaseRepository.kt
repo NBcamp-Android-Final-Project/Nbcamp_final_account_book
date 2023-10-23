@@ -3,7 +3,6 @@ package com.nbcam_final_account_book.data.repository.firebase
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.model.remote.ResponseEntryModel
 import com.nbcam_final_account_book.data.model.remote.ResponseTagModel
-import com.nbcam_final_account_book.data.model.remote.ResponseTemplateModel
 import com.nbcam_final_account_book.persentation.entry.EntryModel
 import com.nbcam_final_account_book.persentation.tag.TagModel
 
@@ -46,15 +45,9 @@ interface FireBaseRepository {
         item: ResponseTagModel
     ): List<ResponseTagModel>
 
-    suspend fun getAllTemplate(user: String): List<ResponseTemplateModel>
+    suspend fun getAllTemplate(user: String): List<TemplateEntity>
 
-    suspend fun setTemplate(user: String, item: TemplateEntity): List<ResponseTemplateModel>
-    suspend fun setDeleteTemplate(
-        user: String,
-        template: String,
-        path: String,
-        templateItem: ResponseTemplateModel
-    ): List<ResponseTemplateModel>
+    suspend fun setTemplate(user: String, item: TemplateEntity): List<TemplateEntity>
 
     suspend fun setBudget(user: String, template: String, budget: String)
 

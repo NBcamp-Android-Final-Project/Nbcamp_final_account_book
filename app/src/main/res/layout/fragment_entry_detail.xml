@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".persentation.entry.ModalBottomFragment">
+    tools:context=".persentation.entry.EntryDetailFragment">
 
     <LinearLayout
         android:id="@+id/linear_top"
@@ -17,29 +17,32 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_calendar_unselected_arrow_left" />
+
+        <EditText
+            android:id="@+id/edt_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:hint="제목을 입력해주세요"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall" />
+
+        <ImageView
             android:id="@+id/iv_tag_add"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@null"
-            android:src="@android:drawable/ic_menu_add" />
-
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="8"
-            android:gravity="center"
-            android:text="2023/10/24"
-            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall" />
-
-        <ImageView
-            android:id="@+id/iv_cancel"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_cancel" />
+            android:src="@drawable/ic_bottom_sheet_add" />
 
     </LinearLayout>
 

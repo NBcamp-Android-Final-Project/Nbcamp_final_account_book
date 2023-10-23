@@ -30,8 +30,6 @@ class MainViewModel(
 
 
     fun insertData() {
-
-
         viewModelScope.launch {
             val id = mainLiveCurrentTemplate.value?.id ?: return@launch
             val jsonEntry = Gson().toJson(_mainLiveEntryList.value.orEmpty().toMutableList())
@@ -43,27 +41,26 @@ class MainViewModel(
                     entryList = jsonEntry,
                     tagList = jsonTag,
 
-                )
-            )
-
-
-        }
-    }
-
-    class MainViewModelFactory(
-        private val context: Context
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-                return MainViewModel(
-                    RoomRepositoryImpl(
-                        AndroidRoomDataBase.getInstance(context)
                     )
-                ) as T
-            } else {
-                throw IllegalArgumentException("Not found ViewModel class.")
-            }
+            )
         }
     }
 
+
+}
+
+class MainViewModelFactory(
+    private val context: Context
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            return MainViewModel(
+                RoomRepositoryImpl(
+                    AndroidRoomDataBase.getInstance(context)
+                )
+            ) as T
+        } else {
+            throw IllegalArgumentException("Not found ViewModel class.")
+        }
+    }
 }

@@ -48,6 +48,19 @@ class MainViewModel(
     }
 
 
+
+
+    fun updateCurrentTemplate(item: TemplateEntity?) {
+        if (item == null) return
+        _mainLiveCurrentTemplate.value = item
+    }
+
+    fun addBudget(item: BudgetModel?) {
+        if (item == null) return
+        val currentList = mainBudgetList.value.orEmpty().toMutableList()
+        currentList.add(item)
+        _mainBudgetList.value = currentList
+    }
     fun insertData() {
         viewModelScope.launch {
             val id = mainLiveCurrentTemplate.value?.id ?: return@launch
@@ -66,16 +79,10 @@ class MainViewModel(
         }
     }
 
-    fun updateCurrentTemplate(item: TemplateEntity?) {
-        if (item == null) return
-        _mainLiveCurrentTemplate.value = item
-    }
+    fun loadData(){
+        viewModelScope.launch{
 
-    fun addBudget(item: BudgetModel?) {
-        if (item == null) return
-        val currentList = mainBudgetList.value.orEmpty().toMutableList()
-        currentList.add(item)
-        _mainBudgetList.value = currentList
+        }
     }
 
     //SharedPref

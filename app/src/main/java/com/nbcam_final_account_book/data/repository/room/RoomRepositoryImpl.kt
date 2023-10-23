@@ -59,5 +59,11 @@ class RoomRepositoryImpl(
         dao.insertData(item)
     }
 
+    override suspend fun getAllData(key: String): DataEntity {
+        val dao = database?.dataDao() ?: throw IllegalStateException("test fail")
+
+        return dao.getDataById(key)
+    }
+
 
 }

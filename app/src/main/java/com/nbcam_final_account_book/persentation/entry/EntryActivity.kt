@@ -53,11 +53,6 @@ class EntryActivity : AppCompatActivity() {
 
 	private fun initView() = with(binding) {
 
-		// 날짜 클릭 시 다이얼로그 출력
-		tvDate.setOnClickListener {
-
-		}
-
 		// 수입 버튼
 		btnIncome.setOnClickListener {
 			setSwipeAnim(android.R.color.holo_green_light, R.color.primary)

@@ -21,15 +21,16 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@android:drawable/ic_menu_add"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:src="@android:drawable/ic_menu_add" />
 
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
             android:layout_weight="8"
+            android:gravity="center"
+            android:text="2023/10/24"
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall" />
 
         <ImageView
@@ -47,13 +48,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="200dp"
+        android:orientation="horizontal"
+        android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linear_top"
-        app:spanCount="5"
-        tools:listitem="@layout/item_category" />
+        app:spanCount="3"
+        tools:listitem="@layout/item_tag" />
 
     <View
         android:id="@+id/divider1"
@@ -66,7 +69,6 @@
         app:layout_constraintTop_toBottomOf="@+id/rv_tag_container" />
 
     <com.google.android.material.tabs.TabLayout
-
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -105,7 +107,7 @@
     <EditText
         android:id="@+id/edt_description"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_margin="8dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
@@ -133,13 +135,23 @@
 
     <ImageView
         android:id="@+id/iv_save"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/ic_check"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_save" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

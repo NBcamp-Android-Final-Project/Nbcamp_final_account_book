@@ -3,6 +3,7 @@ package com.nbcam_final_account_book.persentation.main
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -10,6 +11,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MainActivityBinding
+import com.nbcam_final_account_book.persentation.entry.ModalBottomFragment
+import com.nbcam_final_account_book.persentation.more.MoreFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 			android.R.id.home -> {
 				true
 			}
+
 			else -> super.onOptionsItemSelected(item)
 		}
 	}
@@ -38,7 +42,8 @@ class MainActivity : AppCompatActivity() {
 		setSupportActionBar(mainToolbar)
 
 		//bottom navigation 연결
-		val navHostFragment = supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment
+		val navHostFragment =
+			supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment
 		val navController = navHostFragment.navController
 		val appBarConfiguration = AppBarConfiguration(
 			setOf(
@@ -48,4 +53,12 @@ class MainActivity : AppCompatActivity() {
 		setupActionBarWithNavController(navController, appBarConfiguration)
 		mainBottomNavi.setupWithNavController(navController)
 	}
+
+	// More 액티비티 이동
+	fun intentToMore(): ModalBottomFragment.IntentToMore =
+		ModalBottomFragment.IntentToMore {
+			supportFragmentManager.commit {
+				add(R.id.main_fragment, MoreFragment())
+			}
+		}
 }

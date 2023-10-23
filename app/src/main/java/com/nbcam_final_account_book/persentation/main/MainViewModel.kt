@@ -18,6 +18,7 @@ import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import com.nbcam_final_account_book.persentation.budget.BudgetModel
 import com.nbcam_final_account_book.persentation.entry.EntryModel
 import com.nbcam_final_account_book.persentation.tag.TagModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainViewModel(
@@ -44,10 +45,9 @@ class MainViewModel(
     init {
         if (loadSharedPrefCurrentUser() != null) {
             _mainLiveCurrentTemplate.value = loadSharedPrefCurrentUser()
+            loadData()
         }
     }
-
-
 
 
     fun updateCurrentTemplate(item: TemplateEntity?) {
@@ -61,6 +61,7 @@ class MainViewModel(
         currentList.add(item)
         _mainBudgetList.value = currentList
     }
+
     fun insertData() {
         viewModelScope.launch {
             val id = mainLiveCurrentTemplate.value?.id ?: return@launch
@@ -79,9 +80,24 @@ class MainViewModel(
         }
     }
 
-    fun loadData(){
-        viewModelScope.launch{
+    private fun loadData() {
+        val currentTemplate = _mainLiveCurrentTemplate.value ?: return
 
+        viewModelScope.launch {
+            val loadData = roomRepo.getAllData(currentTemplate.id)
+
+            val loadEntry: List<EntryModel> =
+                Gson().fromJson(loadData.entryList, object : TypeToken<List<EntryModel>>() {}.type)
+
+            val loadTag: List<TagModel> =
+                Gson().fromJson(loadData.tagList, object : TypeToken<List<TagModel>>() {}.type)
+
+            val loadBudget: List<BudgetModel> =
+                Gson().fromJson(loadData.tagList, object : TypeToken<List<BudgetModel>>() {}.type)
+
+            _mainLiveEntryList.value = loadEntry
+            _mainLiveTagList.value = loadTag
+            _mainBudgetList.value = loadBudget
         }
     }
 

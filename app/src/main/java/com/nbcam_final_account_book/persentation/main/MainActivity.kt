@@ -92,7 +92,11 @@ class MainActivity : AppCompatActivity() {
         )[MainViewModel::class.java]
 
         with(viewModel) {
-            mainLiveCurrentTemplate.observe(this@MainActivity, Observer { it->
+
+            mainLiveCurrentTemplate.observe(this@MainActivity, Observer { it ->
+                if (it != null) {
+                    saveSharedPrefCurrentUser(it)
+                }
                 Log.d("옵저빙.템플릿", it.toString())
             })
         }
@@ -107,7 +111,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    fun updateTemplate(item: TemplateEntity?) {
+    private fun updateTemplate(item: TemplateEntity?) {
         viewModel.updateCurrentTemplate(item)
     }
 

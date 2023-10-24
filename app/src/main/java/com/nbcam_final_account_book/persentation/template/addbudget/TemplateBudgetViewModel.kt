@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
@@ -11,9 +12,6 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
-import com.nbcam_final_account_book.persentation.budget.BudgetModel
-import com.nbcam_final_account_book.unit.ReturnSettingModel
-import com.nbcam_final_account_book.unit.Unit.setIdBudget
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -29,27 +27,26 @@ class TemplateBudgetViewModel(
 
         val key = roomRepo.insertFirstTemplate(title)  // room에 데이터 삽입
 
-        val templateModel = roomRepo.selectFirstTemplate(key)
-        val budgetModel = BudgetModel(
-            id = setIdBudget(),
-            budget = budget
+        val currentTemplate = roomRepo.selectFirstTemplate(key)
+        val budgetEntity = BudgetEntity(
+            id = 0,
+            key = key,
+            budget
         )
+        roomRepo.insertBudget(budgetEntity)
 
-        Log.d("삽입.Template 모델", templateModel.toString())
-        fireRepo.setTemplate(fireRepo.getUser(), templateModel)   // 이후 firebase에 데이터 삽입
+        Log.d("삽입.Template 모델", currentTemplate.toString())
+        fireRepo.setTemplate(fireRepo.getUser(), currentTemplate)   // 이후 firebase에 데이터 삽입
 
-        val template = "${templateModel.templateTitle}-${templateModel.id}"
-        val resultBudget = BudgetModel(budget = budget)
+        val template = "${currentTemplate.templateTitle}-${currentTemplate.id}"
         fireRepo.setBudget(
             user = fireRepo.getUser(),
             template = template,
-            budget = budgetModel
+            budget = budgetEntity
         )
 
-        ReturnSettingModel(
-            templateModel,
-            resultBudget
-        )
+        currentTemplate
+
 
     }
 

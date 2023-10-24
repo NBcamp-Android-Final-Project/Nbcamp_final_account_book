@@ -24,14 +24,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: MainActivityBinding
     private lateinit var viewModel: MainViewModel
 
-    private val extraTemplate: ReturnSettingModel? by lazy {
+    private val extraTemplate: TemplateEntity? by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(
                 TemplateBudgetFragment.EXTRA_RESULT,
-                ReturnSettingModel::class.java
+                TemplateEntity::class.java
             )
         } else {
-            intent.getParcelableExtra<ReturnSettingModel>(TemplateBudgetFragment.EXTRA_RESULT)
+            intent.getParcelableExtra<TemplateEntity>(TemplateBudgetFragment.EXTRA_RESULT)
         }
     }
 
@@ -60,10 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("도착", extraTemplate.toString())
         if (extraTemplate != null) {
-            val extraEntity = extraTemplate?.templateEntity
-            val extraBudget = extraTemplate?.budgetModel
-            updateTemplate(extraEntity)
-            addBudget(extraBudget)
+            updateTemplate(extraTemplate)
         }
 
 
@@ -103,10 +100,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateTemplate(item: TemplateEntity?) {
         viewModel.updateCurrentTemplate(item)
-    }
-
-    private fun addBudget(item: BudgetModel?) {
-        viewModel.addBudget(item)
     }
 
 

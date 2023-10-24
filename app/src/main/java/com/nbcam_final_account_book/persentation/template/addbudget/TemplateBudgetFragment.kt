@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.R
+import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.TemplateBudgetFragmentBinding
 import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateViewModel
@@ -140,7 +141,7 @@ class TemplateBudgetFragment : Fragment() {
     }
 
 
-    private suspend fun insertFirstTemplate(budget: String): ReturnSettingModel {
+    private suspend fun insertFirstTemplate(budget: String): TemplateEntity {
         val title = sharedViewModel.getCurrentTitle()
         return viewModel.insertTemplate(title, budget) // 무조건 먼저 실행 되어 룸에 삽입 되어야 함
     }

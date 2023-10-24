@@ -23,11 +23,12 @@ interface RoomRepository {
 
     //Entry
     fun getAllEntry(): LiveData<List<EntryEntity>>
+    fun getEntryByKey(key: String?): LiveData<List<EntryEntity>>
     suspend fun insertEntry(item: EntryEntity)
     suspend fun deleteAllEntry()
 
     //Budget
-    suspend fun insertBudget(item:BudgetEntity)
+    suspend fun insertBudget(item: BudgetEntity)
     suspend fun deleteAllBudget()
 
     //Tag

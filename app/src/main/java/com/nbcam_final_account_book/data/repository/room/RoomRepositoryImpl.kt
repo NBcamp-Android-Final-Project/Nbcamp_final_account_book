@@ -1,6 +1,8 @@
 package com.nbcam_final_account_book.data.repository.room
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.DataEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
@@ -77,6 +79,17 @@ class RoomRepositoryImpl(
     override fun getAllEntry(): LiveData<List<EntryEntity>> {
         val dao = database?.entryDao() ?: throw IllegalStateException("getAllEntry fail")
         return dao.getAllEntry()
+    }
+
+    override fun getEntryByKey(key: String?): LiveData<List<EntryEntity>> {
+
+        val dao = database?.entryDao() ?: throw IllegalStateException("getAllEntry fail")
+        return if (key != null) {
+            dao.getEntryByKey(key)
+        } else {
+            Log.e("getEntryByKey", "getEntryByKey 오류" )
+            MutableLiveData<List<EntryEntity>>()
+        }
     }
 
     override suspend fun insertEntry(item: EntryEntity) {

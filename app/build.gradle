@@ -115,4 +115,7 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
+
+    // CompactCalendarView
+    implementation("com.github.sundeepk:compact-calendar-view:3.0.0")
 }

@@ -101,6 +101,7 @@ class RoomRepositoryImpl(
     override fun getEntryByKey(key: String?): LiveData<List<EntryEntity>> {
 
         val dao = database?.entryDao() ?: throw IllegalStateException("getEntryByKey fail")
+        Log.d("삽입키", key.toString())
         return if (key != null) {
             dao.getEntryByKey(key)
         } else {

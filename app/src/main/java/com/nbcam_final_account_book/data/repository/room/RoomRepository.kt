@@ -9,7 +9,7 @@ import com.nbcam_final_account_book.data.model.local.TemplateEntity
 interface RoomRepository {
 
 
-    //TemplateEntity
+    //Template
     suspend fun getAllTemplate(): List<TemplateEntity>
     suspend fun insertFirstTemplate(text: String): String
     suspend fun insertTemplate(text: String): List<TemplateEntity>
@@ -17,16 +17,20 @@ interface RoomRepository {
     suspend fun deleteAllTemplate()
     suspend fun selectFirstTemplate(key: String): TemplateEntity
 
-    //DataEntity
+    //Data
     suspend fun insertData(item: DataEntity)
     suspend fun getAllData(key: String): DataEntity?
 
-    //EntryEntity
+    //Entry
     fun getAllEntry(): LiveData<List<EntryEntity>>
     suspend fun insertEntry(item: EntryEntity)
+    suspend fun deleteAllEntry()
 
-    //BudgetEntity
+    //Budget
     suspend fun insertBudget(item:BudgetEntity)
+    suspend fun deleteAllBudget()
+
+    //Tag
 
 
 }

@@ -34,7 +34,7 @@ class MainViewModel(
     private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
     val mainLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _mainLiveCurrentTemplate
 
-    var key: String? = null
+    private var key: String? = null
 
     //EntryLiveData
     val mainLiveEntryList: LiveData<List<EntryEntity>> get() = roomRepo.getEntryByKey(key)
@@ -54,7 +54,6 @@ class MainViewModel(
 //            loadData()
         }
         setKey()
-        Log.d("키값", key.toString())
     }
 
     fun getCurrentTemplate(): TemplateEntity? {
@@ -65,7 +64,12 @@ class MainViewModel(
         val currentTemplate = mainLiveCurrentTemplate.value
         if (currentTemplate != null) {
             key = currentTemplate.id
+            Log.d("키값", key.toString())
         }
+    }
+
+    fun getKey(): String {
+        return key ?: ""
     }
 
 

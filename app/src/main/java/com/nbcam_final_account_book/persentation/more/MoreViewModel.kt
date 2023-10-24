@@ -13,11 +13,12 @@ class MoreViewModel(
     private val roomRepo: RoomRepository
 ) : ViewModel() {
 
-     fun cleanRoom()= with(roomRepo) {
+    fun cleanRoom() = with(roomRepo) {
         viewModelScope.launch {
             deleteAllTemplate()
             deleteAllBudget()
             deleteAllEntry()
+            deleteAllData()
         }
     }
 

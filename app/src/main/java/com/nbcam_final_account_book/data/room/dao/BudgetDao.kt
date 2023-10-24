@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
-import com.nbcam_final_account_book.data.model.local.EntryEntity
 
 @Dao
 interface BudgetDao {
@@ -30,7 +29,7 @@ interface BudgetDao {
     //DELETE
 
     @Query("DELETE FROM budget_table WHERE budget_id = :id")
-    suspend fun deleteBudget(id: Int)
+    suspend fun deleteBudgetById(id: Int)
 
     @Query("DELETE FROM budget_table WHERE budget_key = :key")
     suspend fun deleteBudgetByKey(key: String) // 템플릿 삭제 시 모두 삭제해야 하는 데이터

@@ -21,12 +21,14 @@ interface DataDao {
 
     //DELETE
     @Query("DELETE FROM data_table WHERE data_id = :id")
-    fun deleteDataById(id: Int) // id = TemplateEntity.id
+    suspend fun deleteDataById(id: String) // id = TemplateEntity.id
+
+    @Query("DELETE FROM data_table")
+    suspend fun deleteAllData()
 
     //Update
     @Update
     suspend fun updateData(entity: DataEntity)
-
 
 
 }

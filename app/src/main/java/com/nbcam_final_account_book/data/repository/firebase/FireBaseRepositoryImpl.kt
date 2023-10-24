@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.model.remote.ResponseEntryModel
 import com.nbcam_final_account_book.data.model.remote.ResponseTagModel
@@ -303,7 +304,7 @@ class FireBaseRepositoryImpl(
     }
 
 
-    override suspend fun setBudget(user: String, template: String, budget: BudgetModel) {
+    override suspend fun setBudget(user: String, template: String, budget: BudgetEntity) {
         val database = Firebase.database
         val path = "$user/$template/$PATH_BUDGET"
         val myRef = database.getReference(path)

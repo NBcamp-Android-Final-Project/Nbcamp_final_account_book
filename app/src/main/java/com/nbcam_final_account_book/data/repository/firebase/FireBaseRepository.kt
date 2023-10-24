@@ -1,5 +1,6 @@
 package com.nbcam_final_account_book.data.repository.firebase
 
+import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.model.remote.ResponseEntryModel
 import com.nbcam_final_account_book.data.model.remote.ResponseTagModel
@@ -51,7 +52,7 @@ interface FireBaseRepository {
 
     suspend fun setTemplate(user: String, item: TemplateEntity): List<TemplateEntity>
 
-    suspend fun setBudget(user: String, template: String, budget: BudgetModel)
+    suspend fun setBudget(user: String, template: String, budget: BudgetEntity)
 
     suspend fun getBudget(user: String, template: String): List<BudgetModel>
 

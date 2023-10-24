@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey
 data class EntryEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "entry_id")
-    val id: Int = 0,
+    val id: Long = 0,
+    @ColumnInfo(name = "entry_key")
     val key: String = "",
     @ColumnInfo(name = "entry_type")
     val type: String, // 수입 지출 구분 태그

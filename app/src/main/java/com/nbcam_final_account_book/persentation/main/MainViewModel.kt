@@ -8,8 +8,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.DataEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
+import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
@@ -31,12 +33,12 @@ class MainViewModel(
     val mainLiveEntryList: LiveData<List<EntryEntity>> get() = roomRepo.getAllEntry()
 
     //TagLiveData
-    private val _mainLiveTagList: MutableLiveData<List<TagModel>> = MutableLiveData()
-    val mainLiveTagList: LiveData<List<TagModel>> get() = _mainLiveTagList
+    private val _mainLiveTagList: MutableLiveData<List<TagEntity>> = MutableLiveData()
+    val mainLiveTagList: LiveData<List<TagEntity>> get() = _mainLiveTagList
 
     //BudgetLiveData
-    private val _mainBudgetList: MutableLiveData<List<BudgetModel>> = MutableLiveData()
-    val mainBudgetList: LiveData<List<BudgetModel>> get() = _mainBudgetList
+    private val _mainBudgetList: MutableLiveData<List<BudgetEntity>> = MutableLiveData()
+    val mainBudgetList: LiveData<List<BudgetEntity>> get() = _mainBudgetList
 
     //CurrentTemplateData
     private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
@@ -57,13 +59,6 @@ class MainViewModel(
     fun updateCurrentTemplate(item: TemplateEntity?) {
         if (item == null) return
         _mainLiveCurrentTemplate.value = item
-    }
-
-    fun addBudget(item: BudgetModel?) {
-        if (item == null) return
-        val currentList = mainBudgetList.value.orEmpty().toMutableList()
-        currentList.add(item)
-        _mainBudgetList.value = currentList
     }
 
     fun insertData() {
@@ -98,21 +93,19 @@ class MainViewModel(
                         object : TypeToken<List<EntryEntity>>() {}.type
                     )
 
-                val loadTag: List<TagModel> =
+                val loadTag: List<TagEntity> =
                     Gson().fromJson(
                         loadData.tagList,
-                        object : TypeToken<List<TagModel>>() {}.type
+                        object : TypeToken<List<TagEntity>>() {}.type
                     )
 
-                val loadBudget: List<BudgetModel> =
+                val loadBudget: List<BudgetEntity> =
                     Gson().fromJson(
                         loadData.budgetList,
-                        object : TypeToken<List<BudgetModel>>() {}.type
+                        object : TypeToken<List<BudgetEntity>>() {}.type
                     )
 
-//                mainLiveEntryList.value = loadEntry
-                _mainLiveTagList.value = loadTag
-                _mainBudgetList.value = loadBudget
+
             }
         }
     }

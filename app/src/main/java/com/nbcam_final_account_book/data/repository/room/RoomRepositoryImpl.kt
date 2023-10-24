@@ -1,6 +1,7 @@
 package com.nbcam_final_account_book.data.repository.room
 
 import androidx.lifecycle.LiveData
+import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.DataEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
@@ -78,6 +79,13 @@ class RoomRepositoryImpl(
         val dao = database?.entryDao() ?: throw IllegalStateException("test fail")
 
         dao.insertEntry(item)
+    }
+
+    //Budget
+    override suspend fun insertBudget(item: BudgetEntity) {
+        val dao = database?.budgetDao() ?: throw IllegalStateException("test fail")
+
+        dao.insertBudget(item)
     }
 
 

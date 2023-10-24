@@ -72,6 +72,10 @@ class MainViewModel(
         return key ?: ""
     }
 
+    fun getEntryLiveData(): LiveData<List<EntryEntity>> { //테스트를 위한 라이브 데이터 리턴
+        return mainLiveEntryList
+    }
+
 
     fun updateCurrentTemplate(item: TemplateEntity?) {
         if (item == null) return

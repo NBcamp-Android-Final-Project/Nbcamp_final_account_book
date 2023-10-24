@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -19,7 +20,10 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
+import com.nbcam_final_account_book.unit.Unit.liveKey
 import kotlinx.coroutines.launch
+
+
 
 class MainViewModel(
     private val roomRepo: RoomRepository,
@@ -30,10 +34,15 @@ class MainViewModel(
     private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
     val mainLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _mainLiveCurrentTemplate
 
-    private var key: String? = null
-
     //EntryLiveData
-    val mainLiveEntryList: LiveData<List<EntryEntity>> get() = roomRepo.getEntryByKey(key)
+    val mainLiveEntryList: LiveData<List<EntryEntity>> = liveKey.switchMap { key->
+        roomRepo.getEntryByKey(key)
+    }
+
+//    val mainLiveEntryList: LiveData<List<EntryEntity>> = Transformations.switchMap(liveKey) { key ->
+//        roomRepo.getEntryByKey(key)
+//    }
+
 
     //TagLiveData
     private val _mainLiveTagList: MutableLiveData<List<TagEntity>> = MutableLiveData()
@@ -59,13 +68,9 @@ class MainViewModel(
     fun setKey() {
         val currentTemplate = mainLiveCurrentTemplate.value
         if (currentTemplate != null) {
-            key = currentTemplate.id
-            Log.d("키값", key.toString())
+            liveKey.value = currentTemplate.id
+            Log.d("라이브 키값", liveKey.value.toString())
         }
-    }
-
-    fun getKey(): String {
-        return key ?: ""
     }
 
 

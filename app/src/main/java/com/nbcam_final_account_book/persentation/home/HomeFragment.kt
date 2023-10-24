@@ -198,9 +198,5 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
 
     }
 
-    private fun updateKey() {
-        viewModel.updateKey(sharedViewModel.getKey())
-    }
-
 
 }

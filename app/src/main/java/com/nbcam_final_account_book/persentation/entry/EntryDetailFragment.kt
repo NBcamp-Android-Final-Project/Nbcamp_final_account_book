@@ -15,7 +15,9 @@ import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.FragmentEntryDetailBinding
 import com.nbcam_final_account_book.persentation.tag.Tag
 import com.nbcam_final_account_book.persentation.tag.TagListAdapter
+import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_INCOME
 import java.security.KeyStore.Entry
+import kotlin.random.Random
 
 class EntryDetailFragment : Fragment() {
 
@@ -73,18 +75,71 @@ class EntryDetailFragment : Fragment() {
             val currentTemplate = getCurrentTemplateEntry()
             Log.d("현재 템플릿", currentTemplate.toString())
 
+            val dateTimeList = listOf(
+                "2023-10-25",
+                "2023-10-24",
+                "2023-10-23",
+                "2023-10-10",
+                "2023-10-11",
+                "2023-10-12",
+                "2023-10-13",
+                "2023-10-14",
+            )
+
+            val payTagList = listOf(
+                "식비",
+                "교통비",
+                "의료비",
+                "쇼핑"
+            )
+            val inComeList = listOf(
+                "월급",
+                "용돈",
+                "당근",
+                "불로소득"
+            )
+
+            val dayListSize = dateTimeList.size
+            val payTagListSize = payTagList.size
+            val inComeListSize = inComeList.size
+
+            val dayRandomIndex = Random.nextInt(0, dayListSize)
+            val payRandomIndex = Random.nextInt(0, payTagListSize)
+            val inComeRandomIndex = Random.nextInt(0, inComeListSize)
+
+            val dateTime = dateTimeList[dayRandomIndex]
+            val payTag = payTagList[payRandomIndex]
+            val incomeTag = inComeList[inComeRandomIndex]
+
+            //TODO 여기 날짜 랜덤으로 넣을 수 있도록 해두겠습니다
+
             if (amount != null && type != null && currentTemplate != null) {
-                val entryEntity = EntryEntity(
-                    id = 0,
-                    key = currentTemplate.id,
-                    type = type,
-                    dateTime = "",
-                    value = amount,
-                    tag = tag.toString(),
-                    title = title,
-                    description = description
-                )
-                insertEntry(entryEntity)
+                if (type == INPUT_TYPE_INCOME) {
+                    val entryEntity = EntryEntity(
+                        id = 0,
+                        key = currentTemplate.id,
+                        type = type,
+                        dateTime = dateTime,
+                        value = amount,
+                        tag = incomeTag,
+                        title = title,
+                        description = description
+                    )
+                    insertEntry(entryEntity)
+                } else {
+                    val entryEntity = EntryEntity(
+                        id = 0,
+                        key = currentTemplate.id,
+                        type = type,
+                        dateTime = dateTime,
+                        value = amount,
+                        tag = payTag,
+                        title = title,
+                        description = description
+                    )
+                    insertEntry(entryEntity)
+                }
+
 
             }
 

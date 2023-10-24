@@ -1,6 +1,7 @@
 package com.nbcam_final_account_book.data.repository.room
 
 import androidx.lifecycle.LiveData
+import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.DataEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
@@ -23,6 +24,9 @@ interface RoomRepository {
     //EntryEntity
     fun getAllEntry(): LiveData<List<EntryEntity>>
     suspend fun insertEntry(item: EntryEntity)
+
+    //BudgetEntity
+    suspend fun insertBudget(item:BudgetEntity)
 
 
 }

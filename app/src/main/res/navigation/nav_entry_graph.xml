@@ -5,32 +5,24 @@
     android:id="@+id/nav_entry_graph"
     app:startDestination="@id/entryFragment">
     <fragment
-        android:id="@+id/entryDetailFragment"
-        android:name="com.nbcam_final_account_book.persentation.entry.EntryDetailFragment"
-        android:label="fragment_entry_detail"
-        tools:layout="@layout/fragment_entry_detail" >
-        <action
-            android:id="@+id/action_entryDetailFragment_to_entryFragment2"
-            app:destination="@id/entryFragment" />
-        <action
-            android:id="@+id/action_entryDetailFragment_to_tagFragment2"
-            app:destination="@id/tagFragment2" />
-    </fragment>
-    <fragment
         android:id="@+id/entryFragment"
         android:name="com.nbcam_final_account_book.persentation.entry.EntryFragment"
-        android:label="EntryFragment" >
+        android:label="fragment_entry_detail"
+        tools:layout="@layout/fragment_entry" >
         <action
-            android:id="@+id/action_entryFragment2_to_entryDetailFragment"
+            android:id="@+id/action_entryFragment_to_tagFragment2"
+            app:destination="@id/tagFragment2" />
+        <action
+            android:id="@+id/action_entryFragment_to_entryDetailFragment"
             app:destination="@id/entryDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/tagFragment2"
         android:name="com.nbcam_final_account_book.persentation.tag.TagFragment"
         android:label="tag_fragment"
-        tools:layout="@layout/tag_fragment" >
-        <action
-            android:id="@+id/action_tagFragment2_to_entryDetailFragment"
-            app:destination="@id/entryDetailFragment" />
-    </fragment>
+        tools:layout="@layout/tag_fragment" />
+    <fragment
+        android:id="@+id/entryDetailFragment"
+        android:name="com.nbcam_final_account_book.persentation.entry.EntryDetailFragment"
+        android:label="EntryDetailFragment" />
 </navigation>

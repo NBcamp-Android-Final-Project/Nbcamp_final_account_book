@@ -1,6 +1,7 @@
 package com.nbcam_final_account_book.data.repository.firebase
 
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
+import com.nbcam_final_account_book.data.model.local.DataEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.model.remote.ResponseEntryModel
 import com.nbcam_final_account_book.data.model.remote.ResponseTagModel
@@ -13,49 +14,20 @@ interface FireBaseRepository {
     // template는 "${$item.templateTitle}-${item.id}" 형식으로 지정한다.
     // item은 TemplateEntity 형태다
 
+    //user
     fun getUser(): String
-    suspend fun getAllEntry(
-        user: String,
-        template: String,
-    ): List<ResponseEntryModel>
 
-    suspend fun setEntry(
-        user: String,
-        template: String,
-        item: EntryModel
-    ): List<ResponseEntryModel>
+    fun logout()
 
-    suspend fun deleteEntry(
-        user: String,
-        template: String,
-        item: ResponseEntryModel
-    ): List<ResponseEntryModel>
-
-    suspend fun getAllTag(
-        user: String,
-        template: String,
-    ): List<ResponseTagModel>
-
-    suspend fun setTag(
-        user: String,
-        template: String,
-        item: TagModel
-    ): List<ResponseTagModel>
-
-    suspend fun deleteTag(
-        user: String,
-        template: String,
-        item: ResponseTagModel
-    ): List<ResponseTagModel>
+    //tempalte
 
     suspend fun getAllTemplate(user: String): List<TemplateEntity>
 
     suspend fun setTemplate(user: String, item: TemplateEntity): List<TemplateEntity>
 
-    suspend fun setBudget(user: String, template: String, budget: BudgetEntity)
+    //data
+    suspend fun updateData(user: String, item: DataEntity)
 
-    suspend fun getBudget(user: String, template: String): List<BudgetModel>
 
 
-    fun logout()
 }

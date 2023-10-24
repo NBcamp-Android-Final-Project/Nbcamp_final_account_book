@@ -39,11 +39,6 @@ class TemplateBudgetViewModel(
         fireRepo.setTemplate(fireRepo.getUser(), currentTemplate)   // 이후 firebase에 데이터 삽입
 
         val template = "${currentTemplate.templateTitle}-${currentTemplate.id}"
-        fireRepo.setBudget(
-            user = fireRepo.getUser(),
-            template = template,
-            budget = budgetEntity
-        )
 
         currentTemplate
 

@@ -9,6 +9,8 @@ data class TagEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "tag_id")
     val id: Int,
+    @ColumnInfo(name = "tag_key")
+    val key: String,
     @ColumnInfo(name = "tag_img")
     val img: Int,
     @ColumnInfo(name = "tag_title")

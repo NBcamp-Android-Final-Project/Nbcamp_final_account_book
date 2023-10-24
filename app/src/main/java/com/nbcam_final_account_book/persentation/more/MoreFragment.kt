@@ -69,6 +69,6 @@ class MoreFragment : Fragment() {
     }
 
     private fun cleanRoom() = with(viewModel) {
-        cleanTemplateListInRoom()
+        cleanRoom()
     }
 }

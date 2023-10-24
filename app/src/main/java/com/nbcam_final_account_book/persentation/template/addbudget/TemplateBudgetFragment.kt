@@ -64,7 +64,7 @@ class TemplateBudgetFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
-        //백버튼 콜백 해ㅈ
+        //백버튼 콜백 해제
         onBackPressedCallback.remove()
     }
 

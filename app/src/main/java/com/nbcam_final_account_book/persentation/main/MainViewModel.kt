@@ -20,7 +20,6 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
-import com.nbcam_final_account_book.unit.Unit.liveKey
 import kotlinx.coroutines.launch
 
 
@@ -30,6 +29,11 @@ class MainViewModel(
     private val sharedProvider: SharedProvider
 ) : ViewModel() {
 
+    companion object{
+        // mainviewModel에서만 접근해야함
+        val liveKey: MutableLiveData<String> get() = MutableLiveData()
+    }
+
     //CurrentTemplateData
     private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
     val mainLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _mainLiveCurrentTemplate
@@ -38,11 +42,6 @@ class MainViewModel(
     val mainLiveEntryList: LiveData<List<EntryEntity>> = liveKey.switchMap { key->
         roomRepo.getEntryByKey(key)
     }
-
-//    val mainLiveEntryList: LiveData<List<EntryEntity>> = Transformations.switchMap(liveKey) { key ->
-//        roomRepo.getEntryByKey(key)
-//    }
-
 
     //TagLiveData
     private val _mainLiveTagList: MutableLiveData<List<TagEntity>> = MutableLiveData()

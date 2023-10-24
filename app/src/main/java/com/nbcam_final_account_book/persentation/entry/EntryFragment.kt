@@ -20,6 +20,7 @@ import com.nbcam_final_account_book.databinding.FragmentEntryBinding
 import com.nbcam_final_account_book.persentation.tag.Tag
 import com.nbcam_final_account_book.persentation.tag.TagListAdapter
 import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_INCOME
+import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_PAY
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -96,9 +97,7 @@ class EntryFragment : Fragment() {
 			val payment = tabLayoutPayment.selectedTabPosition
 			val finance = tabLayoutFinance.selectedTabPosition
 			val description = edtDescription.text.toString()
-			val result = getData()
-			val amount = result.first
-			val type = result.second
+			val amount = edtAmount.text.toString()
 			val currentTemplate = getCurrentTemplateEntry()
 			Log.d("현재 템플릿", currentTemplate.toString())
 
@@ -140,12 +139,12 @@ class EntryFragment : Fragment() {
 
 			//TODO 여기 날짜 랜덤으로 넣을 수 있도록 해두겠습니다
 
-			if (amount != null && type != null && currentTemplate != null) {
-				if (type == INPUT_TYPE_INCOME) {
+			if (edtAmount.text.isNotEmpty()  && currentTemplate != null) {
+				if (finance == 0) {
 					val entryEntity = EntryEntity(
 						id = 0,
 						key = currentTemplate.id,
-						type = type,
+						type = INPUT_TYPE_PAY,
 						dateTime = dateTime,
 						value = amount,
 						tag = incomeTag,
@@ -157,7 +156,7 @@ class EntryFragment : Fragment() {
 					val entryEntity = EntryEntity(
 						id = 0,
 						key = currentTemplate.id,
-						type = type,
+						type = INPUT_TYPE_INCOME,
 						dateTime = dateTime,
 						value = amount,
 						tag = payTag,
@@ -248,7 +247,9 @@ class EntryFragment : Fragment() {
 		}
 	}
 
-	private val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA)
+	private val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일") //화면에 보이는거
+	private val dateFormatSave = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA) //저장 되는 것
+
 
 	companion object {
 		val TAG = EntryFragment::class.simpleName

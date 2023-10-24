@@ -152,6 +152,7 @@ class EntryFragment : Fragment() {
 						description = description
 					)
 					insertEntry(entryEntity)
+					requireActivity().finish()
 				} else {
 					val entryEntity = EntryEntity(
 						id = 0,
@@ -164,12 +165,13 @@ class EntryFragment : Fragment() {
 						description = description
 					)
 					insertEntry(entryEntity)
+					requireActivity().finish()
 				}
 
 
 			}
 
-			requireActivity().finish()
+
 		}
 	}
 

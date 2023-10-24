@@ -16,7 +16,6 @@ import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.MainActivityBinding
 import com.nbcam_final_account_book.persentation.budget.BudgetModel
 import com.nbcam_final_account_book.persentation.template.addbudget.TemplateBudgetFragment
-import com.nbcam_final_account_book.unit.ReturnSettingModel
 
 
 class MainActivity : AppCompatActivity() {

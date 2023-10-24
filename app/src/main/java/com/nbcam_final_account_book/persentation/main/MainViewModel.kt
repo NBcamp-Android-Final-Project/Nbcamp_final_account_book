@@ -1,6 +1,7 @@
 package com.nbcam_final_account_book.persentation.main
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,8 +30,14 @@ class MainViewModel(
     private val sharedProvider: SharedProvider
 ) : ViewModel() {
 
+    //CurrentTemplateData
+    private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
+    val mainLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _mainLiveCurrentTemplate
+
+    var key: String? = null
+
     //EntryLiveData
-    val mainLiveEntryList: LiveData<List<EntryEntity>> get() = roomRepo.getAllEntry()
+    val mainLiveEntryList: LiveData<List<EntryEntity>> get() = roomRepo.getEntryByKey(key)
 
     //TagLiveData
     private val _mainLiveTagList: MutableLiveData<List<TagEntity>> = MutableLiveData()
@@ -40,19 +47,25 @@ class MainViewModel(
     private val _mainBudgetList: MutableLiveData<List<BudgetEntity>> = MutableLiveData()
     val mainBudgetList: LiveData<List<BudgetEntity>> get() = _mainBudgetList
 
-    //CurrentTemplateData
-    private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
-    val mainLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _mainLiveCurrentTemplate
 
     init {
         if (loadSharedPrefCurrentUser() != null) {
             _mainLiveCurrentTemplate.value = loadSharedPrefCurrentUser()
 //            loadData()
         }
+        setKey()
+        Log.d("키값", key.toString())
     }
 
     fun getCurrentTemplate(): TemplateEntity? {
         return mainLiveCurrentTemplate.value
+    }
+
+    fun setKey() {
+        val currentTemplate = mainLiveCurrentTemplate.value
+        if (currentTemplate != null) {
+            key = currentTemplate.id
+        }
     }
 
 

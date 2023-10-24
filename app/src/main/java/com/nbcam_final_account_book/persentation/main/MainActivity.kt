@@ -90,8 +90,12 @@ class MainActivity : AppCompatActivity() {
             mainLiveCurrentTemplate.observe(this@MainActivity, Observer { it ->
                 if (it != null) {
                     saveSharedPrefCurrentUser(it)
+                    setKey()
                 }
                 Log.d("옵저빙.템플릿", it.toString())
+            })
+            mainLiveEntryList.observe(this@MainActivity, Observer { it ->
+                Log.d("옵저빙.엔트리 리스트", it.toString())
             })
         }
 
@@ -99,6 +103,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateTemplate(item: TemplateEntity?) {
         viewModel.updateCurrentTemplate(item)
+    }
+
+    private fun setKey() {
+        viewModel.setKey()
     }
 
 

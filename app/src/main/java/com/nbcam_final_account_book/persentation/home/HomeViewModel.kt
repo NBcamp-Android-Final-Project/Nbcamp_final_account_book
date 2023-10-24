@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.switchMap
 import com.nbcam_final_account_book.data.model.DummyData.liveDummyEntry
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.persentation.entry.EntryModel
+import com.nbcam_final_account_book.persentation.main.MainViewModel
 
 
 class HomeViewModel(
@@ -23,6 +25,10 @@ class HomeViewModel(
     // 현재 key값을 livedata로 받을 방법을 고민중이니 임시로 이 형태로 사용해주세요.
 
     val homeLiveEntryList: LiveData<List<EntryEntity>> get() = roomRepo.getAllEntry()
+
+    val homeCurrentLiveEntryList : LiveData<List<EntryEntity>> = MainViewModel.liveKey.switchMap { key->
+        roomRepo.getEntryByKey(key)
+    } // 이제부터 이 친구를 써주세요!
 
     fun updateKey(inputKey:String){
         key = inputKey

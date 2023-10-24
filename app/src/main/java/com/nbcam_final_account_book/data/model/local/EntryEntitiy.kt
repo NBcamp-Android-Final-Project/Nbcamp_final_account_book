@@ -12,7 +12,9 @@ data class EntryEntity(
     @ColumnInfo(name = "entry_key")
     val key: String = "",
     @ColumnInfo(name = "entry_type")
-    val type: String, // 수입 지출 구분 태그
+    val type: String, // 수입 지출 구분 태그,
+    @ColumnInfo(name = "entry_asset_type")
+    val assetType: String = "",
     @ColumnInfo(name = "entry_dateTime")
     val dateTime: String = "",
     @ColumnInfo(name = "entry_value")

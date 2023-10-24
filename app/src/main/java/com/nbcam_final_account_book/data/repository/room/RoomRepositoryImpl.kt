@@ -14,13 +14,13 @@ class RoomRepositoryImpl(
 
     //template
     override suspend fun getAllTemplate(): List<TemplateEntity> {
-        val dao = database?.templateDao() ?: throw IllegalStateException("test fail")
+        val dao = database?.templateDao() ?: throw IllegalStateException("getAllTemplate fail")
 
         return dao.getTemplateList()
     }
 
     override suspend fun insertFirstTemplate(text: String): String {
-        val dao = database?.templateDao() ?: throw IllegalStateException("test fail")
+        val dao = database?.templateDao() ?: throw IllegalStateException("insertFirstTemplate fail")
         val customKey = UUID.randomUUID().toString()
 
         dao.insertTemplate(TemplateEntity(id = customKey, templateTitle = text))
@@ -29,7 +29,7 @@ class RoomRepositoryImpl(
 
     override suspend fun insertTemplate(text: String): List<TemplateEntity> {
 
-        val dao = database?.templateDao() ?: throw IllegalStateException("test fail")
+        val dao = database?.templateDao() ?: throw IllegalStateException("insertTemplate fail")
         val customKey = UUID.randomUUID().toString()
 
         dao.insertTemplate(TemplateEntity(id = customKey, templateTitle = text))
@@ -39,7 +39,7 @@ class RoomRepositoryImpl(
 
     override suspend fun deleteTemplate(item: TemplateEntity): List<TemplateEntity> {
 
-        val dao = database?.templateDao() ?: throw IllegalStateException("test fail")
+        val dao = database?.templateDao() ?: throw IllegalStateException("deleteTemplate fail")
 
         dao.deleteTemplate(item.id)
 
@@ -47,13 +47,13 @@ class RoomRepositoryImpl(
     }
 
     override suspend fun deleteAllTemplate() {
-        val dao = database?.templateDao() ?: throw IllegalStateException("test fail")
+        val dao = database?.templateDao() ?: throw IllegalStateException("deleteAllTemplate fail")
 
         dao.deleteAllTemplate()
     }
 
     override suspend fun selectFirstTemplate(key: String): TemplateEntity {
-        val dao = database?.templateDao() ?: throw IllegalStateException("test fail")
+        val dao = database?.templateDao() ?: throw IllegalStateException("selectFirstTemplate fail")
 
         return dao.getFirstTemplate(key)
     }
@@ -61,47 +61,52 @@ class RoomRepositoryImpl(
     // data
 
     override suspend fun insertData(item: DataEntity) {
-        val dao = database?.dataDao() ?: throw IllegalStateException("test fail")
+        val dao = database?.dataDao() ?: throw IllegalStateException("insertData fail")
 
         dao.insertData(item)
     }
 
 
     override suspend fun getAllData(key: String): DataEntity? {
-        val dao = database?.dataDao() ?: throw IllegalStateException("test fail")
+        val dao = database?.dataDao() ?: throw IllegalStateException("getAllData fail")
 
         return dao.getDataById(key)
     }
 
     //Entry
     override fun getAllEntry(): LiveData<List<EntryEntity>> {
-        val dao = database?.entryDao() ?: throw IllegalStateException("test fail")
+        val dao = database?.entryDao() ?: throw IllegalStateException("getAllEntry fail")
         return dao.getAllEntry()
     }
 
     override suspend fun insertEntry(item: EntryEntity) {
-        val dao = database?.entryDao() ?: throw IllegalStateException("test fail")
+        val dao = database?.entryDao() ?: throw IllegalStateException("insertEntry fail")
 
         dao.insertEntry(item)
     }
 
     override suspend fun deleteAllEntry() {
-        val dao = database?.entryDao() ?: throw IllegalStateException("test fail")
+        val dao = database?.entryDao() ?: throw IllegalStateException("deleteAllEntry fail")
 
         dao.deleteAllEntry()
     }
 
     //Budget
     override suspend fun insertBudget(item: BudgetEntity) {
-        val dao = database?.budgetDao() ?: throw IllegalStateException("test fail")
+        val dao = database?.budgetDao() ?: throw IllegalStateException("insertBudget fail")
 
         dao.insertBudget(item)
     }
 
     override suspend fun deleteAllBudget() {
-        val dao = database?.budgetDao() ?: throw IllegalStateException("test fail")
+        val dao = database?.budgetDao() ?: throw IllegalStateException("deleteAllBudget fail")
 
         dao.deleteAllBudget()
+    }
+
+    //Tag
+    override suspend fun deleteAllTag() {
+        val dao = database?.tagDao() ?: throw IllegalStateException("deleteAllTag fal")
     }
 
 

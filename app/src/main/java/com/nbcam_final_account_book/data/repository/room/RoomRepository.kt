@@ -31,6 +31,6 @@ interface RoomRepository {
     suspend fun deleteAllBudget()
 
     //Tag
-
+    suspend fun deleteAllTag()
 
 }

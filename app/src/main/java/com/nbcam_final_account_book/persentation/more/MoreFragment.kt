@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MoreFragmentBinding
-import com.nbcam_final_account_book.persentation.lock.LockActivity
 import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
+import com.nbcam_final_account_book.persentation.lock.LockActivity
 
 
 class MoreFragment : Fragment() {
@@ -43,7 +43,12 @@ class MoreFragment : Fragment() {
         initViewModel()
     }
 
-    private fun initView() = with(binding) { //레이 아웃 제어
+    private fun initView() = with(binding) {
+
+        moreBtnMypage.setOnClickListener {
+            findNavController().navigate(R.id.action_menu_more_to_myPageFragment)
+        }
+
         moreBtnLock.setOnClickListener {
             val intent = Intent(requireContext(), LockActivity::class.java)
             startActivity(intent)

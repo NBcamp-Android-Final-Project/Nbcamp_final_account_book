@@ -95,7 +95,9 @@ class MainActivity : AppCompatActivity() {
                 Log.d("옵저빙.템플릿", it.toString())
             })
             mainLiveEntryList.observe(this@MainActivity, Observer { it ->
-                Log.d("옵저빙.엔트리 리스트", it.toString())
+                if (it != null) {
+                    Log.d("옵저빙.엔트리 리스트", it.toString())
+                }
             })
         }
 

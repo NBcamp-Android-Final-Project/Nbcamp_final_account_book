@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 
 @Dao
@@ -31,7 +30,7 @@ interface EntryDao {
     //DELETE
 
     @Query("DELETE FROM entry_table WHERE entry_id = :id")
-    suspend fun deleteEntry(id: Int)
+    suspend fun deleteEntryById(id: Int)
 
     @Query("DELETE FROM entry_table WHERE entry_key = :key")
     suspend fun deleteEntryByKey(key: String) // 템플릿 삭제 시 모두 삭제해야 하는 데이터

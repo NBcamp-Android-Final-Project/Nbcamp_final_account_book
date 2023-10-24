@@ -1,7 +1,6 @@
 package com.nbcam_final_account_book.persentation.entry
 
 import android.os.Parcelable
-import com.nbcam_final_account_book.data.model.remote.ResponseEntryModel
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 @Parcelize
@@ -15,15 +14,4 @@ data class EntryModel(
     val description: String = ""// 수입/지출 상세 내용 (ex. 홍대역에서 합정역까지 택시로 이동
 ) : Parcelable
 
-fun EntryModel.toResponse(key: String): ResponseEntryModel {
-    return ResponseEntryModel(
-        key = key,
-        id = id,
-        type = type,
-        dateTime = dateTime,
-        value = value,
-        tag = tag,
-        title = title,
-        description = description
-    )
-}
+

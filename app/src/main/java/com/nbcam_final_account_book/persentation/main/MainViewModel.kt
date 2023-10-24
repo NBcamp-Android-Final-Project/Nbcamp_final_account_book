@@ -19,10 +19,6 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
-import com.nbcam_final_account_book.persentation.budget.BudgetModel
-import com.nbcam_final_account_book.persentation.entry.EntryModel
-import com.nbcam_final_account_book.persentation.tag.TagModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainViewModel(
@@ -34,7 +30,7 @@ class MainViewModel(
     private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
     val mainLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _mainLiveCurrentTemplate
 
-    var key: String? = null
+    private var key: String? = null
 
     //EntryLiveData
     val mainLiveEntryList: LiveData<List<EntryEntity>> get() = roomRepo.getEntryByKey(key)
@@ -54,7 +50,6 @@ class MainViewModel(
 //            loadData()
         }
         setKey()
-        Log.d("키값", key.toString())
     }
 
     fun getCurrentTemplate(): TemplateEntity? {
@@ -65,7 +60,17 @@ class MainViewModel(
         val currentTemplate = mainLiveCurrentTemplate.value
         if (currentTemplate != null) {
             key = currentTemplate.id
+            Log.d("키값", key.toString())
         }
+    }
+
+    fun getKey(): String {
+        return key ?: ""
+    }
+
+
+    fun getEntryLiveData(): LiveData<List<EntryEntity>> { //테스트를 위한 라이브 데이터 리턴
+        return mainLiveEntryList
     }
 
 

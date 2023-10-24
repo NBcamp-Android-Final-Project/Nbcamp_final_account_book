@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 
 @Dao
@@ -30,7 +29,7 @@ interface TagDao {
     //DELETE
 
     @Query("DELETE FROM tag_table WHERE tag_id = :id")
-    suspend fun deleteTag(id: Int)
+    suspend fun deleteTagById(id: Int)
 
     @Query("DELETE FROM tag_table WHERE tag_key = :key")
     suspend fun deleteTagByKey(key: String) // 템플릿 삭제 시 모두 삭제해야 하는 데이터

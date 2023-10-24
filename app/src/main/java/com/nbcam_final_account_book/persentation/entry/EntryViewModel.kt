@@ -10,7 +10,6 @@ import androidx.lifecycle.viewModelScope
 import com.nbcam_final_account_book.data.model.DummyData
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
-import com.nbcam_final_account_book.data.model.remote.ResponseEntryModel
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
@@ -21,9 +20,6 @@ class EntryViewModel(
 ) : ViewModel() {
 
     val dummyLiveEntryList: LiveData<List<EntryModel>> get() = DummyData.liveDummyEntry
-
-    private val _liveEntryList: MutableLiveData<List<ResponseEntryModel>> = MutableLiveData()
-    val liveEntryList: LiveData<List<ResponseEntryModel>> get() = _liveEntryList
 
     private val _liveValue: MutableLiveData<String?> = MutableLiveData()
     val liveValue: LiveData<String?> get() = _liveValue

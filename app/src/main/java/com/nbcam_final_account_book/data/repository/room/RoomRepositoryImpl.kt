@@ -11,6 +11,8 @@ import java.util.UUID
 class RoomRepositoryImpl(
     private val database: AndroidRoomDataBase?
 ) : RoomRepository {
+
+    //template
     override suspend fun getAllTemplate(): List<TemplateEntity> {
         val dao = database?.templateDao() ?: throw IllegalStateException("test fail")
 
@@ -56,6 +58,8 @@ class RoomRepositoryImpl(
         return dao.getFirstTemplate(key)
     }
 
+    // data
+
     override suspend fun insertData(item: DataEntity) {
         val dao = database?.dataDao() ?: throw IllegalStateException("test fail")
 
@@ -81,11 +85,23 @@ class RoomRepositoryImpl(
         dao.insertEntry(item)
     }
 
+    override suspend fun deleteAllEntry() {
+        val dao = database?.entryDao() ?: throw IllegalStateException("test fail")
+
+        dao.deleteAllEntry()
+    }
+
     //Budget
     override suspend fun insertBudget(item: BudgetEntity) {
         val dao = database?.budgetDao() ?: throw IllegalStateException("test fail")
 
         dao.insertBudget(item)
+    }
+
+    override suspend fun deleteAllBudget() {
+        val dao = database?.budgetDao() ?: throw IllegalStateException("test fail")
+
+        dao.deleteAllBudget()
     }
 
 

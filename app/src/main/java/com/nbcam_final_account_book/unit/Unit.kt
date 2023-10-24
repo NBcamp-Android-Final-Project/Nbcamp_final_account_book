@@ -9,9 +9,8 @@ object Unit {
     const val INPUT_TYPE_PAY = "input_type_pay"
 
     // Firebase 저장 경로
-    const val PATH_ENTRY = "path_entry"
-    const val PATH_TAG = "path_tag"
-    const val PATH_BUDGET = "path_budget"
+    const val TEMPLATE_LIST = "template_list"
+    const val TEMPLATE_DATA = "template_data"
 
     //id 부여
 

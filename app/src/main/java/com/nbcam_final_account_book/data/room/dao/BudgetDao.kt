@@ -21,10 +21,10 @@ interface BudgetDao {
     fun getAllBudget(): LiveData<List<BudgetEntity>> //데이터 백업 시 반환되는 데이터
 
     @Query("SELECT * FROM budget_table WHERE budget_id = :id")
-    suspend fun getEBudgetById(id: Int): BudgetEntity // 데이터 수정시 수정할 데이터
+    fun getEBudgetById(id: Int): BudgetEntity // 데이터 수정시 수정할 데이터
 
     @Query("SELECT * FROM budget_table WHERE budget_key = :key")
-    suspend fun getBudgetByKey(key: String): LiveData<List<BudgetEntity>> //템플릿 선택 시 반환되는 데이터
+    fun getBudgetByKey(key: String): LiveData<List<BudgetEntity>> //템플릿 선택 시 반환되는 데이터
 
 
     //DELETE

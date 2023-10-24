@@ -3,6 +3,7 @@ package com.nbcam_final_account_book.persentation.home
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ import java.util.Calendar
 
 class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
 
-    companion object{
+    companion object {
         const val EXTRA_CURRENT_TEMPLATE = "extra_current_template"
     }
 
@@ -32,14 +33,14 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
     private var currentMonth: Int = Calendar.getInstance().get(Calendar.MONTH)
     private var currentYear: Int = Calendar.getInstance().get(Calendar.YEAR)
     private var currentDay: Int = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-    private val sharedViewModel: MainViewModel by activityViewModels()
-
 
     private val viewModel by lazy {
         ViewModelProvider(
-            this@HomeFragment
+            this@HomeFragment,
+            HomeViewModelModelFactory(requireContext())
         )[HomeViewModel::class.java]
     }
+    private val sharedViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -151,8 +152,10 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initView()
         initViewModel()
+
     }
 
     private fun initView() = with(binding) { //레이아웃 제어
@@ -166,6 +169,9 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
 //				R.anim.slide_up_exit
 //			)  // overrideActivityTransition 으로 변경 예정
         }
+
+
+
     }
 
     private fun getCurrentTemplate(): TemplateEntity? {
@@ -173,10 +179,28 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
     }
 
     // HomeFragment 내부
-    private fun initViewModel() = with(viewModel) {
+    private fun initViewModel() {
         // 여기서 바텀시트를 표시하는 로직을 제거합니다. 다른 로직이 있다면 그대로 두시면 됩니다.
-        DummyData.liveDummyEntry.observe(viewLifecycleOwner) { entries ->
-            // 바텀시트 표시 로직 제거
+        with(viewModel) {
+            DummyData.liveDummyEntry.observe(viewLifecycleOwner) { entries ->
+                // 바텀시트 표시 로직 제거
+            }
+            homeLiveEntryList.observe(viewLifecycleOwner) { it ->
+                if (it != null) {
+                    Log.d("홈프래그먼트", it.toString())
+                }
+            }
         }
+
+        with(sharedViewModel) {
+
+        }
+
     }
+
+    private fun updateKey() {
+        viewModel.updateKey(sharedViewModel.getKey())
+    }
+
+
 }

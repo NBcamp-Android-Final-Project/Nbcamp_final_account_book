@@ -22,10 +22,10 @@ interface EntryDao {
     fun getAllEntry(): LiveData<List<EntryEntity>>//데이터 백업 시 반환되는 데이터
 
     @Query("SELECT * FROM entry_table WHERE entry_id = :id")
-    suspend fun getEntryById(id: Int): EntryEntity // 데이터 수정시 수정할 데이터
+    fun getEntryById(id: Int): EntryEntity // 데이터 수정시 수정할 데이터
 
     @Query("SELECT * FROM entry_table WHERE entry_Key = :key")
-    suspend fun getEntryByKey(key: String): LiveData<List<BudgetEntity>> //템플릿 선택 시 반환되는 데이터
+    fun getEntryByKey(key: String): LiveData<List<EntryEntity>> //템플릿 선택 시 반환되는 데이터
 
 
     //DELETE

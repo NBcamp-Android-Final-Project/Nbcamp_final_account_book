@@ -17,11 +17,11 @@ interface DataDao {
 
     //SELECT
     @Query("SELECT * FROM data_table WHERE data_id = :id")
-    suspend fun getDataById(id: String): DataEntity? // id = TemplateEntity.id
+    fun getDataById(id: String): DataEntity? // id = TemplateEntity.id
 
     //DELETE
     @Query("DELETE FROM data_table WHERE data_id = :id")
-    suspend fun deleteDataById(id: Int) // id = TemplateEntity.id
+    fun deleteDataById(id: Int) // id = TemplateEntity.id
 
     //Update
     @Update

@@ -21,10 +21,10 @@ interface TagDao {
     fun getAllTag(): LiveData<List<TagEntity>>//데이터 백업 시 반환되는 데이터
 
     @Query("SELECT * FROM tag_table WHERE tag_id = :id")
-    suspend fun getTagById(id: Int): TagEntity // 데이터 수정시 수정할 데이터
+    fun getTagById(id: Int): TagEntity // 데이터 수정시 수정할 데이터
 
     @Query("SELECT * FROM tag_table WHERE tag_key = :key")
-    suspend fun getTagByKey(key: String): LiveData<List<TagEntity>> //템플릿 선택 시 반환되는 데이터
+    fun getTagByKey(key: String): LiveData<List<TagEntity>> //템플릿 선택 시 반환되는 데이터
 
 
     //DELETE

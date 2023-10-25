@@ -8,11 +8,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.github.sundeepk.compactcalendarview.CompactCalendarView
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
@@ -34,7 +33,6 @@ class EntryFragment : Fragment() {
 	private val binding get() = _binding!!
 	private var tagPosition: Int? = null
 	private val viewModel: EntryViewModel by activityViewModels()
-	private var shouldShow: Boolean = true
 
 	private val tagListAdapter by lazy {
 		TagListAdapter(onItemClick = { position ->
@@ -43,7 +41,7 @@ class EntryFragment : Fragment() {
 	}
 
 	private fun onItemClickEvent(position: Int) {
-		Toast.makeText(requireActivity(), "$position 번째 클릭", Toast.LENGTH_SHORT).show()
+
 		tagPosition = position
 	}
 
@@ -60,7 +58,6 @@ class EntryFragment : Fragment() {
 
 		initView()
 		initTag()
-		compactCalendar()
 		editTextFormat()
 	}
 
@@ -76,41 +73,24 @@ class EntryFragment : Fragment() {
 		}
 
 		tvDateInput.setOnClickListener {
-			if (!compactcalendarView.isAnimating) {
-				if (shouldShow) {
-					compactcalendarView.showCalendarWithAnimation()
-				} else {
-					compactcalendarView.hideCalendarWithAnimation()
-				}
-				shouldShow = !shouldShow
-			}
+			showDatePicker()
 		}
 
 		edtAmount.setOnClickListener {
 //			findNavController().navigate(R.id.action_entryFragment_to_entryDetailFragment)
 		}
 
-		ivSave.setOnClickListener {
+		btnSave.setOnClickListener {
 			// Firebase RTDB 에 `태그`, `결제 수단`, `메모`, `금액` 저장 후, ModalBottomSheet 및 EntryActivity 종료
-			val title = edtTitle.text.toString()
-			val tag = tagPosition ?: 0
-			val payment = tabLayoutPayment.selectedTabPosition
-			val finance = tabLayoutFinance.selectedTabPosition
-			val description = edtDescription.text.toString()
-			val amount = edtAmount.text.toString()
-			val currentTemplate = getCurrentTemplateEntry()
+			val payment = tabLayoutPayment.selectedTabPosition      // 카드 <-> 현금
+			val finance = tabLayoutFinance.selectedTabPosition      // 지출 <-> 수입
+			val date = tvDateInput.text.toString()                             // 날짜
+			val amount = edtAmount.text.toString()                  // 금액
+			val tag = tagPosition                                   // 카테고리
+			val title = edtTitle.text.toString()                    // 제목
+			val description = edtDescription.text.toString()        // 메모
+			val currentTemplate = getCurrentTemplateEntry()         // 템플릿
 			Log.d("현재 템플릿", currentTemplate.toString())
-
-			val dateTimeList = listOf(
-				"2023-10-25",
-				"2023-10-24",
-				"2023-10-23",
-				"2023-10-10",
-				"2023-10-11",
-				"2023-10-12",
-				"2023-10-13",
-				"2023-10-14",
-			)
 
 			val payTagList = listOf(
 				"식비",
@@ -125,27 +105,22 @@ class EntryFragment : Fragment() {
 				"불로소득"
 			)
 
-			val dayListSize = dateTimeList.size
 			val payTagListSize = payTagList.size
 			val inComeListSize = inComeList.size
 
-			val dayRandomIndex = Random.nextInt(0, dayListSize)
 			val payRandomIndex = Random.nextInt(0, payTagListSize)
 			val inComeRandomIndex = Random.nextInt(0, inComeListSize)
 
-			val dateTime = dateTimeList[dayRandomIndex]
 			val payTag = payTagList[payRandomIndex]
 			val incomeTag = inComeList[inComeRandomIndex]
 
-			//TODO 여기 날짜 랜덤으로 넣을 수 있도록 해두겠습니다
-
-			if (edtAmount.text.isNotEmpty()  && currentTemplate != null) {
+			if (edtAmount.text.isNotEmpty() && currentTemplate != null) {
 				if (finance == 0) {
 					val entryEntity = EntryEntity(
 						id = 0,
 						key = currentTemplate.id,
 						type = INPUT_TYPE_PAY,
-						dateTime = dateTime,
+						dateTime = date,
 						value = amount,
 						tag = incomeTag,
 						title = title,
@@ -158,7 +133,7 @@ class EntryFragment : Fragment() {
 						id = 0,
 						key = currentTemplate.id,
 						type = INPUT_TYPE_INCOME,
-						dateTime = dateTime,
+						dateTime = date,
 						value = amount,
 						tag = payTag,
 						title = title,
@@ -234,24 +209,27 @@ class EntryFragment : Fragment() {
 		})
 	}
 
-	private fun compactCalendar() {
+	private fun showDatePicker() {
 
-		binding.compactcalendarView.apply {
-			hideCalendar()
-			setFirstDayOfWeek(Calendar.SUNDAY)
-			setListener(object : CompactCalendarView.CompactCalendarViewListener {
-				override fun onDayClick(dateClicked: Date?) {
-					binding.tvDateInput.text = dateClicked?.let { dateFormat.format(it) }
-				}
+		val datePicker =
+			MaterialDatePicker.Builder.datePicker()
+				.setTitleText("Select date")
+				.setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+				.build()
 
-				override fun onMonthScroll(firstDayOfNewMonth: Date?) {}
-			})
+		datePicker.show(requireActivity().supportFragmentManager, "fragment")
+
+		datePicker.addOnPositiveButtonClickListener {
+			val calendar = Calendar.getInstance()
+			calendar.time = Date(it)
+			binding.tvDateInput.text =
+				"${calendar.get(Calendar.YEAR)}" +
+						"-${calendar.get(Calendar.MONTH) + 1}" +
+						"-${calendar.get(Calendar.DAY_OF_MONTH)}"
 		}
 	}
 
-	private val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일") //화면에 보이는거
-	private val dateFormatSave = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA) //저장 되는 것
-
+	private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
 
 	companion object {
 		val TAG = EntryFragment::class.simpleName

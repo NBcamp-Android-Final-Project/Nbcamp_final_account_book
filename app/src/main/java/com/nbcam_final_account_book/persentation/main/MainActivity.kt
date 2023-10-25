@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -14,7 +15,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.MainActivityBinding
-import com.nbcam_final_account_book.persentation.budget.BudgetModel
 import com.nbcam_final_account_book.persentation.template.addbudget.TemplateBudgetFragment
 
 
@@ -60,6 +60,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() = with(binding) {
 
+        loadLogin()
+
+        if (!isLogin) {
+            synchronizationDataFromFireBase()
+        }
+
         Log.d("도착", extraTemplate.toString())
         if (extraTemplate != null) {
             updateTemplate(extraTemplate)
@@ -95,14 +101,32 @@ class MainActivity : AppCompatActivity() {
                 }
                 Log.d("옵저빙.템플릿", it.toString())
             })
+
+            //todo 업데이트 타이밍 조절해보기
             mainLiveEntryList.observe(this@MainActivity, Observer { it ->
                 if (it != null) {
                     Log.d("옵저빙.엔트리 리스트", it.toString())
                     if (it.isNotEmpty()) {
-                        insertData() // 백업 테스트코드
+                        updataBackupData() // 백업 테스트코드
                     }
                 }
             })
+            mainLiveTagList.observe(this@MainActivity, Observer { it ->
+                if (it != null) {
+                    if (it.isNotEmpty()) {
+                        updataBackupData() // 백업 테스트코드
+                    }
+                }
+            })
+            mainBudgetList.observe(this@MainActivity, Observer { it ->
+                if (it != null) {
+                    if (it.isNotEmpty()) {
+                        updataBackupData() // 백업 테스트코드
+                    }
+                }
+            })
+
+
         }
 
     }
@@ -113,6 +137,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun setKey() {
         viewModel.setKey()
+    }
+
+    private fun synchronizationDataFromFireBase() {
+        viewModel.synchronizationData()
+    }
+    private fun loadLogin(){
+        isLogin = viewModel.loadSharedPrefIsLogin()
+        Log.d("로그인여부", isLogin.toString())
     }
 
 

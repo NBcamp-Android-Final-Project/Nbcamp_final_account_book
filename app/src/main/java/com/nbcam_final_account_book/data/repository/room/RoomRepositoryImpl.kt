@@ -46,6 +46,12 @@ class RoomRepositoryImpl(
         return dao.getListTemplate()
     }
 
+    override suspend fun insertTemplateList(item: List<TemplateEntity>) {
+        val dao = database?.templateDao() ?: throw IllegalStateException("insertTemplateList fail")
+
+        dao.insertTemplateList(item)
+    }
+
     override suspend fun deleteTemplate(item: TemplateEntity): List<TemplateEntity> {
 
         val dao = database?.templateDao() ?: throw IllegalStateException("deleteTemplate fail")
@@ -73,6 +79,12 @@ class RoomRepositoryImpl(
         val dao = database?.dataDao() ?: throw IllegalStateException("insertData fail")
 
         dao.insertData(item)
+    }
+
+    override suspend fun insertDataList(itemList: List<DataEntity>) {
+        val dao = database?.dataDao() ?: throw IllegalStateException("insertDataList fail")
+
+        dao.insertDataList(itemList)
     }
 
 

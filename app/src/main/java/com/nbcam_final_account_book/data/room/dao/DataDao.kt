@@ -15,6 +15,9 @@ interface DataDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertData(entity: DataEntity) // DataEntity.id = TemplateEntity.id
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertDataList(itemList: List<DataEntity>)
+
     //SELECT
     @Query("SELECT * FROM data_table WHERE data_id = :id")
     fun getDataById(id: String): DataEntity? // id = TemplateEntity.id

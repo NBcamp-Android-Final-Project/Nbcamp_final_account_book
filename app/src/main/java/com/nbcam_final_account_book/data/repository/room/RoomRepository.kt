@@ -15,12 +15,14 @@ interface RoomRepository {
     fun getAllLiveTemplate(): LiveData<List<TemplateEntity>>
     suspend fun insertFirstTemplate(text: String): String
     suspend fun insertTemplate(text: String): List<TemplateEntity>
+    suspend fun insertTemplateList(item:List<TemplateEntity>)
     suspend fun deleteTemplate(item: TemplateEntity): List<TemplateEntity>
     suspend fun deleteAllTemplate()
     suspend fun selectFirstTemplate(key: String): TemplateEntity
 
     //Data
     suspend fun insertData(item: DataEntity)
+    suspend fun insertDataList(itemList: List<DataEntity>)
     suspend fun getDataByKey(key: String): DataEntity?
     suspend fun getAllData(): List<DataEntity>
     suspend fun deleteAllData()

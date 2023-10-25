@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private val navHostFragment: NavHostFragment by lazy { supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment }
     private val navController: NavController by lazy { navHostFragment.navController }
+    private var isLogin: Boolean = false
 
     private val extraTemplate: TemplateEntity? by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -43,12 +44,13 @@ class MainActivity : AppCompatActivity() {
 
         initViewModel()
         initView()
+
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
                 true
             }
 
@@ -57,6 +59,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() = with(binding) {
+
+        loadLogin()
+
+        if (!isLogin) {
+            synchronizationDataFromFireBase()
+        }
 
         Log.d("도착", extraTemplate.toString())
         if (extraTemplate != null) {
@@ -93,12 +101,32 @@ class MainActivity : AppCompatActivity() {
                 }
                 Log.d("옵저빙.템플릿", it.toString())
             })
+
+            //todo 업데이트 타이밍 조절해보기
             mainLiveEntryList.observe(this@MainActivity, Observer { it ->
                 if (it != null) {
                     Log.d("옵저빙.엔트리 리스트", it.toString())
-//                    insertData() // 백업 테스트코드
+                    if (it.isNotEmpty()) {
+                        updataBackupData() // 백업 테스트코드
+                    }
                 }
             })
+            mainLiveTagList.observe(this@MainActivity, Observer { it ->
+                if (it != null) {
+                    if (it.isNotEmpty()) {
+                        updataBackupData() // 백업 테스트코드
+                    }
+                }
+            })
+            mainBudgetList.observe(this@MainActivity, Observer { it ->
+                if (it != null) {
+                    if (it.isNotEmpty()) {
+                        updataBackupData() // 백업 테스트코드
+                    }
+                }
+            })
+
+
         }
 
     }
@@ -109,6 +137,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun setKey() {
         viewModel.setKey()
+    }
+
+    private fun synchronizationDataFromFireBase() {
+        viewModel.synchronizationData()
+    }
+    private fun loadLogin(){
+        isLogin = viewModel.loadSharedPrefIsLogin()
+        Log.d("로그인여부", isLogin.toString())
     }
 
 

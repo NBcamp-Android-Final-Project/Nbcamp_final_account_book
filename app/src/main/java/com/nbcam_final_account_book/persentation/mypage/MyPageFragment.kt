@@ -65,7 +65,7 @@ class MyPageFragment : Fragment() {
         mypageTvLogout.setOnClickListener {
             val auth = FirebaseAuth.getInstance()
             auth.signOut()
-//            sharedViewModel.backupDatabyLogOut() //백업 테스트 코드
+            sharedViewModel.backupDataByLogOut() //백업 테스트 코드
             cleanRoom()
             val intent = Intent(requireContext(), FirstActivity::class.java)
             startActivity(intent)

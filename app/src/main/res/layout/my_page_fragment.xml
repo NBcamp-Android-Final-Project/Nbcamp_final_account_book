@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".persentation.mypage.MyPageFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/mypage_guideline_h1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.05" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/mypage_guideline_h2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.27" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/mypage_guideline_v1"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.3" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/mypage_guideline_v2"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.7" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/mypage_guideline_v3"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.2" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/mypage_guideline_v4"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.8" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/mypage_guideline_v5"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.35" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/mypage_iv_profile"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@mipmap/ic_launcher"
+                app:layout_constraintBottom_toTopOf="@+id/mypage_guideline_h2"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/mypage_guideline_v2"
+                app:layout_constraintStart_toEndOf="@+id/mypage_guideline_v1"
+                app:layout_constraintTop_toBottomOf="@+id/mypage_guideline_h1" />
+
+            <TextView
+                android:id="@+id/mypage_tv_id1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="ID"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/mypage_guideline_v3"
+                app:layout_constraintTop_toBottomOf="@+id/mypage_guideline_h2" />
+
+            <TextView
+                android:id="@+id/mypage_tv_id2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="아이디"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/mypage_guideline_v4"
+                app:layout_constraintStart_toEndOf="@+id/mypage_guideline_v5"
+                app:layout_constraintTop_toBottomOf="@+id/mypage_guideline_h2" />
+
+            <TextView
+                android:id="@+id/mypage_tv_name1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Name"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/mypage_guideline_v3"
+                app:layout_constraintTop_toBottomOf="@+id/mypage_tv_id1" />
+
+            <EditText
+                android:id="@+id/mypage_et_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:enabled="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:paddingVertical="0dp"
+                android:text="이름닉네임이이이이이"
+                android:textColor="@color/mypage_text_color_active"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/mypage_tv_name1"
+                app:layout_constraintEnd_toStartOf="@+id/mypage_guideline_v4"
+                app:layout_constraintStart_toEndOf="@+id/mypage_guideline_v5"
+                app:layout_constraintTop_toTopOf="@+id/mypage_tv_name1" />
+
+            <ImageView
+                android:id="@+id/mypage_iv_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_backspace"
+                app:layout_constraintBottom_toBottomOf="@+id/mypage_et_name"
+                app:layout_constraintStart_toStartOf="@+id/mypage_guideline_v4"
+                app:layout_constraintTop_toTopOf="@+id/mypage_et_name"
+                tools:ignore="contentDescription" />
+
+            <TextView
+                android:id="@+id/mypage_tv_account_book_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:text="사용 중인 가계부"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/mypage_guideline_v2"
+                app:layout_constraintStart_toStartOf="@+id/mypage_guideline_v1"
+                app:layout_constraintTop_toBottomOf="@+id/mypage_et_name" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mypage_rv_account_book_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toStartOf="@+id/mypage_guideline_v4"
+                app:layout_constraintStart_toStartOf="@+id/mypage_guideline_v3"
+                app:layout_constraintTop_toBottomOf="@+id/mypage_tv_account_book_list" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:text="공유하는 사용자"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/mypage_guideline_v2"
+                app:layout_constraintStart_toStartOf="@+id/mypage_guideline_v1"
+                app:layout_constraintTop_toBottomOf="@+id/mypage_rv_account_book_list" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mypage_rv_shared_user_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/mypage_guideline_v4"
+                app:layout_constraintStart_toStartOf="@+id/mypage_guideline_v3"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

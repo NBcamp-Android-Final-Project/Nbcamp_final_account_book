@@ -1,5 +1,6 @@
 package com.nbcam_final_account_book.data.room.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -12,7 +13,10 @@ interface TemplateDao {
 
     //SELECT
     @Query("SELECT * FROM template_table")
-    suspend fun getTemplateList(): List<TemplateEntity>
+    fun getListTemplate(): List<TemplateEntity>
+
+    @Query("SELECT * FROM template_table")
+    fun getLiveTemplateList(): LiveData<List<TemplateEntity>>
 
     @Query("SELECT * FROM template_table WHERE id = :id")
     suspend fun getFirstTemplate(id: String): TemplateEntity

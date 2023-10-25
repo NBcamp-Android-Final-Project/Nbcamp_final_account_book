@@ -9,6 +9,11 @@ import com.nbcam_final_account_book.data.model.local.TemplateEntity
 
 interface RoomRepository {
 
+    // 사용방법
+    // viewModel에 repository를 연결해줍니다
+    // 연결 하는 방법은 MainViewModel을 확인해주시면 됩니다.(Factory 사용)
+    // Fragment예시는 HomeViewModel 참고하시면 됩니다.
+
 
     //Template
     fun getAllListTemplate(): List<TemplateEntity> //list형태로 모든 템플릿 이름을 가져옵니다

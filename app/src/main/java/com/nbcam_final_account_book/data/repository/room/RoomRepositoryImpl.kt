@@ -16,10 +16,16 @@ class RoomRepositoryImpl(
 ) : RoomRepository {
 
     //template
-    override suspend fun getAllTemplate(): List<TemplateEntity> {
+    override fun getAllListTemplate(): List<TemplateEntity> {
         val dao = database?.templateDao() ?: throw IllegalStateException("getAllTemplate fail")
 
-        return dao.getTemplateList()
+        return dao.getListTemplate()
+    }
+
+    override fun getAllLiveTemplate(): LiveData<List<TemplateEntity>> {
+        val dao = database?.templateDao() ?: throw IllegalStateException("getAllLiveTemplate fail")
+
+        return dao.getLiveTemplateList()
     }
 
     override suspend fun insertFirstTemplate(text: String): String {
@@ -37,7 +43,7 @@ class RoomRepositoryImpl(
 
         dao.insertTemplate(TemplateEntity(id = customKey, templateTitle = text))
 
-        return dao.getTemplateList()
+        return dao.getListTemplate()
     }
 
     override suspend fun deleteTemplate(item: TemplateEntity): List<TemplateEntity> {
@@ -46,7 +52,7 @@ class RoomRepositoryImpl(
 
         dao.deleteTemplate(item.id)
 
-        return dao.getTemplateList()
+        return dao.getListTemplate()
     }
 
     override suspend fun deleteAllTemplate() {
@@ -70,10 +76,16 @@ class RoomRepositoryImpl(
     }
 
 
-    override suspend fun getAllData(key: String): DataEntity? {
-        val dao = database?.dataDao() ?: throw IllegalStateException("getAllData fail")
+    override suspend fun getDataByKey(key: String): DataEntity? {
+        val dao = database?.dataDao() ?: throw IllegalStateException("getDataByKey fail")
 
         return dao.getDataById(key)
+    }
+
+    override suspend fun getAllData(): List<DataEntity> {
+        val dao = database?.dataDao() ?: throw IllegalStateException("getAllData fail")
+
+        return dao.getAllData()
     }
 
     override suspend fun deleteAllData() {
@@ -103,21 +115,37 @@ class RoomRepositoryImpl(
         return dao.getEntryById(id)
     }
 
-    override fun getEntryByKey(key: String?): LiveData<List<EntryEntity>> {
+    override fun getLiveEntryByKey(key: String?): LiveData<List<EntryEntity>> {
 
-        val dao = database?.entryDao() ?: throw IllegalStateException("getEntryByKey fail")
+        val dao = database?.entryDao() ?: throw IllegalStateException("getLiveEntryByKey fail")
         Log.d("삽입키", key.toString())
         return if (key != null) {
-            dao.getEntryByKey(key)
+            dao.getLiveEntryByKey(key)
         } else {
-            Log.e("룸오류", "getEntryByKey 오류")
+            Log.e("룸오류", "getLiveEntryByKey 오류")
             MutableLiveData<List<EntryEntity>>()
+        }
+    }
+
+    override fun getListEntryKey(key: String?): List<EntryEntity> {
+        val dao = database?.entryDao() ?: throw IllegalStateException("getListEntryKey fail")
+        Log.d("삽입키", key.toString())
+        return if (key != null) {
+            dao.getListEntryByKey(key)
+        } else {
+            Log.e("룸오류", "getListEntryKey 오류")
+            emptyList()
         }
     }
 
     override suspend fun insertEntry(item: EntryEntity) {
         val dao = database?.entryDao() ?: throw IllegalStateException("insertEntry fail")
         dao.insertEntry(item)
+    }
+
+    override suspend fun insertEntryList(item: List<EntryEntity>) {
+        val dao = database?.entryDao() ?: throw IllegalStateException("insertEntryList fail")
+        dao.insertEntryList(item)
     }
 
     override suspend fun deleteAllEntry() {
@@ -148,6 +176,12 @@ class RoomRepositoryImpl(
         dao.insertBudget(item)
     }
 
+    override suspend fun insertBudgetList(item: List<BudgetEntity>) {
+        val dao = database?.budgetDao() ?: throw IllegalStateException("insertBudgetList fail")
+
+        dao.insertBudgetList(item)
+    }
+
     override fun getAllLiveBudget(): LiveData<List<BudgetEntity>> {
         val dao = database?.budgetDao() ?: throw IllegalStateException("getAllBudget fail")
 
@@ -165,14 +199,24 @@ class RoomRepositoryImpl(
         return dao.getEBudgetById(id)
     }
 
-    override fun getBudgetByKey(key: String?): LiveData<List<BudgetEntity>> {
+    override fun getLiveBudgetByKey(key: String?): LiveData<List<BudgetEntity>> {
 
-        val dao = database?.budgetDao() ?: throw IllegalStateException("insertBudget fail")
+        val dao = database?.budgetDao() ?: throw IllegalStateException("getLiveBudgetByKey fail")
         return if (key != null) {
-            dao.getBudgetByKey(key)
+            dao.getLiveBudgetByKey(key)
         } else {
-            Log.e("룸오류", "getBudgetByKey: 오류")
+            Log.e("룸오류", "getLiveBudgetByKey: 오류")
             MutableLiveData<List<BudgetEntity>>()
+        }
+    }
+
+    override fun getListBudgetByKey(key: String?): List<BudgetEntity> {
+        val dao = database?.budgetDao() ?: throw IllegalStateException("getListBudgetByKey fail")
+        return if (key != null) {
+            dao.getListBudgetByKey(key)
+        } else {
+            Log.e("룸오류", "getListBudgetByKey: 오류")
+            emptyList()
         }
     }
 
@@ -207,6 +251,11 @@ class RoomRepositoryImpl(
         dao.insertTag(item)
     }
 
+    override suspend fun insertTagList(item: List<TagEntity>) {
+        val dao = database?.tagDao() ?: throw IllegalStateException("insertTagList fail")
+        dao.insertTagList(item)
+    }
+
     override fun getAllLiveTag(): LiveData<List<TagEntity>> {
         val dao = database?.tagDao() ?: throw IllegalStateException("getAllTag fail")
         return dao.getAllLiveTag()
@@ -222,13 +271,23 @@ class RoomRepositoryImpl(
         return dao.getTagById(id)
     }
 
-    override fun getTagByKey(key: String?): LiveData<List<TagEntity>> {
-        val dao = database?.tagDao() ?: throw IllegalStateException("getTagByKey fail")
+    override fun getLiveTagByKey(key: String?): LiveData<List<TagEntity>> {
+        val dao = database?.tagDao() ?: throw IllegalStateException("getLiveTagByKey fail")
         return if (key != null) {
-            dao.getTagByKey(key)
+            dao.getLiveTagByKey(key)
         } else {
-            Log.e("룸오류", "getTagByKey: 에러 ")
+            Log.e("룸오류", "getLiveTagByKey: 에러 ")
             MutableLiveData<List<TagEntity>>()
+        }
+    }
+
+    override fun getListTagKey(key: String?): List<TagEntity> {
+        val dao = database?.tagDao() ?: throw IllegalStateException("getListTagKey fail")
+        return if (key != null) {
+            dao.getListTagByKey(key)
+        } else {
+            Log.e("룸오류", "getListTagKey: 오류")
+            emptyList()
         }
     }
 

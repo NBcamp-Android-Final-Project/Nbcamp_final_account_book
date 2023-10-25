@@ -15,6 +15,9 @@ interface BudgetDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertBudget(item: BudgetEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertBudgetList(item: List<BudgetEntity>)
+
     //SELECT
     @Query("SELECT * FROM budget_table")
     fun getAllLiveBudget(): LiveData<List<BudgetEntity>> //데이터 백업 시 반환되는 데이터
@@ -26,7 +29,9 @@ interface BudgetDao {
     fun getEBudgetById(id: Int): BudgetEntity // 데이터 수정시 수정할 데이터
 
     @Query("SELECT * FROM budget_table WHERE budget_key = :key")
-    fun getBudgetByKey(key: String): LiveData<List<BudgetEntity>> //템플릿 선택 시 반환되는 데이터
+    fun getLiveBudgetByKey(key: String): LiveData<List<BudgetEntity>> //템플릿 선택 시 반환되는 데이터
+    @Query("SELECT * FROM budget_table WHERE budget_key = :key")
+    fun getListBudgetByKey(key: String): List<BudgetEntity> //템플릿 선택 백업 시
 
 
     //DELETE

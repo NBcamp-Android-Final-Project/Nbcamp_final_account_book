@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -67,8 +66,6 @@ class EntryActivity : AppCompatActivity() {
 			supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
 		val navController = navHostFragment.navController
 		navController.setGraph(R.navigation.nav_entry_graph)
-
-		window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 	}
 
 	private fun updateCurrentTemplate(item: TemplateEntity?) {

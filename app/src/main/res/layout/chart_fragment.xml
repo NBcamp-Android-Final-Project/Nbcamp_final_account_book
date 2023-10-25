@@ -53,36 +53,53 @@
             app:layout_constraintTop_toBottomOf="@id/chart_date_title">
 
             <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/chart_tab_day"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/chart_radio_button_day_selector"
+                android:button="@android:color/transparent"
+                android:checked="true"
                 android:gravity="center"
                 android:text="일"
-                android:button="@android:color/transparent"
-                android:layout_weight="1"/>
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/chart_tab_week"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/chart_radio_button_week_selector"
+                android:button="@android:color/transparent"
                 android:gravity="center"
                 android:text="주"
-                android:button="@android:color/transparent"
-                android:layout_weight="1"/>
+                android:textColor="@color/cheon_primary_selected_home_icon"
+                android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/chart_tab_month"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="월"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/chart_radio_button_week_selector"
                 android:button="@android:color/transparent"
-                android:layout_weight="1"/>
+                android:gravity="center"
+                android:textColor="@color/cheon_primary_selected_home_icon"
+                android:textStyle="bold"
+                android:text="월" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/chart_tab_period"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="기간선택"
-                android:gravity="center"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/chart_radio_button_period_selector"
                 android:button="@android:color/transparent"
-                android:layout_weight="1"/>
+                android:gravity="center"
+                android:textColor="@color/cheon_primary_selected_home_icon"
+                android:textStyle="bold"
+                android:text="기간선택" />
 
         </RadioGroup>
 

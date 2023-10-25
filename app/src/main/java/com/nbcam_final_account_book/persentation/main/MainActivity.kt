@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         //bottom navigation 연결
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.menu_home, R.id.menu_statistics, R.id.menu_chat, R.id.menu_more
+                R.id.menu_home, R.id.menu_statistics, R.id.menu_chat, R.id.menu_mypage
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

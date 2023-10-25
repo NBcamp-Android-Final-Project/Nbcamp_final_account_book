@@ -15,15 +15,25 @@ interface TagDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTag(item: TagEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertTagList(item: List<TagEntity>)
+
     //SELECT
     @Query("SELECT * FROM tag_table")
-    fun getAllTag(): LiveData<List<TagEntity>>//데이터 백업 시 반환되는 데이터
+    fun getAllLiveTag(): LiveData<List<TagEntity>>//데이터 백업 시 반환되는 데이터
+
+    @Query("SELECT * FROM tag_table")
+    fun getAllListTag(): List<TagEntity> //데이터 백업 시 반환되는 데이터
+
 
     @Query("SELECT * FROM tag_table WHERE tag_id = :id")
     fun getTagById(id: Int): TagEntity // 데이터 수정시 수정할 데이터
 
     @Query("SELECT * FROM tag_table WHERE tag_key = :key")
-    fun getTagByKey(key: String): LiveData<List<TagEntity>> //템플릿 선택 시 반환되는 데이터
+    fun getLiveTagByKey(key: String): LiveData<List<TagEntity>> //템플릿 선택 시 반환되는 데이터
+
+    @Query("SELECT * FROM tag_table WHERE tag_key = :key")
+    fun getListTagByKey(key: String): List<TagEntity> //템플릿 선택 시 반환되는 데이터
 
 
     //DELETE

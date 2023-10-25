@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -13,6 +14,7 @@ import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MoreFragmentBinding
 import com.nbcam_final_account_book.persentation.lock.LockActivity
 import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
+import com.nbcam_final_account_book.persentation.main.MainViewModel
 
 
 class MoreFragment : Fragment() {
@@ -27,6 +29,7 @@ class MoreFragment : Fragment() {
             )
         )[MoreViewModel::class.java]
     }
+    private val sharedViewModel : MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +59,7 @@ class MoreFragment : Fragment() {
         moreBtnLogout.setOnClickListener {
             val auth = FirebaseAuth.getInstance()
             auth.signOut()
-
+//            sharedViewModel.backupDatabyLogOut() //백업 테스트 코드
             cleanRoom()
             val intent = Intent(requireContext(), FirstActivity::class.java)
             startActivity(intent)

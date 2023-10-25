@@ -166,6 +166,14 @@ class MainViewModel(
             roomRepo.deleteAllData()
         }
     }
+    fun backupData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val dataList: List<DataEntity> = roomRepo.getAllData()
+            for (dataEntity in dataList) {
+                fireRepo.updateData(user, dataEntity)
+            }
+        }
+    }
 
     //firebase 데이터 동기화
     fun synchronizationData() {

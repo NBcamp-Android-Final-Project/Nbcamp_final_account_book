@@ -28,7 +28,7 @@ class MyPageFragment : Fragment() {
             )
         )[MyPageViewModel::class.java]
     }
-    private val sharedViewModel : MainViewModel by activityViewModels()
+    private val sharedViewModel: MainViewModel by activityViewModels()
     private var isEditing = false
 
     override fun onCreateView(
@@ -58,6 +58,10 @@ class MyPageFragment : Fragment() {
             startActivity(intent)
         }
 
+        mypageTvBackup.setOnClickListener {
+            backupDate()
+        }
+
         mypageTvTag.setOnClickListener {
             findNavController().navigate(R.id.action_menu_more_to_tagFragment)
         }
@@ -65,7 +69,7 @@ class MyPageFragment : Fragment() {
         mypageTvLogout.setOnClickListener {
             val auth = FirebaseAuth.getInstance()
             auth.signOut()
-            sharedViewModel.backupDataByLogOut() //백업 테스트 코드
+            backupDataByLogOut()
             cleanRoom()
             val intent = Intent(requireContext(), FirstActivity::class.java)
             startActivity(intent)
@@ -75,6 +79,14 @@ class MyPageFragment : Fragment() {
 
     private fun initViewModel() = with(viewModel) {
 
+    }
+
+    private fun backupDate() {
+        sharedViewModel.backupData()
+    }
+
+    private fun backupDataByLogOut() {
+        sharedViewModel.backupDataByLogOut()
     }
 
     private fun cleanRoom() = with(viewModel) {

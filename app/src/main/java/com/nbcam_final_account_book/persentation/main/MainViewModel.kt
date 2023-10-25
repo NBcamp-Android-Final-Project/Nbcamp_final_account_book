@@ -23,13 +23,12 @@ import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import kotlinx.coroutines.launch
 
 
-
 class MainViewModel(
     private val roomRepo: RoomRepository,
     private val sharedProvider: SharedProvider
 ) : ViewModel() {
 
-    companion object{
+    companion object {
         // mainviewModel에서만 접근해야함
         val liveKey: MutableLiveData<String> get() = MutableLiveData()
     }
@@ -38,19 +37,21 @@ class MainViewModel(
     private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
     val mainLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _mainLiveCurrentTemplate
 
+
+    //현재 데이터를 불러오는 기본 폼
+
     //EntryLiveData
-    val mainLiveEntryList: LiveData<List<EntryEntity>> = liveKey.switchMap { key->
+    val mainLiveEntryList: LiveData<List<EntryEntity>> = liveKey.switchMap { key ->
         roomRepo.getEntryByKey(key)
     }
-
     //TagLiveData
-    private val _mainLiveTagList: MutableLiveData<List<TagEntity>> = MutableLiveData()
-    val mainLiveTagList: LiveData<List<TagEntity>> get() = _mainLiveTagList
-
+    private val mainLiveTagList: LiveData<List<TagEntity>> = liveKey.switchMap { key ->
+        roomRepo.getTagByKey(key)
+    }
     //BudgetLiveData
-    private val _mainBudgetList: MutableLiveData<List<BudgetEntity>> = MutableLiveData()
-    val mainBudgetList: LiveData<List<BudgetEntity>> get() = _mainBudgetList
-
+    val mainBudgetList: LiveData<List<BudgetEntity>> = liveKey.switchMap { key ->
+        roomRepo.getBudgetByKey(key)
+    }
 
     init {
         if (loadSharedPrefCurrentUser() != null) {
@@ -86,9 +87,9 @@ class MainViewModel(
     fun insertData() {
         viewModelScope.launch {
             val id = mainLiveCurrentTemplate.value?.id ?: return@launch
-            val jsonEntry = Gson().toJson(mainLiveEntryList.value.orEmpty())
-            val jsonTag = Gson().toJson(_mainLiveTagList.value.orEmpty())
-            val jsonBudget = Gson().toJson(_mainBudgetList.value.orEmpty())
+            val jsonEntry = Gson().toJson(roomRepo.getAllEntry().value.orEmpty())
+            val jsonTag = Gson().toJson(roomRepo.getAllTag().value.orEmpty())
+            val jsonBudget = Gson().toJson(roomRepo.getAllBudget().value.orEmpty())
 
             roomRepo.insertData(
                 DataEntity(

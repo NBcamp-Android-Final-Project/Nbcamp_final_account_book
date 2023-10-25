@@ -162,6 +162,7 @@ class MainViewModel(
             for (dataEntity in dataList) {
                 fireRepo.updateData(user, dataEntity)
             }
+            saveSharedPrefIsLogin(false)
             roomRepo.deleteAllData()
         }
     }

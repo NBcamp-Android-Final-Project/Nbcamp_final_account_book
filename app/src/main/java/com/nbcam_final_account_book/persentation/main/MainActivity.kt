@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity() {
             mainLiveCurrentTemplate.observe(this@MainActivity, Observer { it ->
                 if (it != null) {
                     saveSharedPrefCurrentUser(it)
+                    Log.d("키값.현재", it.toString())
                     setKey()
                 }
                 Log.d("옵저빙.템플릿", it.toString())
@@ -95,6 +96,7 @@ class MainActivity : AppCompatActivity() {
             mainLiveEntryList.observe(this@MainActivity, Observer { it ->
                 if (it != null) {
                     Log.d("옵저빙.엔트리 리스트", it.toString())
+//                    insertData() // 백업 테스트코드
                 }
             })
         }

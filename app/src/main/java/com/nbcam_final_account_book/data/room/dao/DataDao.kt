@@ -19,6 +19,9 @@ interface DataDao {
     @Query("SELECT * FROM data_table WHERE data_id = :id")
     fun getDataById(id: String): DataEntity? // id = TemplateEntity.id
 
+    @Query("SELECT * FROM data_table")
+    suspend fun getAllData(): List<DataEntity>
+
     //DELETE
     @Query("DELETE FROM data_table WHERE data_id = :id")
     suspend fun deleteDataById(id: String) // id = TemplateEntity.id

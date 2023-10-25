@@ -18,10 +18,8 @@ class MoreViewModel(
             deleteAllTemplate()
             deleteAllBudget()
             deleteAllEntry()
-            deleteAllData()
         }
     }
-
 }
 
 class MoreViewModelFactory(

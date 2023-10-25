@@ -26,7 +26,7 @@ class ChartViewModel(
 
 }
 
-class v(
+class ChartViewModelFactory(
     private val context: Context
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

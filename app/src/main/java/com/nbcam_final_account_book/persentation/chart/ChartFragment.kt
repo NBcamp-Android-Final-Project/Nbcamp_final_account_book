@@ -90,7 +90,11 @@ fun PieChartWithStyles(expenses: List<ExpenseCategory>) {
     }
 
     // 차트 전체의 레이아웃 부분
-    Box(modifier = Modifier.size(150.dp).fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .size(150.dp)
+            .fillMaxSize()
+    ) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             // 원형 차트의 반경 / 텍스트의 위치
             val innerCircleRadius = size.width * 0.3f
@@ -185,7 +189,8 @@ class ChartFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(
-            this
+            this,
+            ChartViewModelFactory(requireContext())
         )[ChartViewModel::class.java]
     }
 
@@ -229,7 +234,7 @@ class ChartFragment : Fragment() {
     }
 
     private fun initViewModel() = with(viewModel) { //뷰 모델 제어
-        liveDummyEntryListInChart.observe(viewLifecycleOwner){
+        liveEntryListInChart.observe(viewLifecycleOwner) {
 
         }
     }

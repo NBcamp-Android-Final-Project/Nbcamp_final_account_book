@@ -37,6 +37,8 @@ class MainViewModel(
         val liveKey: MutableLiveData<String> = MutableLiveData()
     }
 
+    private val user = fireRepo.getUser()
+
     //CurrentTemplateData
     private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
     val mainLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _mainLiveCurrentTemplate
@@ -154,9 +156,8 @@ class MainViewModel(
 
     }
 
-        //반드시 로그아웃 시 호출되어야 함.
+    //반드시 로그아웃 시 호출되어야 함.
     fun backupDatabyLogOut() {
-        val user = fireRepo.getUser()
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()
             for (dataEntity in dataList) {

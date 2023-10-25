@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActivityBinding
     private lateinit var viewModel: MainViewModel
+    private var isLogin: Boolean = false
 
     private val extraTemplate: TemplateEntity? by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -42,6 +43,10 @@ class MainActivity : AppCompatActivity() {
         initViewModel()
         initView()
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 
@@ -98,7 +103,9 @@ class MainActivity : AppCompatActivity() {
             mainLiveEntryList.observe(this@MainActivity, Observer { it ->
                 if (it != null) {
                     Log.d("옵저빙.엔트리 리스트", it.toString())
-//                    insertData() // 백업 테스트코드
+                    if (it.isNotEmpty()) {
+                        insertData() // 백업 테스트코드
+                    }
                 }
             })
         }

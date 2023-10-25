@@ -36,7 +36,7 @@
             android:id="@+id/chart_date_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="16dp"
             android:text="2023-10-23"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -48,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chart_date_title">
@@ -85,9 +86,9 @@
                 android:background="@drawable/chart_radio_button_month_selector"
                 android:button="@android:color/transparent"
                 android:gravity="center"
+                android:text="월"
                 android:textColor="@color/cheon_primary_selected_home_icon"
-                android:textStyle="bold"
-                android:text="월" />
+                android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/chart_tab_period"
@@ -97,11 +98,20 @@
                 android:background="@drawable/chart_radio_button_period_selector"
                 android:button="@android:color/transparent"
                 android:gravity="center"
+                android:text="기간"
                 android:textColor="@color/cheon_primary_selected_home_icon"
-                android:textStyle="bold"
-                android:text="기간선택" />
+                android:textStyle="bold" />
 
         </RadioGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chart_tab_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chart_tab_container" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

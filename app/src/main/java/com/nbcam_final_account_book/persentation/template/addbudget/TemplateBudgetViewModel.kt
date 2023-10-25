@@ -27,7 +27,7 @@ class TemplateBudgetViewModel(
 
         val key = roomRepo.insertFirstTemplate(title)  // room에 데이터 삽입
 
-        val currentTemplate = roomRepo.selectFirstTemplate(key)
+        val currentTemplate = roomRepo.selectTemplateByKey(key)
         val budgetEntity = BudgetEntity(
             id = 0,
             key = key,

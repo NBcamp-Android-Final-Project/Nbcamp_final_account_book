@@ -3,10 +3,11 @@ package com.nbcam_final_account_book.persentation.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.databinding.HomeBottomSheetItemBinding
 import com.nbcam_final_account_book.persentation.entry.EntryModel
 
-class EntryAdapter(var entries: List<EntryModel>) : RecyclerView.Adapter<EntryAdapter.ViewHolder>() {
+class EntryAdapter(var entries: List<EntryEntity>) : RecyclerView.Adapter<EntryAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: HomeBottomSheetItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -24,7 +25,7 @@ class EntryAdapter(var entries: List<EntryModel>) : RecyclerView.Adapter<EntryAd
 
     override fun getItemCount(): Int = entries.size
 
-    fun updateData(newEntries: List<EntryModel>) {
+    fun updateData(newEntries: List<EntryEntity>) {
         this.entries = newEntries
         notifyDataSetChanged()  // 알림을 보내 데이터가 변경되었음을 RecyclerView에 알림
     }

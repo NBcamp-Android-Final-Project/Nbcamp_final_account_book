@@ -166,7 +166,7 @@ class MainViewModel(
         }
     }
 
-    //firebase 백업받기
+    //firebase 데이터 동기화
     fun synchronizationData() {
 
         viewModelScope.launch {

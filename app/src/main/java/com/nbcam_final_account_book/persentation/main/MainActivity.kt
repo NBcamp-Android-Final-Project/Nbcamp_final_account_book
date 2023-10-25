@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -14,7 +15,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.MainActivityBinding
-import com.nbcam_final_account_book.persentation.budget.BudgetModel
 import com.nbcam_final_account_book.persentation.template.addbudget.TemplateBudgetFragment
 
 
@@ -22,6 +22,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActivityBinding
     private lateinit var viewModel: MainViewModel
+    private val navHostFragment: NavHostFragment by lazy { supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment }
+    private val navController: NavController by lazy { navHostFragment.navController }
+    private var isLogin: Boolean = false
 
     private val extraTemplate: TemplateEntity? by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -57,6 +60,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() = with(binding) {
 
+        loadLogin()
+
+        if (!isLogin) {
+            synchronizationDataFromFireBase()
+        }
+
         Log.d("도착", extraTemplate.toString())
         if (extraTemplate != null) {
             updateTemplate(extraTemplate)
@@ -67,12 +76,9 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(mainToolbar)
 
         //bottom navigation 연결
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.menu_home, R.id.menu_statistics, R.id.menu_chat, R.id.menu_more
+                R.id.menu_home, R.id.menu_statistics, R.id.menu_chat, R.id.menu_mypage
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -90,15 +96,37 @@ class MainActivity : AppCompatActivity() {
             mainLiveCurrentTemplate.observe(this@MainActivity, Observer { it ->
                 if (it != null) {
                     saveSharedPrefCurrentUser(it)
+                    Log.d("키값.현재", it.toString())
                     setKey()
                 }
                 Log.d("옵저빙.템플릿", it.toString())
             })
+
+            //todo 업데이트 타이밍 조절해보기
             mainLiveEntryList.observe(this@MainActivity, Observer { it ->
                 if (it != null) {
                     Log.d("옵저빙.엔트리 리스트", it.toString())
+                    if (it.isNotEmpty()) {
+                        updataBackupData() // 백업 테스트코드
+                    }
                 }
             })
+            mainLiveTagList.observe(this@MainActivity, Observer { it ->
+                if (it != null) {
+                    if (it.isNotEmpty()) {
+                        updataBackupData() // 백업 테스트코드
+                    }
+                }
+            })
+            mainBudgetList.observe(this@MainActivity, Observer { it ->
+                if (it != null) {
+                    if (it.isNotEmpty()) {
+                        updataBackupData() // 백업 테스트코드
+                    }
+                }
+            })
+
+
         }
 
     }
@@ -109,6 +137,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun setKey() {
         viewModel.setKey()
+    }
+
+    private fun synchronizationDataFromFireBase() {
+        viewModel.synchronizationData()
+    }
+    private fun loadLogin(){
+        isLogin = viewModel.loadSharedPrefIsLogin()
+        Log.d("로그인여부", isLogin.toString())
     }
 
 

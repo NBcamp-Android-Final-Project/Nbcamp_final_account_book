@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="divider">#FFEEEEEE</color>
 
     <color name="cheon_primary_bot_nav">#DEE5F1</color>
     <color name="cheon_primary_unselected_home_icon">#CEDBF0</color>
@@ -12,4 +13,7 @@
     <color name="calendar_unselected_arrow_icon">#FFFFFFFF</color>
     <color name="calendar_selected_arrow_icon">#EEEEEE</color>
     <color name="primary">#DEE5F1</color>
+
+    <color name="chart_tab_selected_text">#FFFFFF</color>
+    <color name="chart_tab_unselected_text">#B2C8ED</color>
 </resources>

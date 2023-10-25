@@ -15,16 +15,24 @@ interface EntryDao {
     //Insert
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertEntry(item: EntryEntity)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertEntryList(item: List<EntryEntity>)
 
     //SELECT
     @Query("SELECT * FROM entry_table")
-    fun getAllEntry(): LiveData<List<EntryEntity>>//데이터 백업 시 반환되는 데이터
+    fun getAllLiveEntry(): LiveData<List<EntryEntity>>//데이터 백업 시 반환되는 데이터
+
+    @Query("SELECT * FROM entry_table")
+    fun getAllListEntry(): List<EntryEntity> //데이터 백업 시 반환되는 데이터
 
     @Query("SELECT * FROM entry_table WHERE entry_id = :id")
     fun getEntryById(id: Int): EntryEntity // 데이터 수정시 수정할 데이터
 
     @Query("SELECT * FROM entry_table WHERE entry_Key = :key")
-    fun getEntryByKey(key: String): LiveData<List<EntryEntity>> //템플릿 선택 시 반환되는 데이터
+    fun getLiveEntryByKey(key: String): LiveData<List<EntryEntity>> //템플릿 선택 시 반환되는 데이터
+
+    @Query("SELECT * FROM entry_table WHERE entry_Key = :key")
+    fun getListEntryByKey(key: String): List<EntryEntity> //템플릿 백업 시 반환되는 데이터
 
 
     //DELETE

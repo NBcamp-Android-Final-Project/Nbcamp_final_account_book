@@ -13,7 +13,9 @@ data class BudgetEntity(
     @ColumnInfo(name = "budget_id")
     val id: Int = 0,
     @ColumnInfo(name = "budget_key")
-    val key : String,
+    val key: String,
+    @ColumnInfo(name = "budget_asset_type")
+    val assetType: String = "",
     @ColumnInfo(name = "budget_value")
     val value: String = ""
 ) : Parcelable

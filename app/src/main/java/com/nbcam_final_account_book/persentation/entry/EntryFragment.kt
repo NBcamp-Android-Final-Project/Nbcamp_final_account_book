@@ -34,51 +34,51 @@ class EntryFragment : Fragment() {
 	private var tagPosition: Int? = null
 	private val viewModel: EntryViewModel by activityViewModels()
 
-	private val tagListAdapter by lazy {
-		TagListAdapter(onItemClick = { position ->
-			onItemClickEvent(position)
-		})
-	}
+    private val tagListAdapter by lazy {
+        TagListAdapter(onItemClick = { position ->
+            onItemClickEvent(position)
+        })
+    }
 
 	private fun onItemClickEvent(position: Int) {
 
 		tagPosition = position
 	}
 
-	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		_binding = FragmentEntryBinding.inflate(inflater, container, false)
-		return binding.root
-	}
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentEntryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
 		initView()
 		initTag()
 		editTextFormat()
 	}
 
-	private fun initView() = with(binding) {
+    private fun initView() = with(binding) {
 
-		ivBack.setOnClickListener {
+        ivBack.setOnClickListener {
 
-		}
+        }
 
-		// 마이페이지 - 태그 관리 액티비티로 이동
-		ivTagAdd.setOnClickListener {
-			findNavController().navigate(R.id.action_entryFragment_to_tagFragment2)
-		}
+        // 마이페이지 - 태그 관리 액티비티로 이동
+        ivTagAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_entryFragment_to_tagFragment2)
+        }
 
 		tvDateInput.setOnClickListener {
 			showDatePicker()
 		}
 
-		edtAmount.setOnClickListener {
+        edtAmount.setOnClickListener {
 //			findNavController().navigate(R.id.action_entryFragment_to_entryDetailFragment)
-		}
+        }
 
 		btnSave.setOnClickListener {
 			// Firebase RTDB 에 `태그`, `결제 수단`, `메모`, `금액` 저장 후, ModalBottomSheet 및 EntryActivity 종료
@@ -144,70 +144,70 @@ class EntryFragment : Fragment() {
 				}
 
 
-			}
+            }
 
 
-		}
-	}
+        }
+    }
 
-	private fun getCurrentTemplateEntry(): TemplateEntity? {
-		return viewModel.getCurrentTemplateEntry()
-	}
+    private fun getCurrentTemplateEntry(): TemplateEntity? {
+        return viewModel.getCurrentTemplateEntry()
+    }
 
-	private fun insertEntry(item: EntryEntity) {
-		viewModel.insertEntity(item)
-	}
+    private fun insertEntry(item: EntryEntity) {
+        viewModel.insertEntity(item)
+    }
 
-	private fun getData(): Pair<String?, String?> {
-		return viewModel.getData()
-	}
+    private fun getData(): Pair<String?, String?> {
+        return viewModel.getData()
+    }
 
-	private fun initTag() {
+    private fun initTag() {
 
-		// 임시 데이터
-		val newList = mutableListOf<Tag>()
-		newList.apply {
-			add(Tag(R.drawable.ic_tag, "달력"))
-			add(Tag(R.drawable.ic_chart, "차트"))
-			add(Tag(R.drawable.ic_help, "도움"))
-			add(Tag(R.drawable.ic_home, "집"))
-			add(Tag(R.drawable.ic_lock, "잠금"))
-			add(Tag(R.drawable.ic_more_vert, "수직"))
-			add(Tag(R.drawable.ic_mypage, "페이지"))
-			add(Tag(R.drawable.ic_backup, "백업"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-		}
+        // 임시 데이터
+        val newList = mutableListOf<Tag>()
+        newList.apply {
+            add(Tag(R.drawable.ic_tag, "달력"))
+            add(Tag(R.drawable.ic_chart, "차트"))
+            add(Tag(R.drawable.ic_help, "도움"))
+            add(Tag(R.drawable.ic_home, "집"))
+            add(Tag(R.drawable.ic_lock, "잠금"))
+            add(Tag(R.drawable.ic_more_vert, "수직"))
+            add(Tag(R.drawable.ic_mypage, "페이지"))
+            add(Tag(R.drawable.ic_backup, "백업"))
+            add(Tag(R.drawable.ic_check, "확인"))
+            add(Tag(R.drawable.ic_check, "확인"))
+            add(Tag(R.drawable.ic_check, "확인"))
+            add(Tag(R.drawable.ic_check, "확인"))
+            add(Tag(R.drawable.ic_check, "확인"))
+            add(Tag(R.drawable.ic_check, "확인"))
+            add(Tag(R.drawable.ic_check, "확인"))
+            add(Tag(R.drawable.ic_check, "확인"))
+        }
 
-		binding.rvTagContainer.adapter = tagListAdapter
-		tagListAdapter.submitList(newList)
-	}
+        binding.rvTagContainer.adapter = tagListAdapter
+        tagListAdapter.submitList(newList)
+    }
 
-	private fun editTextFormat() {
-		val decimalFormat = DecimalFormat("#,###")
-		var result: String = ""
+    private fun editTextFormat() {
+        val decimalFormat = DecimalFormat("#,###")
+        var result: String = ""
 
-		binding.edtAmount.addTextChangedListener(object : TextWatcher {
-			override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        binding.edtAmount.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-			override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
-				if (!TextUtils.isEmpty(charSequence.toString()) && charSequence.toString() != result) {
-					result =
-						decimalFormat.format(charSequence.toString().replace(",", "").toDouble())
-					binding.edtAmount.setText(result)
-					binding.edtAmount.setSelection(result.length)
-				}
-			}
+            override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (!TextUtils.isEmpty(charSequence.toString()) && charSequence.toString() != result) {
+                    result =
+                        decimalFormat.format(charSequence.toString().replace(",", "").toDouble())
+                    binding.edtAmount.setText(result)
+                    binding.edtAmount.setSelection(result.length)
+                }
+            }
 
-			override fun afterTextChanged(p0: Editable?) {}
-		})
-	}
+            override fun afterTextChanged(p0: Editable?) {}
+        })
+    }
 
 	private fun showDatePicker() {
 
@@ -231,7 +231,7 @@ class EntryFragment : Fragment() {
 
 	private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
 
-	companion object {
-		val TAG = EntryFragment::class.simpleName
-	}
+    companion object {
+        val TAG = EntryFragment::class.simpleName
+    }
 }

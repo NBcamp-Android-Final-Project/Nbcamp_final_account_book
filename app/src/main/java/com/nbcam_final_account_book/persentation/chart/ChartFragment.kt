@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloatAsState
@@ -32,7 +33,9 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.ChartFragmentBinding
 import kotlin.math.cos
 import kotlin.math.sin
@@ -87,7 +90,11 @@ fun PieChartWithStyles(expenses: List<ExpenseCategory>) {
     }
 
     // 차트 전체의 레이아웃 부분
-    Box(modifier = Modifier.size(150.dp).fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .size(150.dp)
+            .fillMaxSize()
+    ) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             // 원형 차트의 반경 / 텍스트의 위치
             val innerCircleRadius = size.width * 0.3f
@@ -177,13 +184,13 @@ fun ExpenseScreen() {
 
 class ChartFragment : Fragment() {
 
-
     private var _binding: ChartFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by lazy {
         ViewModelProvider(
-            this
+            this,
+            ChartViewModelFactory(requireContext())
         )[ChartViewModel::class.java]
     }
 
@@ -209,14 +216,26 @@ class ChartFragment : Fragment() {
     }
 
     private fun initView() = with(binding) { // 레이아웃 제어
+        chartTabContainer.setOnCheckedChangeListener { _, selectedRadioButtonId ->
+            val white = ContextCompat.getColor(requireContext(), R.color.white)
+            val blue = ContextCompat.getColor(requireContext(), R.color.chart_tab_unselected_text)
+            chartTabDay.setTextColor(blue)
+            chartTabWeek.setTextColor(blue)
+            chartTabMonth.setTextColor(blue)
+            chartTabPeriod.setTextColor(blue)
 
+            when (selectedRadioButtonId) {
+                R.id.chart_tab_day -> chartTabDay.setTextColor(white)
+                R.id.chart_tab_week -> chartTabWeek.setTextColor(white)
+                R.id.chart_tab_month -> chartTabMonth.setTextColor(white)
+                R.id.chart_tab_period -> chartTabPeriod.setTextColor(white)
+            }
+        }
     }
 
     private fun initViewModel() = with(viewModel) { //뷰 모델 제어
-        liveDummyEntryListInChart.observe(viewLifecycleOwner){
+        liveEntryListInChart.observe(viewLifecycleOwner) {
 
         }
-
     }
-
 }

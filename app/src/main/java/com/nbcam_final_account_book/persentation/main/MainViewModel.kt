@@ -15,47 +15,55 @@ import com.nbcam_final_account_book.data.model.local.DataEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
+import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
+import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 
 
 class MainViewModel(
     private val roomRepo: RoomRepository,
+    private val fireRepo: FireBaseRepository,
     private val sharedProvider: SharedProvider
 ) : ViewModel() {
 
-    companion object{
+    companion object {
         // mainviewModel에서만 접근해야함
-        val liveKey: MutableLiveData<String> get() = MutableLiveData()
+        val liveKey: MutableLiveData<String> = MutableLiveData()
     }
+
+    private val user = fireRepo.getUser()
 
     //CurrentTemplateData
     private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
     val mainLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _mainLiveCurrentTemplate
 
+
+    //현재 데이터를 불러오는 기본 폼
+
     //EntryLiveData
-    val mainLiveEntryList: LiveData<List<EntryEntity>> = liveKey.switchMap { key->
-        roomRepo.getEntryByKey(key)
+    val mainLiveEntryList: LiveData<List<EntryEntity>> = liveKey.switchMap { key ->
+        roomRepo.getLiveEntryByKey(key)
     }
 
     //TagLiveData
-    private val _mainLiveTagList: MutableLiveData<List<TagEntity>> = MutableLiveData()
-    val mainLiveTagList: LiveData<List<TagEntity>> get() = _mainLiveTagList
+    val mainLiveTagList: LiveData<List<TagEntity>> = liveKey.switchMap { key ->
+        roomRepo.getLiveTagByKey(key)
+    }
 
     //BudgetLiveData
-    private val _mainBudgetList: MutableLiveData<List<BudgetEntity>> = MutableLiveData()
-    val mainBudgetList: LiveData<List<BudgetEntity>> get() = _mainBudgetList
-
+    val mainBudgetList: LiveData<List<BudgetEntity>> = liveKey.switchMap { key ->
+        roomRepo.getLiveBudgetByKey(key)
+    }
 
     init {
         if (loadSharedPrefCurrentUser() != null) {
             _mainLiveCurrentTemplate.value = loadSharedPrefCurrentUser()
-//            loadData()
         }
         setKey()
     }
@@ -72,7 +80,6 @@ class MainViewModel(
         }
     }
 
-
     fun getEntryLiveData(): LiveData<List<EntryEntity>> { //테스트를 위한 라이브 데이터 리턴
         return mainLiveEntryList
     }
@@ -83,53 +90,136 @@ class MainViewModel(
         _mainLiveCurrentTemplate.value = item
     }
 
-    fun insertData() {
-        viewModelScope.launch {
-            val id = mainLiveCurrentTemplate.value?.id ?: return@launch
-            val jsonEntry = Gson().toJson(mainLiveEntryList.value.orEmpty())
-            val jsonTag = Gson().toJson(_mainLiveTagList.value.orEmpty())
-            val jsonBudget = Gson().toJson(_mainBudgetList.value.orEmpty())
+    //템플릿 룸으로 백업 데이터를 저장 혹은 업데이트 해주는 로직
+    //템플릿이 전환되는 순간에 호출되어야 함.
+    fun updataBackupData() = with(roomRepo) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val key = mainLiveCurrentTemplate.value?.id ?: return@launch
 
-            roomRepo.insertData(
-                DataEntity(
-                    id = id,
-                    entryList = jsonEntry,
-                    tagList = jsonTag,
-                    budgetList = jsonBudget
-                )
+            val jsonEntry = Gson().toJson(getListEntryKey(key))
+            val jsonTag = Gson().toJson(getListTagKey(key))
+            val jsonBudget = Gson().toJson(getListBudgetByKey(key))
+
+            val data = DataEntity(
+                id = key,
+                entryList = jsonEntry,
+                tagList = jsonTag,
+                budgetList = jsonBudget
             )
+
+            if (getDataByKey(key) == null) {
+                insertData(data)
+            } else {
+                updateData(data)
+            }
+
+
         }
     }
 
-    //TODO 역 직렬화해서 room database에 직접 뿌리는 형태로 바꿀 것.
-    private fun loadData() {
-        val currentTemplate = _mainLiveCurrentTemplate.value ?: return
-
-        viewModelScope.launch {
-            val loadData = roomRepo.getAllData(currentTemplate.id)
-            if (loadData != null) {
-
-                val loadEntry: List<EntryEntity> =
-                    Gson().fromJson(
-                        loadData.entryList,
-                        object : TypeToken<List<EntryEntity>>() {}.type
-                    )
-
-                val loadTag: List<TagEntity> =
-                    Gson().fromJson(
-                        loadData.tagList,
-                        object : TypeToken<List<TagEntity>>() {}.type
-                    )
-
-                val loadBudget: List<BudgetEntity> =
-                    Gson().fromJson(
-                        loadData.budgetList,
-                        object : TypeToken<List<BudgetEntity>>() {}.type
-                    )
+    // todo fireabse에서 가져온 데이터로 load하게 변환하는 로직도 추가되어야 함
+    // 현재 형태는 템플릿지 전환될 때 마다 데이터를 가져오는 형태임
+    // 이 형태가 굳이 필요 있나 고민해보면 없음
+    private fun loadData() = with(roomRepo) {
+        val currentTemplate = _mainLiveCurrentTemplate.value
 
 
+        if (currentTemplate != null) {
+            viewModelScope.launch {
+                val loadData = getDataByKey(currentTemplate.id)
+                if (loadData != null) {
+
+                    val loadEntry: List<EntryEntity> =
+                        Gson().fromJson(
+                            loadData.entryList,
+                            object : TypeToken<List<EntryEntity>>() {}.type
+                        )
+
+                    val loadTag: List<TagEntity> =
+                        Gson().fromJson(
+                            loadData.tagList,
+                            object : TypeToken<List<TagEntity>>() {}.type
+                        )
+
+                    val loadBudget: List<BudgetEntity> =
+                        Gson().fromJson(
+                            loadData.budgetList,
+                            object : TypeToken<List<BudgetEntity>>() {}.type
+                        )
+                    insertEntryList(loadEntry)
+                    insertBudgetList(loadBudget)
+                    insertTagList(loadTag)
+                }
             }
         }
+
+    }
+
+    //반드시 로그아웃 시 호출되어야 함.
+    fun backupDataByLogOut() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val dataList: List<DataEntity> = roomRepo.getAllData()
+            for (dataEntity in dataList) {
+                fireRepo.updateData(user, dataEntity)
+            }
+            saveSharedPrefIsLogin(false)
+            roomRepo.deleteAllData()
+        }
+    }
+
+    //firebase 데이터 동기화
+    fun synchronizationData() {
+
+        viewModelScope.launch {
+            val backUpTemplate = fireRepo.getAllTemplate(user)
+            val backUpData = fireRepo.getBackupData(user)
+
+            roomRepo.insertDataList(backUpData)
+            with(roomRepo) {
+                insertTemplateList(backUpTemplate)
+                insertDataList(backUpData)
+
+                val currentTemplate = _mainLiveCurrentTemplate.value
+
+                //로그인 시 제일 첫 번쨰 템플릿이 디폴트로 들어옴
+                _mainLiveCurrentTemplate.value = backUpTemplate[0]
+
+                if (currentTemplate != null) {
+                    viewModelScope.launch {
+
+                        if (backUpData != null) {
+                            for (loadData in backUpData) {
+                                val loadEntry: List<EntryEntity> =
+                                    Gson().fromJson(
+                                        loadData.entryList,
+                                        object : TypeToken<List<EntryEntity>>() {}.type
+                                    )
+
+                                val loadTag: List<TagEntity> =
+                                    Gson().fromJson(
+                                        loadData.tagList,
+                                        object : TypeToken<List<TagEntity>>() {}.type
+                                    )
+
+                                val loadBudget: List<BudgetEntity> =
+                                    Gson().fromJson(
+                                        loadData.budgetList,
+                                        object : TypeToken<List<BudgetEntity>>() {}.type
+                                    )
+                                insertEntryList(loadEntry)
+                                insertBudgetList(loadBudget)
+                                insertTagList(loadTag)
+                            } // for(loadData in backUpData)
+
+                        } //backUpData != null
+                    }
+                } //  if (currentTemplate != null
+
+            } //   with(roomRepo)
+
+            saveSharedPrefIsLogin(true)
+        }
+
     }
 
 
@@ -150,6 +240,21 @@ class MainViewModel(
 
         return Gson().fromJson(json, object : TypeToken<TemplateEntity>() {}.type)
     }
+
+    fun saveSharedPrefIsLogin(isLogin: Boolean) {
+        val sharedPref = sharedProvider.setSharedPref("name_isLogin")
+        val editor = sharedPref.edit()
+
+        editor.putBoolean("key_isLogin", isLogin)
+        editor.apply()
+
+    }
+
+    fun loadSharedPrefIsLogin(): Boolean {
+        val sharedPref = sharedProvider.setSharedPref("name_isLogin")
+
+        return sharedPref.getBoolean("key_isLogin", false)
+    }
 }
 
 class MainViewModelFactory(
@@ -158,11 +263,14 @@ class MainViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(
+
                 RoomRepositoryImpl(
                     AndroidRoomDataBase.getInstance(context)
                 ),
-                SharedProviderImpl(context)
-            ) as T
+                FireBaseRepositoryImpl(),
+                SharedProviderImpl(context),
+
+                ) as T
         } else {
             throw IllegalArgumentException("Not found ViewModel class.")
         }

@@ -1,4 +1,4 @@
-package com.nbcam_final_account_book.persentation.more
+package com.nbcam_final_account_book.persentation.mypage
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -9,7 +9,7 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import kotlinx.coroutines.launch
 
-class MoreViewModel(
+class MyPageViewModel(
     private val roomRepo: RoomRepository
 ) : ViewModel() {
 
@@ -18,18 +18,16 @@ class MoreViewModel(
             deleteAllTemplate()
             deleteAllBudget()
             deleteAllEntry()
-            deleteAllData()
         }
     }
-
 }
 
-class MoreViewModelFactory(
+class MyPageViewModelFactory(
     private val context: Context
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MoreViewModel::class.java)) {
-            return MoreViewModel(
+        if (modelClass.isAssignableFrom(MyPageViewModel::class.java)) {
+            return MyPageViewModel(
                 RoomRepositoryImpl(
                     AndroidRoomDataBase.getInstance(context)
                 )

@@ -27,7 +27,7 @@ class HomeViewModel(
     val homeLiveEntryList: LiveData<List<EntryEntity>> get() = roomRepo.getAllLiveEntry()
 
     val homeCurrentLiveEntryList : LiveData<List<EntryEntity>> = MainViewModel.liveKey.switchMap { key->
-        roomRepo.getEntryByKey(key)
+        roomRepo.getLiveEntryByKey(key)
     } // 이제부터 이 친구를 써주세요!
 
     fun updateKey(inputKey:String){

@@ -118,4 +118,7 @@ dependencies {
 
     // CompactCalendarView
     implementation("com.github.sundeepk:compact-calendar-view:3.0.0")
+
+    // Circleimageview
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 }

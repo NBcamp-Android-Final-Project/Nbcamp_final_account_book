@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActivityBinding
     private lateinit var viewModel: MainViewModel
+    private val navHostFragment: NavHostFragment by lazy { supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment }
+    private val navController: NavController by lazy { navHostFragment.navController }
     private var isLogin: Boolean = false
 
     private val extraTemplate: TemplateEntity? by lazy {
@@ -43,10 +45,6 @@ class MainActivity : AppCompatActivity() {
         initViewModel()
         initView()
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
 
@@ -72,9 +70,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(mainToolbar)
 
         //bottom navigation 연결
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.menu_home, R.id.menu_statistics, R.id.menu_chat, R.id.menu_more

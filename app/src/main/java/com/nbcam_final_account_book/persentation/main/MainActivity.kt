@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -14,7 +15,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.MainActivityBinding
-import com.nbcam_final_account_book.persentation.budget.BudgetModel
 import com.nbcam_final_account_book.persentation.template.addbudget.TemplateBudgetFragment
 
 
@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActivityBinding
     private lateinit var viewModel: MainViewModel
+    private val navHostFragment: NavHostFragment by lazy { supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment }
+    private val navController: NavController by lazy { navHostFragment.navController }
 
     private val extraTemplate: TemplateEntity? by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -41,13 +43,12 @@ class MainActivity : AppCompatActivity() {
 
         initViewModel()
         initView()
-
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
+                onBackPressed()
                 true
             }
 
@@ -67,9 +68,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(mainToolbar)
 
         //bottom navigation 연결
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.menu_home, R.id.menu_statistics, R.id.menu_chat, R.id.menu_more

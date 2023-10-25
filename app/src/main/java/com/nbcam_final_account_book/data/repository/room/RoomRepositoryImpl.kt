@@ -88,9 +88,14 @@ class RoomRepositoryImpl(
     }
 
     //Entry
-    override fun getAllEntry(): LiveData<List<EntryEntity>> {
+    override fun getAllLiveEntry(): LiveData<List<EntryEntity>> {
         val dao = database?.entryDao() ?: throw IllegalStateException("getAllEntry fail")
-        return dao.getAllEntry()
+        return dao.getAllLiveEntry()
+    }
+
+    override fun getAllListEntry(): List<EntryEntity> {
+        val dao = database?.entryDao() ?: throw IllegalStateException("getAllListEntry fail")
+        return dao.getAllListEntry()
     }
 
     override fun getEntryById(id: Int): EntryEntity {
@@ -143,10 +148,15 @@ class RoomRepositoryImpl(
         dao.insertBudget(item)
     }
 
-    override fun getAllBudget(): LiveData<List<BudgetEntity>> {
+    override fun getAllLiveBudget(): LiveData<List<BudgetEntity>> {
         val dao = database?.budgetDao() ?: throw IllegalStateException("getAllBudget fail")
 
-        return dao.getAllBudget()
+        return dao.getAllLiveBudget()
+    }
+
+    override fun getAllListBudget(): List<BudgetEntity> {
+        val dao = database?.budgetDao() ?: throw IllegalStateException("getAllListBudget fail")
+        return dao.getAllListBudget()
     }
 
     override fun getEBudgetById(id: Int): BudgetEntity {
@@ -197,9 +207,14 @@ class RoomRepositoryImpl(
         dao.insertTag(item)
     }
 
-    override fun getAllTag(): LiveData<List<TagEntity>> {
+    override fun getAllLiveTag(): LiveData<List<TagEntity>> {
         val dao = database?.tagDao() ?: throw IllegalStateException("getAllTag fail")
-        return dao.getAllTag()
+        return dao.getAllLiveTag()
+    }
+
+    override fun getAllListTag(): List<TagEntity> {
+        val dao = database?.tagDao() ?: throw IllegalStateException("getAllListTag fail")
+        return dao.getAllListTag()
     }
 
     override fun getTagById(id: Int): TagEntity {
@@ -233,7 +248,7 @@ class RoomRepositoryImpl(
 
     override suspend fun deleteAllTag() {
         val dao = database?.tagDao() ?: throw IllegalStateException("deleteAllTag fail")
-        dao.getAllTag()
+        dao.getAllLiveTag()
     }
 
     override suspend fun updateTag(item: TagEntity) {

@@ -87,9 +87,9 @@ class MainViewModel(
     fun insertData() {
         viewModelScope.launch {
             val id = mainLiveCurrentTemplate.value?.id ?: return@launch
-            val jsonEntry = Gson().toJson(roomRepo.getAllEntry().value.orEmpty())
-            val jsonTag = Gson().toJson(roomRepo.getAllTag().value.orEmpty())
-            val jsonBudget = Gson().toJson(roomRepo.getAllBudget().value.orEmpty())
+            val jsonEntry = Gson().toJson(roomRepo.getAllLiveEntry().value.orEmpty())
+            val jsonTag = Gson().toJson(roomRepo.getAllLiveTag().value.orEmpty())
+            val jsonBudget = Gson().toJson(roomRepo.getAllLiveBudget().value.orEmpty())
 
             roomRepo.insertData(
                 DataEntity(

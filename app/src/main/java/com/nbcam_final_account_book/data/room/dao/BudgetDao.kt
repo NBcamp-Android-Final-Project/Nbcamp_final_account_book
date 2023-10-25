@@ -17,7 +17,10 @@ interface BudgetDao {
 
     //SELECT
     @Query("SELECT * FROM budget_table")
-    fun getAllBudget(): LiveData<List<BudgetEntity>> //데이터 백업 시 반환되는 데이터
+    fun getAllLiveBudget(): LiveData<List<BudgetEntity>> //데이터 백업 시 반환되는 데이터
+
+    @Query("SELECT * FROM budget_table")
+    fun getAllListBudget(): List<BudgetEntity> //데이터 백업 시 반환되는 데이터
 
     @Query("SELECT * FROM budget_table WHERE budget_id = :id")
     fun getEBudgetById(id: Int): BudgetEntity // 데이터 수정시 수정할 데이터

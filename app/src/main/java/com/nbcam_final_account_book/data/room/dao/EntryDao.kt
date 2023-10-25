@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 
 @Dao
@@ -18,7 +19,10 @@ interface EntryDao {
 
     //SELECT
     @Query("SELECT * FROM entry_table")
-    fun getAllEntry(): LiveData<List<EntryEntity>>//데이터 백업 시 반환되는 데이터
+    fun getAllLiveEntry(): LiveData<List<EntryEntity>>//데이터 백업 시 반환되는 데이터
+
+    @Query("SELECT * FROM entry_table")
+    fun getAllListEntry(): List<EntryEntity> //데이터 백업 시 반환되는 데이터
 
     @Query("SELECT * FROM entry_table WHERE entry_id = :id")
     fun getEntryById(id: Int): EntryEntity // 데이터 수정시 수정할 데이터

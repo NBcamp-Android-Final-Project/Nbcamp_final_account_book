@@ -24,7 +24,7 @@ class HomeViewModel(
     // repo에 있는 함수를 통해 key값으로 리스트들을 livedata로 받습니다.
     // 현재 key값을 livedata로 받을 방법을 고민중이니 임시로 이 형태로 사용해주세요.
 
-    val homeLiveEntryList: LiveData<List<EntryEntity>> get() = roomRepo.getAllEntry()
+    val homeLiveEntryList: LiveData<List<EntryEntity>> get() = roomRepo.getAllLiveEntry()
 
     val homeCurrentLiveEntryList : LiveData<List<EntryEntity>> = MainViewModel.liveKey.switchMap { key->
         roomRepo.getEntryByKey(key)

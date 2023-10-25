@@ -25,7 +25,8 @@ interface RoomRepository {
     suspend fun updateData(item: DataEntity)
 
     //Entry
-    fun getAllEntry(): LiveData<List<EntryEntity>>
+    fun getAllLiveEntry(): LiveData<List<EntryEntity>>
+    fun getAllListEntry(): List<EntryEntity> //데이터 백업 시 반환되는 데이터
     fun getEntryById(id: Int): EntryEntity
     fun getEntryByKey(key: String?): LiveData<List<EntryEntity>>
     suspend fun insertEntry(item: EntryEntity)
@@ -35,7 +36,8 @@ interface RoomRepository {
 
     //Budget
     suspend fun insertBudget(item: BudgetEntity)
-    fun getAllBudget(): LiveData<List<BudgetEntity>>
+    fun getAllLiveBudget(): LiveData<List<BudgetEntity>>
+    fun getAllListBudget(): List<BudgetEntity> //데이터 백업 시 반환되는 데이터
     fun getEBudgetById(id: Int): BudgetEntity
     fun getBudgetByKey(key: String?): LiveData<List<BudgetEntity>>
 
@@ -48,7 +50,8 @@ interface RoomRepository {
 
     suspend fun insertTag(item: TagEntity)
 
-    fun getAllTag(): LiveData<List<TagEntity>>//데이터 백업 시 반환되는 데이터
+    fun getAllLiveTag(): LiveData<List<TagEntity>>//데이터 백업 시 반환되는 데이터
+    fun getAllListTag(): List<TagEntity> //데이터 백업 시 반환되는 데이터
     fun getTagById(id: Int): TagEntity // 데이터 수정시 수정할 데이터
     fun getTagByKey(key: String?): LiveData<List<TagEntity>> //템플릿 선택 시 반환되는 데이터
 

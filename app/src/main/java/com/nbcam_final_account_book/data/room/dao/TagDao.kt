@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 
 @Dao
@@ -17,7 +18,11 @@ interface TagDao {
 
     //SELECT
     @Query("SELECT * FROM tag_table")
-    fun getAllTag(): LiveData<List<TagEntity>>//데이터 백업 시 반환되는 데이터
+    fun getAllLiveTag(): LiveData<List<TagEntity>>//데이터 백업 시 반환되는 데이터
+
+    @Query("SELECT * FROM tag_table")
+    fun getAllListTag(): List<TagEntity> //데이터 백업 시 반환되는 데이터
+
 
     @Query("SELECT * FROM tag_table WHERE tag_id = :id")
     fun getTagById(id: Int): TagEntity // 데이터 수정시 수정할 데이터

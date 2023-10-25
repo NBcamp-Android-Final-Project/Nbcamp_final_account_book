@@ -63,8 +63,7 @@ class MoreFragment : Fragment() {
         moreBtnLogout.setOnClickListener {
             val auth = FirebaseAuth.getInstance()
             auth.signOut()
-            saveIsLogin() // 로그인 여부 저장
-            sharedViewModel.backupDataByLogOut() //백업 테스트 코드
+//            sharedViewModel.backupDatabyLogOut() //백업 테스트 코드
             cleanRoom()
             val intent = Intent(requireContext(), FirstActivity::class.java)
             startActivity(intent)
@@ -78,9 +77,5 @@ class MoreFragment : Fragment() {
 
     private fun cleanRoom() = with(viewModel) {
         cleanRoom()
-    }
-    private fun saveIsLogin(){
-        val isLogin = false
-        sharedViewModel.saveSharedPrefIsLogin(isLogin)
     }
 }

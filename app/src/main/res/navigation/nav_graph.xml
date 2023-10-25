@@ -26,6 +26,9 @@
         android:label="more"
         tools:layout="@layout/more_fragment" >
         <action
+            android:id="@+id/action_menu_more_to_myPageFragment"
+            app:destination="@id/myPageFragment" />
+        <action
             android:id="@+id/action_menu_more_to_tagFragment"
             app:destination="@id/tagFragment" />
     </fragment>
@@ -36,6 +39,15 @@
         tools:layout="@layout/tag_fragment" >
         <action
             android:id="@+id/action_tagFragment_to_menu_more"
+            app:destination="@id/menu_more" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPageFragment"
+        android:name="com.nbcam_final_account_book.persentation.mypage.MyPageFragment"
+        android:label="마이페이지"
+        tools:layout="@layout/my_page_fragment" >
+        <action
+            android:id="@+id/action_myPageFragment_to_menu_more"
             app:destination="@id/menu_more" />
     </fragment>
 </navigation>

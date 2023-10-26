@@ -21,35 +21,41 @@
             android:layout_width="1dp"
             android:layout_height="1dp"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.4" />
+            app:layout_constraintGuide_percent="0.38" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/mypage_iv_profile"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mypage_iv_profile_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:src="@mipmap/ic_launcher"
+            android:background="@drawable/bg_mypage_profile"
+            android:padding="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/mypage_iv_camera"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/ic_camera"
-            app:layout_constraintBottom_toBottomOf="@+id/mypage_iv_profile"
-            app:layout_constraintEnd_toEndOf="@+id/mypage_iv_profile"
-            app:layout_constraintStart_toStartOf="@+id/mypage_iv_profile" />
+            <ImageView
+                android:id="@+id/mypage_iv_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_mypage_profile"
+                android:padding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="contentDescription" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/mypage_iv_profile"
+            app:layout_constraintStart_toEndOf="@+id/mypage_iv_profile_container"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
@@ -62,6 +68,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/mypage_tv_email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="이메일이 아이디임!"
@@ -81,7 +88,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/mypage_tv_id"
                 app:layout_constraintVertical_chainStyle="spread_inside" />
 
-            <EditText
+            <TextView
                 android:id="@+id/mypage_et_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -90,7 +97,7 @@
                 android:maxLength="10"
                 android:maxLines="1"
                 android:padding="0dp"
-                android:text="이건열글자제한을위한"
+                android:text="여긴열글자까지입력!"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@+id/mypage_tv_name"
                 app:layout_constraintStart_toEndOf="@+id/mypage_tv_name"
@@ -98,19 +105,21 @@
 
             <ImageView
                 android:id="@+id/mypage_iv_edit"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:src="@drawable/ic_edit"
                 app:layout_constraintBottom_toBottomOf="@+id/mypage_et_name"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/mypage_et_name" />
+                app:layout_constraintStart_toEndOf="@+id/mypage_et_name"
+                app:layout_constraintTop_toTopOf="@+id/mypage_et_name"
+                tools:ignore="contentDescription" />
 
             <TextView
                 android:id="@+id/mypage_tv_using_book"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:gravity="center"
                 android:text="사용중인 가계부"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -120,31 +129,31 @@
                 android:id="@+id/mypage_tv_using_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:text="ooo 가계부"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mypage_tv_using_book" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/mypage_tv_shared_users"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:gravity="center"
                 android:text="공유 중인 사람"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mypage_tv_using_name" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mypage_rv_shared_users"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintTop_toBottomOf="@+id/mypage_tv_shared_users" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -153,7 +162,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="15dp"
-        android:background="#E6E6E6"
+        android:background="@color/light_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mypage_contanier_profile" />
 
@@ -175,7 +184,7 @@
         android:id="@+id/view2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E6E6E6"
+        android:background="@color/light_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mypage_tv_backup" />
 
@@ -195,7 +204,7 @@
         android:id="@+id/view3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E6E6E6"
+        android:background="@color/light_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mypage_tv_book" />
 
@@ -215,7 +224,7 @@
         android:id="@+id/view4"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E6E6E6"
+        android:background="@color/light_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mypage_tv_tag" />
 
@@ -226,18 +235,68 @@
         android:drawablePadding="10dp"
         android:gravity="center_vertical"
         android:padding="15dp"
-        android:text="화면잠금"
+        android:text="화면 잠금"
         android:textSize="15sp"
         app:drawableLeftCompat="@drawable/ic_lock"
         app:layout_constraintTop_toBottomOf="@+id/view4" />
 
     <View
         android:id="@+id/view5"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:background="@color/light_gray"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_lock" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/mypage_switch_pin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="50dp"
+        android:paddingEnd="20dp"
+        app:track="@drawable/my_page_switch_track"
+        android:thumb="@drawable/my_page_switch_thumb"
+        android:text="비밀번호 잠금"
+        app:switchMinWidth="0dp"
+        android:visibility="gone"
+        android:textOff=""
+        android:textOn=""
+        app:thumbTextPadding="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view5" />
+
+    <View
+        android:id="@+id/view6"
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:background="@color/light_gray"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_switch_pin" />
+
+    <TextView
+        android:id="@+id/mypage_tv_chang_pin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="15dp"
+        android:paddingStart="50dp"
+        android:paddingEnd="20dp"
+        android:text="비밀번호 변경"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view6" />
+
+    <View
+        android:id="@+id/view7"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E6E6E6"
+        android:background="@color/light_gray"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_lock" />
+        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_chang_pin" />
 
     <TextView
         android:id="@+id/mypage_tv_logout"
@@ -249,13 +308,13 @@
         android:text="로그아웃"
         android:textSize="15sp"
         app:drawableLeftCompat="@drawable/ic_logout"
-        app:layout_constraintTop_toBottomOf="@+id/view5" />
+        app:layout_constraintTop_toBottomOf="@+id/view7" />
 
     <View
-        android:id="@+id/view6"
+        android:id="@+id/view8"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E6E6E6"
+        android:background="@color/light_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mypage_tv_logout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

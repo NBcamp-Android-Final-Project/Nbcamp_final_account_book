@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -180,7 +181,10 @@ class MainActivity : AppCompatActivity() {
         Log.d("로그인여부", isLogin.toString())
     }
 
-
+    fun toggleBottomNavi(show: Boolean) = with(binding) {
+        if (show) mainBottomNavi.visibility = View.VISIBLE
+        else mainBottomNavi.visibility = View.GONE
+    }
 }
 
 

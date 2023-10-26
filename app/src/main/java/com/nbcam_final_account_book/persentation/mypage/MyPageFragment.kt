@@ -9,10 +9,14 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
@@ -114,7 +118,7 @@ class MyPageFragment : Fragment() {
 
         mypageIvEdit.setOnClickListener {
             isEditing = !isEditing
-            editName()
+            editNameDialog()
         }
 
         mypageTvLock.setOnClickListener {
@@ -237,17 +241,69 @@ class MyPageFragment : Fragment() {
         )
     }
 
-    private fun editName() = with(binding) {
-        if (isEditing) {
-            mypageEtName.isEnabled = true
-            mypageEtName.isFocusable = true
-            mypageEtName.isFocusableInTouchMode = true
-            mypageEtName.requestFocus()
-            mypageEtName.setSelection(mypageEtName.text.length)
-        } else {
-            mypageEtName.isEnabled = false
-            mypageEtName.isFocusable = false
-            mypageEtName.isFocusableInTouchMode = false
+    private fun editNameDialog() = with(binding) {
+        val dialogView = layoutInflater.inflate(R.layout.my_page_edit_name_dialog, null)
+        val editName = dialogView.findViewById<EditText>(R.id.ev_edit_name)
+        val tvWarning = dialogView.findViewById<TextView>(R.id.tv_warning)
+
+        editName.setText(mypageEtName.text.toString())
+
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle("이름 수정")
+            .setView(dialogView)
+            .setPositiveButton("저장") { _, _ ->
+                val newName = editName.text.toString()
+                mypageEtName.text = newName
+            }
+            .setNegativeButton("취소") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        val textWatcher = nameTextWatcher(tvWarning, alertDialog)
+        editName.addTextChangedListener(textWatcher)
+
+        alertDialog.show()
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+    }
+
+    private fun nameTextWatcher(tvWarning: TextView, alertDialog: AlertDialog) = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            val newName = s.toString()
+
+            // 입력 조건 검사
+            val isValid = isNameValid(newName)
+
+            if (isValid) {
+                tvWarning.visibility = View.INVISIBLE
+            } else {
+                tvWarning.visibility = View.VISIBLE
+                if (newName.length > 10) {
+                    tvWarning.text = "이름은 10글자 이하로 입력하세요."
+                } else {
+                    tvWarning.text = "2~10자 이내로, 영어, 한글, 숫자만 입력 가능합니다."
+                }
+            }
+
+            // 저장 버튼 활성화/비활성화
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = isValid
+        }
+    }
+
+    private fun isNameValid(name: String): Boolean {
+        // 이름의 길이가 2에서 10자 이내인지 확인
+        if (name.length < 2 || name.length > 10) {
+            return false
+        }
+
+        // 정규 표현식을 사용하여 영어, 한글, 숫자만 포함되었는지 확인
+        val regex = "^[a-zA-Z0-9가-힣]*$".toRegex()
+        return regex.matches(name)
     }
 }

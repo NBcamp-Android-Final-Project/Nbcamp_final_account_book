@@ -11,6 +11,7 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -132,12 +133,12 @@ class MyPageFragment : Fragment() {
     }
 
     private fun initView() = with(binding) {
+        val title = sharedViewModel.mainLiveCurrentTemplate.value?.templateTitle
+        mypageTvUsingName.text = title
 
-        mypageIvProfile.load(R.drawable.ic_mypage_profile) {
-            listener { _, _ ->
-                mypageIvProfile.setPadding(10, 10, 10, 10)
-            }
-        }
+        getUserName()
+        getUserEmail()
+        getUserPhotoUrl()
 
         mypageIvProfile.setOnClickListener {
             galleryBottomSheet()
@@ -196,12 +197,63 @@ class MyPageFragment : Fragment() {
         }
     }
 
+    //TODO: name, email, photoUrl 함수를 각각 만들어서....
     private fun initViewModel() = with(viewModel) {
 
+        with(binding) {
+            getUserName()
+            name.observe(viewLifecycleOwner) { name ->
+                if (name != null) {
+                    mypageEtName.text = name
+                }
+            }
+
+            getUserEmail()
+            email.observe(viewLifecycleOwner) { email ->
+                if (email != null) {
+                    mypageTvEmail.text = email
+                }
+            }
+
+            getUserPhotoUrl()
+            photoUrl.observe(viewLifecycleOwner) { photoUrl ->
+                if (photoUrl != null) {
+                    mypageIvProfile.load(photoUrl) {
+                        crossfade(true)
+                        transformations(CircleCropTransformation())
+                    }
+                }
+            }
+
+            Log.d("MyPageFragment", "Name: ${name.value}")
+            Log.d("MyPageFragment", "Email: ${email.value}")
+            Log.d("MyPageFragment", "Photo URL: ${photoUrl.value}")
+
+        }
     }
 
     private fun cleanRoom() = with(viewModel) {
         cleanRoom()
+    }
+
+    private fun getUserName() = with(viewModel) {
+        getName()
+    }
+
+    private fun getUserEmail() = with(viewModel) {
+        getEmail()
+    }
+
+    private fun getUserPhotoUrl() = with(viewModel) {
+        getPhotoUrl()
+    }
+
+    private fun updateProfileName(newName: String) = with(viewModel) {
+        updateUserName(newName)
+    }
+
+    private fun updatePhotoUrl(photoUri: Uri) = with(viewModel) {
+        updateUserPhotoUrl(photoUri)
     }
 
     private fun galleryBottomSheet() {
@@ -253,6 +305,7 @@ class MyPageFragment : Fragment() {
         if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK) {
             val selectedImageUri: Uri? = data?.data
             if (selectedImageUri != null) {
+                updatePhotoUrl(selectedImageUri)
                 imageView.load(selectedImageUri) {
                     crossfade(true)
                     transformations(CircleCropTransformation())
@@ -263,6 +316,27 @@ class MyPageFragment : Fragment() {
             }
         }
     }
+
+    // TODO: Firebase.storage에서 이미지 업로드하고 받아오기!
+/*    private fun uploadDownloadUrl(imageUri: Uri, onDownloadUrl: (Uri) -> Unit) {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+
+        // 이미지를 업로드할 경로 및 파일명 설정
+        val imagePath = "profile_images/${user?.uid}/profile.jpg"
+        val imageRef = storageRef.child(imagePath)
+
+        // 이미지를 업로드
+        imageRef.putFile(imageUri)
+            .addOnSuccessListener {
+                imageRef.downloadUrl.addOnSuccessListener { uri ->
+                    onDownloadUrl(uri)
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("MyPageFragment", "Image upload failed: ${e.message}")
+            }
+    }*/
 
     private fun deniedDialog() {
         AlertDialog.Builder(requireContext())
@@ -286,7 +360,10 @@ class MyPageFragment : Fragment() {
         } else {
             Manifest.permission.READ_EXTERNAL_STORAGE
         }
-        return checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
+        return checkSelfPermission(
+            requireContext(),
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestGalleryPermission() {
@@ -309,6 +386,7 @@ class MyPageFragment : Fragment() {
             .setPositiveButton("저장") { _, _ ->
                 val newName = editName.text.toString()
                 mypageEtName.text = newName
+                updateProfileName(newName)
             }
             .setNegativeButton("취소") { dialog, _ ->
                 dialog.dismiss()

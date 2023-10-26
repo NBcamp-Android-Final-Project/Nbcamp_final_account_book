@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".persentation.tag.TagFragment">
 
-
-    <com.google.android.material.appbar.MaterialToolbar
+    <android.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -40,28 +39,28 @@
             android:layout_gravity="end"
             android:layout_marginEnd="16dp"
             android:src="@drawable/ic_delete" />
-    </com.google.android.material.appbar.MaterialToolbar>
+    </android.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:tabIndicatorColor="@color/primary">
+        app:tabIndicatorColor="@color/primary_main"
+        app:tabSelectedTextColor="@color/primary_main">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="지출" />
+            android:text="지출" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="수입" />
+            android:text="수입" />
 
     </com.google.android.material.tabs.TabLayout>
 

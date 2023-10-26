@@ -8,8 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mypage_iv_profile_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:background="@drawable/bg_mypage_profile"
         android:padding="1dp"
         app:layout_constraintBottom_toBottomOf="parent"

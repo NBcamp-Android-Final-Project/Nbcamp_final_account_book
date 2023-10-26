@@ -16,8 +16,7 @@ import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.FragmentEntryBinding
-import com.nbcam_final_account_book.persentation.tag.Tag
-import com.nbcam_final_account_book.persentation.tag.TagListAdapter
+import com.nbcam_final_account_book.persentation.tag.TagModel
 import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_INCOME
 import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_PAY
 import java.text.DecimalFormat
@@ -35,12 +34,12 @@ class EntryFragment : Fragment() {
 	private val viewModel: EntryViewModel by activityViewModels()
 
 	private val tagListAdapter by lazy {
-		TagListAdapter(onItemClick = { position ->
-			onItemClickEvent(position)
+		TagListAdapter(onItemClick = { position, item ->
+			onItemClickEvent(position, item)
 		})
 	}
 
-	private fun onItemClickEvent(position: Int) {
+	private fun onItemClickEvent(position: Int, item: TagModel) {
 
 		tagPosition = position
 	}
@@ -64,7 +63,7 @@ class EntryFragment : Fragment() {
 	private fun initView() = with(binding) {
 
 		ivBack.setOnClickListener {
-
+			requireActivity().finish()
 		}
 
 		// 마이페이지 - 태그 관리 액티비티로 이동
@@ -168,24 +167,16 @@ class EntryFragment : Fragment() {
 	private fun initTag() {
 
 		// 임시 데이터
-		val newList = mutableListOf<Tag>()
+		val newList = mutableListOf<TagModel>()
 		newList.apply {
-			add(Tag(R.drawable.ic_tag, "달력"))
-			add(Tag(R.drawable.ic_chart, "차트"))
-			add(Tag(R.drawable.ic_help, "도움"))
-			add(Tag(R.drawable.ic_home, "집"))
-			add(Tag(R.drawable.ic_lock, "잠금"))
-			add(Tag(R.drawable.ic_more_vert, "수직"))
-			add(Tag(R.drawable.ic_mypage, "페이지"))
-			add(Tag(R.drawable.ic_backup, "백업"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
+			add(TagModel(0, R.drawable.icon_tag_traffic, "교통비"))
+			add(TagModel(0, R.drawable.ic_check, "체크"))
+			add(TagModel(0, R.drawable.ic_backup, "백업"))
+			add(TagModel(0, R.drawable.ic_lock, "잠금"))
+			add(TagModel(0, R.drawable.ic_chart, "차트"))
+			add(TagModel(0, R.drawable.ic_delete, "삭제"))
+			add(TagModel(0, R.drawable.ic_home, "홈"))
+			add(TagModel(0, R.drawable.ic_calendar, "캘린더"))
 		}
 
 		binding.rvTagContainer.adapter = tagListAdapter

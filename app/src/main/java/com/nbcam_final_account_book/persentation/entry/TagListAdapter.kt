@@ -1,4 +1,4 @@
-package com.nbcam_final_account_book.persentation.tag
+package com.nbcam_final_account_book.persentation.entry
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.databinding.ItemTagBinding
+import com.nbcam_final_account_book.persentation.tag.TagModel
 
 class TagListAdapter(private val onItemClick: (Int, TagModel) -> Unit) :
 	ListAdapter<TagModel, TagListAdapter.ViewHolder>(object :
@@ -17,9 +18,8 @@ class TagListAdapter(private val onItemClick: (Int, TagModel) -> Unit) :
 		override fun areContentsTheSame(oldItem: TagModel, newItem: TagModel): Boolean {
 			return oldItem == newItem
 		}
-
 	}) {
-	private val selectedItems = arrayOf(1)
+//	private val selectedItems = arrayOf(1)
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val view = ItemTagBinding.inflate(LayoutInflater.from(parent.context), parent, false)

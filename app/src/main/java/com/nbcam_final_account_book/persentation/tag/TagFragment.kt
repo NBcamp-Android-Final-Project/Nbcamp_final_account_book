@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.TagFragmentBinding
 
@@ -21,14 +25,14 @@ class TagFragment : Fragment() {
 		)[TagViewModel::class.java]
 	}
 
-	private val tagListAdapter by lazy {
-		TagListAdapter(onItemClick = { position, item ->
+	private val tagManageAdapter by lazy {
+		TagManageAdapter(onItemClick = { position, item ->
 			onItemClickEvent(position, item)
 		})
 	}
 
 	private fun onItemClickEvent(position: Int, item: TagModel) {
-
+		Toast.makeText(requireActivity(), "$position 번째 touch", Toast.LENGTH_SHORT).show()
 	}
 
 	override fun onCreateView(
@@ -48,10 +52,9 @@ class TagFragment : Fragment() {
 	}
 
 	private fun initView() = with(binding) {
-		requireActivity().actionBar?.hide()
 
 		ivBack.setOnClickListener {
-
+			findNavController().popBackStack()
 		}
 	}
 
@@ -62,17 +65,35 @@ class TagFragment : Fragment() {
 	}
 
 	private fun initTag() {
-
 		// 임시 데이터
 		val newList = mutableListOf<TagModel>()
-		repeat(20) {
-			newList.add(TagModel(0, R.drawable.icon_tag_traffic, "교통비"))
+
+		newList.apply {
+			add(TagModel(0, R.drawable.icon_tag_traffic, "교통비"))
+			add(TagModel(0, R.drawable.ic_check, "체크"))
+			add(TagModel(0, R.drawable.ic_backup, "백업"))
+			add(TagModel(0, R.drawable.ic_lock, "잠금"))
+			add(TagModel(0, R.drawable.ic_chart, "차트"))
+			add(TagModel(0, R.drawable.ic_delete, "삭제"))
+			add(TagModel(0, R.drawable.ic_home, "홈"))
+			add(TagModel(0, R.drawable.ic_calendar, "캘린더"))
 		}
 
-		binding.rvTagManageContainer.apply {
+
+		binding.rvTagListContainer.apply {
 			setHasFixedSize(true)
-			adapter = tagListAdapter
+			adapter = tagManageAdapter
 		}
-		tagListAdapter.submitList(newList)
+
+		val callback = ItemTouchHelperCallback(tagManageAdapter)
+		val touchHelper = ItemTouchHelper(callback)
+		touchHelper.attachToRecyclerView(binding.rvTagListContainer)
+		tagManageAdapter.startDrag(object : TagManageAdapter.OnStartDragListener {
+			override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
+				touchHelper.startDrag(viewHolder)
+			}
+		})
+
+		tagManageAdapter.submitList(newList)
 	}
 }

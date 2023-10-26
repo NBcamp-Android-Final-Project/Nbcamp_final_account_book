@@ -1,23 +1,19 @@
 package com.nbcam_final_account_book.persentation.home
 
-import android.app.Activity
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import com.nbcam_final_account_book.data.model.DummyData
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.HomeFragmentBinding
 import com.nbcam_final_account_book.persentation.entry.EntryActivity
-import com.nbcam_final_account_book.persentation.entry.EntryModel
 import com.nbcam_final_account_book.persentation.main.MainViewModel
+import com.nbcam_final_account_book.unit.Unit
 import java.util.Calendar
 
 
@@ -156,8 +152,9 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initView()
         initViewModel()
+        initView()
+
 
     }
 
@@ -178,8 +175,12 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
         }
 
 
-
     }
+
+    private fun getTotalBudget(): String {
+        return viewModel.getTotalBudget()
+    }
+
 
     private fun getCurrentTemplate(): TemplateEntity? {
         return sharedViewModel.getCurrentTemplate()
@@ -191,8 +192,26 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
         with(viewModel) {
             homeCurrentLiveEntryList.observe(viewLifecycleOwner) { it ->
                 if (it != null) {
-                    Log.d("홈프래그먼트", it.toString())
+                    setIncomeAndPay(it)
                 }
+            }
+            budgetLiveData.observe(viewLifecycleOwner) { it ->
+                val totalBudget =
+                    homeCurrentLiveEntryList.value.orEmpty().sumOf { it.value.toInt() }
+
+                val totalPay = homeCurrentLiveEntryList.value.orEmpty().filter {
+                    it.type == Unit.INPUT_TYPE_PAY
+                }.sumOf { it.value.toInt() }
+
+                val totalICome = homeCurrentLiveEntryList.value.orEmpty().filter {
+                    it.type == Unit.INPUT_TYPE_INCOME
+                }.sumOf { it.value.toInt() }
+
+                val resultBudget = totalBudget - totalPay - totalICome
+
+
+                binding.tvBalanceDescription.text = totalBudget.toString()
+
             }
         }
 
@@ -200,6 +219,14 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
 
         }
 
+    }
+
+    private fun setIncomeAndPay(list:List<EntryEntity>){
+        val income = viewModel.getTotalIncomeAndPay(list).first
+        val pay = viewModel.getTotalIncomeAndPay(list).second
+
+        binding.payTitleTxt.text = pay
+        binding.incomeTvTitle.text = income
     }
 
 

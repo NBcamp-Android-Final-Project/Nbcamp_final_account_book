@@ -173,6 +173,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:hint="금액을 입력해 주세요"
+        android:maxLength="10"
         android:inputType="number"
         android:maxLines="1"
         android:padding="8dp"

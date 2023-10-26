@@ -186,12 +186,13 @@
                 android:text="지출" />
 
             <TextView
+                android:id="@+id/pay_title_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="10,000원"
                 android:textColor="@color/expend"
-                android:textStyle="bold"
                 android:textSize="16sp"
-                android:text="10,000원" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -214,12 +215,13 @@
                 android:text="수입" />
 
             <TextView
+                android:id="@+id/income_tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="10,000원"
                 android:textColor="@color/income"
-                android:textStyle="bold"
                 android:textSize="16sp"
-                android:text="10,000원" />
+                android:textStyle="bold" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/cheon_primary_selected_home_icon" android:state_checked="true"/> <!-- 선택된 상태 -->
+    <item android:color="@color/cheon_primary_unselected_home_icon"/> <!-- 기본 상태 -->
+</selector>

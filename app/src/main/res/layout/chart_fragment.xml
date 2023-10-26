@@ -75,7 +75,7 @@
                 android:button="@android:color/transparent"
                 android:gravity="center"
                 android:text="주"
-                android:textColor="@color/cheon_primary_selected_home_icon"
+                android:textColor="@color/primary_main"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
@@ -87,7 +87,7 @@
                 android:button="@android:color/transparent"
                 android:gravity="center"
                 android:text="월"
-                android:textColor="@color/cheon_primary_selected_home_icon"
+                android:textColor="@color/primary_main"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
@@ -99,7 +99,7 @@
                 android:button="@android:color/transparent"
                 android:gravity="center"
                 android:text="기간"
-                android:textColor="@color/cheon_primary_selected_home_icon"
+                android:textColor="@color/primary_main"
                 android:textStyle="bold" />
 
         </RadioGroup>

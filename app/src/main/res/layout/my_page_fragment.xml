@@ -40,6 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
+                android:src="@drawable/ic_mypage_profile"
+                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +68,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/mypage_tv_id_data"
+                android:id="@+id/mypage_tv_email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="이메일이 아이디임!"
@@ -232,18 +234,68 @@
         android:drawablePadding="10dp"
         android:gravity="center_vertical"
         android:padding="15dp"
-        android:text="화면잠금"
+        android:text="화면 잠금"
         android:textSize="15sp"
         app:drawableLeftCompat="@drawable/ic_lock"
         app:layout_constraintTop_toBottomOf="@+id/view4" />
 
     <View
         android:id="@+id/view5"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:background="@color/light_gray"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_lock" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/mypage_switch_pin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="50dp"
+        android:paddingEnd="20dp"
+        app:track="@drawable/my_page_switch_track"
+        android:thumb="@drawable/my_page_switch_thumb"
+        android:text="비밀번호 잠금"
+        app:switchMinWidth="0dp"
+        android:visibility="gone"
+        android:textOff=""
+        android:textOn=""
+        app:thumbTextPadding="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view5" />
+
+    <View
+        android:id="@+id/view6"
+        android:layout_width="match_parent"
+        android:layout_height="0.6dp"
+        android:background="@color/light_gray"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_switch_pin" />
+
+    <TextView
+        android:id="@+id/mypage_tv_chang_pin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="15dp"
+        android:paddingStart="50dp"
+        android:paddingEnd="20dp"
+        android:text="비밀번호 변경"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view6" />
+
+    <View
+        android:id="@+id/view7"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/light_gray"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_lock" />
+        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_chang_pin" />
 
     <TextView
         android:id="@+id/mypage_tv_logout"
@@ -255,10 +307,10 @@
         android:text="로그아웃"
         android:textSize="15sp"
         app:drawableLeftCompat="@drawable/ic_logout"
-        app:layout_constraintTop_toBottomOf="@+id/view5" />
+        app:layout_constraintTop_toBottomOf="@+id/view7" />
 
     <View
-        android:id="@+id/view6"
+        android:id="@+id/view8"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/light_gray"

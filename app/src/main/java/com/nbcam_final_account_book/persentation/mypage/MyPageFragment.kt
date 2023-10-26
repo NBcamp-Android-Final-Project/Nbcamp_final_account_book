@@ -22,15 +22,17 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MyPageFragmentBinding
 import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
-import com.nbcam_final_account_book.persentation.lock.LockActivity
 import com.nbcam_final_account_book.persentation.main.MainViewModel
 
 class MyPageFragment : Fragment() {
@@ -41,12 +43,36 @@ class MyPageFragment : Fragment() {
 
     // 더미데이터 - 공유하는 사람
     private val dummyUser = listOf(
-        SharedUser("1", "사용자1", "https://images.pexels.com/photos/14661/pexels-photo-14661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
-        SharedUser("2", "사용자2", "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
-        SharedUser("3", "사용자3", "https://images.pexels.com/photos/5186/person-woman-coffee-cup.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
-        SharedUser("4", "사용자4", "https://images.pexels.com/photos/25733/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
-        SharedUser("5", "사용자5", "https://images.pexels.com/photos/109851/pexels-photo-109851.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
-        SharedUser("6", "사용자6", "https://images.pexels.com/photos/55789/pexels-photo-55789.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
+        SharedUser(
+            "1",
+            "David",
+            "https://images.pexels.com/photos/14661/pexels-photo-14661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        ),
+        SharedUser(
+            "2",
+            "Ian",
+            "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        ),
+        SharedUser(
+            "3",
+            "Chloe",
+            "https://images.pexels.com/photos/5186/person-woman-coffee-cup.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        ),
+        SharedUser(
+            "4",
+            "Felix",
+            "https://images.pexels.com/photos/25733/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        ),
+        SharedUser(
+            "5",
+            "Bentley",
+            "https://images.pexels.com/photos/109851/pexels-photo-109851.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        ),
+        SharedUser(
+            "6",
+            "Aurora",
+            "https://images.pexels.com/photos/55789/pexels-photo-55789.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        )
     )
 
     private var _binding: MyPageFragmentBinding? = null
@@ -61,8 +87,11 @@ class MyPageFragment : Fragment() {
     }
     private val sharedViewModel: MainViewModel by activityViewModels()
     private val sharedUsersAdapter = SharedUsersAdapter(dummyUser)
+    private lateinit var navController: NavController
 
     private var isEditing = false
+    private var isSwitch = false
+    private val user = Firebase.auth.currentUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +103,7 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController = findNavController()
         initView()
         initViewModel()
     }
@@ -122,12 +152,37 @@ class MyPageFragment : Fragment() {
         }
 
         mypageTvLock.setOnClickListener {
-            val intent = Intent(requireContext(), LockActivity::class.java)
-            startActivity(intent)
+            if (!isSwitch) {
+                if (view5.visibility == View.GONE) {
+                    view5.visibility = View.VISIBLE
+                    mypageSwitchPin.visibility = View.VISIBLE
+                } else {
+                    view5.visibility = View.GONE
+                    mypageSwitchPin.visibility = View.GONE
+                }
+            }
         }
 
+        mypageSwitchPin.setOnCheckedChangeListener { _, isChecked ->
+            if (!isSwitch) {
+                navController.navigate(R.id.action_menu_mypage_to_pinFragment)
+                isSwitch = true // 스위치가 true일 때 네비게이션 실행 후 상태 변경
+            } else {
+                isSwitch = false
+            }
+        }
+        // TODO: 비밀번호 변경 기능 나중에 추가!
+        /*if (isChecked) {
+            view6.visibility = View.VISIBLE
+            mypageTvChangPin.visibility = View.VISIBLE
+        } else {
+            view6.visibility = View.GONE
+            mypageTvChangPin.visibility = View.GONE
+        }*/
+
+
         mypageTvTag.setOnClickListener {
-            findNavController().navigate(R.id.action_menu_more_to_tagFragment)
+            navController.navigate(R.id.action_menu_mypage_to_tagFragment)
         }
 
         mypageTvLogout.setOnClickListener {
@@ -267,42 +322,41 @@ class MyPageFragment : Fragment() {
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
     }
 
-    private fun nameTextWatcher(tvWarning: TextView, alertDialog: AlertDialog) = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-            val newName = s.toString()
-
-            // 입력 조건 검사
-            val isValid = isNameValid(newName)
-
-            if (isValid) {
-                tvWarning.visibility = View.INVISIBLE
-            } else {
-                tvWarning.visibility = View.VISIBLE
-                if (newName.length > 10) {
-                    tvWarning.text = "이름은 10글자 이하로 입력하세요."
-                } else {
-                    tvWarning.text = "2~10자 이내로, 영어, 한글, 숫자만 입력 가능합니다."
-                }
+    private fun nameTextWatcher(tvWarning: TextView, alertDialog: AlertDialog) =
+        object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
-            // 저장 버튼 활성화/비활성화
-            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = isValid
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val newName = s.toString()
+
+                // 입력 조건 검사
+                val isValid = isNameValid(newName)
+
+                if (isValid) {
+                    tvWarning.visibility = View.INVISIBLE
+                } else {
+                    tvWarning.visibility = View.VISIBLE
+                    if (newName.length > 10) {
+                        tvWarning.text = "이름은 10글자 이하로 입력하세요."
+                    } else {
+                        tvWarning.text = "2~10자 이내로, 영어, 한글, 숫자만 입력 가능합니다."
+                    }
+                }
+
+                // 저장 버튼 활성화/비활성화
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = isValid
+            }
         }
-    }
 
     private fun isNameValid(name: String): Boolean {
-        // 이름의 길이가 2에서 10자 이내인지 확인
         if (name.length < 2 || name.length > 10) {
             return false
         }
 
-        // 정규 표현식을 사용하여 영어, 한글, 숫자만 포함되었는지 확인
         val regex = "^[a-zA-Z0-9가-힣]*$".toRegex()
         return regex.matches(name)
     }

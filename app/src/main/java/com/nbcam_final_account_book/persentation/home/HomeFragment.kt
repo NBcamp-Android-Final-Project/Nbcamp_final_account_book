@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.nbcam_final_account_book.data.model.DummyData
+import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.HomeFragmentBinding
 import com.nbcam_final_account_book.persentation.entry.EntryActivity
@@ -81,7 +82,7 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
                     currentMonth + 1
                 ) + "-" + String.format("%02d", day)
                 val relatedEntries =
-                    DummyData.liveDummyEntry.value?.filter {
+                    viewModel.homeCurrentLiveEntryList.value?.filter {
                         it.dateTime.contains(
                             clickedDate
                         )
@@ -106,7 +107,7 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
         binding.tvMonthYear.text = "${currentYear}년 ${currentMonth + 1}월"
     }
 
-    private fun updateDays() {
+    private fun updateDays(entries: List<EntryEntity>? = null) {
         days.clear()
 
         val calendar = Calendar.getInstance().apply {
@@ -129,11 +130,13 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
                 currentMonth + 1
             ) + "-" + String.format("%02d", i)
             val hasEvent = viewModel.getListAll().any { it.dateTime == currentDate }
+
             days.add(Day(i, hasEvent))
         }
 
         val adapter = CalendarAdapter(requireContext(), days)
         binding.gridCalendar.adapter = adapter
+        adapter.notifyDataSetChanged()
     }
 
 
@@ -147,7 +150,7 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
         currentYear = year
         currentMonth = month
         updateCalendarHeader()
-        updateDays()
+        updateDays(viewModel.homeCurrentLiveEntryList.value)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -159,6 +162,10 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
     }
 
     private fun initView() = with(binding) { //레이아웃 제어
+        viewModel.homeCurrentLiveEntryList.observe(viewLifecycleOwner) { entries ->
+            updateDays(entries)
+        }
+
         fab.setOnClickListener {
             val intent = EntryActivity.newIntent(requireActivity()).apply {
                 putExtra(EXTRA_CURRENT_TEMPLATE, getCurrentTemplate())
@@ -182,10 +189,7 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
     private fun initViewModel() {
         // 여기서 바텀시트를 표시하는 로직을 제거합니다. 다른 로직이 있다면 그대로 두시면 됩니다.
         with(viewModel) {
-            DummyData.liveDummyEntry.observe(viewLifecycleOwner) { entries ->
-                // 바텀시트 표시 로직 제거
-            }
-            homeLiveEntryList.observe(viewLifecycleOwner) { it ->
+            homeCurrentLiveEntryList.observe(viewLifecycleOwner) { it ->
                 if (it != null) {
                     Log.d("홈프래그먼트", it.toString())
                 }

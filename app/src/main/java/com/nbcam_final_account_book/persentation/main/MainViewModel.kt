@@ -37,6 +37,8 @@ class MainViewModel(
         val liveKey: MutableLiveData<String> = MutableLiveData()
     }
 
+    private val user = fireRepo.getUser()
+
     //CurrentTemplateData
     private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
     val mainLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _mainLiveCurrentTemplate
@@ -50,7 +52,7 @@ class MainViewModel(
     }
 
     //TagLiveData
-    private val mainLiveTagList: LiveData<List<TagEntity>> = liveKey.switchMap { key ->
+    val mainLiveTagList: LiveData<List<TagEntity>> = liveKey.switchMap { key ->
         roomRepo.getLiveTagByKey(key)
     }
 
@@ -78,7 +80,6 @@ class MainViewModel(
         }
     }
 
-
     fun getEntryLiveData(): LiveData<List<EntryEntity>> { //테스트를 위한 라이브 데이터 리턴
         return mainLiveEntryList
     }
@@ -91,7 +92,7 @@ class MainViewModel(
 
     //템플릿 룸으로 백업 데이터를 저장 혹은 업데이트 해주는 로직
     //템플릿이 전환되는 순간에 호출되어야 함.
-    fun insertData() = with(roomRepo) {
+    fun updataBackupData() = with(roomRepo) {
         viewModelScope.launch(Dispatchers.IO) {
             val key = mainLiveCurrentTemplate.value?.id ?: return@launch
 
@@ -154,16 +155,79 @@ class MainViewModel(
 
     }
 
-        //반드시 로그아웃 시 호출되어야 함.
-    fun backupDatabyLogOut() {
-        val user = fireRepo.getUser()
+    //반드시 로그아웃 시 호출되어야 함.
+    fun backupDataByLogOut() {
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()
             for (dataEntity in dataList) {
                 fireRepo.updateData(user, dataEntity)
             }
+            saveSharedPrefIsLogin(false)
             roomRepo.deleteAllData()
         }
+    }
+    fun backupData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val dataList: List<DataEntity> = roomRepo.getAllData()
+            for (dataEntity in dataList) {
+                fireRepo.updateData(user, dataEntity)
+            }
+        }
+    }
+
+    //firebase 데이터 동기화
+    fun synchronizationData() {
+
+        viewModelScope.launch {
+            val backUpTemplate = fireRepo.getAllTemplate(user)
+            val backUpData = fireRepo.getBackupData(user)
+
+            roomRepo.insertDataList(backUpData)
+            with(roomRepo) {
+                insertTemplateList(backUpTemplate)
+                insertDataList(backUpData)
+
+                val currentTemplate = _mainLiveCurrentTemplate.value
+
+                //로그인 시 제일 첫 번쨰 템플릿이 디폴트로 들어옴
+                _mainLiveCurrentTemplate.value = backUpTemplate[0]
+
+                if (currentTemplate != null) {
+                    viewModelScope.launch {
+
+                        if (backUpData != null) {
+                            for (loadData in backUpData) {
+                                val loadEntry: List<EntryEntity> =
+                                    Gson().fromJson(
+                                        loadData.entryList,
+                                        object : TypeToken<List<EntryEntity>>() {}.type
+                                    )
+
+                                val loadTag: List<TagEntity> =
+                                    Gson().fromJson(
+                                        loadData.tagList,
+                                        object : TypeToken<List<TagEntity>>() {}.type
+                                    )
+
+                                val loadBudget: List<BudgetEntity> =
+                                    Gson().fromJson(
+                                        loadData.budgetList,
+                                        object : TypeToken<List<BudgetEntity>>() {}.type
+                                    )
+                                insertEntryList(loadEntry)
+                                insertBudgetList(loadBudget)
+                                insertTagList(loadTag)
+                            } // for(loadData in backUpData)
+
+                        } //backUpData != null
+                    }
+                } //  if (currentTemplate != null
+
+            } //   with(roomRepo)
+
+            saveSharedPrefIsLogin(true)
+        }
+
     }
 
 
@@ -183,6 +247,21 @@ class MainViewModel(
         val json = sharedPref.getString("key_currentUser", null)
 
         return Gson().fromJson(json, object : TypeToken<TemplateEntity>() {}.type)
+    }
+
+    fun saveSharedPrefIsLogin(isLogin: Boolean) {
+        val sharedPref = sharedProvider.setSharedPref("name_isLogin")
+        val editor = sharedPref.edit()
+
+        editor.putBoolean("key_isLogin", isLogin)
+        editor.apply()
+
+    }
+
+    fun loadSharedPrefIsLogin(): Boolean {
+        val sharedPref = sharedProvider.setSharedPref("name_isLogin")
+
+        return sharedPref.getBoolean("key_isLogin", false)
     }
 }
 

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
     tools:context=".persentation.chart.ChartFragment">
 
     <androidx.compose.ui.platform.ComposeView
         android:id="@+id/compose_view"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -19,11 +20,101 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/black"
-        app:layout_constraintTop_toBottomOf="@id/compose_view"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/compose_view" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/chart_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/divider">
+
+        <TextView
+            android:id="@+id/chart_date_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="2023-10-23"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/chart_list_layout" />
+
+        <RadioGroup
+            android:id="@+id/chart_tab_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chart_date_title">
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/chart_tab_day"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/chart_radio_button_day_selector"
+                android:button="@android:color/transparent"
+                android:checked="true"
+                android:gravity="center"
+                android:text="일"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/chart_tab_week"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/chart_radio_button_week_selector"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:text="주"
+                android:textColor="@color/primary_main"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/chart_tab_month"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/chart_radio_button_month_selector"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:text="월"
+                android:textColor="@color/primary_main"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/chart_tab_period"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/chart_radio_button_period_selector"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:text="기간"
+                android:textColor="@color/primary_main"
+                android:textStyle="bold" />
+
+        </RadioGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chart_tab_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chart_tab_container" />
 
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -95,5 +95,32 @@ class FireBaseRepositoryImpl(
         myRef.child(item.id).setValue(item)
     }
 
+    override suspend fun getBackupData(user: String): List<DataEntity> {
+        val database = Firebase.database
+        val path = "$user/$TEMPLATE_DATA"
+        try {
+            val snapshot = database.getReference(path).get().await()
+
+            return if (snapshot.exists()) {
+                val responseList = mutableListOf<DataEntity>()
+                for (userSnapshot in snapshot.children) {
+                    val getData = userSnapshot.getValue(DataEntity::class.java)
+
+                    getData?.let {
+
+                        responseList.add(getData)
+                    }
+                }
+                responseList
+            } else {
+                emptyList()
+            }
+        } catch (e: Exception) {
+
+            Log.e("FirebaseRepo", "BackupData 데이터 가져오기 중 오류 발생")
+            return emptyList()
+        }
+    }
+
 
 }

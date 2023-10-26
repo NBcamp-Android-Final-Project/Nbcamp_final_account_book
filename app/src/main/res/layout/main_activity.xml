@@ -17,10 +17,14 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/main_bottom_navi"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
+        android:paddingVertical="5dp"
+        app:itemIconSize="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/primary_main"
+        style="@style/BottomNavigationView"
         app:menu="@menu/bottom_nav_menu" />
 
     <androidx.fragment.app.FragmentContainerView

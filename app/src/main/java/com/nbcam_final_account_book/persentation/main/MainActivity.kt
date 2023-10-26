@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -13,6 +14,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
+import com.google.android.material.navigation.NavigationBarView
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.MainActivityBinding
@@ -25,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private val navHostFragment: NavHostFragment by lazy { supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment }
     private val navController: NavController by lazy { navHostFragment.navController }
+    private var isLogin: Boolean = false
 
     private val extraTemplate: TemplateEntity? by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -44,12 +48,13 @@ class MainActivity : AppCompatActivity() {
 
         initViewModel()
         initView()
+
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
                 true
             }
 
@@ -59,14 +64,27 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() = with(binding) {
 
+        loadLogin()
+
+        if (!isLogin) {
+            synchronizationDataFromFireBase()
+        }
+
         Log.d("도착", extraTemplate.toString())
         if (extraTemplate != null) {
             updateTemplate(extraTemplate)
         }
 
-
         //toolbar 연결
         setSupportActionBar(mainToolbar)
+
+        // Bottom Navigation View 초기화
+        mainBottomNavi.apply {
+            setupWithNavController(navController)
+            labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_LABELED
+            itemIconTintList = ContextCompat.getColorStateList(context, R.color.bottom_nav_colors)
+            itemTextColor = ContextCompat.getColorStateList(context, R.color.bottom_nav_colors)
+        }
 
         //bottom navigation 연결
         val appBarConfiguration = AppBarConfiguration(
@@ -76,6 +94,29 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         mainBottomNavi.setupWithNavController(navController)
+
+        // Bottom Navigation Item Selceted 설정
+        mainBottomNavi.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_home -> {
+                    navController.navigate(R.id.menu_home)
+                    true
+                }
+                R.id.menu_statistics -> {
+                    navController.navigate(R.id.menu_statistics)
+                    true
+                }
+                R.id.menu_chat -> {
+                    navController.navigate(R.id.menu_chat)
+                    true
+                }
+                R.id.menu_mypage -> {
+                    navController.navigate(R.id.menu_mypage)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun initViewModel() {
@@ -94,12 +135,32 @@ class MainActivity : AppCompatActivity() {
                 }
                 Log.d("옵저빙.템플릿", it.toString())
             })
+
+            //todo 업데이트 타이밍 조절해보기
             mainLiveEntryList.observe(this@MainActivity, Observer { it ->
                 if (it != null) {
                     Log.d("옵저빙.엔트리 리스트", it.toString())
-//                    insertData() // 백업 테스트코드
+                    if (it.isNotEmpty()) {
+                        updataBackupData() // 백업 테스트코드
+                    }
                 }
             })
+            mainLiveTagList.observe(this@MainActivity, Observer { it ->
+                if (it != null) {
+                    if (it.isNotEmpty()) {
+                        updataBackupData() // 백업 테스트코드
+                    }
+                }
+            })
+            mainBudgetList.observe(this@MainActivity, Observer { it ->
+                if (it != null) {
+                    if (it.isNotEmpty()) {
+                        updataBackupData() // 백업 테스트코드
+                    }
+                }
+            })
+
+
         }
 
     }
@@ -110,6 +171,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun setKey() {
         viewModel.setKey()
+    }
+
+    private fun synchronizationDataFromFireBase() {
+        viewModel.synchronizationData()
+    }
+    private fun loadLogin(){
+        isLogin = viewModel.loadSharedPrefIsLogin()
+        Log.d("로그인여부", isLogin.toString())
     }
 
     fun toggleBottomNavi(show: Boolean) = with(binding) {

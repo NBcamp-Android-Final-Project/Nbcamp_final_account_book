@@ -173,14 +173,11 @@ class MyPageFragment : Fragment() {
             }
         }
         // TODO: 비밀번호 변경 기능 나중에 추가!
-        /*if (isChecked) {
-            view6.visibility = View.VISIBLE
-            mypageTvChangPin.visibility = View.VISIBLE
-        } else {
-            view6.visibility = View.GONE
-            mypageTvChangPin.visibility = View.GONE
-        }*/
 
+        // TODO: 백업버튼 누르면 그 시간을 표현해주기!
+        mypageTvBackup.setOnClickListener {
+            backupDate()
+        }
 
         mypageTvTag.setOnClickListener {
             navController.navigate(R.id.action_menu_mypage_to_tagFragment)
@@ -189,7 +186,7 @@ class MyPageFragment : Fragment() {
         mypageTvLogout.setOnClickListener {
             val auth = FirebaseAuth.getInstance()
             auth.signOut()
-//            sharedViewModel.backupDatabyLogOut() //백업 테스트 코드
+            backupDataByLogOut()
             cleanRoom()
             val intent = Intent(requireContext(), FirstActivity::class.java)
             startActivity(intent)
@@ -230,6 +227,14 @@ class MyPageFragment : Fragment() {
             Log.d("MyPageFragment", "Photo URL: ${photoUrl.value}")
 
         }
+    }
+
+    private fun backupDate() {
+        sharedViewModel.backupData()
+    }
+
+    private fun backupDataByLogOut() {
+        sharedViewModel.backupDataByLogOut()
     }
 
     private fun cleanRoom() = with(viewModel) {
@@ -318,25 +323,6 @@ class MyPageFragment : Fragment() {
     }
 
     // TODO: Firebase.storage에서 이미지 업로드하고 받아오기!
-/*    private fun uploadDownloadUrl(imageUri: Uri, onDownloadUrl: (Uri) -> Unit) {
-        val storage = Firebase.storage
-        val storageRef = storage.reference
-
-        // 이미지를 업로드할 경로 및 파일명 설정
-        val imagePath = "profile_images/${user?.uid}/profile.jpg"
-        val imageRef = storageRef.child(imagePath)
-
-        // 이미지를 업로드
-        imageRef.putFile(imageUri)
-            .addOnSuccessListener {
-                imageRef.downloadUrl.addOnSuccessListener { uri ->
-                    onDownloadUrl(uri)
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.e("MyPageFragment", "Image upload failed: ${e.message}")
-            }
-    }*/
 
     private fun deniedDialog() {
         AlertDialog.Builder(requireContext())
@@ -410,8 +396,6 @@ class MyPageFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
                 val newName = s.toString()
-
-                // 입력 조건 검사
                 val isValid = isNameValid(newName)
 
                 if (isValid) {

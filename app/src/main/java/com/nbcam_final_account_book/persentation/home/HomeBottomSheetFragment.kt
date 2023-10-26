@@ -7,10 +7,11 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nbcam_final_account_book.R
+import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.databinding.HomeBottomSheetBinding
 import com.nbcam_final_account_book.persentation.entry.EntryModel
 
-class HomeBottomSheetFragment(private val entries: List<EntryModel>, private val clickedDate: String) : BottomSheetDialogFragment() {
+class HomeBottomSheetFragment(private val entries: List<EntryEntity>, private val clickedDate: String) : BottomSheetDialogFragment() {
     private var _binding: HomeBottomSheetBinding? = null
     private val binding get() = _binding!!
 

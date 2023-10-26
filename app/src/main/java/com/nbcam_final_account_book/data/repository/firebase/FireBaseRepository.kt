@@ -22,7 +22,7 @@ interface FireBaseRepository {
 
     //data
     suspend fun updateData(user: String, item: DataEntity)
-
+    suspend fun getBackupData(user: String): List<DataEntity>
 
 
 }

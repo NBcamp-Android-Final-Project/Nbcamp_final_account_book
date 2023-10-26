@@ -3,14 +3,23 @@
     <color name="black">#FF000000</color>
     <color name="light_gray">#E6E6E6</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="divider">#FFEEEEEE</color>
+
+    <color name="primary_main">#629CFF</color>
+
+    <color name="expend">#FF2828</color>
+    <color name="income">#5382FE</color>
 
     <color name="cheon_primary_bot_nav">#DEE5F1</color>
-    <color name="cheon_primary_unselected_home_icon">#CEDBF0</color>
-    <color name="cheon_primary_selected_home_icon">#B2C8ED</color>
+    <color name="cheon_primary_unselected_home_icon">#32E6E6E6</color>
+    <color name="cheon_primary_selected_home_icon">#F8F8F8</color>
 
     <color name="calendar_sunday">#FF0000</color>
     <color name="calendar_saturday">#0040FF</color>
     <color name="calendar_unselected_arrow_icon">#FFFFFFFF</color>
     <color name="calendar_selected_arrow_icon">#EEEEEE</color>
     <color name="primary">#DEE5F1</color>
+
+    <color name="chart_tab_selected_text">#FFFFFF</color>
+    <color name="chart_tab_unselected_text">#B2C8ED</color>
 </resources>

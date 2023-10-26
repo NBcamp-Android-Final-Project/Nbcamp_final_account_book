@@ -3,7 +3,6 @@
     <style name="Base.Theme.Nbcam_Final_Account_Book" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.Nbcam_Final_Account_Book" parent="Base.Theme.Nbcam_Final_Account_Book" />

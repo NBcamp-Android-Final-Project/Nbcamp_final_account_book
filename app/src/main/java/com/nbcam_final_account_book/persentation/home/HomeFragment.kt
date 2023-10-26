@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.HomeFragmentBinding
 import com.nbcam_final_account_book.persentation.entry.EntryActivity
 import com.nbcam_final_account_book.persentation.main.MainViewModel
 import com.nbcam_final_account_book.unit.Unit
+import java.text.DecimalFormat
 import java.util.Calendar
 
 
@@ -193,24 +195,10 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
             homeCurrentLiveEntryList.observe(viewLifecycleOwner) { it ->
                 if (it != null) {
                     setIncomeAndPay(it)
+
                 }
             }
             budgetLiveData.observe(viewLifecycleOwner) { it ->
-                val totalBudget =
-                    homeCurrentLiveEntryList.value.orEmpty().sumOf { it.value.toInt() }
-
-                val totalPay = homeCurrentLiveEntryList.value.orEmpty().filter {
-                    it.type == Unit.INPUT_TYPE_PAY
-                }.sumOf { it.value.toInt() }
-
-                val totalICome = homeCurrentLiveEntryList.value.orEmpty().filter {
-                    it.type == Unit.INPUT_TYPE_INCOME
-                }.sumOf { it.value.toInt() }
-
-                val resultBudget = totalBudget - totalPay - totalICome
-
-
-                binding.tvBalanceDescription.text = totalBudget.toString()
 
             }
         }
@@ -221,12 +209,16 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
 
     }
 
-    private fun setIncomeAndPay(list:List<EntryEntity>){
+    private fun setIncomeAndPay(list: List<EntryEntity>) {
         val income = viewModel.getTotalIncomeAndPay(list).first
         val pay = viewModel.getTotalIncomeAndPay(list).second
+        val result = viewModel.getTotalBudget(list)
 
-        binding.payTitleTxt.text = pay
+
         binding.incomeTvTitle.text = income
+        binding.payTitleTxt.text = pay
+
+        binding.tvBalanceDescription.text = result
     }
 
 

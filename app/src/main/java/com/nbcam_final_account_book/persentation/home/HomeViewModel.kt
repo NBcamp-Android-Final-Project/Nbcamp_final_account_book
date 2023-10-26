@@ -16,6 +16,7 @@ import com.nbcam_final_account_book.unit.Unit
 import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_INCOME
 import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_PAY
 import java.security.KeyStore.Entry
+import java.text.DecimalFormat
 
 
 class HomeViewModel(
@@ -77,7 +78,36 @@ class HomeViewModel(
             it.type == Unit.INPUT_TYPE_INCOME
         }.sumOf { it.value.toInt() }.toString()
 
-        return Pair(totalICome, totalPay)
+        val incomeNum = totalICome.replace(",", "").toInt()
+        val payNum = totalPay.replace(",", "").toInt()
+
+        // 숫자를 천 단위로 쉼표로 구분하여 포맷
+        val decimalFormat = DecimalFormat("#,###")
+        val incomeNumFormat = decimalFormat.format(incomeNum)
+        val payNumFormat = decimalFormat.format(payNum)
+
+
+        return Pair(incomeNumFormat, payNumFormat)
+
+    }
+
+    fun getTotalBudget(list: List<EntryEntity>): String {
+        val totalBudget = budgetLiveData.value.orEmpty().sumOf { it.value.toInt() }
+
+        val totalPay = list.filter {
+            it.type == Unit.INPUT_TYPE_PAY
+        }.sumOf { it.value.toInt() }
+        val totalICome = list.filter {
+            it.type == Unit.INPUT_TYPE_INCOME
+        }.sumOf { it.value.toInt() }
+
+        val resultBudget = totalBudget + totalICome - totalPay
+
+        // 숫자를 천 단위로 쉼표로 구분하여 포맷
+        val decimalFormat = DecimalFormat("#,###")
+
+        return decimalFormat.format(resultBudget)
+
 
     }
 

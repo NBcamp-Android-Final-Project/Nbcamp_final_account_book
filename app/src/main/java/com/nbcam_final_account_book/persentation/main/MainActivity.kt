@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -111,7 +112,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.setKey()
     }
 
-
+    fun toggleBottomNavi(show: Boolean) = with(binding) {
+        if (show) mainBottomNavi.visibility = View.VISIBLE
+        else mainBottomNavi.visibility = View.GONE
+    }
 }
 
 

@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.PinFragmentBinding
 import com.nbcam_final_account_book.persentation.lock.LockSharedViewModel
+import com.nbcam_final_account_book.persentation.main.MainActivity
 
 class PinFragment : Fragment() {
 
@@ -42,12 +43,14 @@ class PinFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as MainActivity).toggleBottomNavi(false)
         navController = findNavController()
         initView()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        (requireActivity() as MainActivity).toggleBottomNavi(true)
         _binding = null
     }
 
@@ -117,7 +120,7 @@ class PinFragment : Fragment() {
                     if (pin2.length == 4) { // 두 번째 비밀번호가 4자리 입력되면
                         if (pin1 == pin2) {
                             sharedViewModel.savePin(pin2)
-                            navController.popBackStack(R.id.lockSettingFragment, false)
+                            navController.popBackStack(R.id.menu_mypage, false)
                         } else {
                             pinTvAlert.text = "비밀번호가 일치하지 않습니다.\n처음부터 다시 시도해주세요."
                             pin1 = ""

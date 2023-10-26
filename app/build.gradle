@@ -61,6 +61,8 @@ dependencies {
     implementation("com.google.firebase:firebase-database-ktx")
     //google로그인
     implementation("com.google.firebase:firebase-auth-ktx")
+    // firebase storage
+    implementation("com.google.firebase:firebase-storage:20.3.0")
 
     // Also add the dependency for the Google Play services library and specify its version
     implementation("com.google.android.gms:play-services-auth:20.7.0")

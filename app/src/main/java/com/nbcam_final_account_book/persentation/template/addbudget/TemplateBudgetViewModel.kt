@@ -31,7 +31,7 @@ class TemplateBudgetViewModel(
         val budgetEntity = BudgetEntity(
             id = 0,
             key = key,
-            budget
+            value = budget
         )
         roomRepo.insertBudget(budgetEntity)
 

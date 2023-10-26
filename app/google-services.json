@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1073898028283",
+    "firebase_url": "https://nbcamp-final-account-book-default-rtdb.firebaseio.com",
     "project_id": "nbcamp-final-account-book",
     "storage_bucket": "nbcamp-final-account-book.appspot.com"
   },
@@ -14,11 +15,35 @@
       },
       "oauth_client": [
         {
+          "client_id": "1073898028283-68p8h0r18m8emdh4ue9p2qfm2rt1vvu6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nbcam_final_account_book",
+            "certificate_hash": "54589f9dd43cf039d7af76e2a7e497b5e3dec72e"
+          }
+        },
+        {
           "client_id": "1073898028283-9jnhq5urst0q4dbusuce8jk8dov72dbi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.nbcam_final_account_book",
             "certificate_hash": "f118a4006f0710654bc2d6561ed87f33e3a0088e"
+          }
+        },
+        {
+          "client_id": "1073898028283-ed4lc72k9tdi2voh24q708rdkqrdt1b9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nbcam_final_account_book",
+            "certificate_hash": "d849f696bde35bd7b0615cf262c487d19a8696d4"
+          }
+        },
+        {
+          "client_id": "1073898028283-h3nmu3kh4kfe9e9b74gjeb6cs6qcu400.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nbcam_final_account_book",
+            "certificate_hash": "4c1fef117a7cd8da3191c3024facf59d82f207b8"
           }
         },
         {

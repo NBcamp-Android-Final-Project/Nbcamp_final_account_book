@@ -22,12 +22,12 @@ class TagFragment : Fragment() {
 	}
 
 	private val tagListAdapter by lazy {
-		TagListAdapter(onItemClick = { position ->
-			onItemClickEvent(position)
+		TagListAdapter(onItemClick = { position, item ->
+			onItemClickEvent(position, item)
 		})
 	}
 
-	private fun onItemClickEvent(position: Int) {
+	private fun onItemClickEvent(position: Int, item: TagModel) {
 
 	}
 
@@ -48,8 +48,10 @@ class TagFragment : Fragment() {
 	}
 
 	private fun initView() = with(binding) {
+		requireActivity().actionBar?.hide()
+
 		ivBack.setOnClickListener {
-//			findNavController().navigate(R.id.action_tagFragment_to_menu_more)
+
 		}
 	}
 
@@ -62,24 +64,9 @@ class TagFragment : Fragment() {
 	private fun initTag() {
 
 		// 임시 데이터
-		val newList = mutableListOf<Tag>()
-		newList.apply {
-			add(Tag(R.drawable.ic_tag, "달력"))
-			add(Tag(R.drawable.ic_chart, "차트"))
-			add(Tag(R.drawable.ic_help, "도움"))
-			add(Tag(R.drawable.ic_home, "집"))
-			add(Tag(R.drawable.ic_lock, "잠금"))
-			add(Tag(R.drawable.ic_more_vert, "수직"))
-			add(Tag(R.drawable.ic_mypage, "페이지"))
-			add(Tag(R.drawable.ic_backup, "백업"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
-			add(Tag(R.drawable.ic_check, "확인"))
+		val newList = mutableListOf<TagModel>()
+		repeat(20) {
+			newList.add(TagModel(0, R.drawable.icon_tag_traffic, "교통비"))
 		}
 
 		binding.rvTagManageContainer.apply {

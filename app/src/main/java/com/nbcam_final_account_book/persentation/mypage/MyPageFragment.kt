@@ -181,6 +181,7 @@ class MyPageFragment : Fragment() {
             val currentTime = getCurrentTime()
             mypageTvSyncDate.text = "최근 동기화 시간 $currentTime"
             setSyncTime(currentTime)
+            syncData()
         }
 
         backupTime()?.let { backupTime ->
@@ -367,6 +368,10 @@ class MyPageFragment : Fragment() {
                 dialog.dismiss()
             }
             .show()
+    }
+
+    private fun syncData(){
+        sharedViewModel.synchronizationDataWithBtn()
     }
 
     private fun checkGalleryPermission(): Boolean {

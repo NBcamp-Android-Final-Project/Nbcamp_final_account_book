@@ -26,6 +26,7 @@ class LoginViewModel(
         return sharedPref.getBoolean("key_isFirst", false)
     }
 
+    //Todo 모든 firebase offline 분기를 해야할 것
     suspend fun getAllTemplateSize(): Int = withContext(Dispatchers.IO) {
 
         val list = firebaseRepo.getAllTemplate(firebaseRepo.getUser())

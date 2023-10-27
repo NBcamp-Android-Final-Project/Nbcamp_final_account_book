@@ -50,15 +50,15 @@ class SplashFragment : Fragment() {
                 if (isFirstLogin()) {
                     toMainActivity()
                 } else {
-                    toTemplateActivity()
+                    toTemplateActivity() //최초 로그인 시 템플릿으로 이동
                 }
             }
-
         }else{
             findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
         }
     }
 
+    //Todo 작명 바꾸기
     private suspend fun isFirstLogin(): Boolean {
         val data = viewModel.getAllTemplateSize()
         Log.d("listsize", data.toString())

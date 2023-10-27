@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.databinding.ItemTagManageBinding
 import java.util.Collections
 
@@ -12,15 +13,24 @@ interface OnStartDragListener {
 	fun onStartDrag(viewHolder: RecyclerView.ViewHolder)
 }
 
+interface OnDeleteItemListener {
+	fun onDeleteItem(position: Int)
+}
+
 class TagManageAdapter(
-	private val tagList: MutableList<TagModel>,
-	private val onItemClick: (Int, TagModel) -> Unit
+	private val tagList: MutableList<TagEntity>,
+	private val onItemClick: (Int, TagEntity) -> Unit
 ) : RecyclerView.Adapter<TagManageAdapter.ViewHolder>(), ItemTouchHelperListener {
 
 	private lateinit var dragListener: OnStartDragListener
+	private lateinit var deleteListener: OnDeleteItemListener
 
 	fun startDrag(listener: OnStartDragListener) {
 		this.dragListener = listener
+	}
+
+	fun deleteItem(listener: OnDeleteItemListener) {
+		this.deleteListener = listener
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,18 +50,17 @@ class TagManageAdapter(
 		RecyclerView.ViewHolder(binding.root) {
 
 		@SuppressLint("ClickableViewAccessibility")
-		fun onBind(item: TagModel) = with(binding) {
+		fun onBind(item: TagEntity) = with(binding) {
 			ivTagImg.setImageResource(item.img)
-			tvTagName.text = item.tagName
+			tvTagName.text = item.title
 
 			vHandlerTouch.setOnClickListener {
 				onItemClick(adapterPosition, item)
 			}
 
+			// 다이얼로그 확인용 (추후 휴지통 아이콘에 연결할 예정)
 			ivHandlerRemove.setOnClickListener {
-				val dialog = DialogFragment()
-				tagList.removeAt(adapterPosition)
-				notifyItemRemoved(adapterPosition)
+				deleteListener.onDeleteItem(adapterPosition)
 			}
 
 			ivHandlerDrag.setOnTouchListener { _, motionEvent ->

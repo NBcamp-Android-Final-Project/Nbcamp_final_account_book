@@ -1,6 +1,7 @@
 package com.nbcam_final_account_book.persentation.tag
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.R
+import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.databinding.TagFragmentBinding
 
 
@@ -22,20 +24,12 @@ class TagFragment : Fragment() {
 
 	private val viewModel by lazy {
 		ViewModelProvider(
-			this@TagFragment
+			this@TagFragment,
+			TagViewModelFactory(requireActivity())
 		)[TagViewModel::class.java]
 	}
 
-	private var newList = mutableListOf<TagModel>()
-	private val tagManageAdapter by lazy {
-		TagManageAdapter(newList, onItemClick = { position, item ->
-			onItemClickEvent(position, item)
-		})
-	}
-
-	private fun onItemClickEvent(position: Int, item: TagModel) {
-
-	}
+	private lateinit var tagManageAdapter: TagManageAdapter
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +44,6 @@ class TagFragment : Fragment() {
 
 		initView()
 		initViewModel()
-		initTag()
 	}
 
 	private fun initView() = with(binding) {
@@ -58,31 +51,37 @@ class TagFragment : Fragment() {
 		ivBack.setOnClickListener {
 			findNavController().popBackStack()
 		}
+
+		ivModify.setOnClickListener {
+			val dialog = DialogFragment()
+			dialog.show(requireActivity().supportFragmentManager, "dialog")
+		}
 	}
 
 	private fun initViewModel() = with(viewModel) {
-		liveDummyTagInTag.observe(viewLifecycleOwner) {
-
+		tagList.observe(viewLifecycleOwner) {
+			if (it != null) {
+				initTag(getTagListAll())
+				Log.d("tag", getTagListAll().toString())
+			}
 		}
 	}
 
-	private fun initTag() {
-		// 임시 데이터
-		newList.apply {
-			add(TagModel(0, R.drawable.icon_tag_traffic, "교통비"))
-			add(TagModel(0, R.drawable.ic_check, "체크"))
-			add(TagModel(0, R.drawable.ic_backup, "백업"))
-			add(TagModel(0, R.drawable.ic_lock, "잠금"))
-			add(TagModel(0, R.drawable.ic_chart, "차트"))
-			add(TagModel(0, R.drawable.ic_delete, "삭제"))
-			add(TagModel(0, R.drawable.ic_home, "홈"))
-			add(TagModel(0, R.drawable.ic_calendar, "캘린더"))
-		}
+	private fun initTag(tagList: MutableList<TagEntity>) {
+		tagManageAdapter =
+			TagManageAdapter(
+				tagList,
+				onItemClick = { position, item -> onItemClickEvent(position, item) })
 
 		binding.rvTagListContainer.apply {
 			adapter = tagManageAdapter
 			setHasFixedSize(true)
-			addItemDecoration(DividerItemDecoration(requireActivity(), LinearLayoutManager.VERTICAL))
+			addItemDecoration(
+				DividerItemDecoration(
+					requireActivity(),
+					LinearLayoutManager.VERTICAL
+				)
+			)
 		}
 
 		val touchHelper = ItemTouchHelper(ItemTouchHelperCallback(tagManageAdapter))
@@ -94,6 +93,20 @@ class TagFragment : Fragment() {
 					touchHelper.startDrag(viewHolder)
 				}
 			})
+
+			deleteItem(object : OnDeleteItemListener {
+				override fun onDeleteItem(position: Int) {
+					val dialog = DialogFragment()
+					dialog.show(requireActivity().supportFragmentManager, "dialog")
+
+					tagList.removeAt(position)
+					notifyItemRemoved(position)
+				}
+			})
 		}
+	}
+
+	private fun onItemClickEvent(position: Int, item: TagEntity) {
+		findNavController().navigate(R.id.action_tagFragment_to_editTagFragment)
 	}
 }

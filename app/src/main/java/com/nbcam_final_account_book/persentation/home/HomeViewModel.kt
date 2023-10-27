@@ -73,13 +73,13 @@ class HomeViewModel(
 
         val totalPay = list.filter {
             it.type == Unit.INPUT_TYPE_PAY
-        }.sumOf { it.value.toInt() }.toString()
+        }.sumOf { it.value.toLong() }.toString()
         val totalICome = list.filter {
             it.type == Unit.INPUT_TYPE_INCOME
-        }.sumOf { it.value.toInt() }.toString()
+        }.sumOf { it.value.toLong() }.toString()
 
-        val incomeNum = totalICome.replace(",", "").toInt()
-        val payNum = totalPay.replace(",", "").toInt()
+        val incomeNum = totalICome.replace(",", "").toLong()
+        val payNum = totalPay.replace(",", "").toLong()
 
         // 숫자를 천 단위로 쉼표로 구분하여 포맷
         val decimalFormat = DecimalFormat("#,###")
@@ -92,14 +92,15 @@ class HomeViewModel(
     }
 
     fun getTotalBudget(list: List<EntryEntity>): String {
-        val totalBudget = budgetLiveData.value.orEmpty().sumOf { it.value.toInt() }
+        val totalBudget = budgetLiveData.value.orEmpty().sumOf { it.value.toLong() }
+        Log.d("총예산", totalBudget.toString())
 
         val totalPay = list.filter {
             it.type == Unit.INPUT_TYPE_PAY
-        }.sumOf { it.value.toInt() }
+        }.sumOf { it.value.toLong() }
         val totalICome = list.filter {
             it.type == Unit.INPUT_TYPE_INCOME
-        }.sumOf { it.value.toInt() }
+        }.sumOf { it.value.toLong() }
 
         val resultBudget = totalBudget + totalICome - totalPay
 

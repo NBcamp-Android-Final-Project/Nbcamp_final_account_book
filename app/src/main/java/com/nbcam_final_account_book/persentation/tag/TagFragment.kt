@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -25,14 +24,15 @@ class TagFragment : Fragment() {
 		)[TagViewModel::class.java]
 	}
 
+	private var newList = mutableListOf<TagModel>()
 	private val tagManageAdapter by lazy {
-		TagManageAdapter(onItemClick = { position, item ->
+		TagManageAdapter(newList, onItemClick = { position, item ->
 			onItemClickEvent(position, item)
 		})
 	}
 
 	private fun onItemClickEvent(position: Int, item: TagModel) {
-		Toast.makeText(requireActivity(), "$position 번째 touch", Toast.LENGTH_SHORT).show()
+		findNavController().navigate(R.id.action_tagFragment_to_editTagFragment)
 	}
 
 	override fun onCreateView(
@@ -66,8 +66,6 @@ class TagFragment : Fragment() {
 
 	private fun initTag() {
 		// 임시 데이터
-		val newList = mutableListOf<TagModel>()
-
 		newList.apply {
 			add(TagModel(0, R.drawable.icon_tag_traffic, "교통비"))
 			add(TagModel(0, R.drawable.ic_check, "체크"))
@@ -79,21 +77,20 @@ class TagFragment : Fragment() {
 			add(TagModel(0, R.drawable.ic_calendar, "캘린더"))
 		}
 
-
 		binding.rvTagListContainer.apply {
-			setHasFixedSize(true)
 			adapter = tagManageAdapter
+			setHasFixedSize(true)
 		}
 
-		val callback = ItemTouchHelperCallback(tagManageAdapter)
-		val touchHelper = ItemTouchHelper(callback)
+		val touchHelper = ItemTouchHelper(ItemTouchHelperCallback(tagManageAdapter))
 		touchHelper.attachToRecyclerView(binding.rvTagListContainer)
-		tagManageAdapter.startDrag(object : TagManageAdapter.OnStartDragListener {
-			override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
-				touchHelper.startDrag(viewHolder)
-			}
-		})
 
-		tagManageAdapter.submitList(newList)
+		tagManageAdapter.apply {
+			startDrag(object : OnStartDragListener {
+				override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
+					touchHelper.startDrag(viewHolder)
+				}
+			})
+		}
 	}
 }

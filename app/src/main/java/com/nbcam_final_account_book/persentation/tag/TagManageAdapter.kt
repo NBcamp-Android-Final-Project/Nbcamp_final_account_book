@@ -4,25 +4,24 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.databinding.ItemTagManageBinding
+import java.util.Collections
 
-class TagManageAdapter(private val onItemClick: (Int, TagModel) -> Unit) :
-	ItemTouchHelperCallback.OnItemMoveListener,
-	ListAdapter<TagModel, TagManageAdapter.ViewHolder>(object :
-		DiffUtil.ItemCallback<TagModel>() {
-		override fun areItemsTheSame(oldItem: TagModel, newItem: TagModel): Boolean {
-			return oldItem.id == newItem.id
-		}
+interface OnStartDragListener {
+	fun onStartDrag(viewHolder: RecyclerView.ViewHolder)
+}
 
-		override fun areContentsTheSame(oldItem: TagModel, newItem: TagModel): Boolean {
-			return oldItem == newItem
-		}
-	}) {
+class TagManageAdapter(
+	private val tagList: MutableList<TagModel>,
+	private val onItemClick: (Int, TagModel) -> Unit
+) : RecyclerView.Adapter<TagManageAdapter.ViewHolder>(), ItemTouchHelperListener {
 
 	private lateinit var dragListener: OnStartDragListener
+
+	fun startDrag(listener: OnStartDragListener) {
+		this.dragListener = listener
+	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val view = ItemTagManageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,7 +29,11 @@ class TagManageAdapter(private val onItemClick: (Int, TagModel) -> Unit) :
 	}
 
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-		holder.onBind(getItem(position))
+		holder.onBind(tagList[position])
+	}
+
+	override fun getItemCount(): Int {
+		return tagList.size
 	}
 
 	inner class ViewHolder(private val binding: ItemTagManageBinding) :
@@ -45,7 +48,7 @@ class TagManageAdapter(private val onItemClick: (Int, TagModel) -> Unit) :
 				onItemClick(adapterPosition, item)
 			}
 
-			ivHandlerDrag.setOnTouchListener { view, motionEvent ->
+			ivHandlerDrag.setOnTouchListener { _, motionEvent ->
 				if (motionEvent.action == MotionEvent.ACTION_DOWN) {
 					dragListener.onStartDrag(this@ViewHolder)
 				}
@@ -54,20 +57,13 @@ class TagManageAdapter(private val onItemClick: (Int, TagModel) -> Unit) :
 		}
 	}
 
-	interface OnStartDragListener {
-		fun onStartDrag(viewHolder: RecyclerView.ViewHolder)
+	override fun onItemMove(fromPosition: Int, toPosition: Int) {
+		Collections.swap(tagList, fromPosition, toPosition)
+		notifyItemMoved(fromPosition, toPosition)
 	}
 
-	fun startDrag(listener: OnStartDragListener) {
-		this.dragListener = listener
-	}
-
-	override fun onItemMoved(fromPosition: Int, toPosition: Int) {
-		val item: TagModel = currentList[fromPosition]
-		val newList = mutableListOf<TagModel>()
-		newList.addAll(currentList)
-		newList.removeAt(fromPosition)
-		newList.add(toPosition, item)
-		submitList(newList)
+	override fun onItemSwipe(position: Int) {
+		tagList.removeAt(position)
+		notifyItemRemoved(position)
 	}
 }

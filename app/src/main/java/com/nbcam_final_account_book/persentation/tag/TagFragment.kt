@@ -34,7 +34,7 @@ class TagFragment : Fragment() {
 	}
 
 	private fun onItemClickEvent(position: Int, item: TagModel) {
-
+		findNavController().navigate(R.id.action_tagFragment_to_editTagFragment)
 	}
 
 	override fun onCreateView(

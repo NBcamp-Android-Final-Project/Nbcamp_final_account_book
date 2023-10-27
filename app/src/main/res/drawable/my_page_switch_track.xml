@@ -3,14 +3,16 @@
     <item android:state_checked="false">
         <shape android:shape="rectangle">
             <corners android:radius="45dp" />
-            <solid android:color="#9b9b9b" />
+            <solid android:color="#A8A8A8" />
+            <stroke android:color="#888888" />
         </shape>
     </item>
 
     <item android:state_checked="true">
         <shape android:shape="rectangle">
             <corners android:radius="45dp" />
-            <solid android:color="@color/cheon_primary_selected_home_icon" />
+            <solid android:color="@color/primary_main" />
+            <stroke android:color="#5694FF" />
         </shape>
     </item>
 </selector>

@@ -90,7 +90,6 @@ class MyPageFragment : Fragment() {
     private val sharedUsersAdapter = SharedUsersAdapter(dummyUser)
     private lateinit var navController: NavController
 
-    private var isEditing = false
     private var isSwitch = false
     private val user = Firebase.auth.currentUser
 
@@ -142,26 +141,12 @@ class MyPageFragment : Fragment() {
 
         mypageIvProfile.setOnClickListener {
             galleryBottomSheet()
-            true
         }
 
         mypageRvSharedUsers.adapter = sharedUsersAdapter
 
         mypageIvEdit.setOnClickListener {
-            isEditing = !isEditing
             editNameDialog()
-        }
-
-        mypageTvLock.setOnClickListener {
-            if (!isSwitch) {
-                if (view5.visibility == View.GONE) {
-                    view5.visibility = View.VISIBLE
-                    mypageSwitchPin.visibility = View.VISIBLE
-                } else {
-                    view5.visibility = View.GONE
-                    mypageSwitchPin.visibility = View.GONE
-                }
-            }
         }
 
         mypageSwitchPin.setOnCheckedChangeListener { _, isChecked ->

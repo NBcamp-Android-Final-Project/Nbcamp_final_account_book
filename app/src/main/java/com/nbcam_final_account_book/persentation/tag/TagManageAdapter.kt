@@ -48,6 +48,11 @@ class TagManageAdapter(
 				onItemClick(adapterPosition, item)
 			}
 
+			ivHandlerRemove.setOnClickListener {
+				tagList.removeAt(adapterPosition)
+				notifyItemRemoved(adapterPosition)
+			}
+
 			ivHandlerDrag.setOnTouchListener { _, motionEvent ->
 				if (motionEvent.action == MotionEvent.ACTION_DOWN) {
 					dragListener.onStartDrag(this@ViewHolder)

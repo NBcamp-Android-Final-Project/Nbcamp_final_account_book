@@ -38,8 +38,8 @@
         android:label="tag_fragment"
         tools:layout="@layout/tag_fragment" >
         <action
-            android:id="@+id/action_tagFragment_to_menu_mypage"
-            app:destination="@id/menu_mypage" />
+            android:id="@+id/action_tagFragment_to_editTagFragment2"
+            app:destination="@id/editTagFragment" />
     </fragment>
     <fragment
         android:id="@+id/pinFragment"

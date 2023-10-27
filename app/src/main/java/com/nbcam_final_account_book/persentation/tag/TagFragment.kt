@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.TagFragmentBinding
@@ -32,7 +34,7 @@ class TagFragment : Fragment() {
 	}
 
 	private fun onItemClickEvent(position: Int, item: TagModel) {
-		findNavController().navigate(R.id.action_tagFragment_to_editTagFragment)
+
 	}
 
 	override fun onCreateView(
@@ -80,6 +82,7 @@ class TagFragment : Fragment() {
 		binding.rvTagListContainer.apply {
 			adapter = tagManageAdapter
 			setHasFixedSize(true)
+			addItemDecoration(DividerItemDecoration(requireActivity(), LinearLayoutManager.VERTICAL))
 		}
 
 		val touchHelper = ItemTouchHelper(ItemTouchHelperCallback(tagManageAdapter))

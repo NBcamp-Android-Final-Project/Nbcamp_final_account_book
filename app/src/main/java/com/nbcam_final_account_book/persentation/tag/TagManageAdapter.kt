@@ -49,6 +49,7 @@ class TagManageAdapter(
 			}
 
 			ivHandlerRemove.setOnClickListener {
+				val dialog = DialogFragment()
 				tagList.removeAt(adapterPosition)
 				notifyItemRemoved(adapterPosition)
 			}

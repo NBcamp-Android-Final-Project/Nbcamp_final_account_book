@@ -193,6 +193,65 @@ class MainViewModel(
 
     }
 
+    fun synchronizationDataWithBtn() {
+
+        viewModelScope.launch {
+
+            val backUpTemplate = fireRepo.getAllTemplate(user)
+            val backUpData = fireRepo.getBackupData(user)
+
+            roomRepo.insertDataList(backUpData)
+            with(roomRepo) {
+                deleteAllTemplate()
+                deleteAllBudget()
+                deleteAllEntry()
+                deleteAllData()
+                insertTemplateList(backUpTemplate)
+                insertDataList(backUpData)
+
+                val currentTemplate = _mainLiveCurrentTemplate.value
+
+                //로그인 시 제일 첫 번쨰 템플릿이 디폴트로 들어옴
+                _mainLiveCurrentTemplate.value = backUpTemplate[0]
+
+                if (currentTemplate != null) {
+                    viewModelScope.launch {
+
+                        if (backUpData != null) {
+                            for (loadData in backUpData) {
+                                val loadEntry: List<EntryEntity> =
+                                    Gson().fromJson(
+                                        loadData.entryList,
+                                        object : TypeToken<List<EntryEntity>>() {}.type
+                                    )
+
+                                val loadTag: List<TagEntity> =
+                                    Gson().fromJson(
+                                        loadData.tagList,
+                                        object : TypeToken<List<TagEntity>>() {}.type
+                                    )
+
+                                val loadBudget: List<BudgetEntity> =
+                                    Gson().fromJson(
+                                        loadData.budgetList,
+                                        object : TypeToken<List<BudgetEntity>>() {}.type
+                                    )
+                                insertEntryList(loadEntry)
+                                insertBudgetList(loadBudget)
+                                insertTagList(loadTag)
+                            } // for(loadData in backUpData)
+
+                        } //backUpData != null
+                    }
+                } //  if (currentTemplate != null
+
+            } //   with(roomRepo)
+
+            saveSharedPrefIsLogin(true)
+        }
+
+    }
+
     fun synchronizationData() {
 
         viewModelScope.launch {
@@ -246,6 +305,8 @@ class MainViewModel(
 
 
     }
+
+
 
 
     //SharedPref

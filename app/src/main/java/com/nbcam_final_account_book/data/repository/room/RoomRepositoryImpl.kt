@@ -73,6 +73,12 @@ class RoomRepositoryImpl(
         return dao.getFirstTemplate(key)
     }
 
+    override suspend fun updateTemplate(item: TemplateEntity) {
+        val dao = database?.templateDao() ?: throw IllegalStateException("updateTemplate fail")
+
+        dao.updateTemplate(item)
+    }
+
     // data
 
     override suspend fun insertData(item: DataEntity) {
@@ -179,6 +185,12 @@ class RoomRepositoryImpl(
             Log.e("룸오류", "deleteEntryByKey: 오류")
         }
 
+    }
+
+    override suspend fun updateEntry(item: EntryEntity) {
+        val dao = database?.entryDao() ?: throw IllegalStateException("updateEntry fail")
+
+        dao.updateEntry(item)
     }
 
     //Budget

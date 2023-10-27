@@ -24,6 +24,7 @@ interface RoomRepository {
     suspend fun deleteTemplate(item: TemplateEntity): List<TemplateEntity> // 템플릿의 id를 추적해 삭제한 뒤 템플릿 리스트를 반환합니다.
     suspend fun deleteAllTemplate() // 모든 템플릿을 삭제합니다
     suspend fun selectTemplateByKey(key: String): TemplateEntity // id값을 추적해서 템플릿을 반환합니다.
+    suspend fun updateTemplate(item: TemplateEntity)
 
     //Data
     suspend fun insertData(item: DataEntity) //data를 추가합니다
@@ -46,6 +47,8 @@ interface RoomRepository {
     suspend fun deleteAllEntry() // 모든 엔트리 테이블 자체를 삭제합니다.
     suspend fun deleteEntry(id: Int) /// id를 추적헤 entry를 삭제합니다.
     suspend fun deleteEntryByKey(key: String?) // 템플릿 삭제 시 모두 삭제해야 하는 데이터
+
+    suspend fun updateEntry(item: EntryEntity)
 
 
     //Budget

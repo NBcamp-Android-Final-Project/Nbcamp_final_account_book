@@ -117,44 +117,6 @@ class MainViewModel(
         }
     }
 
-    // todo fireabse에서 가져온 데이터로 load하게 변환하는 로직도 추가되어야 함
-    // 현재 형태는 템플릿지 전환될 때 마다 데이터를 가져오는 형태임
-    // 이 형태가 굳이 필요 있나 고민해보면 없음
-    private fun loadData() = with(roomRepo) {
-        val currentTemplate = _mainLiveCurrentTemplate.value
-
-
-        if (currentTemplate != null) {
-            viewModelScope.launch {
-                val loadData = getDataByKey(currentTemplate.id)
-                if (loadData != null) {
-
-                    val loadEntry: List<EntryEntity> =
-                        Gson().fromJson(
-                            loadData.entryList,
-                            object : TypeToken<List<EntryEntity>>() {}.type
-                        )
-
-                    val loadTag: List<TagEntity> =
-                        Gson().fromJson(
-                            loadData.tagList,
-                            object : TypeToken<List<TagEntity>>() {}.type
-                        )
-
-                    val loadBudget: List<BudgetEntity> =
-                        Gson().fromJson(
-                            loadData.budgetList,
-                            object : TypeToken<List<BudgetEntity>>() {}.type
-                        )
-                    insertEntryList(loadEntry)
-                    insertBudgetList(loadBudget)
-                    insertTagList(loadTag)
-                }
-            }
-        }
-
-    }
-
     //반드시 로그아웃 시 호출되어야 함.
     fun backupDataByLogOut() {
         viewModelScope.launch(Dispatchers.IO) {

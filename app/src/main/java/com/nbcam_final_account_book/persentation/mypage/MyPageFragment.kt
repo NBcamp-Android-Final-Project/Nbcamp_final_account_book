@@ -31,6 +31,9 @@ import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MyPageFragmentBinding
 import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
 import com.nbcam_final_account_book.persentation.main.MainViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MyPageFragment : Fragment() {
 
@@ -149,24 +152,43 @@ class MyPageFragment : Fragment() {
             editNameDialog()
         }
 
-        // TODO: 스위치가 true여도 다른 프래그먼트 갔다왔을 때는 실행 안되게!
+        mypageTvTag.setOnClickListener {
+            navController.navigate(R.id.action_menu_mypage_to_tagFragment)
+        }
+
+        // TODO: 스위치가 true여도 다른 프래그먼트 갔다 왔을 때는 실행 안되게!
         mypageSwitchPin.setOnCheckedChangeListener { _, isChecked ->
-            if (!isSwitch) {
+            isSwitch = if (!isSwitch) {
                 navController.navigate(R.id.action_menu_mypage_to_pinFragment)
-                isSwitch = true // 스위치가 true일 때 네비게이션 실행 후 상태 변경
+                true // 스위치가 true일 때 네비게이션 실행 후 상태 변경
             } else {
-                isSwitch = false
+                false
             }
         }
         // TODO: 비밀번호 변경 기능 나중에 추가!
 
         // TODO: 백업버튼 누르면 그 시간을 표현해주기!
-        mypageTvBackup.setOnClickListener {
+
+        mypageContainerBackup.setOnClickListener {
+            val currentTime = getCurrentTime()
+            mypageTvBackupDate.text = "최근 백업 시간 $currentTime"
+            setBackupTime(currentTime)
+
             backupDate()
         }
 
-        mypageTvTag.setOnClickListener {
-            navController.navigate(R.id.action_menu_mypage_to_tagFragment)
+        mypageContainerSync.setOnClickListener {
+            val currentTime = getCurrentTime()
+            mypageTvSyncDate.text = "최근 동기화 시간 $currentTime"
+            setSyncTime(currentTime)
+        }
+
+        backupTime()?.let { backupTime ->
+            mypageTvBackupDate.text = "최근 백업 시간 $backupTime"
+        }
+
+        syncTime()?.let { syncTime ->
+            mypageTvSyncDate.text = "최근 동기화 시간 $syncTime"
         }
 
         mypageTvLogout.setOnClickListener {
@@ -180,7 +202,8 @@ class MyPageFragment : Fragment() {
         }
     }
 
-    //TODO: name, email, photoUrl 함수를 각각 만들어서....
+
+    //TODO: name, email, photoUrl 함수를 각각 만들어서....여기에서 bindng 언급ㄴㄴ
     private fun initViewModel() = with(viewModel) {
 
         with(binding) {
@@ -219,7 +242,7 @@ class MyPageFragment : Fragment() {
         }
     }
 
-    private fun loadProfileImage() = with(binding){
+    private fun loadProfileImage() = with(binding) {
         viewModel.downloadProfileImage(
             onSuccess = { uri ->
                 mypageIvProfile.load(uri) {
@@ -241,6 +264,26 @@ class MyPageFragment : Fragment() {
         sharedViewModel.backupData()
     }
 
+    private fun setBackupTime(time: String) = with(viewModel) {
+        saveBackupTime(time)
+    }
+
+    private fun setSyncTime(time: String) = with(viewModel) {
+        saveSyncTime(time)
+    }
+
+    private fun backupTime() = with(viewModel) {
+        getBackupTime()
+    }
+
+    private fun syncTime() = with(viewModel) {
+        getSyncTime()
+    }
+
+    private fun getCurrentTime(): String {
+        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+    }
+
     private fun backupDataByLogOut() {
         sharedViewModel.backupDataByLogOut()
     }
@@ -257,17 +300,18 @@ class MyPageFragment : Fragment() {
         getEmail()
     }
 
-/*    private fun getUserPhotoUrl() = with(viewModel) {
-        getPhotoUrl()
-    }*/
+    /*    private fun getUserPhotoUrl() = with(viewModel) {
+            getPhotoUrl()
+        }*/
 
     private fun updateProfileName(newName: String) = with(viewModel) {
         updateUserName(newName)
     }
-    
-    private fun updateProfileImage(requestCode: Int, resultCode: Int, data: Intent?) = with(viewModel) {
-        handleImageSelection(requestCode, resultCode, data)
-    }
+
+    private fun updateProfileImage(requestCode: Int, resultCode: Int, data: Intent?) =
+        with(viewModel) {
+            handleImageSelection(requestCode, resultCode, data)
+        }
 
     private fun galleryBottomSheet() {
         val bottomSheet = layoutInflater.inflate(R.layout.my_page_gallery_bottom_sheet, null)
@@ -308,8 +352,6 @@ class MyPageFragment : Fragment() {
             requestGalleryPermission()
         }
     }
-
-    // TODO: Firebase.storage에서 이미지 업로드하고 받아오기!
 
     private fun deniedDialog() {
         AlertDialog.Builder(requireContext())

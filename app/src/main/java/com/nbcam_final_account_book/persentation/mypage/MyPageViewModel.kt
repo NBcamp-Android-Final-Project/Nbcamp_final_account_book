@@ -3,6 +3,7 @@ package com.nbcam_final_account_book.persentation.mypage
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -17,15 +18,21 @@ import com.google.firebase.storage.FirebaseStorage
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
+import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
+import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import com.nbcam_final_account_book.persentation.mypage.MyPageFragment.Companion.REQUEST_IMAGE_PICK
 import kotlinx.coroutines.launch
 
 class MyPageViewModel(
-    private val roomRepo: RoomRepository
+    private val roomRepo: RoomRepository,
+    private val sharedProvider: SharedProvider
 ) : ViewModel() {
 
     companion object {
         const val MY_PAGE_VIEW_MODEL = "MyPageViewModel"
+        const val MY_PAGE_PREFS = "MyPagePrefS"
+        const val BACKUP_TIME = "BackupTime"
+        const val SYNC_TIME = "SyncTime"
     }
 
     private val _name = MutableLiveData<String?>()
@@ -40,6 +47,24 @@ class MyPageViewModel(
     private val user = Firebase.auth.currentUser
     private val storage = FirebaseStorage.getInstance()
     private val storageReference = storage.reference
+
+    private val sharedPrefs: SharedPreferences = sharedProvider.setSharedPref(MY_PAGE_PREFS)
+
+    fun saveBackupTime(time: String) {
+        sharedPrefs.edit().putString(BACKUP_TIME, time).apply()
+    }
+
+    fun getBackupTime(): String? {
+        return sharedPrefs.getString(BACKUP_TIME, "")
+    }
+
+    fun saveSyncTime(time: String) {
+        sharedPrefs.edit().putString(SYNC_TIME, time).apply()
+    }
+
+    fun getSyncTime(): String? {
+        return sharedPrefs.getString(SYNC_TIME, "")
+    }
 
     fun cleanRoom() = with(roomRepo) {
         viewModelScope.launch {
@@ -122,7 +147,8 @@ class MyPageViewModelFactory(
             return MyPageViewModel(
                 RoomRepositoryImpl(
                     AndroidRoomDataBase.getInstance(context)
-                )
+                ),
+                SharedProviderImpl(context)
             ) as T
         } else {
             throw IllegalArgumentException("Not found ViewModel class.")

@@ -194,6 +194,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/light_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -210,6 +211,8 @@
                     app:drawableLeftCompat="@drawable/ic_template"
                     app:drawableRightCompat="@drawable/ic_calendar_selector_arrow_right"
                     app:drawableTint="#E6454545"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view1" />
 
                 <View
@@ -217,6 +220,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/light_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_tv_book" />
 
@@ -233,6 +237,8 @@
                     app:drawableLeftCompat="@drawable/ic_tag"
                     app:drawableRightCompat="@drawable/ic_calendar_selector_arrow_right"
                     app:drawableTint="#E6454545"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view2" />
 
                 <View
@@ -240,6 +246,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/light_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_tv_tag" />
 
@@ -258,7 +265,6 @@
                     android:thumb="@drawable/my_page_switch_thumb"
                     app:drawableTint="#E6454545"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view3"
                     app:switchMinWidth="0dp"
@@ -270,33 +276,127 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/light_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_switch_pin" />
 
-                <TextView
-                    android:id="@+id/mypage_tv_backup"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mypage_container_backup"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:clickable="true"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:padding="15dp"
-                    android:text="백업"
-                    android:textColor="#454545"
-                    android:textSize="15sp"
-                    app:drawableLeftCompat="@drawable/ic_backup"
-                    app:drawableRightCompat="@drawable/ic_sync"
-                    app:drawableTint="#E6454545"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view6" />
+                    app:layout_constraintTop_toBottomOf="@+id/view6">
+
+                    <TextView
+                        android:id="@+id/mypage_tv_backup"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:drawablePadding="10dp"
+                        android:text="백업"
+                        android:textColor="#454545"
+                        android:textSize="15sp"
+                        app:drawableLeftCompat="@drawable/ic_backup"
+                        app:drawableTint="#E6454545"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/mypage_tv_backup_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text=""
+                        android:textColor="#CC454545"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView"
+                        app:layout_constraintStart_toEndOf="@+id/mypage_tv_backup"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:src="@drawable/ic_sync"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="contentDescription" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:id="@+id/view7"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/light_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mypage_tv_backup" />
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_container_backup" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mypage_container_sync"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view7">
+
+                    <TextView
+                        android:id="@+id/mypage_tv_sync"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:drawablePadding="10dp"
+                        android:text="동기화"
+                        android:textColor="#454545"
+                        android:textSize="15sp"
+                        app:drawableLeftCompat="@drawable/ic_backup"
+                        app:drawableTint="#E6454545"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/mypage_tv_sync_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text=""
+                        android:textColor="#CC454545"
+                        android:textSize="13sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView1"
+                        app:layout_constraintStart_toEndOf="@+id/mypage_tv_sync"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:src="@drawable/ic_sync"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="contentDescription" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/view8"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_container_sync" />
 
                 <TextView
                     android:id="@+id/mypage_tv_logout"
@@ -309,10 +409,12 @@
                     android:textSize="15sp"
                     app:drawableLeftCompat="@drawable/ic_logout"
                     app:drawableTint="#E6454545"
-                    app:layout_constraintTop_toBottomOf="@+id/view7" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view8" />
 
                 <View
-                    android:id="@+id/view8"
+                    android:id="@+id/view9"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/light_gray"

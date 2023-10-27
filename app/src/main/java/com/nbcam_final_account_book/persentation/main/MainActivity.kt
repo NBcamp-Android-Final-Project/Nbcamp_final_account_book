@@ -186,15 +186,6 @@ class MainActivity : AppCompatActivity() {
 	private fun setKey() {
 		viewModel.setKey()
 	}
-
-	private fun synchronizationDataFromFireBase() {
-		viewModel.synchronizationData()
-	}
-
-	private fun loadLogin() {
-		isLogin = viewModel.loadSharedPrefIsLogin()
-		Log.d("로그인여부", isLogin.toString())
-	}
     private fun synchronizationDataFromFireBase() {
         viewModel.firstStartSynchronizationData()
     }

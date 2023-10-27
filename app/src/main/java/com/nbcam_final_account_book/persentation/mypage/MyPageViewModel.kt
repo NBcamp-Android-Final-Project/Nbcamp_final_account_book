@@ -1,6 +1,8 @@
 package com.nbcam_final_account_book.persentation.mypage
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -11,9 +13,11 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
+import com.nbcam_final_account_book.persentation.mypage.MyPageFragment.Companion.REQUEST_IMAGE_PICK
 import kotlinx.coroutines.launch
 
 class MyPageViewModel(
@@ -34,6 +38,8 @@ class MyPageViewModel(
     val photoUrl: LiveData<Uri?> get() = _photoUrl
 
     private val user = Firebase.auth.currentUser
+    private val storage = FirebaseStorage.getInstance()
+    private val storageReference = storage.reference
 
     fun cleanRoom() = with(roomRepo) {
         viewModelScope.launch {
@@ -72,19 +78,38 @@ class MyPageViewModel(
         }
     }
 
-    fun updateUserPhotoUrl(newPhotoUrl: Uri) {
-        val profileUpdates = UserProfileChangeRequest.Builder()
-            .setPhotoUri(newPhotoUrl)
-            .build()
+    // TODO: 리팩토링 할거에여....
+    fun handleImageSelection(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK) {
+            val selectedImageUri: Uri? = data?.data
+            if (selectedImageUri != null) {
+                val userUid = user?.uid
+                val profileImageRef = storageReference.child("profile_images/$userUid.jpg")
 
-        user?.updateProfile(profileUpdates)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(MY_PAGE_VIEW_MODEL, "User profile picture updated.")
-                } else {
-                    Log.w(MY_PAGE_VIEW_MODEL, "User profile picture update failed.", task.exception)
+                profileImageRef.putFile(selectedImageUri)
+                    .addOnSuccessListener {
+                        profileImageRef.downloadUrl.addOnSuccessListener { uri ->
+                            _photoUrl.value = uri
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w(MY_PAGE_VIEW_MODEL, "User name update failed.", exception)
+                    }
+            }
+        }
+    }
 
-                }
+    fun downloadProfileImage(onSuccess: (Uri) -> Unit, onFailure: (Exception) -> Unit) {
+        val userUid = user?.uid
+        val profileImageRef = storageReference.child("profile_images/$userUid.jpg")
+
+        profileImageRef.downloadUrl
+            .addOnSuccessListener { uri ->
+                _photoUrl.value = uri
+                onSuccess(uri)
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
             }
     }
 }

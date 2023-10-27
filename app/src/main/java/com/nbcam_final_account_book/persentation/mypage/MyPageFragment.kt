@@ -1,7 +1,6 @@
 package com.nbcam_final_account_book.persentation.mypage
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -16,7 +15,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.checkSelfPermission
@@ -29,8 +27,6 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MyPageFragmentBinding
 import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
@@ -86,12 +82,12 @@ class MyPageFragment : Fragment() {
             )
         )[MyPageViewModel::class.java]
     }
+
     private val sharedViewModel: MainViewModel by activityViewModels()
     private val sharedUsersAdapter = SharedUsersAdapter(dummyUser)
     private lateinit var navController: NavController
 
     private var isSwitch = false
-    private val user = Firebase.auth.currentUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -123,7 +119,7 @@ class MyPageFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) =
         with(binding) {
             super.onActivityResult(requestCode, resultCode, data)
-            selectedImageResult(requestCode, resultCode, data, mypageIvProfile)
+            updateProfileImage(requestCode, resultCode, data)
         }
 
     override fun onDestroy() {
@@ -137,7 +133,8 @@ class MyPageFragment : Fragment() {
 
         getUserName()
         getUserEmail()
-        getUserPhotoUrl()
+//        getUserPhotoUrl()
+        loadProfileImage()
 
         mypageIvProfile.setOnClickListener {
             galleryBottomSheet()
@@ -152,6 +149,7 @@ class MyPageFragment : Fragment() {
             editNameDialog()
         }
 
+        // TODO: 스위치가 true여도 다른 프래그먼트 갔다왔을 때는 실행 안되게!
         mypageSwitchPin.setOnCheckedChangeListener { _, isChecked ->
             if (!isSwitch) {
                 navController.navigate(R.id.action_menu_mypage_to_pinFragment)
@@ -200,12 +198,16 @@ class MyPageFragment : Fragment() {
                 }
             }
 
-            getUserPhotoUrl()
+//            getUserPhotoUrl()
+            loadProfileImage()
             photoUrl.observe(viewLifecycleOwner) { photoUrl ->
                 if (photoUrl != null) {
                     mypageIvProfile.load(photoUrl) {
                         crossfade(true)
                         transformations(CircleCropTransformation())
+                        listener { _, _ ->
+                            mypageIvProfile.setPadding(0, 0, 0, 0)
+                        }
                     }
                 }
             }
@@ -216,6 +218,24 @@ class MyPageFragment : Fragment() {
 
         }
     }
+
+    private fun loadProfileImage() = with(binding){
+        viewModel.downloadProfileImage(
+            onSuccess = { uri ->
+                mypageIvProfile.load(uri) {
+                    crossfade(true)
+                    transformations(CircleCropTransformation())
+                    listener { _, _ ->
+                        mypageIvProfile.setPadding(0, 0, 0, 0)
+                    }
+                }
+            },
+            onFailure = { exception ->
+                Log.e("MyPageFragment", "Profile image download failed: $exception")
+            }
+        )
+    }
+
 
     private fun backupDate() {
         sharedViewModel.backupData()
@@ -237,16 +257,16 @@ class MyPageFragment : Fragment() {
         getEmail()
     }
 
-    private fun getUserPhotoUrl() = with(viewModel) {
+/*    private fun getUserPhotoUrl() = with(viewModel) {
         getPhotoUrl()
-    }
+    }*/
 
     private fun updateProfileName(newName: String) = with(viewModel) {
         updateUserName(newName)
     }
-
-    private fun updatePhotoUrl(photoUri: Uri) = with(viewModel) {
-        updateUserPhotoUrl(photoUri)
+    
+    private fun updateProfileImage(requestCode: Int, resultCode: Int, data: Intent?) = with(viewModel) {
+        handleImageSelection(requestCode, resultCode, data)
     }
 
     private fun galleryBottomSheet() {
@@ -286,27 +306,6 @@ class MyPageFragment : Fragment() {
             startActivityForResult(galleryIntent, REQUEST_IMAGE_PICK)
         } else {
             requestGalleryPermission()
-        }
-    }
-
-    private fun selectedImageResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?,
-        imageView: ImageView
-    ) {
-        if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK) {
-            val selectedImageUri: Uri? = data?.data
-            if (selectedImageUri != null) {
-                updatePhotoUrl(selectedImageUri)
-                imageView.load(selectedImageUri) {
-                    crossfade(true)
-                    transformations(CircleCropTransformation())
-                    listener { _, _ ->
-                        imageView.setPadding(0, 0, 0, 0)
-                    }
-                }
-            }
         }
     }
 

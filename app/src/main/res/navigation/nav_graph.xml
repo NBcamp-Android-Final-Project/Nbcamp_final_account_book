@@ -38,8 +38,8 @@
         android:label="tag_fragment"
         tools:layout="@layout/tag_fragment" >
         <action
-            android:id="@+id/action_tagFragment_to_menu_mypage"
-            app:destination="@id/menu_mypage" />
+            android:id="@+id/action_tagFragment_to_editTagFragment2"
+            app:destination="@id/editTagFragment" />
     </fragment>
     <fragment
         android:id="@+id/pinFragment"
@@ -49,5 +49,13 @@
         <action
             android:id="@+id/action_pinFragment_to_menu_mypage"
             app:destination="@id/menu_mypage" />
+        <action
+            android:id="@+id/action_tagFragment_to_editTagFragment"
+            app:destination="@id/editTagFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editTagFragment"
+        android:name="com.nbcam_final_account_book.persentation.tag.edit.EditTagFragment"
+        android:label="edit_tag_fragment"
+        tools:layout="@layout/edit_tag_fragment" />
 </navigation>

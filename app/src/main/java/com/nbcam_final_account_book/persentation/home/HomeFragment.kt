@@ -192,15 +192,20 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
     private fun initViewModel() {
         // 여기서 바텀시트를 표시하는 로직을 제거합니다. 다른 로직이 있다면 그대로 두시면 됩니다.
         with(viewModel) {
+            budgetLiveData.observe(viewLifecycleOwner) { it ->
+                if (it != null){
+                    Log.d("예산",it.sumOf { it.value.toLong() }.toString())
+                    homeCurrentLiveEntryList.value?.let { entries ->
+                        setIncomeAndPay(entries)
+                    }
+                }
+            }
             homeCurrentLiveEntryList.observe(viewLifecycleOwner) { it ->
                 if (it != null) {
                     setIncomeAndPay(it)
-
                 }
             }
-            budgetLiveData.observe(viewLifecycleOwner) { it ->
 
-            }
         }
 
         with(sharedViewModel) {

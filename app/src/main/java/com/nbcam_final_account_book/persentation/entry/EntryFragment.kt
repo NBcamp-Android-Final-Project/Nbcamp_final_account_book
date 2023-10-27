@@ -216,16 +216,23 @@ class EntryFragment : Fragment() {
         datePicker.addOnPositiveButtonClickListener {
             val calendar = Calendar.getInstance()
             calendar.time = Date(it)
-            binding.tvDateInput.text =
-                "${calendar.get(Calendar.YEAR)}" +
-                        "-${calendar.get(Calendar.MONTH) + 1}" +
-                        "-${calendar.get(Calendar.DAY_OF_MONTH)}"
-        }
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH) + 1
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            val formattedDate = formatDate(year, month, day)
+
+
+        binding.tvDateInput.text = formattedDate
     }
 
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
-
-    companion object {
-        val TAG = EntryFragment::class.simpleName
+}
+    private fun formatDate(year: Int, month: Int, day: Int): String {
+        val formattedMonth = if (month < 10) "0$month" else month.toString()
+        val formattedDay = if (day < 10) "0$day" else day.toString()
+        return "$year-$formattedMonth-$formattedDay"
     }
+
+companion object {
+    val TAG = EntryFragment::class.simpleName
+}
 }

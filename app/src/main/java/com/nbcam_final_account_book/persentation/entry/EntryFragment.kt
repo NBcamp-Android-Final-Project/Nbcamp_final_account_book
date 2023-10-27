@@ -20,10 +20,8 @@ import com.nbcam_final_account_book.persentation.tag.TagModel
 import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_INCOME
 import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_PAY
 import java.text.DecimalFormat
-import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 import kotlin.random.Random
 
 class EntryFragment : Fragment() {
@@ -169,14 +167,24 @@ class EntryFragment : Fragment() {
         // 임시 데이터
         val newList = mutableListOf<TagModel>()
         newList.apply {
-            add(TagModel(0, R.drawable.icon_tag_traffic, "교통비"))
-            add(TagModel(0, R.drawable.ic_check, "체크"))
-            add(TagModel(0, R.drawable.ic_backup, "백업"))
-            add(TagModel(0, R.drawable.ic_lock, "잠금"))
-            add(TagModel(0, R.drawable.ic_chart, "차트"))
-            add(TagModel(0, R.drawable.ic_delete, "삭제"))
-            add(TagModel(0, R.drawable.ic_home, "홈"))
-            add(TagModel(0, R.drawable.ic_calendar, "캘린더"))
+            add(TagModel(0, R.drawable.ic_money, "월급"))
+            add(TagModel(1, R.drawable.ic_money, "부수입"))
+            add(TagModel(2, R.drawable.ic_money, "용돈"))
+            add(TagModel(3, R.drawable.ic_money, "상여"))
+            add(TagModel(4, R.drawable.ic_money, "공과금"))
+            add(TagModel(5, R.drawable.ic_money, "월세"))
+            add(TagModel(6, R.drawable.ic_money, "할부"))
+            add(TagModel(7, R.drawable.ic_money, "대출이자"))
+            add(TagModel(8, R.drawable.ic_money, "통신비"))
+            add(TagModel(9, R.drawable.ic_money, "보험"))
+            add(TagModel(10, R.drawable.ic_money, "식비"))
+            add(TagModel(11, R.drawable.ic_money, "교통비"))
+            add(TagModel(12, R.drawable.ic_money, "패션&미용"))
+            add(TagModel(13, R.drawable.ic_money, "취미"))
+            add(TagModel(14, R.drawable.ic_money, "여행"))
+            add(TagModel(15, R.drawable.ic_money, "병원비"))
+            add(TagModel(16, R.drawable.ic_money, "경조사"))
+            add(TagModel(16, R.drawable.ic_money, "기타"))
         }
 
         binding.rvTagContainer.adapter = tagListAdapter

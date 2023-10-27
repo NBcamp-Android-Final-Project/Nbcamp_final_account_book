@@ -1,11 +1,12 @@
 package com.nbcam_final_account_book.persentation.tag.edit
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.databinding.EditTagFragmentBinding
 
 
@@ -35,6 +36,9 @@ class EditTagFragment : Fragment() {
 
     private fun initView() = with(binding) {
 
+        ivBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
     private fun initViewModel() = with(viewModel){
         liveDummyTagInEditTag.observe(viewLifecycleOwner){

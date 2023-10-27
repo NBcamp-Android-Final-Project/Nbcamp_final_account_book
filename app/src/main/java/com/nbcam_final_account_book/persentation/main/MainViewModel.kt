@@ -193,6 +193,7 @@ class MainViewModel(
 
     }
 
+    //todo 다중 템플릿 구조로 변경 시 현재 템플릿 = key값으로 찾는 구조로 만들 것
     fun synchronizationDataWithBtn() {
 
         viewModelScope.launch {

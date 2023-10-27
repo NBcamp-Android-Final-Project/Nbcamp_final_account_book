@@ -3,7 +3,7 @@
     <!-- 누를 때 상태 -->
     <item android:state_selected="true">
         <shape>
-            <solid android:color="#E0E0E0" />
+            <solid android:color="#A4D0FF" />
             <corners android:radius="10dp" />
         </shape>
     </item>

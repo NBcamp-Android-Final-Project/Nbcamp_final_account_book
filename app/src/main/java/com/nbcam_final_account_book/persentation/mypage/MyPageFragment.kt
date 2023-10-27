@@ -143,6 +143,9 @@ class MyPageFragment : Fragment() {
             galleryBottomSheet()
         }
 
+        val spacingInDp = 5
+        val spacingInPixels = (spacingInDp * resources.displayMetrics.density).toInt()
+        mypageRvSharedUsers.addItemDecoration(ItemSpacingDecoration(spacingInPixels))
         mypageRvSharedUsers.adapter = sharedUsersAdapter
 
         mypageIvEdit.setOnClickListener {

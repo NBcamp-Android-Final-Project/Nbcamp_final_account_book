@@ -14,7 +14,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.google.android.material.navigation.NavigationBarView
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
@@ -174,7 +173,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun synchronizationDataFromFireBase() {
-        viewModel.synchronizationData()
+        viewModel.firstStartSynchronizationData()
     }
     private fun loadLogin(){
         isLogin = viewModel.loadSharedPrefIsLogin()

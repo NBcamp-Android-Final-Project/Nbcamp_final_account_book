@@ -166,6 +166,7 @@ class MainViewModel(
             roomRepo.deleteAllData()
         }
     }
+
     fun backupData() {
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()
@@ -176,7 +177,7 @@ class MainViewModel(
     }
 
     //firebase 데이터 동기화
-    fun synchronizationData() {
+    fun firstStartSynchronizationData() {
 
         viewModelScope.launch {
             val backUpTemplate = fireRepo.getAllTemplate(user)
@@ -227,6 +228,60 @@ class MainViewModel(
 
             saveSharedPrefIsLogin(true)
         }
+
+    }
+
+    fun synchronizationData() {
+
+        viewModelScope.launch {
+            val backUpTemplate = fireRepo.getAllTemplate(user)
+            val backUpData = fireRepo.getBackupData(user)
+
+
+            with(roomRepo) {
+                for (templateEntity in backUpTemplate) {
+                    updateTemplate(templateEntity)
+                }
+                for (dataEntity in backUpData) {
+                    updateData(dataEntity)
+                }
+
+                if (backUpData.isNotEmpty()) {
+                    for (loadData in backUpData) {
+                        val loadEntry: List<EntryEntity> =
+                            Gson().fromJson(
+                                loadData.entryList,
+                                object : TypeToken<List<EntryEntity>>() {}.type
+                            )
+
+                        val loadTag: List<TagEntity> =
+                            Gson().fromJson(
+                                loadData.tagList,
+                                object : TypeToken<List<TagEntity>>() {}.type
+                            )
+
+                        val loadBudget: List<BudgetEntity> =
+                            Gson().fromJson(
+                                loadData.budgetList,
+                                object : TypeToken<List<BudgetEntity>>() {}.type
+                            )
+
+                        for (entryEntity in loadEntry) {
+                            updateEntry(entryEntity)
+                        }
+                        for (budgetEntity in loadBudget) {
+                            updateBudget(budgetEntity)
+                        }
+                        for (tagEntity in loadTag) {
+                            updateTag(tagEntity)
+                        }
+                    }
+
+                }
+
+            }//with(roomRepo)
+        } // ViewModelScope
+
 
     }
 

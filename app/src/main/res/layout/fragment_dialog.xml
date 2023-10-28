@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/alert_white_border"
+    android:background="@android:color/white"
     tools:context=".persentation.tag.DialogFragment">
 
     <TextView
@@ -23,11 +23,12 @@
 
     <TextView
         android:id="@+id/tv_dialog_cancel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:text="취소"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/view"
@@ -39,7 +40,7 @@
         android:id="@+id/view"
         android:layout_width="1dp"
         android:layout_height="20dp"
-        android:background="@android:color/white"
+        android:background="@android:color/holo_green_dark"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/tv_dialog_cancel"
         app:layout_constraintEnd_toStartOf="@+id/tv_dialog_delete"
@@ -49,9 +50,10 @@
 
     <TextView
         android:id="@+id/tv_dialog_delete"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="삭제"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/calendar_sunday"
         android:textStyle="bold"

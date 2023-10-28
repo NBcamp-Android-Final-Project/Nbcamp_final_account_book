@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.databinding.ItemTagBinding
 import com.nbcam_final_account_book.persentation.tag.TagModel
 
-class TagListAdapter(private val onItemClick: (Int, TagModel) -> Unit) :
+class TagListAdapter(private val onItemClick: (TagModel) -> Unit) :
 	ListAdapter<TagModel, TagListAdapter.ViewHolder>(object :
 		DiffUtil.ItemCallback<TagModel>() {
 		override fun areItemsTheSame(oldItem: TagModel, newItem: TagModel): Boolean {
@@ -38,7 +38,7 @@ class TagListAdapter(private val onItemClick: (Int, TagModel) -> Unit) :
 			tvTagTitle.text = item.tagName
 
 			itemView.setOnClickListener {
-				onItemClick(adapterPosition, item)
+				onItemClick(item)
 //				selectItem(binding, item)
 			}
 		}

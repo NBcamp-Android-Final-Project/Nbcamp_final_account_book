@@ -58,8 +58,22 @@
                         android:src="@drawable/ic_mypage_profile"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="contentDescription" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/bg_mypage_profile_item"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_camera"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:tint="#454545"
                         tools:ignore="contentDescription" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -76,9 +90,13 @@
                         android:id="@+id/mypage_tv_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ID"
+                        android:background="@drawable/bg_mypage_profile_item"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="2dp"
+                        android:text="아이디"
                         android:textColor="#454545"
                         android:textSize="15sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -86,11 +104,12 @@
                         android:id="@+id/mypage_tv_email"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
                         android:text="사용자 이메일"
                         android:textColor="#454545"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/mypage_tv_id"
-                        app:layout_constraintStart_toStartOf="@+id/mypage_et_name"
+                        app:layout_constraintStart_toEndOf="@+id/mypage_tv_id"
                         app:layout_constraintTop_toTopOf="@+id/mypage_tv_id" />
 
                     <TextView
@@ -98,9 +117,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Name"
+                        android:background="@drawable/bg_mypage_profile_item"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="2dp"
+                        android:text="이름"
                         android:textColor="#454545"
                         android:textSize="15sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="@+id/mypage_tv_id"
                         app:layout_constraintTop_toBottomOf="@+id/mypage_tv_id"
                         app:layout_constraintVertical_chainStyle="spread_inside" />
@@ -109,7 +132,6 @@
                         android:id="@+id/mypage_et_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:backgroundTint="@android:color/transparent"
                         android:hint="새 이름"
                         android:maxLength="10"
@@ -118,13 +140,13 @@
                         android:textColor="#454545"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/mypage_tv_name"
-                        app:layout_constraintStart_toEndOf="@+id/mypage_tv_name"
+                        app:layout_constraintStart_toStartOf="@+id/mypage_tv_email"
                         app:layout_constraintTop_toTopOf="@+id/mypage_tv_name" />
 
                     <ImageView
                         android:id="@+id/mypage_iv_edit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:padding="5dp"
                         android:src="@drawable/ic_edit"
                         android:textColor="#454545"
@@ -139,9 +161,12 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
+                        android:background="@drawable/bg_mypage_profile_item"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="2dp"
                         android:text="사용중인 가계부"
                         android:textColor="#454545"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/mypage_et_name" />
 
@@ -149,6 +174,8 @@
                         android:id="@+id/mypage_tv_using_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:paddingHorizontal="15dp"
+                        android:paddingVertical="5dp"
                         android:text="ooo 가계부"
                         android:textColor="#454545"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -160,9 +187,12 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
+                        android:background="@drawable/bg_mypage_profile_item"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="2dp"
                         android:text="공유 중인 사람"
                         android:textColor="#454545"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/mypage_tv_using_name" />
 
@@ -284,8 +314,7 @@
                     android:id="@+id/mypage_container_backup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
+                    android:padding="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view6">
@@ -314,20 +343,10 @@
                         android:textColor="#CC454545"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/imageView"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/mypage_tv_backup"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:src="@drawable/ic_sync"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="contentDescription" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
@@ -343,8 +362,7 @@
                     android:id="@+id/mypage_container_sync"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="0dp"
+                    android:padding="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view7">
@@ -358,7 +376,7 @@
                         android:text="동기화"
                         android:textColor="#454545"
                         android:textSize="15sp"
-                        app:drawableLeftCompat="@drawable/ic_backup"
+                        app:drawableLeftCompat="@drawable/ic_sync"
                         app:drawableTint="#E6454545"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -373,20 +391,10 @@
                         android:textColor="#CC454545"
                         android:textSize="13sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/imageView1"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/mypage_tv_sync"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/imageView1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:src="@drawable/ic_sync"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="contentDescription" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View

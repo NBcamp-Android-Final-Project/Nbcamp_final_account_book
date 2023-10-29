@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.databinding.ItemTagManageBinding
 import java.util.Collections
 
@@ -18,8 +17,8 @@ interface OnDeleteItemListener {
 }
 
 class TagManageAdapter(
-	private val tagList: MutableList<TagEntity>,
-	private val onItemClick: (Int, TagEntity) -> Unit
+	private val tagList: MutableList<TagModel>,
+	private val onItemClick: (Int, TagModel) -> Unit
 ) : RecyclerView.Adapter<TagManageAdapter.ViewHolder>(), ItemTouchHelperListener {
 
 	private lateinit var dragListener: OnStartDragListener
@@ -50,9 +49,9 @@ class TagManageAdapter(
 		RecyclerView.ViewHolder(binding.root) {
 
 		@SuppressLint("ClickableViewAccessibility")
-		fun onBind(item: TagEntity) = with(binding) {
+		fun onBind(item: TagModel) = with(binding) {
 			ivTagImg.setImageResource(item.img)
-			tvTagName.text = item.title
+			tvTagName.text = item.tagName
 
 			vHandlerTouch.setOnClickListener {
 				onItemClick(adapterPosition, item)

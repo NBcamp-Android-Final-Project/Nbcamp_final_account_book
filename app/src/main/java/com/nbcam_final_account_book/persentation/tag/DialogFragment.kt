@@ -39,11 +39,14 @@ class DialogFragment : DialogFragment() {
 		}
 
 		tvDialogDelete.setOnClickListener {
-
+//			val fragment = TagFragment()
+//			fragment.tagManageAdapter.deleteItem(object : OnDeleteItemListener {
+//				override fun onDeleteItem(position: Int) {
+//					fragment.tagList.removeAt(position)
+//					fragment.tagManageAdapter.notifyItemRemoved(position)
+//				}
+//			})
+			dismiss()
 		}
-	}
-
-	fun deleteItem() {
-
 	}
 }

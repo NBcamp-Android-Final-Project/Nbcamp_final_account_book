@@ -19,7 +19,6 @@ class TagListAdapter(private val onItemClick: (TagModel) -> Unit) :
 			return oldItem == newItem
 		}
 	}) {
-//	private val selectedItems = arrayOf(1)
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val view = ItemTagBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -39,20 +38,7 @@ class TagListAdapter(private val onItemClick: (TagModel) -> Unit) :
 
 			itemView.setOnClickListener {
 				onItemClick(item)
-//				selectItem(binding, item)
 			}
 		}
 	}
-
-//	private fun selectItem(binding: ItemTagBinding, tag: Tag) {
-//		if (selectedItems.isEmpty()) {
-//			selectedItems.plus(tag.icon)
-//		} else {
-//			binding.ivIsChecked.visibility = View.VISIBLE
-//		}
-//	}
-//
-//	private fun changeBackgroundColor(binding: ItemTagBinding, resId: Int) {
-//		binding.root.setBackgroundColor(ContextCompat.getColor(binding.root.context, resId))
-//	}
 }

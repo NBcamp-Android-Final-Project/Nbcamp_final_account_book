@@ -22,7 +22,6 @@ import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_PAY
 import java.text.DecimalFormat
 import java.util.Calendar
 import java.util.Date
-import kotlin.random.Random
 
 class EntryFragment : Fragment() {
 
@@ -84,33 +83,11 @@ class EntryFragment : Fragment() {
 			val finance = tabLayoutFinance.selectedTabPosition      // 지출 <-> 수입
 			val date = tvDateInput.text.toString()                  // 날짜
 			val amount = edtAmount.text.toString().replace(",", "")     // 금액
-			val tag = tvTagInput.text                               // 카테고리
+			val tag = tvTagInput.text.toString()                    // 카테고리
 			val title = edtTitle.text.toString()                    // 제목
 			val description = edtDescription.text.toString()        // 메모
 			val currentTemplate = getCurrentTemplateEntry()         // 템플릿
 			Log.d("현재 템플릿", currentTemplate.toString())
-
-			val payTagList = listOf(
-				"식비",
-				"교통비",
-				"의료비",
-				"쇼핑"
-			)
-			val inComeList = listOf(
-				"월급",
-				"용돈",
-				"당근",
-				"불로소득"
-			)
-
-			val payTagListSize = payTagList.size
-			val inComeListSize = inComeList.size
-
-			val payRandomIndex = Random.nextInt(0, payTagListSize)
-			val inComeRandomIndex = Random.nextInt(0, inComeListSize)
-
-			val payTag = payTagList[payRandomIndex]
-			val incomeTag = inComeList[inComeRandomIndex]
 
 			if (edtAmount.text.isNotEmpty() && currentTemplate != null) {
 				if (finance == 0) {
@@ -120,7 +97,7 @@ class EntryFragment : Fragment() {
 						type = INPUT_TYPE_PAY,
 						dateTime = date,
 						value = amount,
-						tag = incomeTag,
+						tag = tag,
 						title = title,
 						description = description
 					)
@@ -133,7 +110,7 @@ class EntryFragment : Fragment() {
 						type = INPUT_TYPE_INCOME,
 						dateTime = date,
 						value = amount,
-						tag = payTag,
+						tag = tag,
 						title = title,
 						description = description
 					)

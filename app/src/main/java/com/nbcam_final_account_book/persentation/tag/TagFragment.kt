@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.R
-import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.databinding.TagFragmentBinding
 
 
@@ -29,7 +28,7 @@ class TagFragment : Fragment() {
 		)[TagViewModel::class.java]
 	}
 
-	private lateinit var tagManageAdapter: TagManageAdapter
+	lateinit var tagManageAdapter: TagManageAdapter
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -53,25 +52,39 @@ class TagFragment : Fragment() {
 		}
 
 		ivModify.setOnClickListener {
-			val dialog = DialogFragment()
-			dialog.show(requireActivity().supportFragmentManager, "dialog")
+			findNavController().navigate(R.id.action_tagFragment_to_editTagFragment)
 		}
 	}
 
 	private fun initViewModel() = with(viewModel) {
 		tagList.observe(viewLifecycleOwner) {
 			if (it != null) {
-				initTag(getTagListAll())
-				Log.d("tag", getTagListAll().toString())
+//				initTag(getTestListAll())
+				Log.d("tagList", getTagListAll().toString())
 			}
 		}
+
+		initTag()   // 테스트용 (추후 삭제 예정)
 	}
 
-	private fun initTag(tagList: MutableList<TagEntity>) {
-		tagManageAdapter =
-			TagManageAdapter(
-				tagList,
-				onItemClick = { position, item -> onItemClickEvent(position, item) })
+	private fun initTag() {
+
+		// 임시 데이터
+		val tagList = mutableListOf<TagModel>()
+		tagList.apply {
+			add(TagModel(0, R.drawable.icon_tag_traffic, "교통비"))
+			add(TagModel(0, R.drawable.ic_check, "체크"))
+			add(TagModel(0, R.drawable.ic_backup, "백업"))
+			add(TagModel(0, R.drawable.ic_lock, "잠금"))
+			add(TagModel(0, R.drawable.ic_chart, "차트"))
+			add(TagModel(0, R.drawable.ic_delete, "삭제"))
+			add(TagModel(0, R.drawable.ic_home, "홈"))
+			add(TagModel(0, R.drawable.ic_calendar, "캘린더"))
+		}
+
+		tagManageAdapter = TagManageAdapter(
+			tagList,
+			onItemClick = { position, item -> onItemClickEvent(position, item) })
 
 		binding.rvTagListContainer.apply {
 			adapter = tagManageAdapter
@@ -96,17 +109,16 @@ class TagFragment : Fragment() {
 
 			deleteItem(object : OnDeleteItemListener {
 				override fun onDeleteItem(position: Int) {
+
 					val dialog = DialogFragment()
 					dialog.show(requireActivity().supportFragmentManager, "dialog")
 
-					tagList.removeAt(position)
-					notifyItemRemoved(position)
 				}
 			})
 		}
 	}
 
-	private fun onItemClickEvent(position: Int, item: TagEntity) {
+	private fun onItemClickEvent(position: Int, item: TagModel) {
 		findNavController().navigate(R.id.action_tagFragment_to_editTagFragment)
 	}
 }

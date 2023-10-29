@@ -43,36 +43,36 @@ class EntryFragment : Fragment() {
 		}
 	}
 
-	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		_binding = FragmentEntryBinding.inflate(inflater, container, false)
-		return binding.root
-	}
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentEntryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-		initView()
-		initTag()
-		editTextFormat()
-	}
+        initView()
+        initTag()
+        editTextFormat()
+    }
 
-	private fun initView() = with(binding) {
+    private fun initView() = with(binding) {
 
-		ivBack.setOnClickListener {
-			requireActivity().finish()
-		}
+        ivBack.setOnClickListener {
+            requireActivity().finish()
+        }
 
-		// 마이페이지 - 태그 관리 액티비티로 이동
-		ivTagAdd.setOnClickListener {
-			findNavController().navigate(R.id.action_entryFragment_to_tagFragment2)
-		}
+        // 마이페이지 - 태그 관리 액티비티로 이동
+        ivTagAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_entryFragment_to_tagFragment2)
+        }
 
-		tvDateInput.setOnClickListener {
-			showDatePicker()
-		}
+        tvDateInput.setOnClickListener {
+            showDatePicker()
+        }
 
 		btnSave.setOnClickListener {
 			// Firebase RTDB 에 `태그`, `결제 수단`, `메모`, `금액` 저장 후, ModalBottomSheet 및 EntryActivity 종료
@@ -119,80 +119,90 @@ class EntryFragment : Fragment() {
 				}
 
 
-			}
+            }
 
 
-		}
-	}
+        }
+    }
 
-	private fun getCurrentTemplateEntry(): TemplateEntity? {
-		return viewModel.getCurrentTemplateEntry()
-	}
+    private fun getCurrentTemplateEntry(): TemplateEntity? {
+        return viewModel.getCurrentTemplateEntry()
+    }
 
-	private fun insertEntry(item: EntryEntity) {
-		viewModel.insertEntity(item)
-	}
+    private fun insertEntry(item: EntryEntity) {
+        viewModel.insertEntity(item)
+    }
 
-	private fun getData(): Pair<String?, String?> {
-		return viewModel.getData()
-	}
+    private fun getData(): Pair<String?, String?> {
+        return viewModel.getData()
+    }
 
-	private fun initTag() {
+    private fun initTag() {
 
-		// 임시 데이터
-		val newList = mutableListOf<TagModel>()
-		newList.apply {
-			add(TagModel(0, R.drawable.icon_tag_traffic, "교통비"))
-			add(TagModel(0, R.drawable.ic_check, "체크"))
-			add(TagModel(0, R.drawable.ic_backup, "백업"))
-			add(TagModel(0, R.drawable.ic_lock, "잠금"))
-			add(TagModel(0, R.drawable.ic_chart, "차트"))
-			add(TagModel(0, R.drawable.ic_delete, "삭제"))
-			add(TagModel(0, R.drawable.ic_home, "홈"))
-			add(TagModel(0, R.drawable.ic_calendar, "캘린더"))
-		}
+        // 임시 데이터
+        val newList = mutableListOf<TagModel>()
+        newList.apply {
+            add(TagModel(0, R.drawable.ic_money, "월급"))
+            add(TagModel(1, R.drawable.ic_money, "부수입"))
+            add(TagModel(2, R.drawable.ic_money, "용돈"))
+            add(TagModel(3, R.drawable.ic_money, "상여"))
+            add(TagModel(4, R.drawable.ic_money, "공과금"))
+            add(TagModel(5, R.drawable.ic_money, "월세"))
+            add(TagModel(6, R.drawable.ic_money, "할부"))
+            add(TagModel(7, R.drawable.ic_money, "대출이자"))
+            add(TagModel(8, R.drawable.ic_money, "통신비"))
+            add(TagModel(9, R.drawable.ic_money, "보험"))
+            add(TagModel(10, R.drawable.ic_money, "식비"))
+            add(TagModel(11, R.drawable.ic_money, "교통비"))
+            add(TagModel(12, R.drawable.ic_money, "패션&미용"))
+            add(TagModel(13, R.drawable.ic_money, "취미"))
+            add(TagModel(14, R.drawable.ic_money, "여행"))
+            add(TagModel(15, R.drawable.ic_money, "병원비"))
+            add(TagModel(16, R.drawable.ic_money, "경조사"))
+            add(TagModel(16, R.drawable.ic_money, "기타"))
+        }
 
-		binding.rvTagContainer.adapter = tagListAdapter
-		tagListAdapter.submitList(newList)
-	}
+        binding.rvTagContainer.adapter = tagListAdapter
+        tagListAdapter.submitList(newList)
+    }
 
-	private fun editTextFormat() {
-		val decimalFormat = DecimalFormat("#,###")
-		var result: String = ""
+    private fun editTextFormat() {
+        val decimalFormat = DecimalFormat("#,###")
+        var result: String = ""
 
-		binding.edtAmount.addTextChangedListener(object : TextWatcher {
-			override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        binding.edtAmount.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-			override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
-				if (!TextUtils.isEmpty(charSequence.toString()) && charSequence.toString() != result) {
-					result =
-						decimalFormat.format(charSequence.toString().replace(",", "").toDouble())
-					binding.edtAmount.setText(result)
-					binding.edtAmount.setSelection(result.length)
-				}
-			}
+            override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (!TextUtils.isEmpty(charSequence.toString()) && charSequence.toString() != result) {
+                    result =
+                        decimalFormat.format(charSequence.toString().replace(",", "").toDouble())
+                    binding.edtAmount.setText(result)
+                    binding.edtAmount.setSelection(result.length)
+                }
+            }
 
-			override fun afterTextChanged(p0: Editable?) {}
-		})
-	}
+            override fun afterTextChanged(p0: Editable?) {}
+        })
+    }
 
-	private fun showDatePicker() {
+    private fun showDatePicker() {
 
-		val datePicker =
-			MaterialDatePicker.Builder.datePicker()
-				.setTitleText("Select date")
-				.setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-				.build()
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
 
-		datePicker.show(requireActivity().supportFragmentManager, "fragment")
+        datePicker.show(requireActivity().supportFragmentManager, "fragment")
 
-		datePicker.addOnPositiveButtonClickListener {
-			val calendar = Calendar.getInstance()
-			calendar.time = Date(it)
-			val year = calendar.get(Calendar.YEAR)
-			val month = calendar.get(Calendar.MONTH) + 1
-			val day = calendar.get(Calendar.DAY_OF_MONTH)
-			val formattedDate = formatDate(year, month, day)
+        datePicker.addOnPositiveButtonClickListener {
+            val calendar = Calendar.getInstance()
+            calendar.time = Date(it)
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH) + 1
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            val formattedDate = formatDate(year, month, day)
 
 
 			binding.tvDateInput.text = formattedDate

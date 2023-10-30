@@ -108,11 +108,9 @@ class TagFragment : Fragment() {
 			})
 
 			deleteItem(object : OnDeleteItemListener {
-				override fun onDeleteItem(position: Int) {
-
-					val dialog = DialogFragment()
+				override fun onDeleteItem(position: Int, item: MutableList<TagModel>) {
+					val dialog = DialogFragment(this@TagFragment, position, item)
 					dialog.show(requireActivity().supportFragmentManager, "dialog")
-
 				}
 			})
 		}

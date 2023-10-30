@@ -29,7 +29,12 @@ class TagFragment : Fragment() {
         )[TagViewModel::class.java]
     }
 
-    lateinit var tagManageAdapter: TagManageAdapter
+
+    val tagManageAdapter by lazy {
+        TagManageAdapter(
+            mutableListOf<TagEntity>(),
+            onItemClick = { position, item -> onItemClickEvent(position, item) })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +47,7 @@ class TagFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initTag()
         initView()
         initViewModel()
     }
@@ -60,19 +66,13 @@ class TagFragment : Fragment() {
     private fun initViewModel() = with(viewModel) {
         liveTagListInEdit.observe(viewLifecycleOwner) {
             if (it != null) {
-                initTag(it)
-                Log.d("tagList", getTagListAll().toString())
+                    tagManageAdapter.updateList(it)
             }
         }
 
     }
 
-    private fun initTag(list: List<TagEntity>) {
-        val mList = list.toMutableList()
-
-        tagManageAdapter = TagManageAdapter(
-            mList,
-            onItemClick = { position, item -> onItemClickEvent(position, item) })
+    private fun initTag() {
 
         binding.rvTagListContainer.apply {
             adapter = tagManageAdapter
@@ -89,12 +89,15 @@ class TagFragment : Fragment() {
         touchHelper.attachToRecyclerView(binding.rvTagListContainer)
 
         tagManageAdapter.apply {
-            startDrag(object : OnStartDragListener {
-                override fun onStartDrag(viewHolder: RecyclerView.ViewHolder,item: MutableList<TagEntity>) {
-
+            startDrag(object : OnDragListener {
+                override fun onStartDrag(
+                    viewHolder: RecyclerView.ViewHolder
+                ) {
                     touchHelper.startDrag(viewHolder)
+                }
 
-//                   viewModel.tagUpdateInEdit(item) // 터치 이벤트가 끝나고 업데이트를 해줘야 함
+                override fun onEndDrag(items: MutableList<TagEntity>) {
+                    viewModel.tagUpdateInEdit(items)
                 }
             })
 

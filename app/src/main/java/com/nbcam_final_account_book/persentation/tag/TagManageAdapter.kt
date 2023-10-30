@@ -1,6 +1,7 @@
 package com.nbcam_final_account_book.persentation.tag
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
@@ -9,8 +10,9 @@ import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.databinding.ItemTagManageBinding
 import java.util.Collections
 
-interface OnStartDragListener {
-    fun onStartDrag(viewHolder: RecyclerView.ViewHolder, item: MutableList<TagEntity>)
+interface OnDragListener {
+    fun onStartDrag(viewHolder: RecyclerView.ViewHolder)
+    fun onEndDrag(items: MutableList<TagEntity>)
 }
 
 interface OnDeleteItemListener {
@@ -22,10 +24,16 @@ class TagManageAdapter(
     private val onItemClick: (Int, TagEntity) -> Unit
 ) : RecyclerView.Adapter<TagManageAdapter.ViewHolder>(), ItemTouchHelperListener {
 
-    private lateinit var dragListener: OnStartDragListener
+    private lateinit var dragListener: OnDragListener
     private lateinit var deleteListener: OnDeleteItemListener
 
-    fun startDrag(listener: OnStartDragListener) {
+    fun updateList(list:List<TagEntity>){
+        tagList.clear()
+        tagList.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    fun startDrag(listener: OnDragListener) {
         this.dragListener = listener
     }
 
@@ -64,9 +72,14 @@ class TagManageAdapter(
             }
 
             ivHandlerDrag.setOnTouchListener { _, motionEvent ->
+
                 if (motionEvent.action == MotionEvent.ACTION_DOWN) {
-                    dragListener.onStartDrag(this@ViewHolder,tagList)
+                    dragListener.onStartDrag(this@ViewHolder)
+                } else if (motionEvent.action == MotionEvent.ACTION_UP) {
+
                 }
+                Log.d("모션", motionEvent.action.toString())
+
                 return@setOnTouchListener false
             }
         }
@@ -80,5 +93,9 @@ class TagManageAdapter(
     override fun onItemSwipe(position: Int) {
         tagList.removeAt(position)
         notifyItemRemoved(position)
+    }
+
+    override fun onItemChanged() {
+        dragListener.onEndDrag(tagList)
     }
 }

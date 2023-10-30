@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Update
 import com.nbcam_final_account_book.data.model.local.TagEntity
@@ -48,6 +49,7 @@ interface TagDao {
     suspend fun deleteAllTag() // 모든 테이블 삭제
 
     //Update
-    @Update
-    suspend fun updateTag(item: TagEntity)
+    @Update(onConflict = REPLACE)
+    suspend fun updateTag(item:List<TagEntity>)
+
 }

@@ -282,6 +282,7 @@ class RoomRepositoryImpl(
 
     override suspend fun insertTagList(item: List<TagEntity>) {
         val dao = database?.tagDao() ?: throw IllegalStateException("insertTagList fail")
+        Log.d("호출.리스트", item.toString())
         dao.insertTagList(item)
     }
 
@@ -339,7 +340,7 @@ class RoomRepositoryImpl(
         dao.getAllLiveTag()
     }
 
-    override suspend fun updateTag(item: TagEntity) {
+    override suspend fun updateTag(item: List<TagEntity>) {
         val dao = database?.tagDao() ?: throw IllegalStateException("updateTag fail")
 
         dao.updateTag(item)

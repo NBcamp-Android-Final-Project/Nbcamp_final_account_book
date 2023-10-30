@@ -56,8 +56,12 @@
         android:label="edit_tag_fragment"
         tools:layout="@layout/edit_tag_fragment" >
         <argument
-            android:name="page"
+            android:name="pages"
             app:argType="com.nbcam_final_account_book.persentation.tag.TagPage"
             android:defaultValue="NEW" />
+        <argument
+            android:name="tagName"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

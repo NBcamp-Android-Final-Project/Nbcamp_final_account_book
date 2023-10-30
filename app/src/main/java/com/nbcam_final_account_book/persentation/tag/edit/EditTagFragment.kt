@@ -16,6 +16,7 @@ class EditTagFragment : Fragment() {
 	private var _binding: EditTagFragmentBinding? = null
 	private val binding get() = _binding!!
 
+
 	private val viewModel by lazy {
 		ViewModelProvider(
 			this@EditTagFragment
@@ -37,14 +38,19 @@ class EditTagFragment : Fragment() {
 	}
 
 	private fun initView() = with(binding) {
+		val args: EditTagFragmentArgs by navArgs()
+		val page = args.pages
+		val tagName: String? = args.tagName
 
 		ivBack.setOnClickListener {
 			findNavController().popBackStack()
 		}
 
-		val args: EditTagFragmentArgs by navArgs()
-		val page = args.page
-		category(page)
+		btnTagSave.setOnClickListener {
+			// 저장 버튼 클릭 시 바로 room 에 저장 되는 로직 구현
+		}
+
+		category(page, tagName)
 	}
 
 	private fun initViewModel() = with(viewModel) {
@@ -53,7 +59,7 @@ class EditTagFragment : Fragment() {
 		}
 	}
 
-	private fun category(page: TagPage) = when (page) {
+	private fun category(page: TagPage, tagName: String?) = when (page) {
 
 		TagPage.NEW -> {
 			binding.tvPageTitle.text = "태그 생성"
@@ -63,9 +69,7 @@ class EditTagFragment : Fragment() {
 
 		TagPage.MODIFY -> {
 			binding.tvPageTitle.text = "태그 수정"
-
-			val result = binding.edtTagTitle.toString()
-
+			binding.edtTagTitle.setText(tagName)
 		}
 	}
 }

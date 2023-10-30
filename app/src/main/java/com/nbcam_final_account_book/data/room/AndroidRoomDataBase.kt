@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.DataEntity
+import com.nbcam_final_account_book.data.model.local.DeleteEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
@@ -17,7 +18,7 @@ import com.nbcam_final_account_book.data.room.dao.TagDao
 import com.nbcam_final_account_book.data.room.dao.TemplateDao
 
 @Database(
-    entities = [TemplateEntity::class, DataEntity::class, EntryEntity::class, TagEntity::class, BudgetEntity::class, DataEntity::class],
+    entities = [TemplateEntity::class, DataEntity::class, EntryEntity::class, TagEntity::class, BudgetEntity::class, DeleteEntity::class],
     version = 14
 )
 abstract class AndroidRoomDataBase : RoomDatabase() {

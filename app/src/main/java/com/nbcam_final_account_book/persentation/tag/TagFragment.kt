@@ -68,10 +68,10 @@ class TagFragment : Fragment() {
     }
 
     private fun initTag(list: List<TagEntity>) {
-        val rlist = list.toMutableList()
+        val mList = list.toMutableList()
 
         tagManageAdapter = TagManageAdapter(
-            rlist,
+            mList,
             onItemClick = { position, item -> onItemClickEvent(position, item) })
 
         binding.rvTagListContainer.apply {
@@ -94,7 +94,7 @@ class TagFragment : Fragment() {
 
                     touchHelper.startDrag(viewHolder)
 
-//                   viewModel.tagUpdateInEdit(item)
+//                   viewModel.tagUpdateInEdit(item) // 터치 이벤트가 끝나고 업데이트를 해줘야 함
                 }
             })
 

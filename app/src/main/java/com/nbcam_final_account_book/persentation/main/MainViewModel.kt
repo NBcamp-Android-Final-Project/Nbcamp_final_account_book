@@ -121,9 +121,20 @@ class MainViewModel(
     fun backupDataByLogOut() {
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()
+            val deleteKey = roomRepo.getAllDelete()
             for (dataEntity in dataList) {
+
                 fireRepo.updateData(user, dataEntity)
+                if (deleteKey.isNotEmpty()){
+                    for (key in deleteKey){
+                        fireRepo.deleteData(user,key.key)
+                        fireRepo.deleteTemplate(user,key.key)
+                    }
+                }
+
             }
+            roomRepo.deleteAllDeleteEntity()
+            Log.d("딜리트",deleteKey.size.toString())
             saveSharedPrefIsLogin(false)
             roomRepo.deleteAllData()
         }
@@ -137,9 +148,20 @@ class MainViewModel(
     fun backupData() {
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()
+            val deleteKey = roomRepo.getAllDelete()
             for (dataEntity in dataList) {
                 fireRepo.updateData(user, dataEntity)
+
+                if (deleteKey.isNotEmpty()){
+                    for (key in deleteKey){
+                        fireRepo.deleteData(user,key.key)
+                        fireRepo.deleteTemplate(user,key.key)
+                    }
+                }
+
             }
+            roomRepo.deleteAllDeleteEntity()
+            Log.d("딜리트",deleteKey.size.toString())
         }
     }
 
@@ -311,8 +333,6 @@ class MainViewModel(
 
 
     }
-
-
 
 
     //SharedPref

@@ -20,9 +20,13 @@ interface FireBaseRepository {
 
     suspend fun setTemplate(user: String, item: TemplateEntity): List<TemplateEntity>
 
+    suspend fun deleteTemplate(user: String, key: String)
+
     //data
     suspend fun updateData(user: String, item: DataEntity)
     suspend fun getBackupData(user: String): List<DataEntity>
+
+    suspend fun deleteData(user: String, key: String)
 
 
 }

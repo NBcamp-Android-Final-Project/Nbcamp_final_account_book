@@ -176,7 +176,7 @@ class MainActivity : AppCompatActivity() {
     private fun hideActionBar() {
         // MyPage 태그 관리
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            if (destination.id == R.id.tagFragment) {
+            if (destination.id == R.id.tagFragment || destination.id == R.id.editTagFragment) {
                 supportActionBar?.hide()
             } else {
                 supportActionBar?.show()

@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.R
-import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.databinding.TagFragmentBinding
 
 
@@ -113,4 +112,19 @@ class TagFragment : Fragment() {
     private fun onItemClickEvent(position: Int, item: TagEntity) {
         findNavController().navigate(R.id.action_tagFragment_to_editTagFragment)
     }
+	private fun onItemClickEvent(position: Int, item: TagModel) {
+		val pages = TagPage.MODIFY
+		val tagName = item.tagName
+
+		val action = TagFragmentDirections.actionTagFragmentToEditTagFragment(
+			pages = pages,
+			tagName = tagName
+		)
+		findNavController().navigate(action)
+	}
+}
+
+enum class TagPage {
+	NEW,
+	MODIFY
 }

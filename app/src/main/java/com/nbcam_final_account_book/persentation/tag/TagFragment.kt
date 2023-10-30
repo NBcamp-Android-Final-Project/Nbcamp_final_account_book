@@ -52,7 +52,9 @@ class TagFragment : Fragment() {
 		}
 
 		ivModify.setOnClickListener {
-			findNavController().navigate(R.id.action_tagFragment_to_editTagFragment)
+			val pages = TagPage.NEW
+			val action = TagFragmentDirections.actionTagFragmentToEditTagFragment(pages)
+			findNavController().navigate(action)
 		}
 	}
 
@@ -117,6 +119,13 @@ class TagFragment : Fragment() {
 	}
 
 	private fun onItemClickEvent(position: Int, item: TagModel) {
-		findNavController().navigate(R.id.action_tagFragment_to_editTagFragment)
+		val pages = TagPage.MODIFY
+		val action = TagFragmentDirections.actionTagFragmentToEditTagFragment(pages)
+		findNavController().navigate(action)
 	}
+}
+
+enum class TagPage {
+	NEW,
+	MODIFY
 }

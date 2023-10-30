@@ -5,10 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.nbcam_final_account_book.data.model.local.DeleteEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TemplateDialogViewModel(
@@ -23,9 +25,11 @@ class TemplateDialogViewModel(
 
     fun removeTemplate(item: TemplateEntity) {
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val key = item.id
+            val deleteEntity = DeleteEntity(key = key)
             with(roomRepo) {
+                insertDelete(deleteEntity)
                 deleteTemplate(item)
                 deleteDataByKey(key)
                 deleteBudgetByKey(key)

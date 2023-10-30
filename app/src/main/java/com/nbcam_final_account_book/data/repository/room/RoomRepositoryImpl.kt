@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.DataEntity
+import com.nbcam_final_account_book.data.model.local.DeleteEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
@@ -281,6 +282,7 @@ class RoomRepositoryImpl(
 
     override suspend fun insertTagList(item: List<TagEntity>) {
         val dao = database?.tagDao() ?: throw IllegalStateException("insertTagList fail")
+        Log.d("호출.리스트", item.toString())
         dao.insertTagList(item)
     }
 
@@ -294,7 +296,7 @@ class RoomRepositoryImpl(
         return dao.getAllListTag()
     }
 
-    override fun getTagById(id: Int): TagEntity {
+    override fun getTagById(id: Long): TagEntity {
         val dao = database?.tagDao() ?: throw IllegalStateException("getTagById fail")
         return dao.getTagById(id)
     }
@@ -319,7 +321,7 @@ class RoomRepositoryImpl(
         }
     }
 
-    override suspend fun deleteTagById(id: Int) {
+    override suspend fun deleteTagById(id: Long) {
         val dao = database?.tagDao() ?: throw IllegalStateException("deleteTag fail")
         dao.deleteTagById(id)
     }
@@ -335,13 +337,33 @@ class RoomRepositoryImpl(
 
     override suspend fun deleteAllTag() {
         val dao = database?.tagDao() ?: throw IllegalStateException("deleteAllTag fail")
-        dao.getAllLiveTag()
+        dao.deleteAllTag()
     }
 
     override suspend fun updateTag(item: TagEntity) {
         val dao = database?.tagDao() ?: throw IllegalStateException("updateTag fail")
 
         dao.updateTag(item)
+    }
+
+    //DeleteEntity
+
+    override suspend fun deleteAllDeleteEntity() {
+        val dao = database?.deleteDao() ?: throw IllegalStateException("deleteAllDeleteEntity fail")
+
+        dao.deleteAllDeleteEntity()
+    }
+
+    override suspend fun insertDelete(item: DeleteEntity) {
+        val dao = database?.deleteDao() ?: throw IllegalStateException("insertDelete fail")
+
+        dao.insertDelete(item)
+    }
+
+    override suspend fun getAllDelete(): List<DeleteEntity> {
+        val dao = database?.deleteDao() ?: throw IllegalStateException("getAllDelete fail")
+
+        return dao.getAllDelete()
     }
 
 

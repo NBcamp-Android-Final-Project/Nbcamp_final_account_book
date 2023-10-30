@@ -121,9 +121,21 @@ class MainViewModel(
     fun backupDataByLogOut() {
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()
+            val deleteKey = roomRepo.getAllDelete()
             for (dataEntity in dataList) {
+
                 fireRepo.updateData(user, dataEntity)
+
             }
+
+            if (deleteKey.isNotEmpty()){
+                for (key in deleteKey){
+                    fireRepo.deleteData(user,key.key)
+                    fireRepo.deleteTemplate(user,key.key)
+                }
+            }
+            roomRepo.deleteAllDeleteEntity()
+            Log.d("딜리트",deleteKey.size.toString())
             saveSharedPrefIsLogin(false)
             roomRepo.deleteAllData()
         }
@@ -137,13 +149,25 @@ class MainViewModel(
     fun backupData() {
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()
+            val deleteKey = roomRepo.getAllDelete()
             for (dataEntity in dataList) {
                 fireRepo.updateData(user, dataEntity)
             }
+
+            if (deleteKey.isNotEmpty()){
+                for (key in deleteKey){
+                    fireRepo.deleteData(user,key.key)
+                    fireRepo.deleteTemplate(user,key.key)
+                }
+            }
+
+            roomRepo.deleteAllDeleteEntity()
+            Log.d("딜리트",deleteKey.size.toString())
         }
     }
 
     //firebase 데이터 동기화
+    //Todo 동기화 실패 시 예외처리하기
     fun firstStartSynchronizationData() {
 
         viewModelScope.launch {
@@ -257,62 +281,6 @@ class MainViewModel(
         }
 
     }
-
-    fun synchronizationData() {
-
-        viewModelScope.launch {
-            val backUpTemplate = fireRepo.getAllTemplate(user)
-            val backUpData = fireRepo.getBackupData(user)
-
-
-            with(roomRepo) {
-                for (templateEntity in backUpTemplate) {
-                    updateTemplate(templateEntity)
-                }
-                for (dataEntity in backUpData) {
-                    updateData(dataEntity)
-                }
-
-                if (backUpData.isNotEmpty()) {
-                    for (loadData in backUpData) {
-                        val loadEntry: List<EntryEntity> =
-                            Gson().fromJson(
-                                loadData.entryList,
-                                object : TypeToken<List<EntryEntity>>() {}.type
-                            )
-
-                        val loadTag: List<TagEntity> =
-                            Gson().fromJson(
-                                loadData.tagList,
-                                object : TypeToken<List<TagEntity>>() {}.type
-                            )
-
-                        val loadBudget: List<BudgetEntity> =
-                            Gson().fromJson(
-                                loadData.budgetList,
-                                object : TypeToken<List<BudgetEntity>>() {}.type
-                            )
-
-                        for (entryEntity in loadEntry) {
-                            updateEntry(entryEntity)
-                        }
-                        for (budgetEntity in loadBudget) {
-                            updateBudget(budgetEntity)
-                        }
-                        for (tagEntity in loadTag) {
-                            updateTag(tagEntity)
-                        }
-                    }
-
-                }
-
-            }//with(roomRepo)
-        } // ViewModelScope
-
-
-    }
-
-
 
 
     //SharedPref

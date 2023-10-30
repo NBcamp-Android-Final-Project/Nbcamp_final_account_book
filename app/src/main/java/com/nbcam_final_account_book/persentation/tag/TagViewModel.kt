@@ -26,6 +26,14 @@ class TagViewModel(private val roomRepo: RoomRepository) : ViewModel() {
         return list
     }
 
+    fun updateTag(item:TagEntity,title:String){
+        viewModelScope.launch {
+            val newITem = item.copy(title = title)
+
+            roomRepo.updateTag(newITem)
+        }
+    }
+
 
     fun tagUpdateInEdit(items: List<TagEntity>) {
         viewModelScope.launch {

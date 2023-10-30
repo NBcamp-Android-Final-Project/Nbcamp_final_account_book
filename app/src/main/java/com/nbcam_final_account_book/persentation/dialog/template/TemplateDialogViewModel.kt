@@ -24,7 +24,16 @@ class TemplateDialogViewModel(
     fun removeTemplate(item: TemplateEntity) {
 
         viewModelScope.launch {
-            roomRepo.deleteTemplate(item)
+            val key = item.id
+            with(roomRepo) {
+                deleteTemplate(item)
+                deleteDataByKey(key)
+                deleteBudgetByKey(key)
+                deleteEntryByKey(key)
+                deleteTagByKey(key)
+            }
+
+
         }
 
     }

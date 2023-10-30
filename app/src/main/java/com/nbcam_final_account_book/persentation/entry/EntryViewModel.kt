@@ -6,13 +6,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.nbcam_final_account_book.data.model.DummyData
 import com.nbcam_final_account_book.data.model.local.EntryEntity
+import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
+import com.nbcam_final_account_book.persentation.main.MainViewModel
 import kotlinx.coroutines.launch
 
 class EntryViewModel(
@@ -31,6 +34,11 @@ class EntryViewModel(
     private val _entryLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
     val entryLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _entryLiveCurrentTemplate
 
+    val liveTagList: LiveData<List<TagEntity>>
+        get() = MainViewModel.liveKey.switchMap { key ->
+            roomRepo.getLiveTagByKey(key)
+        }
+
     fun updateCurrentTemplateEntry(item: TemplateEntity?) {
         if (item == null) return
         _entryLiveCurrentTemplate.value = item
@@ -45,6 +53,12 @@ class EntryViewModel(
         _liveType.value = type
         Log.d("현재 값", liveValue.value.toString())
         Log.d("현재 타입", liveType.value.toString())
+    }
+
+    fun deleteTagById(item: TagEntity) {
+        viewModelScope.launch {
+            roomRepo.deleteTagById(item.id)
+        }
     }
 
     fun getData(): Pair<String?, String?> {

@@ -32,6 +32,7 @@ interface RoomRepository {
     suspend fun getDataByKey(key: String): DataEntity? // key값으로 데이터를 추적합니다. 동일한 템플릿을 식별할 때 사용하면 됩니다.
     suspend fun getAllData(): List<DataEntity> // 모든 데이터를 가져옵니다.
     suspend fun deleteAllData()  // 모든 데이터를 삭제합니다.
+    suspend fun deleteDataByKey(id: String)
     suspend fun updateData(item: DataEntity) // 데이터를 업데이트합니다.
 
     //Entry

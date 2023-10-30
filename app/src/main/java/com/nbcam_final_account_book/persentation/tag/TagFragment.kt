@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.R
+import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.databinding.TagFragmentBinding
 
 
@@ -57,7 +58,7 @@ class TagFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        ivModify.setOnClickListener {
+        ivNewTag.setOnClickListener {
             findNavController().navigate(R.id.action_tagFragment_to_editTagFragment)
         }
     }

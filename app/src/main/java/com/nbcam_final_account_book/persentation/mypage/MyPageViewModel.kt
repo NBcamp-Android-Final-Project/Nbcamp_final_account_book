@@ -71,6 +71,7 @@ class MyPageViewModel(
             deleteAllTemplate()
             deleteAllBudget()
             deleteAllEntry()
+            deleteAllTag()
         }
     }
 

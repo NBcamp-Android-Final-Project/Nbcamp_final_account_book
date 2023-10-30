@@ -13,7 +13,7 @@ interface OnStartDragListener {
 }
 
 interface OnDeleteItemListener {
-	fun onDeleteItem(position: Int, item: MutableList<TagModel>)
+	fun onDeleteItem(position: Int)
 }
 
 class TagManageAdapter(
@@ -59,7 +59,7 @@ class TagManageAdapter(
 
 			// 다이얼로그 확인용 (추후 휴지통 아이콘에 연결할 예정)
 			ivHandlerRemove.setOnClickListener {
-				deleteListener.onDeleteItem(adapterPosition, tagList)
+				deleteListener.onDeleteItem(adapterPosition)
 			}
 
 			ivHandlerDrag.setOnTouchListener { _, motionEvent ->

@@ -3,6 +3,7 @@ package com.nbcam_final_account_book.data.repository.room
 import androidx.lifecycle.LiveData
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.DataEntity
+import com.nbcam_final_account_book.data.model.local.DeleteEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
@@ -84,5 +85,11 @@ interface RoomRepository {
     suspend fun deleteAllTag() // 모든 데이터를 삭제합니다. 로그아웃 시 필요합니다.
 
     suspend fun updateTag(item: TagEntity) // 태그 수정 시 필요합니다.
+
+    //deleteEntity
+
+    suspend fun deleteAllDeleteEntity()
+    suspend fun insertDelete(item: DeleteEntity)
+    suspend fun getAllDelete(): List<DeleteEntity>
 
 }

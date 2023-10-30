@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.DataEntity
+import com.nbcam_final_account_book.data.model.local.DeleteEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
@@ -342,6 +343,26 @@ class RoomRepositoryImpl(
         val dao = database?.tagDao() ?: throw IllegalStateException("updateTag fail")
 
         dao.updateTag(item)
+    }
+
+    //DeleteEntity
+
+    override suspend fun deleteAllDeleteEntity() {
+        val dao = database?.deleteDao() ?: throw IllegalStateException("deleteAllDeleteEntity fail")
+
+        dao.deleteAllDeleteEntity()
+    }
+
+    override suspend fun insertDelete(item: DeleteEntity) {
+        val dao = database?.deleteDao() ?: throw IllegalStateException("insertDelete fail")
+
+        dao.insertDelete(item)
+    }
+
+    override suspend fun getAllDelete(): List<DeleteEntity> {
+        val dao = database?.deleteDao() ?: throw IllegalStateException("getAllDelete fail")
+
+        return dao.getAllDelete()
     }
 
 

@@ -13,12 +13,12 @@ import com.nbcam_final_account_book.persentation.main.MainViewModel
 
 class TagViewModel(private val roomRepo: RoomRepository) : ViewModel() {
 
-	val tagList: LiveData<List<TagEntity>> = MainViewModel.liveKey.switchMap { key ->
+	val liveTagListInEdit: LiveData<List<TagEntity>> = MainViewModel.liveKey.switchMap { key ->
 		roomRepo.getLiveTagByKey(key)
 	}
 
 	fun getTagListAll(): MutableList<TagEntity> {
-		val list = tagList.value.orEmpty().toMutableList()
+		val list = liveTagListInEdit.value.orEmpty().toMutableList()
 		return list
 	}
 }

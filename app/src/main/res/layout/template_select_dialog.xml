@@ -6,9 +6,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/template_select_recycler_view_template_list"
-        android:layout_width="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -16,8 +16,9 @@
     <Button
         android:id="@+id/template_btn_add"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
+        android:text="추가"
         android:textSize="30dp"
         android:textStyle="bold"
         android:visibility="visible"

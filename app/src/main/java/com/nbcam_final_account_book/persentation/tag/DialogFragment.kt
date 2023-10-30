@@ -10,12 +10,8 @@ import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.nbcam_final_account_book.databinding.FragmentDialogBinding
 
-class DialogFragment(
-	private val context: TagFragment,
-	private val position: Int,
-	private val item: MutableList<TagModel>
-) :
-	DialogFragment() {
+
+class DialogFragment : DialogFragment() {
 
 	private var _binding: FragmentDialogBinding? = null
 	private val binding get() = _binding!!
@@ -43,8 +39,13 @@ class DialogFragment(
 		}
 
 		tvDialogDelete.setOnClickListener {
-			item.removeAt(position)
-			context.tagManageAdapter.notifyItemRemoved(position)
+//			val fragment = TagFragment()
+//			fragment.tagManageAdapter.deleteItem(object : OnDeleteItemListener {
+//				override fun onDeleteItem(position: Int) {
+//					fragment.tagList.removeAt(position)
+//					fragment.tagManageAdapter.notifyItemRemoved(position)
+//				}
+//			})
 			dismiss()
 		}
 	}

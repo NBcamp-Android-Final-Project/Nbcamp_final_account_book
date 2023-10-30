@@ -19,7 +19,7 @@ import com.nbcam_final_account_book.data.room.dao.TemplateDao
 
 @Database(
     entities = [TemplateEntity::class, DataEntity::class, EntryEntity::class, TagEntity::class, BudgetEntity::class, DeleteEntity::class],
-    version = 14
+    version = 16
 )
 abstract class AndroidRoomDataBase : RoomDatabase() {
 

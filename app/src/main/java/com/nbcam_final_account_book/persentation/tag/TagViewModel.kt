@@ -26,18 +26,17 @@ class TagViewModel(private val roomRepo: RoomRepository) : ViewModel() {
         return list
     }
 
+
     fun tagUpdateInEdit(items: List<TagEntity>) {
         viewModelScope.launch {
-            val list = items.toList()
-            Log.d("리스트1", items.toString())
+            var index = 0
+            val list = items.map { it.copy(order = index++) }
             roomRepo.deleteTagByKey(MainViewModel.liveKey.value)
-            Log.d("리스트2", items.toString())
             roomRepo.insertTagList(list)
-            Log.d("리스트3", items.toString())
         }
 
-        // 주소 참조와 값 참조의 차이
-        //
+
+
     }
 }
 

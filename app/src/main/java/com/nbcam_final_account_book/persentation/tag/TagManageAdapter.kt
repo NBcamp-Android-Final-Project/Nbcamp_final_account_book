@@ -75,8 +75,6 @@ class TagManageAdapter(
 
                 if (motionEvent.action == MotionEvent.ACTION_DOWN) {
                     dragListener.onStartDrag(this@ViewHolder)
-                } else if (motionEvent.action == MotionEvent.ACTION_UP) {
-
                 }
                 Log.d("모션", motionEvent.action.toString())
 

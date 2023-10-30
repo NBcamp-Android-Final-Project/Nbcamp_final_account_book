@@ -296,7 +296,7 @@ class RoomRepositoryImpl(
         return dao.getAllListTag()
     }
 
-    override fun getTagById(id: Int): TagEntity {
+    override fun getTagById(id: Long): TagEntity {
         val dao = database?.tagDao() ?: throw IllegalStateException("getTagById fail")
         return dao.getTagById(id)
     }
@@ -321,7 +321,7 @@ class RoomRepositoryImpl(
         }
     }
 
-    override suspend fun deleteTagById(id: Int) {
+    override suspend fun deleteTagById(id: Long) {
         val dao = database?.tagDao() ?: throw IllegalStateException("deleteTag fail")
         dao.deleteTagById(id)
     }
@@ -337,7 +337,7 @@ class RoomRepositoryImpl(
 
     override suspend fun deleteAllTag() {
         val dao = database?.tagDao() ?: throw IllegalStateException("deleteAllTag fail")
-        dao.getAllLiveTag()
+        dao.deleteAllTag()
     }
 
     override suspend fun updateTag(item: List<TagEntity>) {

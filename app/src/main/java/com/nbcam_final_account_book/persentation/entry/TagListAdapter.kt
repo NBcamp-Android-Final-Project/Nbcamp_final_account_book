@@ -5,40 +5,48 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.databinding.ItemTagBinding
+import com.nbcam_final_account_book.databinding.TemplateSelectItemBinding
 import com.nbcam_final_account_book.persentation.tag.TagModel
 
-class TagListAdapter(private val onItemClick: (TagModel) -> Unit) :
-	ListAdapter<TagModel, TagListAdapter.ViewHolder>(object :
-		DiffUtil.ItemCallback<TagModel>() {
-		override fun areItemsTheSame(oldItem: TagModel, newItem: TagModel): Boolean {
-			return oldItem.id == newItem.id
-		}
+class TagListAdapter(private val onItemClick: (TagEntity) -> Unit) :
+    ListAdapter<TagEntity, TagListAdapter.ViewHolder>(object :
+        DiffUtil.ItemCallback<TagEntity>() {
+        override fun areItemsTheSame(oldItem: TagEntity, newItem: TagEntity): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-		override fun areContentsTheSame(oldItem: TagModel, newItem: TagModel): Boolean {
-			return oldItem == newItem
-		}
-	}) {
+        override fun areContentsTheSame(oldItem: TagEntity, newItem: TagEntity): Boolean {
+            return oldItem == newItem
+        }
+    }) {
 
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-		val view = ItemTagBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-		return ViewHolder(view)
-	}
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(
+            ItemTagBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            ), onItemClick
+        )
+    }
 
-	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-		holder.onBind(getItem(position))
-	}
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.onBind(getItem(position))
+    }
 
-	inner class ViewHolder(private val binding: ItemTagBinding) :
-		RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(
+        private val binding: ItemTagBinding,
+        private val onItemClick: (TagEntity) -> Unit
+    ) :
+        RecyclerView.ViewHolder(binding.root) {
 
-		fun onBind(item: TagModel) = with(binding) {
-			ivTagIcon.setImageResource(item.img)
-			tvTagTitle.text = item.tagName
+        fun onBind(item: TagEntity) = with(binding) {
+            ivTagIcon.setImageResource(item.img)
+            tvTagTitle.text = item.title
 
-			itemView.setOnClickListener {
-				onItemClick(item)
-			}
-		}
-	}
+            itemView.setOnClickListener {
+                onItemClick(item)
+            }
+        }
+    }
 }

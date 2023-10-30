@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.EntryEntity
+import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.FragmentEntryBinding
 import com.nbcam_final_account_book.persentation.tag.TagModel
@@ -25,23 +26,23 @@ import java.util.Date
 
 class EntryFragment : Fragment() {
 
-	private var _binding: FragmentEntryBinding? = null
-	private val binding get() = _binding!!
-	private val viewModel: EntryViewModel by activityViewModels()
+    private var _binding: FragmentEntryBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: EntryViewModel by activityViewModels()
 
-	private val tagListAdapter by lazy {
-		TagListAdapter(onItemClick = { item ->
-			onItemClickEvent(item)
-		})
-	}
+    private val tagListAdapter by lazy {
+        TagListAdapter(onItemClick = { item ->
+            onItemClickEvent(item)
+        })
+    }
 
-	private fun onItemClickEvent(item: TagModel) {
+    private fun onItemClickEvent(item: TagEntity) {
 
-		binding.tvTagInput.apply {
-			text = item.tagName
-			setCompoundDrawablesWithIntrinsicBounds(item.img, 0, 0, 0)
-		}
-	}
+        binding.tvTagInput.apply {
+            text = item.title
+            setCompoundDrawablesWithIntrinsicBounds(item.img, 0, 0, 0)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,12 +55,15 @@ class EntryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initViewModel()
         initView()
-        initTag()
         editTextFormat()
+
     }
 
     private fun initView() = with(binding) {
+
+        rvTagContainer.adapter = tagListAdapter
 
         ivBack.setOnClickListener {
             requireActivity().finish()
@@ -74,54 +78,64 @@ class EntryFragment : Fragment() {
             showDatePicker()
         }
 
-		btnSave.setOnClickListener {
-			// Firebase RTDB 에 `태그`, `결제 수단`, `메모`, `금액` 저장 후, ModalBottomSheet 및 EntryActivity 종료
+        btnSave.setOnClickListener {
+            // Firebase RTDB 에 `태그`, `결제 수단`, `메모`, `금액` 저장 후, ModalBottomSheet 및 EntryActivity 종료
 
-			val tabPosition = tabLayoutPayment.selectedTabPosition
-			val payment =
-				if (tabPosition == 0) "Card" else "Cash"            // 카드 <-> 현금
-			val finance = tabLayoutFinance.selectedTabPosition      // 지출 <-> 수입
-			val date = tvDateInput.text.toString()                  // 날짜
-			val amount = edtAmount.text.toString().replace(",", "")     // 금액
-			val tag = tvTagInput.text.toString()                    // 카테고리
-			val title = edtTitle.text.toString()                    // 제목
-			val description = edtDescription.text.toString()        // 메모
-			val currentTemplate = getCurrentTemplateEntry()         // 템플릿
-			Log.d("현재 템플릿", currentTemplate.toString())
+            val tabPosition = tabLayoutPayment.selectedTabPosition
+            val payment =
+                if (tabPosition == 0) "Card" else "Cash"            // 카드 <-> 현금
+            val finance = tabLayoutFinance.selectedTabPosition      // 지출 <-> 수입
+            val date = tvDateInput.text.toString()                  // 날짜
+            val amount = edtAmount.text.toString().replace(",", "")     // 금액
+            val tag = tvTagInput.text.toString()                    // 카테고리
+            val title = edtTitle.text.toString()                    // 제목
+            val description = edtDescription.text.toString()        // 메모
+            val currentTemplate = getCurrentTemplateEntry()         // 템플릿
+            Log.d("현재 템플릿", currentTemplate.toString())
 
-			if (edtAmount.text.isNotEmpty() && currentTemplate != null) {
-				if (finance == 0) {
-					val entryEntity = EntryEntity(
-						id = 0,
-						key = currentTemplate.id,
-						type = INPUT_TYPE_PAY,
-						dateTime = date,
-						value = amount,
-						tag = tag,
-						title = title,
-						description = description
-					)
-					insertEntry(entryEntity)
-					requireActivity().finish()
-				} else {
-					val entryEntity = EntryEntity(
-						id = 0,
-						key = currentTemplate.id,
-						type = INPUT_TYPE_INCOME,
-						dateTime = date,
-						value = amount,
-						tag = tag,
-						title = title,
-						description = description
-					)
-					insertEntry(entryEntity)
-					requireActivity().finish()
-				}
+            if (edtAmount.text.isNotEmpty() && currentTemplate != null) {
+                if (finance == 0) {
+                    val entryEntity = EntryEntity(
+                        id = 0,
+                        key = currentTemplate.id,
+                        type = INPUT_TYPE_PAY,
+                        dateTime = date,
+                        value = amount,
+                        tag = tag,
+                        title = title,
+                        description = description
+                    )
+                    insertEntry(entryEntity)
+                    requireActivity().finish()
+                } else {
+                    val entryEntity = EntryEntity(
+                        id = 0,
+                        key = currentTemplate.id,
+                        type = INPUT_TYPE_INCOME,
+                        dateTime = date,
+                        value = amount,
+                        tag = tag,
+                        title = title,
+                        description = description
+                    )
+                    insertEntry(entryEntity)
+                    requireActivity().finish()
+                }
 
 
             }
 
 
+        }
+    }
+
+    private fun initViewModel() {
+        with(viewModel) {
+            liveTagList.observe(viewLifecycleOwner) {
+                if (it != null) {
+                    tagListAdapter.submitList(it)
+                }
+            }
         }
     }
 
@@ -135,35 +149,6 @@ class EntryFragment : Fragment() {
 
     private fun getData(): Pair<String?, String?> {
         return viewModel.getData()
-    }
-
-    private fun initTag() {
-
-        // 임시 데이터
-        val newList = mutableListOf<TagModel>()
-        newList.apply {
-            add(TagModel(0, R.drawable.ic_money, "월급"))
-            add(TagModel(1, R.drawable.ic_money, "부수입"))
-            add(TagModel(2, R.drawable.ic_money, "용돈"))
-            add(TagModel(3, R.drawable.ic_money, "상여"))
-            add(TagModel(4, R.drawable.ic_money, "공과금"))
-            add(TagModel(5, R.drawable.ic_money, "월세"))
-            add(TagModel(6, R.drawable.ic_money, "할부"))
-            add(TagModel(7, R.drawable.ic_money, "대출이자"))
-            add(TagModel(8, R.drawable.ic_money, "통신비"))
-            add(TagModel(9, R.drawable.ic_money, "보험"))
-            add(TagModel(10, R.drawable.ic_money, "식비"))
-            add(TagModel(11, R.drawable.ic_money, "교통비"))
-            add(TagModel(12, R.drawable.ic_money, "패션&미용"))
-            add(TagModel(13, R.drawable.ic_money, "취미"))
-            add(TagModel(14, R.drawable.ic_money, "여행"))
-            add(TagModel(15, R.drawable.ic_money, "병원비"))
-            add(TagModel(16, R.drawable.ic_money, "경조사"))
-            add(TagModel(16, R.drawable.ic_money, "기타"))
-        }
-
-        binding.rvTagContainer.adapter = tagListAdapter
-        tagListAdapter.submitList(newList)
     }
 
     private fun editTextFormat() {
@@ -205,18 +190,19 @@ class EntryFragment : Fragment() {
             val formattedDate = formatDate(year, month, day)
 
 
-			binding.tvDateInput.text = formattedDate
-		}
+            binding.tvDateInput.text = formattedDate
+        }
 
-	}
+    }
 
-	private fun formatDate(year: Int, month: Int, day: Int): String {
-		val formattedMonth = if (month < 10) "0$month" else month.toString()
-		val formattedDay = if (day < 10) "0$day" else day.toString()
-		return "$year-$formattedMonth-$formattedDay"
-	}
 
-	companion object {
-		val TAG = EntryFragment::class.simpleName
-	}
+    private fun formatDate(year: Int, month: Int, day: Int): String {
+        val formattedMonth = if (month < 10) "0$month" else month.toString()
+        val formattedDay = if (day < 10) "0$day" else day.toString()
+        return "$year-$formattedMonth-$formattedDay"
+    }
+
+    companion object {
+        val TAG = EntryFragment::class.simpleName
+    }
 }

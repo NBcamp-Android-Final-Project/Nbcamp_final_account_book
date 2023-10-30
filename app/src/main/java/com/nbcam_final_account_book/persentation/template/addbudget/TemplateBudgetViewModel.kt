@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
+import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
@@ -33,12 +35,39 @@ class TemplateBudgetViewModel(
             key = key,
             value = budget
         )
+        val newTagList = mutableListOf<TagEntity>()
+        newTagList.apply {
+            add(TagEntity(0, key, R.drawable.ic_money, "식비"))
+            add(TagEntity(0, key, R.drawable.ic_money, "교통비"))
+            add(TagEntity(0, key, R.drawable.ic_money, "취미"))
+            add(TagEntity(0, key, R.drawable.ic_money, "쇼핑"))
+
+            add(TagEntity(0, key, R.drawable.ic_money, "통신비"))
+            add(TagEntity(0, key, R.drawable.ic_money, "공과금"))
+            add(TagEntity(0, key, R.drawable.ic_money, "월세"))
+            add(TagEntity(0, key, R.drawable.ic_money, "할부"))
+            add(TagEntity(0, key, R.drawable.ic_money, "이자"))
+            add(TagEntity(0, key, R.drawable.ic_money, "보험"))
+            add(TagEntity(0, key, R.drawable.ic_money, "미용"))
+
+            add(TagEntity(0, key, R.drawable.ic_money, "여행"))
+            add(TagEntity(0, key, R.drawable.ic_money, "경조사"))
+            add(TagEntity(0, key, R.drawable.ic_money, "병원비"))
+            add(TagEntity(0, key, R.drawable.ic_money, "기타"))
+
+            add(TagEntity(0, key, R.drawable.ic_money, "월급"))
+            add(TagEntity(0, key, R.drawable.ic_money, "부수입"))
+            add(TagEntity(0, key, R.drawable.ic_money, "용돈"))
+            add(TagEntity(0, key, R.drawable.ic_money, "상여"))
+        }
+
+        roomRepo.insertTagList(newTagList)
         roomRepo.insertBudget(budgetEntity)
 
+        //firebase
         Log.d("삽입.Template 모델", currentTemplate.toString())
         fireRepo.setTemplate(fireRepo.getUser(), currentTemplate)   // 이후 firebase에 데이터 삽입
 
-        val template = "${currentTemplate.templateTitle}-${currentTemplate.id}"
 
         currentTemplate
 

@@ -12,7 +12,7 @@ data class TagEntity(
     @ColumnInfo(name = "tag_key")
     val key: String,
     @ColumnInfo(name = "tag_img")
-    val img: Int,
+    val img: Int = 0,
     @ColumnInfo(name = "tag_title")
     val title: String
 )

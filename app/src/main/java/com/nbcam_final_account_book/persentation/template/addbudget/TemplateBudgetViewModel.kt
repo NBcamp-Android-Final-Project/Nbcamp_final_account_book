@@ -35,10 +35,10 @@ class TemplateBudgetViewModel(
         )
         roomRepo.insertBudget(budgetEntity)
 
+        //firebase
         Log.d("삽입.Template 모델", currentTemplate.toString())
         fireRepo.setTemplate(fireRepo.getUser(), currentTemplate)   // 이후 firebase에 데이터 삽입
 
-        val template = "${currentTemplate.templateTitle}-${currentTemplate.id}"
 
         currentTemplate
 

@@ -18,6 +18,7 @@ import com.google.android.material.navigation.NavigationBarView
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.MainActivityBinding
+import com.nbcam_final_account_book.persentation.dialog.template.TemplateDialogFragment
 import com.nbcam_final_account_book.persentation.template.addbudget.TemplateBudgetFragment
 
 
@@ -76,6 +77,10 @@ class MainActivity : AppCompatActivity() {
 
         //toolbar 연결
         setSupportActionBar(mainToolbar)
+
+        mainToolbar.setOnClickListener {
+            showTemplateDialog()
+        }
 
         // Bottom Navigation View 초기화
         mainBottomNavi.apply {
@@ -199,6 +204,12 @@ class MainActivity : AppCompatActivity() {
     fun toggleBottomNavi(show: Boolean) = with(binding) {
         if (show) mainBottomNavi.visibility = View.VISIBLE
         else mainBottomNavi.visibility = View.GONE
+    }
+
+    private fun showTemplateDialog() {
+        val customDialog = TemplateDialogFragment()
+
+        customDialog.show(supportFragmentManager, "templateDialog")
     }
 }
 

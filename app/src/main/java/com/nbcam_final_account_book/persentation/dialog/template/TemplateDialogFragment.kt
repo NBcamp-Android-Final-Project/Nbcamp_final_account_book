@@ -107,6 +107,8 @@ class TemplateDialogFragment() : DialogFragment() {
 
             sharedViewModel.updateCurrentTemplate(item)
 
+            Toast.makeText(requireContext(), "${item.templateTitle}", Toast.LENGTH_SHORT).show()
+
         }
         builder.setPositiveButton("아니오") { dialog, _ ->
             dialog.dismiss()

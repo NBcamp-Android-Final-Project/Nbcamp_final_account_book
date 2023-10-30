@@ -5,11 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.persentation.main.MainViewModel
+import kotlinx.coroutines.launch
 
 class TagViewModel(private val roomRepo: RoomRepository) : ViewModel() {
 
@@ -20,6 +22,15 @@ class TagViewModel(private val roomRepo: RoomRepository) : ViewModel() {
 	fun getTagListAll(): MutableList<TagEntity> {
 		val list = liveTagListInEdit.value.orEmpty().toMutableList()
 		return list
+	}
+
+	fun tagUpdateInEdit(items:List<TagEntity>){
+		viewModelScope.launch {
+			for (item in items){
+				roomRepo.updateTag(item)
+			}
+
+		}
 	}
 }
 

@@ -10,7 +10,7 @@ import com.nbcam_final_account_book.databinding.ItemTagManageBinding
 import java.util.Collections
 
 interface OnStartDragListener {
-    fun onStartDrag(viewHolder: RecyclerView.ViewHolder)
+    fun onStartDrag(viewHolder: RecyclerView.ViewHolder, item: MutableList<TagEntity>)
 }
 
 interface OnDeleteItemListener {
@@ -65,7 +65,7 @@ class TagManageAdapter(
 
             ivHandlerDrag.setOnTouchListener { _, motionEvent ->
                 if (motionEvent.action == MotionEvent.ACTION_DOWN) {
-                    dragListener.onStartDrag(this@ViewHolder)
+                    dragListener.onStartDrag(this@ViewHolder,tagList)
                 }
                 return@setOnTouchListener false
             }

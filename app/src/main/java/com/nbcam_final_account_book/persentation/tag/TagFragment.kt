@@ -90,8 +90,11 @@ class TagFragment : Fragment() {
 
         tagManageAdapter.apply {
             startDrag(object : OnStartDragListener {
-                override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
+                override fun onStartDrag(viewHolder: RecyclerView.ViewHolder,item: MutableList<TagEntity>) {
+
                     touchHelper.startDrag(viewHolder)
+
+//                   viewModel.tagUpdateInEdit(item)
                 }
             })
 

@@ -51,8 +51,13 @@ class TagFragment : Fragment() {
 			findNavController().popBackStack()
 		}
 
-		ivModify.setOnClickListener {
-			findNavController().navigate(R.id.action_tagFragment_to_editTagFragment)
+		ivNewTag.setOnClickListener {
+			val pages = TagPage.NEW
+			val action = TagFragmentDirections.actionTagFragmentToEditTagFragment(
+				pages = pages,
+				tagName = null
+			)
+			findNavController().navigate(action)
 		}
 	}
 
@@ -117,6 +122,18 @@ class TagFragment : Fragment() {
 	}
 
 	private fun onItemClickEvent(position: Int, item: TagModel) {
-		findNavController().navigate(R.id.action_tagFragment_to_editTagFragment)
+		val pages = TagPage.MODIFY
+		val tagName = item.tagName
+
+		val action = TagFragmentDirections.actionTagFragmentToEditTagFragment(
+			pages = pages,
+			tagName = tagName
+		)
+		findNavController().navigate(action)
 	}
+}
+
+enum class TagPage {
+	NEW,
+	MODIFY
 }

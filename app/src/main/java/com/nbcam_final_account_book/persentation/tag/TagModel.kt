@@ -6,5 +6,3 @@ data class TagModel(
     val img: Int,
     val tagName: String
 )
-
-

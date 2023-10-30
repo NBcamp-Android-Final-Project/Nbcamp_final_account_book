@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- TODO: 텍스트 색상 변경할 거임!!! -->
-    <item android:state_enabled="true" android:color="#0000FF" /> <!-- 활성화 상태일 때 파란색 -->
-    <item android:color="#000000" /> <!-- 기본 텍스트 색상 (비활성화 상태일 때 검정색) -->
-</selector>

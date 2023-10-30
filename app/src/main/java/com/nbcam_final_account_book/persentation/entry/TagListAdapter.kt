@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.databinding.ItemTagBinding
 import com.nbcam_final_account_book.persentation.tag.TagModel
 
-class TagListAdapter(private val onItemClick: (Int, TagModel) -> Unit) :
+class TagListAdapter(private val onItemClick: (TagModel) -> Unit) :
 	ListAdapter<TagModel, TagListAdapter.ViewHolder>(object :
 		DiffUtil.ItemCallback<TagModel>() {
 		override fun areItemsTheSame(oldItem: TagModel, newItem: TagModel): Boolean {
@@ -19,7 +19,6 @@ class TagListAdapter(private val onItemClick: (Int, TagModel) -> Unit) :
 			return oldItem == newItem
 		}
 	}) {
-//	private val selectedItems = arrayOf(1)
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val view = ItemTagBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -38,21 +37,8 @@ class TagListAdapter(private val onItemClick: (Int, TagModel) -> Unit) :
 			tvTagTitle.text = item.tagName
 
 			itemView.setOnClickListener {
-				onItemClick(adapterPosition, item)
-//				selectItem(binding, item)
+				onItemClick(item)
 			}
 		}
 	}
-
-//	private fun selectItem(binding: ItemTagBinding, tag: Tag) {
-//		if (selectedItems.isEmpty()) {
-//			selectedItems.plus(tag.icon)
-//		} else {
-//			binding.ivIsChecked.visibility = View.VISIBLE
-//		}
-//	}
-//
-//	private fun changeBackgroundColor(binding: ItemTagBinding, resId: Int) {
-//		binding.root.setBackgroundColor(ContextCompat.getColor(binding.root.context, resId))
-//	}
 }

@@ -12,15 +12,24 @@ interface OnStartDragListener {
 	fun onStartDrag(viewHolder: RecyclerView.ViewHolder)
 }
 
+interface OnDeleteItemListener {
+	fun onDeleteItem(position: Int)
+}
+
 class TagManageAdapter(
 	private val tagList: MutableList<TagModel>,
 	private val onItemClick: (Int, TagModel) -> Unit
 ) : RecyclerView.Adapter<TagManageAdapter.ViewHolder>(), ItemTouchHelperListener {
 
 	private lateinit var dragListener: OnStartDragListener
+	private lateinit var deleteListener: OnDeleteItemListener
 
 	fun startDrag(listener: OnStartDragListener) {
 		this.dragListener = listener
+	}
+
+	fun deleteItem(listener: OnDeleteItemListener) {
+		this.deleteListener = listener
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -48,10 +57,9 @@ class TagManageAdapter(
 				onItemClick(adapterPosition, item)
 			}
 
+			// 다이얼로그 확인용 (추후 휴지통 아이콘에 연결할 예정)
 			ivHandlerRemove.setOnClickListener {
-				val dialog = DialogFragment()
-				tagList.removeAt(adapterPosition)
-				notifyItemRemoved(adapterPosition)
+				deleteListener.onDeleteItem(adapterPosition)
 			}
 
 			ivHandlerDrag.setOnTouchListener { _, motionEvent ->

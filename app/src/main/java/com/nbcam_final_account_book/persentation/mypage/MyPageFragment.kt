@@ -167,8 +167,6 @@ class MyPageFragment : Fragment() {
         }
         // TODO: 비밀번호 변경 기능 나중에 추가!
 
-        // TODO: 백업버튼 누르면 그 시간을 표현해주기!
-
         mypageContainerBackup.setOnClickListener {
             val currentTime = getCurrentTime()
             mypageTvBackupDate.text = "최근 백업 시간 $currentTime"
@@ -185,11 +183,19 @@ class MyPageFragment : Fragment() {
         }
 
         backupTime()?.let { backupTime ->
-            mypageTvBackupDate.text = "최근 백업 시간 $backupTime"
+            if(backupTime != "") {
+                mypageTvBackupDate.text = "최근 백업 시간 $backupTime"
+            }else {
+                mypageTvBackupDate.text = ""
+            }
         }
 
         syncTime()?.let { syncTime ->
-            mypageTvSyncDate.text = "최근 동기화 시간 $syncTime"
+            if (syncTime != "") {
+                mypageTvSyncDate.text = "최근 동기화 시간 $syncTime"
+            } else {
+                mypageTvSyncDate.text = ""
+            }
         }
 
         mypageTvLogout.setOnClickListener {

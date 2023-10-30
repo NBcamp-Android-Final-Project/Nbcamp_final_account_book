@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context=".persentation.entry.EntryFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -41,35 +42,27 @@
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialToolbar3"
-        app:spanCount="3"
+        app:spanCount="2"
         tools:listitem="@layout/item_tag" />
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/materialDivider"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_tag_container" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout_payment"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
+        app:tabSelectedTextColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialDivider"
+        app:layout_constraintTop_toBottomOf="@+id/rv_tag_container"
         app:tabBackground="@drawable/selector_tablayout"
         app:tabIconTint="@null"
         app:tabIndicator="@null"
         app:tabRippleColor="@null"
-        app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium">
+        app:tabTextAppearance="@style/TextAppearance.AppCompat.Small">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -82,29 +75,22 @@
             android:text="현금" />
     </com.google.android.material.tabs.TabLayout>
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/materialDivider2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout_payment" />
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout_finance"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:tabSelectedTextColor="@color/white"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialDivider2"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout_payment"
         app:tabBackground="@drawable/selector_tablayout"
         app:tabIconTint="@null"
         app:tabIndicator="@null"
         app:tabRippleColor="@null"
-        app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium">
+        app:tabTextAppearance="@style/TextAppearance.AppCompat.Small">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -117,43 +103,34 @@
             android:text="수입" />
     </com.google.android.material.tabs.TabLayout>
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/materialDivider3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout_finance" />
-
     <TextView
         android:id="@+id/tv_date"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:layout_marginTop="10dp"
+        android:padding="4dp"
         android:text="날짜"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialDivider3" />
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout_finance" />
 
     <TextView
         android:id="@+id/tv_date_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:hint="날짜를 입력해 주세요"
-        android:padding="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:padding="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toEndOf="@+id/tv_date"
-        app:layout_constraintTop_toBottomOf="@+id/materialDivider3" />
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout_finance" />
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/materialDivider6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_date_input" />
 
@@ -161,9 +138,9 @@
         android:id="@+id/tv_amount"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:padding="4dp"
         android:text="금액"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialDivider6" />
 
@@ -173,11 +150,11 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:hint="금액을 입력해 주세요"
-        android:maxLength="10"
         android:inputType="number"
+        android:maxLength="10"
         android:maxLines="1"
-        android:padding="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:padding="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_amount"
         app:layout_constraintTop_toBottomOf="@+id/materialDivider6" />
@@ -187,7 +164,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_amount" />
 
@@ -195,9 +171,9 @@
         android:id="@+id/tv_tag"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:padding="4dp"
         android:text="카테고리"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialDivider8" />
 
@@ -206,8 +182,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="카테고리를 선택해 주세요"
-        android:padding="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:padding="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_tag"
         app:layout_constraintTop_toBottomOf="@+id/materialDivider8" />
@@ -225,9 +201,9 @@
         android:id="@+id/tv_title"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:padding="4dp"
         android:text="제목"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialDivider4" />
 
@@ -238,8 +214,8 @@
         android:background="@android:color/transparent"
         android:hint="제목을 입력해 주세요"
         android:inputType="textMultiLine"
-        android:padding="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:padding="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_title"
         app:layout_constraintTop_toBottomOf="@+id/materialDivider4" />
@@ -257,9 +233,9 @@
         android:id="@+id/tv_description"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:padding="4dp"
         android:text="메모"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialDivider5" />
 
@@ -270,8 +246,8 @@
         android:background="@android:color/transparent"
         android:hint="메모를 입력해 주세요"
         android:inputType="textMultiLine"
-        android:padding="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:padding="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_description"
         app:layout_constraintTop_toBottomOf="@+id/materialDivider5" />
@@ -285,20 +261,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_description" />
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_save"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginVertical="16dp"
+        android:background="@drawable/entry_btn_border"
+        android:minHeight="0dp"
+        android:paddingVertical="8dp"
         android:text="확인"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialDivider7" />
+        app:layout_constraintTop_toBottomOf="@+id/materialDivider7"
+        app:layout_constraintWidth_percent="0.95" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

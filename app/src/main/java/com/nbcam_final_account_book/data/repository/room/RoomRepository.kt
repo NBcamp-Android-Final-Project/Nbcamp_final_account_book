@@ -84,7 +84,7 @@ interface RoomRepository {
     suspend fun deleteTagByKey(key: String?) // key값을 추적해서 삭제합니다. 공유하는 key값을 가진 모든 데이터를 삭제합니다.
     suspend fun deleteAllTag() // 모든 데이터를 삭제합니다. 로그아웃 시 필요합니다.
 
-    suspend fun updateTag(item: List<TagEntity>) // 태그 수정 시 필요합니다.
+    suspend fun updateTag(item: TagEntity) // 태그 수정 시 필요합니다.
 
     //deleteEntity
 

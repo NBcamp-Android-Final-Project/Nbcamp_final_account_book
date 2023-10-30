@@ -110,12 +110,9 @@ class TagFragment : Fragment() {
         }
     }
 
-    private fun onItemClickEvent(position: Int, item: TagEntity) {
-        findNavController().navigate(R.id.action_tagFragment_to_editTagFragment)
-    }
-	private fun onItemClickEvent(position: Int, item: TagModel) {
+	private fun onItemClickEvent(position: Int, item: TagEntity) {
 		val pages = TagPage.MODIFY
-		val tagName = item.tagName
+		val tagName = item.title
 
 		val action = TagFragmentDirections.actionTagFragmentToEditTagFragment(
 			pages = pages,

@@ -50,6 +50,6 @@ interface TagDao {
 
     //Update
     @Update(onConflict = REPLACE)
-    suspend fun updateTag(item:List<TagEntity>)
+    suspend fun updateTag(item:TagEntity)
 
 }

@@ -340,7 +340,7 @@ class RoomRepositoryImpl(
         dao.deleteAllTag()
     }
 
-    override suspend fun updateTag(item: List<TagEntity>) {
+    override suspend fun updateTag(item: TagEntity) {
         val dao = database?.tagDao() ?: throw IllegalStateException("updateTag fail")
 
         dao.updateTag(item)

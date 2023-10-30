@@ -52,13 +52,12 @@ class RoomRepositoryImpl(
         dao.insertTemplateList(item)
     }
 
-    override suspend fun deleteTemplate(item: TemplateEntity): List<TemplateEntity> {
+    override suspend fun deleteTemplate(item: TemplateEntity){
 
         val dao = database?.templateDao() ?: throw IllegalStateException("deleteTemplate fail")
 
         dao.deleteTemplate(item.id)
 
-        return dao.getListTemplate()
     }
 
     override suspend fun deleteAllTemplate() {

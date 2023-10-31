@@ -1,6 +1,7 @@
 package com.nbcam_final_account_book.persentation.template
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,6 +27,10 @@ class TemplateViewModel(
 
     private val _liveType: MutableLiveData<TemplateType?> = MutableLiveData()
     val liveType: LiveData<TemplateType?> get() = _liveType
+
+    init {
+        _liveType.postValue(loadType())
+    }
 
     fun updateLiveTitle(title: String?) {
         if (title != null) {
@@ -53,6 +58,24 @@ class TemplateViewModel(
 
         editor.putBoolean("key_isFirst", isFirst)
         editor.apply()
+    }
+
+    fun saveType(type: TemplateType?) {
+        Log.d("세이브타입", type.toString())
+        val sharedPref = sharedProvider.setSharedPref("name_template_type")
+        val editor = sharedPref.edit()
+
+        editor.putString("key_template_type", type?.name)
+        editor.apply()
+    }
+
+    private fun loadType(): TemplateType? {
+        val sharedPref = sharedProvider.setSharedPref("name_template_type")
+        val type = sharedPref.getString("key_template_type", null)
+
+        Log.d("로드타입", type.toString())
+
+        return TemplateType.templateType(type)
     }
 
     fun logout() { // firebase 로그아웃

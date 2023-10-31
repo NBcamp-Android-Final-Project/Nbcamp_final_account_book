@@ -65,6 +65,7 @@ class TemplateActivity : FragmentActivity() {
             liveType.observe(this@TemplateActivity, Observer { it ->
                 if (it != null) {
                     Log.d("타입", it.name)
+                    saveType(it)
                 }
             })
         }

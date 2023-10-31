@@ -24,6 +24,7 @@ import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import com.nbcam_final_account_book.persentation.firstpage.LoginViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
@@ -128,14 +129,19 @@ class MainViewModel(
     //반드시 로그아웃 시 호출되어야 함.
     fun backupDataByLogOut() {
         viewModelScope.launch(Dispatchers.IO) {
+            val templateList = roomRepo.getAllListTemplate()
             val dataList: List<DataEntity> = roomRepo.getAllData()
             val deleteKey = roomRepo.getAllDelete()
-            val templateList: List<TemplateEntity> = roomRepo.getAllListTemplate()
+
             for (dataEntity in dataList) {
                 fireRepo.updateData(user, dataEntity)
             }
             for (template in templateList) {
-                fireRepo.setTemplate(user, template)
+                Log.d("전송.템플릿", template.id)
+                val job = async {
+                    fireRepo.setTemplate(user, template)
+                }
+                job.await()
             }
             if (deleteKey.isNotEmpty()) {
                 for (key in deleteKey) {

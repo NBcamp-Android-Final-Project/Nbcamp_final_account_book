@@ -50,7 +50,7 @@ class TemplateBudgetViewModel(
             add(TagEntity(0, key, R.drawable.ic_money, "미용"))
 
             add(TagEntity(0, key, R.drawable.ic_money, "경조사"))
-            add(TagEntity(0, key, R.drawable.ic_money, "외료"))
+            add(TagEntity(0, key, R.drawable.ic_money, "의료"))
 
             add(TagEntity(0, key, R.drawable.ic_money, "월급"))
             add(TagEntity(0, key, R.drawable.ic_money, "상여"))

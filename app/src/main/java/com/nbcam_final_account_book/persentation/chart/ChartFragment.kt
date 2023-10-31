@@ -126,19 +126,43 @@ fun PieChartWithStyles(expenses: List<ChartTagModel>) {
                 // 카테고리의 이름과 퍼센트
                 if (animatedProgress > 0) {
                     val halfAngle = startAngle + animatedProgress / 2
+                    val lineStartOffset = Offset(
+                        center.x + arcRadius * cos(halfAngle.toDouble() * (Math.PI / 180)).toFloat(),
+                        center.y + arcRadius * sin(halfAngle.toDouble() * (Math.PI / 180)).toFloat()
+                    )
+                    val lineEndOffset = Offset(
+                        center.x + (arcRadius + 60.dp.toPx()) * cos(halfAngle.toDouble() * (Math.PI / 180)).toFloat(), // 선의 길이 조정
+                        center.y + (arcRadius + 60.dp.toPx()) * sin(halfAngle.toDouble() * (Math.PI / 180)).toFloat()
+                    )
+
+                    // 연결선 그리기
+                    val path = androidx.compose.ui.graphics.Path()
+                    path.moveTo(lineStartOffset.x, lineStartOffset.y)
+                    val controlPoint = Offset(
+                        center.x + (arcRadius + 15.dp.toPx()) * cos(halfAngle.toDouble() * (Math.PI / 180)).toFloat(),
+                        center.y + (arcRadius + 15.dp.toPx()) * sin(halfAngle.toDouble() * (Math.PI / 180)).toFloat()
+                    )
+                    path.quadraticBezierTo(controlPoint.x, controlPoint.y, lineEndOffset.x, lineEndOffset.y)
+
+                    drawPath(
+                        path = path,
+                        color = category.color,
+                        style = Stroke(width = 2f.dp.toPx())
+                    )
+
+                    // 텍스트 그리기
                     val textOffset = Offset(
-                        center.x + textRadius * cos(halfAngle.toDouble() * (Math.PI / 180)).toFloat() - 20.dp.toPx(),
-                        center.y + textRadius * sin(halfAngle.toDouble() * (Math.PI / 180)).toFloat()
+                        lineEndOffset.x + (if(lineEndOffset.x > center.x) 50.dp else (-50).dp).toPx(), // 텍스트 위치 조정
+                        lineEndOffset.y
                     )
                     val text = "${category.name} ${(category.amount / totalExpense * 100).toInt()}%"
                     val paint = Paint().apply {
                         color = android.graphics.Color.BLACK
-                        textSize = 12f.spToPx(density)
+                        textSize = 13f.spToPx(density)
                         typeface = Typeface.create(typeface, Typeface.BOLD)
                         textAlign = Paint.Align.CENTER
                     }
 
-                    // 텍스트를 캔버스에
                     drawIntoCanvas { canvas ->
                         canvas.nativeCanvas.drawText(
                             text,

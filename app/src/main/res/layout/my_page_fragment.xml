@@ -26,7 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:padding="10dp"
+                android:paddingHorizontal="25dp"
+                android:paddingVertical="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -36,7 +37,7 @@
                     android:layout_width="1dp"
                     android:layout_height="1dp"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.38" />
+                    app:layout_constraintGuide_percent="0.25" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/mypage_iv_profile_container"
@@ -44,7 +45,6 @@
                     android:layout_height="0dp"
                     android:background="@drawable/bg_mypage_profile"
                     android:padding="1dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toStartOf="@+id/guideline"
                     app:layout_constraintStart_toStartOf="parent"
@@ -58,16 +58,15 @@
                         android:src="@drawable/ic_mypage_profile"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="contentDescription" />
 
                     <ImageView
+                        android:id="@+id/imageView"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginBottom="5dp"
-                        android:background="@drawable/bg_mypage_profile_item"
                         android:padding="5dp"
                         android:src="@drawable/ic_camera"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -81,130 +80,129 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/mypage_iv_profile_container"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/mypage_iv_profile_container"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/mypage_tv_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_mypage_profile_item"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="2dp"
-                        android:text="아이디"
-                        android:textColor="#454545"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/mypage_iv_profile_container">
 
                     <TextView
                         android:id="@+id/mypage_tv_email"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:text="사용자 이메일"
-                        android:textColor="#454545"
-                        android:textSize="15sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/mypage_tv_id"
-                        app:layout_constraintStart_toEndOf="@+id/mypage_tv_id"
-                        app:layout_constraintTop_toTopOf="@+id/mypage_tv_id" />
-
-                    <TextView
-                        android:id="@+id/mypage_tv_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_mypage_profile_item"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="2dp"
-                        android:text="이름"
-                        android:textColor="#454545"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="@+id/mypage_tv_id"
-                        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_id"
-                        app:layout_constraintVertical_chainStyle="spread_inside" />
+                        android:textColor="#555555"
+                        android:textSize="11sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/mypage_et_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:backgroundTint="@android:color/transparent"
                         android:hint="새 이름"
                         android:maxLength="10"
                         android:maxLines="1"
                         android:padding="0dp"
                         android:textColor="#454545"
-                        android:textSize="15sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/mypage_tv_name"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/mypage_tv_email"
-                        app:layout_constraintTop_toTopOf="@+id/mypage_tv_name" />
+                        app:layout_constraintTop_toBottomOf="@id/mypage_tv_email" />
 
                     <ImageView
                         android:id="@+id/mypage_iv_edit"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:layout_marginStart="5dp"
                         android:padding="5dp"
                         android:src="@drawable/ic_edit"
                         android:textColor="#454545"
                         app:layout_constraintBottom_toBottomOf="@+id/mypage_et_name"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/mypage_et_name"
                         app:layout_constraintTop_toTopOf="@+id/mypage_et_name"
                         tools:ignore="contentDescription" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mypage_container_account_book"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/bg_mypage_profile_item"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_iv_profile_container">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_v2"
+                        android:layout_width="1dp"
+                        android:layout_height="1dp"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_begin="171dp" />
 
                     <TextView
                         android:id="@+id/mypage_tv_using_book"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/bg_mypage_profile_item"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="2dp"
                         android:text="사용중인 가계부"
-                        android:textColor="#454545"
-                        android:textStyle="bold"
+                        android:textColor="#555555"
+                        android:textSize="11sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/mypage_et_name" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/mypage_tv_using_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="15dp"
-                        android:paddingVertical="5dp"
+                        android:layout_marginEnd="20dp"
+                        android:gravity="center"
                         android:text="ooo 가계부"
                         android:textColor="#454545"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/mypage_rv_shared_users"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline_v2"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_using_book" />
+                        app:layout_constraintTop_toTopOf="@+id/mypage_rv_shared_users" />
+
+                    <View
+                        android:id="@+id/view4"
+                        android:layout_width="1dp"
+                        android:layout_height="0dp"
+                        android:layout_marginVertical="6dp"
+                        android:background="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline_v2"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/mypage_tv_shared_users"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/bg_mypage_profile_item"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="2dp"
+                        android:layout_marginStart="20dp"
                         android:text="공유 중인 사람"
-                        android:textColor="#454545"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/mypage_tv_using_name" />
+                        android:textColor="#555555"
+                        android:textSize="11sp"
+                        app:layout_constraintStart_toEndOf="@+id/guideline_v2"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/mypage_rv_shared_users"
                         android:layout_width="0dp"
+                        android:layout_marginTop="5dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline_v2"
                         app:layout_constraintTop_toBottomOf="@+id/mypage_tv_shared_users" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -429,6 +427,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_tv_logout" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:padding="10dp"
+                android:text="회원 탈퇴"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mypage_container_list" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

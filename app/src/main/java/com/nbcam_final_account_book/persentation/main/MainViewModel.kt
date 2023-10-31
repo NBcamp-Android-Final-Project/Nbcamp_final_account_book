@@ -130,12 +130,13 @@ class MainViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()
             val deleteKey = roomRepo.getAllDelete()
+            val templateList: List<TemplateEntity> = roomRepo.getAllListTemplate()
             for (dataEntity in dataList) {
-
                 fireRepo.updateData(user, dataEntity)
-
             }
-
+            for (template in templateList) {
+                fireRepo.setTemplate(user, template)
+            }
             if (deleteKey.isNotEmpty()) {
                 for (key in deleteKey) {
                     fireRepo.deleteData(user, key.key)
@@ -157,10 +158,15 @@ class MainViewModel(
     fun backupData() {
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()
+            val templateList: List<TemplateEntity> = roomRepo.getAllListTemplate()
             val deleteKey = roomRepo.getAllDelete()
             for (dataEntity in dataList) {
                 fireRepo.updateData(user, dataEntity)
             }
+            for (template in templateList) {
+                fireRepo.setTemplate(user, template)
+            }
+
 
             if (deleteKey.isNotEmpty()) {
                 for (key in deleteKey) {
@@ -181,6 +187,7 @@ class MainViewModel(
         viewModelScope.launch {
             val backUpTemplate = fireRepo.getAllTemplate(user)
             val backUpData = fireRepo.getBackupData(user)
+            if (backUpTemplate.isEmpty() || backUpData.isEmpty()) return@launch
 
             roomRepo.insertDataList(backUpData)
             with(roomRepo) {
@@ -337,7 +344,7 @@ class MainViewModelFactory(
                 ),
                 FireBaseRepositoryImpl(),
                 SharedProviderImpl(context),
-                ) as T
+            ) as T
         } else {
             throw IllegalArgumentException("Not found ViewModel class.")
         }

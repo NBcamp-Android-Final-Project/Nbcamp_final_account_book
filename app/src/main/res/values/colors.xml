@@ -20,6 +20,25 @@
     <color name="calendar_selected_arrow_icon">#EEEEEE</color>
     <color name="primary">#DEE5F1</color>
 
+    <!--차트 태그 색-->
+    <color name="chart_food">#A0FFA1</color>
+    <color name="chart_transportation">#8BE5F5</color>
+    <color name="chart_hobbies">#E6FFA1</color>
+    <color name="chart_shopping">#F2AAFF</color>
+    <color name="chart_telecommunication">#629CFF</color>
+    <color name="chart_housing">#B2FFC2</color>
+    <color name="chart_installments">#6ABEFF</color>
+    <color name="chart_insurance">#F2AAF2</color>
+    <color name="chart_beauty">#A0FFC6</color>
+    <!--경조사비-->
+    <color name="chart_special_occasions">#99C6FF</color>
+    <color name="chart_medical">#E6FFC6</color>
+    <color name="chart_salary">#F2C6AA</color>
+    <color name="chart_side_income">#A0FFE6</color>
+    <color name="chart_bonus">#FFE6FF</color>
+    <color name="chart_allowance">#D9FFF0</color>
+    <color name="chart_ect">#D1D1D1</color>
+
     <color name="chart_tab_selected_text">#FFFFFF</color>
     <color name="chart_tab_unselected_text">#B2C8ED</color>
 </resources>

@@ -5,13 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.TemplateSelectItemBinding
 
 class TemplateDialogAdapter(
     private val onItemClick: (TemplateEntity) -> Unit,
-    private val onItemLongClick: (TemplateEntity) -> Unit,
+    private val onItemDeleteClick: (TemplateEntity) -> Unit,
 
     ) : ListAdapter<TemplateEntity, TemplateDialogAdapter.ViewHolder>(
     object : DiffUtil.ItemCallback<TemplateEntity>() {
@@ -32,7 +31,7 @@ class TemplateDialogAdapter(
             TemplateSelectItemBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             ), onItemClick
-            , onItemLongClick
+            , onItemDeleteClick
 
         )
     }
@@ -46,7 +45,7 @@ class TemplateDialogAdapter(
     class ViewHolder(
         private val binding: TemplateSelectItemBinding,
         private val onItemClick: (TemplateEntity) -> Unit,
-        private val onItemLongClick: (TemplateEntity) -> Unit,
+        private val onItemDeleteClick: (TemplateEntity) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: TemplateEntity) = with(binding) {
 
@@ -57,7 +56,7 @@ class TemplateDialogAdapter(
             }
 
             itemView.setOnLongClickListener{
-                onItemLongClick(item)
+                onItemDeleteClick(item)
 
                 true
             }

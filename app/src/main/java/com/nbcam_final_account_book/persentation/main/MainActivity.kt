@@ -11,8 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationBarView
 import com.nbcam_final_account_book.R
@@ -75,9 +73,6 @@ class MainActivity : AppCompatActivity() {
             updateTemplate(extraTemplate)
         }
 
-        //toolbar 연결
-        setSupportActionBar(mainToolbar)
-
         mainToolbar.setOnClickListener {
             showTemplateDialog()
         }
@@ -90,13 +85,6 @@ class MainActivity : AppCompatActivity() {
             itemTextColor = ContextCompat.getColorStateList(context, R.color.bottom_nav_colors)
         }
 
-        //bottom navigation 연결
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.menu_home, R.id.menu_statistics, R.id.menu_chat, R.id.menu_mypage
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
         mainBottomNavi.setupWithNavController(navController)
 
         // Bottom Navigation Item Selceted 설정
@@ -218,4 +206,3 @@ class MainActivity : AppCompatActivity() {
 // 로그아웃 상태에서 데이터처리랑
 // 비로그인 회원의 데이터 처리가 같이 수행이 될 수도 있어서
 // fireabse 연결 시점도 고민
-

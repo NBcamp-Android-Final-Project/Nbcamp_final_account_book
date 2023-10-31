@@ -15,12 +15,15 @@ import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.TemplateSelectDialogBinding
 import com.nbcam_final_account_book.persentation.main.MainViewModel
 import com.nbcam_final_account_book.persentation.template.TemplateActivity
+import com.nbcam_final_account_book.persentation.template.TemplateActivity.Companion.EXTRA_TEMPLATE_TYPE
+import com.nbcam_final_account_book.persentation.template.TemplateType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+
 
 class TemplateDialogFragment() : DialogFragment() {
+
 
     private var _binding: TemplateSelectDialogBinding? = null
     private val binding get() = _binding!!
@@ -110,7 +113,9 @@ class TemplateDialogFragment() : DialogFragment() {
 
 
     private fun toTemplateActivity() {
-        val intent = Intent(requireContext(), TemplateActivity::class.java)
+        val intent = Intent(requireContext(), TemplateActivity::class.java).apply {
+            putExtra(EXTRA_TEMPLATE_TYPE, TemplateType.ADD.name)
+        }
         startActivity(intent)
     }
 

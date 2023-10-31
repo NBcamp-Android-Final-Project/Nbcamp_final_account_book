@@ -22,6 +22,7 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
+import com.nbcam_final_account_book.persentation.firstpage.LoginViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -331,13 +332,11 @@ class MainViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(
-
                 RoomRepositoryImpl(
                     AndroidRoomDataBase.getInstance(context)
                 ),
                 FireBaseRepositoryImpl(),
                 SharedProviderImpl(context),
-
                 ) as T
         } else {
             throw IllegalArgumentException("Not found ViewModel class.")

@@ -90,6 +90,6 @@ interface RoomRepository {
 
     suspend fun deleteAllDeleteEntity()
     suspend fun insertDelete(item: DeleteEntity)
-    suspend fun getAllDelete(): List<DeleteEntity>
+    fun getAllDelete(): List<DeleteEntity>
 
 }

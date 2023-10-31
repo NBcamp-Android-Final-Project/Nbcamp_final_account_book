@@ -46,15 +46,15 @@ fun convertEntryToExpenseCategory(entry: EntryEntity): ChartTagModel {
 
 val colorMap = mapOf(
     "식비" to Color(0xFFA0FFA1),
-    "교통비" to Color(0xFF8BE5F5),
+    "교통" to Color(0xFF8BE5F5),
     "취미" to Color(0xFFE6FFA1),
     "쇼핑" to Color(0xFFF2AAFF),
     "통신" to Color(0xFF629CFF),
-    "주거비" to Color(0xFFB2FFC2),
+    "주거" to Color(0xFFB2FFC2),
     "할부" to Color(0xFF6ABEFF),
     "보험" to Color(0xFFF2AAF2),
     "미용" to Color(0xFFA0FFC6),
-    "경조사비" to Color(0xFF99C6FF),
+    "경조사" to Color(0xFF99C6FF),
     "의료" to Color(0xFFE6FFC6),
     "월급" to Color(0xFFF2C6AA),
     "부수입" to Color(0xFFA0FFE6),

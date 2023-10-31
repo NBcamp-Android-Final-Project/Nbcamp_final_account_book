@@ -1,7 +1,6 @@
 package com.nbcam_final_account_book.persentation.tag
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -12,7 +11,6 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.persentation.main.MainViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TagViewModel(private val roomRepo: RoomRepository) : ViewModel() {
@@ -34,17 +32,20 @@ class TagViewModel(private val roomRepo: RoomRepository) : ViewModel() {
         }
     }
 
-
     fun tagUpdateInEdit(items: List<TagEntity>) {
         viewModelScope.launch {
-            var index = 0
+            var index = 1
             val list = items.map { it.copy(order = index++) }
             roomRepo.deleteTagByKey(MainViewModel.liveKey.value)
             roomRepo.insertTagList(list)
         }
+    }
 
+    fun deleteTag(id: Long) {
+        viewModelScope.launch {
 
-
+            roomRepo.deleteTagById(id = id)
+        }
     }
 }
 

@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.databinding.EditTagFragmentBinding
+import com.nbcam_final_account_book.persentation.main.MainViewModel
 import com.nbcam_final_account_book.persentation.tag.TagPage
 
 
@@ -16,10 +18,12 @@ class EditTagFragment : Fragment() {
 	private var _binding: EditTagFragmentBinding? = null
 	private val binding get() = _binding!!
 
+	private lateinit var key: String
 
 	private val viewModel by lazy {
 		ViewModelProvider(
-			this@EditTagFragment
+			this@EditTagFragment,
+			EditTagViewModelFactory(requireActivity())
 		)[EditTagViewModel::class.java]
 	}
 
@@ -40,36 +44,51 @@ class EditTagFragment : Fragment() {
 	private fun initView() = with(binding) {
 		val args: EditTagFragmentArgs by navArgs()
 		val page = args.pages
-		val tagName: String? = args.tagName
+		val tagName = args.tagName
+
+		category(page, tagName)
 
 		ivBack.setOnClickListener {
 			findNavController().popBackStack()
 		}
 
 		btnTagSave.setOnClickListener {
-			// 저장 버튼 클릭 시 바로 room 에 저장 되는 로직 구현
-		}
 
-		category(page, tagName)
+			if (page == TagPage.NEW) {
+				newTag()
+			} else {
+				tagModify(tagName = tagName)
+			}
+
+			findNavController().popBackStack()
+		}
 	}
 
-	private fun initViewModel() = with(viewModel) {
-		liveDummyTagInEditTag.observe(viewLifecycleOwner) {
-
-		}
-	}
-
-	private fun category(page: TagPage, tagName: String?) = when (page) {
+	private fun category(page: TagPage, tagName: TagEntity?) = when (page) {
 
 		TagPage.NEW -> {
 			binding.tvPageTitle.text = "태그 생성"
-
-			val result = binding.edtTagTitle.toString()
 		}
 
 		TagPage.MODIFY -> {
 			binding.tvPageTitle.text = "태그 수정"
-			binding.edtTagTitle.setText(tagName)
+			binding.edtTagTitle.setText(tagName!!.title)
 		}
+	}
+
+	private fun newTag() {
+		val result = binding.edtTagTitle.text.toString()
+		viewModel.insertTag(
+			TagEntity(
+				id = 0,
+				key = MainViewModel.liveKey.value.toString(),
+				title = result
+			)
+		)
+	}
+
+	private fun tagModify(tagName: TagEntity?) {
+		val result = binding.edtTagTitle.text.toString()
+		viewModel.updateTag(tagName!!, result)
 	}
 }

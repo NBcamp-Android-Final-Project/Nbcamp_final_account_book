@@ -61,7 +61,8 @@
             android:defaultValue="NEW" />
         <argument
             android:name="tagName"
-            app:argType="string"
-            app:nullable="true" />
+            app:argType="com.nbcam_final_account_book.data.model.local.TagEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>

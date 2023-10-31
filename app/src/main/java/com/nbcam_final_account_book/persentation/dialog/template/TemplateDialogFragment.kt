@@ -15,6 +15,10 @@ import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.TemplateSelectDialogBinding
 import com.nbcam_final_account_book.persentation.main.MainViewModel
 import com.nbcam_final_account_book.persentation.template.TemplateActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TemplateDialogFragment() : DialogFragment() {
 
@@ -38,8 +42,10 @@ class TemplateDialogFragment() : DialogFragment() {
             onItemClick = { item ->
                 replaceAlterDialog(item)
             },
-            onItemLongClick = {item->
-                viewModel.removeTemplate(item)
+
+            onItemDeleteClick = { item ->
+                deleteTemplate(item)
+
             }
         )
     }
@@ -79,13 +85,27 @@ class TemplateDialogFragment() : DialogFragment() {
 
                     adapter.submitList(it)
                     btnVisibility(it)
-                    Log.d("다이얼로그사이즈", it.size.toString())
+                    Log.d("템플릿사이즈", it.size.toString())
 
                 } // if
             } // observe
 
 
         }
+    }
+
+    private fun deleteTemplate(item: TemplateEntity) {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            if (!viewModel.cantDelete()) {
+
+                viewModel.removeTemplate(item)
+                val default = viewModel.getDefaultTemplate()
+
+                sharedViewModel.updateCurrentTemplateInCo(default)
+
+            }//canDelete
+        }//CoroutineScope
     }
 
 
@@ -97,6 +117,12 @@ class TemplateDialogFragment() : DialogFragment() {
     private fun btnVisibility(list: List<TemplateEntity>) {
         binding.templateBtnAdd.visibility =
             if (viewModel.getTemplateSizeInTemplateDialog(list)) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun canDelete(list: List<TemplateEntity>): Boolean {
+        Log.d("삭제", list.size.toString())
+        return viewModel.cantDelete(list)
+
     }
 
     private fun replaceAlterDialog(item: TemplateEntity) {

@@ -190,8 +190,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun toggleBottomNavi(show: Boolean) = with(binding) {
-        if (show) mainBottomNavi.visibility = View.VISIBLE
-        else mainBottomNavi.visibility = View.GONE
+        mainBottomNavi.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    fun toggleToolbar(show: Boolean) = with(binding) {
+        mainToolbar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private fun showTemplateDialog() {

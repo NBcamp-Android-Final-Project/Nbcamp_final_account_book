@@ -39,27 +39,25 @@ class TemplateBudgetViewModel(
         val newTagList = mutableListOf<TagEntity>()
         newTagList.apply {
             add(TagEntity(0, key, R.drawable.ic_money, "식비"))
-            add(TagEntity(0, key, R.drawable.ic_money, "교통비"))
+            add(TagEntity(0, key, R.drawable.ic_money, "교통"))
             add(TagEntity(0, key, R.drawable.ic_money, "취미"))
             add(TagEntity(0, key, R.drawable.ic_money, "쇼핑"))
 
-            add(TagEntity(0, key, R.drawable.ic_money, "통신비"))
-            add(TagEntity(0, key, R.drawable.ic_money, "공과금"))
-            add(TagEntity(0, key, R.drawable.ic_money, "월세"))
+            add(TagEntity(0, key, R.drawable.ic_money, "통신"))
+            add(TagEntity(0, key, R.drawable.ic_money, "주거"))
             add(TagEntity(0, key, R.drawable.ic_money, "할부"))
-            add(TagEntity(0, key, R.drawable.ic_money, "이자"))
             add(TagEntity(0, key, R.drawable.ic_money, "보험"))
             add(TagEntity(0, key, R.drawable.ic_money, "미용"))
 
-            add(TagEntity(0, key, R.drawable.ic_money, "여행"))
             add(TagEntity(0, key, R.drawable.ic_money, "경조사"))
-            add(TagEntity(0, key, R.drawable.ic_money, "병원비"))
-            add(TagEntity(0, key, R.drawable.ic_money, "기타"))
+            add(TagEntity(0, key, R.drawable.ic_money, "외료"))
 
             add(TagEntity(0, key, R.drawable.ic_money, "월급"))
+            add(TagEntity(0, key, R.drawable.ic_money, "상여"))
             add(TagEntity(0, key, R.drawable.ic_money, "부수입"))
             add(TagEntity(0, key, R.drawable.ic_money, "용돈"))
-            add(TagEntity(0, key, R.drawable.ic_money, "상여"))
+
+            add(TagEntity(0, key, R.drawable.ic_money, "기타"))
         }
 
         roomRepo.insertTagList(newTagList)

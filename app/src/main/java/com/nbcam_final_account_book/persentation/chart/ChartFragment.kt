@@ -40,11 +40,9 @@ import com.nbcam_final_account_book.databinding.ChartFragmentBinding
 import kotlin.math.cos
 import kotlin.math.sin
 
-data class ExpenseCategory(val name: String, val amount: Float, val color: Color)
-
 @Composable
-fun PieChartWithStyles(expenses: List<ExpenseCategory>) {
-    val totalExpense = expenses.sumByDouble { it.amount.toDouble() }.toFloat()
+fun PieChartWithStyles(expenses: List<ChartTagModel>) {
+    val totalExpense = expenses.sumByDouble { it.amount }
 
     // 애니메이션 지속 시관과 지연 시간
     val animationDuration = 700
@@ -53,9 +51,9 @@ fun PieChartWithStyles(expenses: List<ExpenseCategory>) {
     // 시작값은 0f로 초기화합니다.
     // 각 카테고리 별로 애니메이션의 진행 상태를 초기화
     val animatedProgresses = expenses.mapIndexed { index, category ->
-        val sweep = 360f * (category.amount / totalExpense)
+        val sweep = 360.0 * (category.amount / totalExpense)
         animateFloatAsState(
-            targetValue = 0f,
+            targetValue = sweep.toFloat(),
             animationSpec = tween(
                 durationMillis = animationDuration,
                 delayMillis = animationDelay * index,
@@ -78,10 +76,11 @@ fun PieChartWithStyles(expenses: List<ExpenseCategory>) {
 
         // 각 카테고리별로 애니메이션의 진행 상태를 업데이트
         animationStateList.forEachIndexed { index, state ->
-            val sweep = 360f * (expenses[index].amount / totalExpense)
+            val category = expenses[index]
+            val sweep = (360.0 * (category.amount / totalExpense)).toFloat()
             animate(
                 initialValue = 0f,
-                targetValue = sweep,
+                targetValue = sweep.toFloat(),
                 animationSpec = animationSpec
             ) { value, _ ->
                 state.value = value
@@ -118,7 +117,7 @@ fun PieChartWithStyles(expenses: List<ExpenseCategory>) {
                 drawArc(
                     color = category.color,
                     startAngle = startAngle,
-                    sweepAngle = animatedProgress,
+                    sweepAngle = animatedProgress.toFloat(),
                     useCenter = false,
                     size = Size(size.width, size.height),
                     style = Stroke(width = arcRadius, cap = StrokeCap.Butt)
@@ -128,10 +127,8 @@ fun PieChartWithStyles(expenses: List<ExpenseCategory>) {
                 if (animatedProgress > 0) {
                     val halfAngle = startAngle + animatedProgress / 2
                     val textOffset = Offset(
-                        center.x + textRadius * cos(
-                            Math.toRadians(halfAngle.toDouble()).toFloat()
-                        ) - 20.dp.toPx(),
-                        center.y + textRadius * sin(Math.toRadians(halfAngle.toDouble()).toFloat())
+                        center.x + textRadius * cos(halfAngle.toDouble() * (Math.PI / 180)).toFloat() - 20.dp.toPx(),
+                        center.y + textRadius * sin(halfAngle.toDouble() * (Math.PI / 180)).toFloat()
                     )
                     val text = "${category.name} ${(category.amount / totalExpense * 100).toInt()}%"
                     val paint = Paint().apply {
@@ -162,14 +159,7 @@ fun PieChartWithStyles(expenses: List<ExpenseCategory>) {
 private fun Float.spToPx(density: Float): Float = this * density
 
 @Composable
-fun ExpenseScreen() {
-    // 테스트 데이터~~~
-    val expenses = listOf(
-        ExpenseCategory("식비", 120f, Color(0xFFA0FFA1)),
-        ExpenseCategory("취미", 80f, Color(0xFF8BE5F5)),
-        ExpenseCategory("교통비", 70f, Color(0xFFE6FFA1)),
-        ExpenseCategory("쇼핑", 150f, Color(0xFFF2AAFF))
-    )
+fun ExpenseScreen(expenses: List<ChartTagModel>) {
 
     // 중앙에 원형 차트
     Column(
@@ -208,11 +198,11 @@ class ChartFragment : Fragment() {
         initViewModel()
 
         // ComposeView에서 Compose UI
-        binding.composeView.setContent {
-            MaterialTheme {
-                ExpenseScreen()
-            }
-        }
+//        binding.composeView.setContent {
+//            MaterialTheme {
+//                ExpenseScreen(expenses)
+//            }
+//        }
     }
 
     private fun initView() = with(binding) { // 레이아웃 제어
@@ -233,9 +223,20 @@ class ChartFragment : Fragment() {
         }
     }
 
-    private fun initViewModel() = with(viewModel) { //뷰 모델 제어
-        liveEntryListInChart.observe(viewLifecycleOwner) {
-
+    private fun initViewModel() = with(viewModel) {
+        liveEntryListInChart.observe(viewLifecycleOwner) { entryList ->
+            val expenses = entryList.map {
+                ChartTagModel(
+                    name = it.tag,
+                    amount = it.value.toDouble(),
+                    color = getCategoryColor(it.tag)
+                )
+            }
+            binding.composeView.setContent {
+                MaterialTheme {
+                    ExpenseScreen(expenses)
+                }
+            }
         }
     }
 }

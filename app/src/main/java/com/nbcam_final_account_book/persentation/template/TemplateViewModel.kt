@@ -24,11 +24,24 @@ class TemplateViewModel(
     private val _liveTitle: MutableLiveData<String?> = MutableLiveData()
     val liveTitle: LiveData<String?> get() = _liveTitle
 
+    private val _liveType: MutableLiveData<TemplateType?> = MutableLiveData()
+    val liveType: LiveData<TemplateType?> get() = _liveType
+
     fun updateLiveTitle(title: String?) {
         if (title != null) {
             _liveTitle.value = title
         }
     }
+
+    fun updateType(type: TemplateType?) {
+        if (type == null) return
+        _liveType.postValue(type)
+    }
+
+    fun type(): TemplateType? {
+        return liveType.value
+    }
+
 
     fun getCurrentTitle(): String {
         return liveTitle.value.toString()

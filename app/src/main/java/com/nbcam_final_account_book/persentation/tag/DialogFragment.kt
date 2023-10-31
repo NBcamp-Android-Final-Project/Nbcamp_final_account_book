@@ -8,12 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
+import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.databinding.FragmentDialogBinding
 
 class DialogFragment(
 	private val context: TagFragment,
 	private val position: Int,
-	private val item: MutableList<TagModel>
+	private val item: MutableList<TagEntity>
 ) :
 	DialogFragment() {
 

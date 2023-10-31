@@ -87,6 +87,13 @@ class FireBaseRepositoryImpl(
         }
     }
 
+    override suspend fun deleteTemplate(user: String, key: String) {
+        val database = Firebase.database
+        val myRef = database.getReference("$user/$TEMPLATE_LIST")
+
+        myRef.child(key).removeValue()
+    }
+
     override suspend fun updateData(user: String, item: DataEntity) {
         val database = Firebase.database
         val path = "$user/$TEMPLATE_DATA"
@@ -120,6 +127,14 @@ class FireBaseRepositoryImpl(
             Log.e("FirebaseRepo", "BackupData 데이터 가져오기 중 오류 발생")
             return emptyList()
         }
+    }
+
+    override suspend fun deleteData(user: String, key: String) {
+        val database = Firebase.database
+        val path = "$user/$TEMPLATE_DATA"
+        val myRef = database.getReference(path)
+
+        myRef.child(key).removeValue()
     }
 
 

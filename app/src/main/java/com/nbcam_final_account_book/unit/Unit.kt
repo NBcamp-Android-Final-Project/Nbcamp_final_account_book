@@ -1,7 +1,5 @@
 package com.nbcam_final_account_book.unit
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import java.util.concurrent.atomic.AtomicLong
 
 object Unit {
@@ -14,11 +12,10 @@ object Unit {
     const val TEMPLATE_LIST = "template_list"
     const val TEMPLATE_DATA = "template_data"
 
-    //id 부여
 
-    private val budgetSetId = AtomicLong(0)
-    fun setIdBudget():Long{
-        return budgetSetId.getAndIncrement()
+    val tagSetId = AtomicLong(0)
+    fun setIdTag():Long{
+        return tagSetId.getAndIncrement()
     }
 
     //Todo owner를 android studio에서 고려

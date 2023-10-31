@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 interface ItemTouchHelperListener {
 	fun onItemMove(fromPosition: Int, toPosition: Int)
 	fun onItemSwipe(position: Int)
+	fun onItemChanged()
 }
 
 class ItemTouchHelperCallback(private val listener: ItemTouchHelperListener) :
@@ -35,6 +36,14 @@ class ItemTouchHelperCallback(private val listener: ItemTouchHelperListener) :
 
 	override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 		itemTouchHelperListener.onItemSwipe(viewHolder.adapterPosition)
+	}
+
+	override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+		super.onSelectedChanged(viewHolder, actionState)
+		if (actionState == ItemTouchHelper.ACTION_STATE_IDLE){
+			itemTouchHelperListener.onItemChanged()
+		}
+
 	}
 
 	override fun isLongPressDragEnabled(): Boolean = false

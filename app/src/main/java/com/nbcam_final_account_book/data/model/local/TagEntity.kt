@@ -8,11 +8,13 @@ import androidx.room.PrimaryKey
 data class TagEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "tag_id")
-    val id: Int,
+    val id: Long,
     @ColumnInfo(name = "tag_key")
     val key: String,
     @ColumnInfo(name = "tag_img")
     val img: Int = 0,
     @ColumnInfo(name = "tag_title")
-    val title: String
+    val title: String,
+    @ColumnInfo(name = "tag_order")
+    val order: Int = 0
 )

@@ -3,6 +3,7 @@ package com.nbcam_final_account_book.data.repository.room
 import androidx.lifecycle.LiveData
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.DataEntity
+import com.nbcam_final_account_book.data.model.local.DeleteEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
@@ -74,15 +75,21 @@ interface RoomRepository {
 
     fun getAllLiveTag(): LiveData<List<TagEntity>>//데이터 백업 시 반환되는 데이터
     fun getAllListTag(): List<TagEntity> //데이터 백업 시 반환되는 데이터
-    fun getTagById(id: Int): TagEntity // 데이터 수정시 수정할 데이터
+    fun getTagById(id: Long): TagEntity // 데이터 수정시 수정할 데이터
     fun getLiveTagByKey(key: String?): LiveData<List<TagEntity>> //템플릿 선택 시 반환되는 데이터
     fun getListTagKey(key: String?): List<TagEntity> //템플릿 선택 백업 시
 
 
-    suspend fun deleteTagById(id: Int) // id를 추적해서 삭제합니다. 특정 태그 삭제 시 필요합니다.
+    suspend fun deleteTagById(id: Long) // id를 추적해서 삭제합니다. 특정 태그 삭제 시 필요합니다.
     suspend fun deleteTagByKey(key: String?) // key값을 추적해서 삭제합니다. 공유하는 key값을 가진 모든 데이터를 삭제합니다.
     suspend fun deleteAllTag() // 모든 데이터를 삭제합니다. 로그아웃 시 필요합니다.
 
     suspend fun updateTag(item: TagEntity) // 태그 수정 시 필요합니다.
+
+    //deleteEntity
+
+    suspend fun deleteAllDeleteEntity()
+    suspend fun insertDelete(item: DeleteEntity)
+    suspend fun getAllDelete(): List<DeleteEntity>
 
 }

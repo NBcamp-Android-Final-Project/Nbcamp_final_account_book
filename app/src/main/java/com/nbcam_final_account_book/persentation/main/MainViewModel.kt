@@ -90,6 +90,13 @@ class MainViewModel(
         _mainLiveCurrentTemplate.value = item
     }
 
+    suspend fun updateCurrentTemplateInCo(item: TemplateEntity?) {
+        if (item == null) return
+        _mainLiveCurrentTemplate.postValue(item)
+        //postValue의 단점 : 쓰레드에 직접적으로 관련하지 않기 때문에 여러 데이터가 변경되지 않는 상황에서는 명확한 값이 지정될 수 없음
+        //ex) 주식 차트 혹은 코인 차트같이 움직이는 라이브 데이터 같은 상황에서는 사용하지 않는게 좋음
+    }
+
     //템플릿 룸으로 백업 데이터를 저장 혹은 업데이트 해주는 로직
     //템플릿이 전환되는 순간에 호출되어야 함.
     fun updataBackupData() = with(roomRepo) {
@@ -121,9 +128,21 @@ class MainViewModel(
     fun backupDataByLogOut() {
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()
+            val deleteKey = roomRepo.getAllDelete()
             for (dataEntity in dataList) {
+
                 fireRepo.updateData(user, dataEntity)
+
             }
+
+            if (deleteKey.isNotEmpty()) {
+                for (key in deleteKey) {
+                    fireRepo.deleteData(user, key.key)
+                    fireRepo.deleteTemplate(user, key.key)
+                }
+            }
+            roomRepo.deleteAllDeleteEntity()
+            Log.d("딜리트", deleteKey.size.toString())
             saveSharedPrefIsLogin(false)
             roomRepo.deleteAllData()
         }
@@ -137,13 +156,25 @@ class MainViewModel(
     fun backupData() {
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()
+            val deleteKey = roomRepo.getAllDelete()
             for (dataEntity in dataList) {
                 fireRepo.updateData(user, dataEntity)
             }
+
+            if (deleteKey.isNotEmpty()) {
+                for (key in deleteKey) {
+                    fireRepo.deleteData(user, key.key)
+                    fireRepo.deleteTemplate(user, key.key)
+                }
+            }
+
+            roomRepo.deleteAllDeleteEntity()
+            Log.d("딜리트", deleteKey.size.toString())
         }
     }
 
     //firebase 데이터 동기화
+    //Todo 동기화 실패 시 예외처리하기
     fun firstStartSynchronizationData() {
 
         viewModelScope.launch {
@@ -257,62 +288,6 @@ class MainViewModel(
         }
 
     }
-
-    fun synchronizationData() {
-
-        viewModelScope.launch {
-            val backUpTemplate = fireRepo.getAllTemplate(user)
-            val backUpData = fireRepo.getBackupData(user)
-
-
-            with(roomRepo) {
-                for (templateEntity in backUpTemplate) {
-                    updateTemplate(templateEntity)
-                }
-                for (dataEntity in backUpData) {
-                    updateData(dataEntity)
-                }
-
-                if (backUpData.isNotEmpty()) {
-                    for (loadData in backUpData) {
-                        val loadEntry: List<EntryEntity> =
-                            Gson().fromJson(
-                                loadData.entryList,
-                                object : TypeToken<List<EntryEntity>>() {}.type
-                            )
-
-                        val loadTag: List<TagEntity> =
-                            Gson().fromJson(
-                                loadData.tagList,
-                                object : TypeToken<List<TagEntity>>() {}.type
-                            )
-
-                        val loadBudget: List<BudgetEntity> =
-                            Gson().fromJson(
-                                loadData.budgetList,
-                                object : TypeToken<List<BudgetEntity>>() {}.type
-                            )
-
-                        for (entryEntity in loadEntry) {
-                            updateEntry(entryEntity)
-                        }
-                        for (budgetEntity in loadBudget) {
-                            updateBudget(budgetEntity)
-                        }
-                        for (tagEntity in loadTag) {
-                            updateTag(tagEntity)
-                        }
-                    }
-
-                }
-
-            }//with(roomRepo)
-        } // ViewModelScope
-
-
-    }
-
-
 
 
     //SharedPref

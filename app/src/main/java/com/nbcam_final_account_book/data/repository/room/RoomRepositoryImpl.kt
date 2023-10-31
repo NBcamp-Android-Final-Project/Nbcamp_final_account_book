@@ -360,7 +360,7 @@ class RoomRepositoryImpl(
         dao.insertDelete(item)
     }
 
-    override suspend fun getAllDelete(): List<DeleteEntity> {
+    override fun getAllDelete(): List<DeleteEntity> {
         val dao = database?.deleteDao() ?: throw IllegalStateException("getAllDelete fail")
 
         return dao.getAllDelete()

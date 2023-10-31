@@ -13,8 +13,8 @@ interface DeleteDao {
     fun getAllDelete(): List<DeleteEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertDelete(item: DeleteEntity)
+    suspend fun insertDelete(item: DeleteEntity)
 
     @Query("DELETE FROM delete_table")
-    fun deleteAllDeleteEntity()
+    suspend fun deleteAllDeleteEntity()
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         if (!isLogin) {
             synchronizationDataFromFireBase()
+            Toast.makeText(this@MainActivity, "동기화가 완료 되었습니다.", Toast.LENGTH_SHORT).show()
         }
 
         Log.d("도착", extraTemplate.toString())

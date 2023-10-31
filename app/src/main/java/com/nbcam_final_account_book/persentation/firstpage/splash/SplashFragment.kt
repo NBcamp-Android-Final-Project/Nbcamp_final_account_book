@@ -11,11 +11,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
-import com.nbcam_final_account_book.databinding.FirstLoginFragmentBinding
 import com.nbcam_final_account_book.databinding.FirstSplashFragmentBinding
 import com.nbcam_final_account_book.persentation.firstpage.LoginViewModel
 import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateActivity
+import com.nbcam_final_account_book.persentation.template.TemplateActivity.Companion.EXTRA_TEMPLATE_TYPE
+import com.nbcam_final_account_book.persentation.template.TemplateType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,7 +54,7 @@ class SplashFragment : Fragment() {
                     toTemplateActivity() //최초 로그인 시 템플릿으로 이동
                 }
             }
-        }else{
+        } else {
             findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
         }
     }
@@ -73,7 +74,9 @@ class SplashFragment : Fragment() {
     }
 
     private fun toTemplateActivity() {
-        val intent = Intent(requireContext(), TemplateActivity::class.java)
+        val intent = Intent(requireContext(), TemplateActivity::class.java).apply {
+            putExtra(EXTRA_TEMPLATE_TYPE, TemplateType.NEW.name)
+        }
         startActivity(intent)
         requireActivity().finish()
     }

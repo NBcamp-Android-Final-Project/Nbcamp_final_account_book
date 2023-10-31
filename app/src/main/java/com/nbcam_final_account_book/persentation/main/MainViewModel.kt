@@ -22,6 +22,7 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
+import com.nbcam_final_account_book.persentation.firstpage.LoginViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -93,9 +94,9 @@ class MainViewModel(
     suspend fun updateCurrentTemplateInCo(item: TemplateEntity?) {
         if (item == null) return
         _mainLiveCurrentTemplate.postValue(item)
-        //postValue의 단점 : 쓰레드에 직접적으로 관련하지 않기 때문에 여러 데이터가 변경되지 않는 상황에서는 명확한 값이 지정될 수 없음
-        //ex) 주식 차트 혹은 코인 차트같이 움직이는 라이브 데이터 같은 상황에서는 사용하지 않는게 좋음
+
     }
+
 
     //템플릿 룸으로 백업 데이터를 저장 혹은 업데이트 해주는 로직
     //템플릿이 전환되는 순간에 호출되어야 함.
@@ -243,6 +244,7 @@ class MainViewModel(
                 deleteAllBudget()
                 deleteAllEntry()
                 deleteAllData()
+                deleteAllDeleteEntity()
                 insertTemplateList(backUpTemplate)
                 insertDataList(backUpData)
 
@@ -330,13 +332,11 @@ class MainViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(
-
                 RoomRepositoryImpl(
                     AndroidRoomDataBase.getInstance(context)
                 ),
                 FireBaseRepositoryImpl(),
                 SharedProviderImpl(context),
-
                 ) as T
         } else {
             throw IllegalArgumentException("Not found ViewModel class.")

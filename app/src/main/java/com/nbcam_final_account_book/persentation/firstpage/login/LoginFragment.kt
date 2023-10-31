@@ -26,11 +26,10 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.FirstLoginFragmentBinding
-import com.nbcam_final_account_book.databinding.TemplateBudgetFragmentBinding
 import com.nbcam_final_account_book.persentation.firstpage.LoginViewModel
-import com.nbcam_final_account_book.persentation.firstpage.LoginViewModelFactory
 import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateActivity
+import com.nbcam_final_account_book.persentation.template.TemplateType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,7 +39,7 @@ class LoginFragment : Fragment() {
 
     private var _binding: FirstLoginFragmentBinding? = null
     private val binding get() = _binding!!
-    private val viewModel : LoginViewModel by activityViewModels()
+    private val viewModel: LoginViewModel by activityViewModels()
     private lateinit var auth: FirebaseAuth
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
@@ -149,7 +148,6 @@ class LoginFragment : Fragment() {
     }
 
 
-
     private fun toMainActivity() {
         val intent = Intent(requireContext(), MainActivity::class.java)
         startActivity(intent)
@@ -157,7 +155,9 @@ class LoginFragment : Fragment() {
     }
 
     private fun toTemplateActivity() {
-        val intent = Intent(requireContext(), TemplateActivity::class.java)
+        val intent = Intent(requireContext(), TemplateActivity::class.java).apply {
+            putExtra(TemplateActivity.EXTRA_TEMPLATE_TYPE, TemplateType.NEW.name)
+        }
         startActivity(intent)
         requireActivity().finish()
     }

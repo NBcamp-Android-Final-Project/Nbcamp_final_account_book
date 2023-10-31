@@ -43,6 +43,7 @@ class PinFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as MainActivity).toggleToolbar(false)
         (requireActivity() as MainActivity).toggleBottomNavi(false)
         navController = findNavController()
         initView()
@@ -50,6 +51,7 @@ class PinFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        (requireActivity() as MainActivity).toggleToolbar(true)
         (requireActivity() as MainActivity).toggleBottomNavi(true)
         _binding = null
     }

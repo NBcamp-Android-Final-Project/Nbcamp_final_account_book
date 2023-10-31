@@ -31,6 +31,10 @@ import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MyPageFragmentBinding
 import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
 import com.nbcam_final_account_book.persentation.main.MainViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -183,9 +187,9 @@ class MyPageFragment : Fragment() {
         }
 
         backupTime()?.let { backupTime ->
-            if(backupTime != "") {
+            if (backupTime != "") {
                 mypageTvBackupDate.text = "최근 백업 시간 $backupTime"
-            }else {
+            } else {
                 mypageTvBackupDate.text = ""
             }
         }
@@ -199,13 +203,15 @@ class MyPageFragment : Fragment() {
         }
 
         mypageTvLogout.setOnClickListener {
+
             val auth = FirebaseAuth.getInstance()
-            auth.signOut()
             backupDataByLogOut()
+            auth.signOut()
             cleanRoom()
             val intent = Intent(requireContext(), FirstActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
+
         }
     }
 
@@ -292,6 +298,7 @@ class MyPageFragment : Fragment() {
     }
 
     private fun backupDataByLogOut() {
+
         sharedViewModel.backupDataByLogOut()
     }
 
@@ -376,7 +383,7 @@ class MyPageFragment : Fragment() {
             .show()
     }
 
-    private fun syncData(){
+    private fun syncData() {
         sharedViewModel.synchronizationDataWithBtn()
     }
 

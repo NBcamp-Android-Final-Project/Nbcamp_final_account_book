@@ -87,6 +87,16 @@ class FireBaseRepositoryImpl(
         }
     }
 
+    override suspend fun setTemplateList(user: String, items: List<TemplateEntity>) {
+        val database = Firebase.database
+        val path = "$user/$TEMPLATE_LIST"
+        val myRef = database.getReference(path)
+        for (item in items){
+            myRef.child(item.id).setValue(item)
+        }
+
+    }
+
     override suspend fun deleteTemplate(user: String, key: String) {
         val database = Firebase.database
         val myRef = database.getReference("$user/$TEMPLATE_LIST")
@@ -100,6 +110,17 @@ class FireBaseRepositoryImpl(
         val myRef = database.getReference(path)
 
         myRef.child(item.id).setValue(item)
+    }
+
+    override suspend fun updateDataList(user: String, items: List<DataEntity>) {
+        val database = Firebase.database
+        val path = "$user/$TEMPLATE_DATA"
+        val myRef = database.getReference(path)
+
+        for (item in items){
+            myRef.child(item.id).setValue(item)
+        }
+
     }
 
     override suspend fun getBackupData(user: String): List<DataEntity> {

@@ -127,22 +127,17 @@ class MainViewModel(
     }
 
     //반드시 로그아웃 시 호출되어야 함.
+
+
     fun backupDataByLogOut() {
         viewModelScope.launch(Dispatchers.IO) {
             val templateList = roomRepo.getAllListTemplate()
             val dataList: List<DataEntity> = roomRepo.getAllData()
             val deleteKey = roomRepo.getAllDelete()
 
-            for (dataEntity in dataList) {
-                fireRepo.updateData(user, dataEntity)
-            }
-            for (template in templateList) {
-                Log.d("전송.템플릿", template.id)
-                val job = async {
-                    fireRepo.setTemplate(user, template)
-                }
-                job.await()
-            }
+            fireRepo.setTemplateList(user,templateList)
+            fireRepo.updateDataList(user,dataList)
+
             if (deleteKey.isNotEmpty()) {
                 for (key in deleteKey) {
                     fireRepo.deleteData(user, key.key)
@@ -166,12 +161,8 @@ class MainViewModel(
             val dataList: List<DataEntity> = roomRepo.getAllData()
             val templateList: List<TemplateEntity> = roomRepo.getAllListTemplate()
             val deleteKey = roomRepo.getAllDelete()
-            for (dataEntity in dataList) {
-                fireRepo.updateData(user, dataEntity)
-            }
-            for (template in templateList) {
-                fireRepo.setTemplate(user, template)
-            }
+            fireRepo.setTemplateList(user,templateList)
+            fireRepo.updateDataList(user,dataList)
 
 
             if (deleteKey.isNotEmpty()) {

@@ -13,11 +13,6 @@ object Unit {
     const val TEMPLATE_DATA = "template_data"
 
 
-    val tagSetId = AtomicLong(0)
-    fun setIdTag():Long{
-        return tagSetId.getAndIncrement()
-    }
-
     //Todo owner를 android studio에서 고려
 
 }

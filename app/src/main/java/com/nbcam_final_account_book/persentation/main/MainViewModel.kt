@@ -24,6 +24,7 @@ import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import com.nbcam_final_account_book.persentation.firstpage.LoginViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
@@ -126,15 +127,16 @@ class MainViewModel(
     }
 
     //반드시 로그아웃 시 호출되어야 함.
+
+
     fun backupDataByLogOut() {
         viewModelScope.launch(Dispatchers.IO) {
+            val templateList = roomRepo.getAllListTemplate()
             val dataList: List<DataEntity> = roomRepo.getAllData()
             val deleteKey = roomRepo.getAllDelete()
-            for (dataEntity in dataList) {
 
-                fireRepo.updateData(user, dataEntity)
-
-            }
+            fireRepo.setTemplateList(user,templateList)
+            fireRepo.updateDataList(user,dataList)
 
             if (deleteKey.isNotEmpty()) {
                 for (key in deleteKey) {
@@ -157,10 +159,11 @@ class MainViewModel(
     fun backupData() {
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()
+            val templateList: List<TemplateEntity> = roomRepo.getAllListTemplate()
             val deleteKey = roomRepo.getAllDelete()
-            for (dataEntity in dataList) {
-                fireRepo.updateData(user, dataEntity)
-            }
+            fireRepo.setTemplateList(user,templateList)
+            fireRepo.updateDataList(user,dataList)
+
 
             if (deleteKey.isNotEmpty()) {
                 for (key in deleteKey) {
@@ -181,6 +184,7 @@ class MainViewModel(
         viewModelScope.launch {
             val backUpTemplate = fireRepo.getAllTemplate(user)
             val backUpData = fireRepo.getBackupData(user)
+            if (backUpTemplate.isEmpty() || backUpData.isEmpty()) return@launch
 
             roomRepo.insertDataList(backUpData)
             with(roomRepo) {
@@ -337,7 +341,7 @@ class MainViewModelFactory(
                 ),
                 FireBaseRepositoryImpl(),
                 SharedProviderImpl(context),
-                ) as T
+            ) as T
         } else {
             throw IllegalArgumentException("Not found ViewModel class.")
         }

@@ -1,4 +1,4 @@
-package com.nbcam_final_account_book.persentation.dialog.template
+package com.nbcam_final_account_book.persentation.template.dialog.template
 
 import android.app.AlertDialog
 import android.content.Intent

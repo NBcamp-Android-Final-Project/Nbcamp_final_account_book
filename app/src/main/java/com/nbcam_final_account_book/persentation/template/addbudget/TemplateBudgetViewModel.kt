@@ -14,7 +14,6 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.data.sharedprovider.SharedProvider
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
-import com.nbcam_final_account_book.unit.Unit.setIdTag
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -63,9 +62,9 @@ class TemplateBudgetViewModel(
         roomRepo.insertTagList(newTagList)
         roomRepo.insertBudget(budgetEntity)
 
-        //firebase
-        Log.d("삽입.Template 모델", currentTemplate.toString())
-        fireRepo.setTemplate(fireRepo.getUser(), currentTemplate)   // 이후 firebase에 데이터 삽입
+//        //firebase
+//        Log.d("삽입.Template 모델", currentTemplate.toString())
+//        fireRepo.setTemplate(fireRepo.getUser(), currentTemplate)   // 이후 firebase에 데이터 삽입
 
 
         currentTemplate

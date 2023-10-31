@@ -128,8 +128,6 @@ class TemplateBudgetFragment : Fragment() {
                 startActivity(intent)
                 requireActivity().finish()
             }
-
-
         }
 
     }

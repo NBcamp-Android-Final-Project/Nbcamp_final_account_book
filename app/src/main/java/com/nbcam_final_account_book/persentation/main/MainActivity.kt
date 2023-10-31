@@ -128,6 +128,7 @@ class MainActivity : AppCompatActivity() {
                     saveSharedPrefCurrentUser(it)
                     Log.d("키값.현재", it.toString())
                     setKey()
+                    setTitle(it)
                 }
                 Log.d("옵저빙.템플릿", it.toString())
             })
@@ -159,6 +160,11 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    private fun setTitle(item: TemplateEntity?) {
+        if (item == null) return
+        binding.toolbarTitle.text = item.templateTitle
     }
 
     private fun hideActionBar() {

@@ -25,6 +25,7 @@ class EntryModalFragment : BottomSheetDialogFragment() {
 	private fun onItemClickEvent(item: TagEntity) {
 		viewModel.setCategory(item.title)
 		viewModel.setCategoryDrawable(item.img)
+		dismiss()
 	}
 
 	override fun onCreateView(

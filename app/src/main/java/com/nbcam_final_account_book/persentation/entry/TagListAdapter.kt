@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.databinding.ItemTagBinding
-import com.nbcam_final_account_book.databinding.TemplateSelectItemBinding
-import com.nbcam_final_account_book.persentation.tag.TagModel
 
 class TagListAdapter(private val onItemClick: (TagEntity) -> Unit) :
     ListAdapter<TagEntity, TagListAdapter.ViewHolder>(object :
@@ -41,7 +39,7 @@ class TagListAdapter(private val onItemClick: (TagEntity) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(item: TagEntity) = with(binding) {
-            ivTagIcon.setImageResource(item.img)
+//            ivTagIcon.setImageResource(item.img)
             tvTagTitle.text = item.title
 
             itemView.setOnClickListener {

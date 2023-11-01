@@ -1,12 +1,10 @@
 package com.nbcam_final_account_book.persentation.entry
 
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nbcam_final_account_book.data.model.local.TagEntity
@@ -27,6 +25,7 @@ class EntryModalFragment : BottomSheetDialogFragment() {
 	private fun onItemClickEvent(item: TagEntity) {
 		viewModel.setCategory(item.title)
 		viewModel.setCategoryDrawable(item.img)
+		dismiss()
 	}
 
 	override fun onCreateView(
@@ -48,18 +47,6 @@ class EntryModalFragment : BottomSheetDialogFragment() {
 
 		initView()
 		initViewModel()
-	}
-
-	override fun onStart() {
-		super.onStart()
-
-		val height = Resources.getSystem().displayMetrics.heightPixels
-		val maxHeight = (height * 0.5).toInt()
-
-		view?.viewTreeObserver?.addOnGlobalLayoutListener {
-			val behavior = BottomSheetBehavior.from(requireView().parent as View)
-			behavior.setPeekHeight(maxHeight)
-		}
 	}
 
 	private fun initView() = with(binding) {

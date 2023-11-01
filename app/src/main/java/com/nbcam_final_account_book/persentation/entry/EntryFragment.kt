@@ -10,12 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.FragmentEntryBinding
+import com.nbcam_final_account_book.persentation.tag.TagActivity
 import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_INCOME
 import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_PAY
 import java.text.DecimalFormat
@@ -53,7 +52,8 @@ class EntryFragment : Fragment() {
 
 		// 마이페이지 - 태그 관리 액티비티로 이동
 		ivTagAdd.setOnClickListener {
-			findNavController().navigate(R.id.action_entryFragment_to_tagFragment2)
+			val intent = TagActivity.newIntent(requireActivity())
+			startActivity(intent)
 		}
 
 		tvDateInput.setOnClickListener {
@@ -181,7 +181,6 @@ class EntryFragment : Fragment() {
 		}
 
 	}
-
 
 	private fun formatDate(year: Int, month: Int, day: Int): String {
 		val formattedMonth = if (month < 10) "0$month" else month.toString()

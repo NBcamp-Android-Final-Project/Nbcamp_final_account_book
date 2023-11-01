@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_tag_graph"
+    app:startDestination="@id/tagFragment">
+    <fragment
+        android:id="@+id/tagFragment"
+        android:name="com.nbcam_final_account_book.persentation.tag.TagFragment"
+        android:label="tag_fragment"
+        tools:layout="@layout/tag_fragment" >
+        <action
+            android:id="@+id/action_tagFragment_to_editTagFragment"
+            app:destination="@id/editTagFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editTagFragment"
+        android:name="com.nbcam_final_account_book.persentation.tag.edit.EditTagFragment"
+        android:label="edit_tag_fragment"
+        tools:layout="@layout/edit_tag_fragment" >
+        <argument
+            android:name="pages"
+            app:argType="com.nbcam_final_account_book.persentation.tag.TagPage"
+            android:defaultValue="NEW" />
+        <argument
+            android:name="tagName"
+            app:argType="com.nbcam_final_account_book.data.model.local.TagEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+</navigation>

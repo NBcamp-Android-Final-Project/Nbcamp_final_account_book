@@ -31,10 +31,7 @@ import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MyPageFragmentBinding
 import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
 import com.nbcam_final_account_book.persentation.main.MainViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.nbcam_final_account_book.persentation.tag.TagActivity
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -157,7 +154,8 @@ class MyPageFragment : Fragment() {
         }
 
         mypageTvTag.setOnClickListener {
-            navController.navigate(R.id.action_menu_mypage_to_tagFragment)
+            val intent = TagActivity.newIntent(requireActivity())
+            startActivity(intent)
         }
 
         // TODO: 스위치가 true여도 다른 프래그먼트 갔다 왔을 때는 실행 안되게!

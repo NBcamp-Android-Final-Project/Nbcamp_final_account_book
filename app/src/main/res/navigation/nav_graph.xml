@@ -28,9 +28,6 @@
         <action
             android:id="@+id/action_menu_mypage_to_pinFragment"
             app:destination="@id/pinFragment" />
-        <action
-            android:id="@+id/action_menu_mypage_to_tagFragment"
-            app:destination="@id/tagFragment" />
     </fragment>
     <fragment
         android:id="@+id/pinFragment"
@@ -40,29 +37,5 @@
         <action
             android:id="@+id/action_pinFragment_to_menu_mypage"
             app:destination="@id/menu_mypage" />
-    </fragment>
-    <fragment
-        android:id="@+id/tagFragment"
-        android:name="com.nbcam_final_account_book.persentation.tag.TagFragment"
-        android:label="tag_fragment"
-        tools:layout="@layout/tag_fragment" >
-        <action
-            android:id="@+id/action_tagFragment_to_editTagFragment"
-            app:destination="@id/editTagFragment" />
-    </fragment>
-      <fragment
-        android:id="@+id/editTagFragment"
-        android:name="com.nbcam_final_account_book.persentation.tag.edit.EditTagFragment"
-        android:label="edit_tag_fragment"
-        tools:layout="@layout/edit_tag_fragment" >
-        <argument
-            android:name="pages"
-            app:argType="com.nbcam_final_account_book.persentation.tag.TagPage"
-            android:defaultValue="NEW" />
-        <argument
-            android:name="tagName"
-            app:argType="com.nbcam_final_account_book.data.model.local.TagEntity"
-            app:nullable="true"
-            android:defaultValue="@null" />
     </fragment>
 </navigation>

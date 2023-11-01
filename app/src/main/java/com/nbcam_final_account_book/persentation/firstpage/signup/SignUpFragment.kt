@@ -94,7 +94,6 @@ class SignUpFragment : Fragment() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
 
-
                             val profileUpdate = userProfileChangeRequest {
                                 displayName = name
                             }

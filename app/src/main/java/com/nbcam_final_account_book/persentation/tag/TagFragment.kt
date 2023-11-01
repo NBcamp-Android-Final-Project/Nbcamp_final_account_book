@@ -30,7 +30,7 @@ class TagFragment : Fragment() {
 
 	val tagManageAdapter by lazy {
 		TagManageAdapter(
-			mutableListOf<TagEntity>(),
+			mutableListOf(),
 			onItemClick = { item -> onItemClickEvent(item) })
 	}
 
@@ -53,7 +53,7 @@ class TagFragment : Fragment() {
 	private fun initView() = with(binding) {
 
 		ivBack.setOnClickListener {
-			findNavController().popBackStack()
+			requireActivity().finish()
 		}
 
 		ivNewTag.setOnClickListener {

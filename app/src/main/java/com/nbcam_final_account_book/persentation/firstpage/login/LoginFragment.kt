@@ -89,7 +89,7 @@ class LoginFragment : Fragment() {
                         if (task.isSuccessful) {
                             Toast.makeText(
                                 requireContext(),
-                                "로그인 성공",
+                                "환영합니다 ${auth.currentUser?.displayName}님",
                                 Toast.LENGTH_SHORT
                             ).show()
 
@@ -190,10 +190,9 @@ class LoginFragment : Fragment() {
                     if (firebaseTask.isSuccessful) {
                         Toast.makeText(
                             requireContext(),
-                            "Google login successful",
+                            "환영합니다 ${auth.currentUser?.displayName}님",
                             Toast.LENGTH_SHORT
                         ).show()
-
                         CoroutineScope(Dispatchers.Main).launch {
                             if (isFirstLogin()) {
                                 toMainActivity()

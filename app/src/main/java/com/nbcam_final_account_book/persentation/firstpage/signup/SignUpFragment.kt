@@ -75,6 +75,7 @@ class SignUpFragment : Fragment() {
         }
 
         signupBtnOk.setOnClickListener {
+
             val name = signupEvName.text.toString()
             val email = signupEvEmail.text.toString()
             val password = signupEvPassword.text.toString()
@@ -127,7 +128,7 @@ class SignUpFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 val name = s.toString()
 
-                if (name.length < 13) {
+                if (name.length < 10) {
                     signupTvNameWarning.visibility = View.GONE
                 } else {
                     signupTvNameWarning.visibility = View.VISIBLE

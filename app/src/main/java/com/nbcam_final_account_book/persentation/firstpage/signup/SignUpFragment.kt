@@ -96,12 +96,12 @@ class SignUpFragment : Fragment() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
 
+                            makeShortToast("회원 가입이 완료되었습니다.")
                             val profileUpdate = userProfileChangeRequest {
                                 displayName = name
                             }
                             auth.currentUser?.updateProfile(profileUpdate)
 
-                            makeShortToast("회원 가입이 완료되었습니다.")
                             findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
                         } else {
                             makeShortToast("이미 가입된 이메일입니다.")

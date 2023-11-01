@@ -50,7 +50,7 @@
             android:id="@+id/action_tagFragment_to_editTagFragment"
             app:destination="@id/editTagFragment" />
     </fragment>
-    <fragment
+      <fragment
         android:id="@+id/editTagFragment"
         android:name="com.nbcam_final_account_book.persentation.tag.edit.EditTagFragment"
         android:label="edit_tag_fragment"

@@ -28,20 +28,29 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/template_budget_edt_input"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/template_budget_layout_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:hint="초기 예산을 입력해 주세요"
-        android:inputType="number"
-        android:maxLength="15"
-        android:maxLines="1"
-        android:textSize="30sp"
+        android:hint="초기 예산"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/template_budget_edt_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="15"
+            android:maxLines="1"
+            android:textSize="30sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <TextView
         android:id="@+id/template_budget_tv_error"
@@ -51,7 +60,7 @@
         android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/template_budget_edt_input" />
+        app:layout_constraintTop_toBottomOf="@+id/template_budget_layout_input" />
 
     <Button
         android:id="@+id/template_budget_btn_ok"
@@ -64,7 +73,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/template_budget_edt_input" />
+        app:layout_constraintTop_toBottomOf="@+id/template_budget_layout_input" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

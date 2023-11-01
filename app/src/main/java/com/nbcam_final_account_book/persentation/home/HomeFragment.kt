@@ -8,14 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.HomeFragmentBinding
 import com.nbcam_final_account_book.persentation.entry.EntryActivity
 import com.nbcam_final_account_book.persentation.main.MainViewModel
-import com.nbcam_final_account_book.unit.Unit
-import java.text.DecimalFormat
 import java.util.Calendar
 
 
@@ -170,10 +167,6 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
                 putExtra(EXTRA_CURRENT_TEMPLATE, getCurrentTemplate())
             }
             startActivity(intent)
-//			overridePendingTransition(
-//				R.anim.slide_up_enter,
-//				R.anim.slide_up_exit
-//			)  // overrideActivityTransition 으로 변경 예정
         }
 
 

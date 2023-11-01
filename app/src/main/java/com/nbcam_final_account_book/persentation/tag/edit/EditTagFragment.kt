@@ -15,80 +15,81 @@ import com.nbcam_final_account_book.persentation.tag.TagPage
 
 
 class EditTagFragment : Fragment() {
-	private var _binding: EditTagFragmentBinding? = null
-	private val binding get() = _binding!!
+    private var _binding: EditTagFragmentBinding? = null
+    private val binding get() = _binding!!
 
-	private lateinit var key: String
+    private lateinit var key: String
 
-	private val viewModel by lazy {
-		ViewModelProvider(
-			this@EditTagFragment,
-			EditTagViewModelFactory(requireActivity())
-		)[EditTagViewModel::class.java]
-	}
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this@EditTagFragment,
+            EditTagViewModelFactory(requireActivity())
+        )[EditTagViewModel::class.java]
+    }
 
-	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
-		_binding = EditTagFragmentBinding.inflate(inflater, container, false)
-		return binding.root
-	}
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = EditTagFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-		initView()
-	}
+        initView()
+    }
 
-	private fun initView() = with(binding) {
-		val args: EditTagFragmentArgs by navArgs()
-		val page = args.pages
-		val tagName = args.tagName
+    private fun initView() = with(binding) {
+        val args: EditTagFragmentArgs by navArgs()
+        val page = args.pages
+        val tagName = args.tagName
 
-		category(page, tagName)
+        category(page, tagName)
 
-		ivBack.setOnClickListener {
-			findNavController().popBackStack()
-		}
+        ivBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
-		btnTagSave.setOnClickListener {
+        btnTagSave.setOnClickListener {
 
-			if (page == TagPage.NEW) {
-				newTag()
-			} else {
-				tagModify(tagName = tagName)
-			}
+            if (page == TagPage.NEW) {
+                newTag()
+            } else {
+                tagModify(tagName = tagName)
+            }
 
-			findNavController().popBackStack()
-		}
-	}
+            findNavController().popBackStack()
+        }
+    }
 
-	private fun category(page: TagPage, tagName: TagEntity?) = when (page) {
+    private fun category(page: TagPage, tagName: TagEntity?) = when (page) {
 
-		TagPage.NEW -> {
-			binding.tvPageTitle.text = "태그 생성"
-		}
+        TagPage.NEW -> {
+            binding.tvPageTitle.text = "태그 생성"
+        }
 
-		TagPage.MODIFY -> {
-			binding.tvPageTitle.text = "태그 수정"
-			binding.edtTagTitle.setText(tagName!!.title)
-		}
-	}
+        TagPage.MODIFY -> {
+            binding.tvPageTitle.text = "태그 수정"
+            binding.edtTagTitle.setText(tagName!!.title)
+        }
+    }
 
-	private fun newTag() {
-		val result = binding.edtTagTitle.text.toString()
-		viewModel.insertTag(
-			TagEntity(
-				id = 0,
-				key = MainViewModel.liveKey.value.toString(),
-				title = result
-			)
-		)
-	}
+    private fun newTag() {
+        val result = binding.edtTagTitle.text.toString()
+        viewModel.insertTag(
+            TagEntity(
+                id = 0,
+                key = MainViewModel.liveKey.value.toString(),
+                title = result,
+                order = 0
+            )
+        )
+    }
 
-	private fun tagModify(tagName: TagEntity?) {
-		val result = binding.edtTagTitle.text.toString()
-		viewModel.updateTag(tagName!!, result)
-	}
+    private fun tagModify(tagName: TagEntity?) {
+        val result = binding.edtTagTitle.text.toString()
+        viewModel.updateTag(tagName!!, result)
+    }
 }

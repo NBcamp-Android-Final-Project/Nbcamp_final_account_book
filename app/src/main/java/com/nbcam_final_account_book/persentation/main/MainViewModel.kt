@@ -135,8 +135,11 @@ class MainViewModel(
             val dataList: List<DataEntity> = roomRepo.getAllData()
             val deleteKey = roomRepo.getAllDelete()
 
-            fireRepo.setTemplateList(user,templateList)
-            fireRepo.updateDataList(user,dataList)
+            val templateListDeferred = async { fireRepo.setTemplateList(user, templateList) }
+            val dataListDeferred = async { fireRepo.updateDataList(user, dataList) }
+
+            templateListDeferred.await()
+            dataListDeferred.await()
 
             if (deleteKey.isNotEmpty()) {
                 for (key in deleteKey) {

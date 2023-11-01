@@ -19,5 +19,5 @@ data class TagEntity(
 	@ColumnInfo(name = "tag_title")
 	val title: String,
 	@ColumnInfo(name = "tag_order")
-	val order: Int = 0
+	val order: Int = 1
 ) : Parcelable

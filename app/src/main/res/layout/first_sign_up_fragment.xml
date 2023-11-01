@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/signup_iv_back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
@@ -60,28 +61,65 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <EditText
-                    android:id="@+id/signup_ev_name"
-                    android:layout_width="0dp"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/signup_input_layout_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="사용자 이름"
-                    android:inputType="textPersonName"
-                    android:padding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <EditText
-                    android:id="@+id/signup_ev_email"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signup_ev_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:maxLength="13"
+                        android:padding="10dp"
+                        android:textSize="20sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/signup_tv_name_warning"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:hint="이메일"
-                    android:inputType="textEmailAddress"
-                    android:padding="10dp"
+                    android:drawablePadding="10dp"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:text="이름은 최대 13자까지 입력하실 수 있습니다."
+                    android:visibility="gone"
+                    app:drawableLeftCompat="@drawable/ic_warning"
+                    app:drawableTint="#454545"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/signup_ev_name" />
+                    app:layout_constraintTop_toBottomOf="@+id/signup_input_layout_name" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/signup_input_layout_email"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="이메일"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/signup_tv_name_warning">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signup_ev_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:padding="10dp"
+                        android:textSize="20sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <TextView
                     android:id="@+id/signup_tv_email_warning"
@@ -91,35 +129,35 @@
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
                     android:text="유효한 이메일을 입력해주세요."
+                    android:visibility="gone"
                     app:drawableLeftCompat="@drawable/ic_warning"
                     app:drawableTint="#454545"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/signup_ev_email" />
+                    app:layout_constraintTop_toBottomOf="@+id/signup_input_layout_email" />
 
-                <EditText
-                    android:id="@+id/signup_ev_password"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/signup_input_layout_password"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:hint="비밀번호"
-                    android:inputType="textPassword"
-                    android:padding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/signup_tv_email_warning" />
+                    app:layout_constraintTop_toBottomOf="@+id/signup_tv_email_warning">
 
-                <EditText
-                    android:id="@+id/signup_ev_password_check"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:hint="비밀번호 확인"
-                    android:inputType="textPassword"
-                    android:padding="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/signup_ev_password" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signup_ev_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:maxLength="20"
+                        android:padding="10dp"
+                        android:textSize="20sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <TextView
                     android:id="@+id/signup_tv_password_warning"
@@ -128,12 +166,54 @@
                     android:drawablePadding="10dp"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="5dp"
-                    android:text="비밀번호는 영문 대소문자, 숫자, 특수문자(.!@#$%)를\n혼합하여 8~20자로 입력해주세요."
+                    android:text="비밀번호는 알파벳, 숫자, 특수문자(.!@#$%)를\n혼합하여 8~20자로 입력해주세요."
+                    android:visibility="gone"
                     app:drawableLeftCompat="@drawable/ic_warning"
                     app:drawableTint="#454545"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/signup_ev_password_check" />
+                    app:layout_constraintTop_toBottomOf="@+id/signup_input_layout_password" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/signup_input_layout_password_check"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:hint="비밀번호 확인"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/signup_tv_password_warning">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signup_ev_password_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:maxLength="20"
+                        android:padding="10dp"
+                        android:textSize="20sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/signup_tv_password_check_warning"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:text="비밀번호가 일치하지 않습니다."
+                    android:visibility="gone"
+                    app:drawableLeftCompat="@drawable/ic_warning"
+                    app:drawableTint="#454545"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/signup_input_layout_password_check" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

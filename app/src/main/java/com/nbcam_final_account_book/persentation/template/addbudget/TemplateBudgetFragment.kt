@@ -107,10 +107,10 @@ class TemplateBudgetFragment : Fragment() {
         })
 
         templateBudgetBtnOk.setOnClickListener {
-
+            val text = templateBudgetEdtInput.text.toString()
             val number: Long = try {
-                if (templateBudgetEdtInput.text.isNotEmpty()) {
-                    templateBudgetEdtInput.text.toString().replace(",", "").toLong()
+                if (text.isNotEmpty()) {
+                    text.replace(",", "").toLong()
                 } else {
                     0
                 }

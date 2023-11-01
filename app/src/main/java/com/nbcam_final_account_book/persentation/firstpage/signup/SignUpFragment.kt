@@ -31,6 +31,8 @@ class SignUpFragment : Fragment() {
         ViewModelProvider(this@SignUpFragment)[SignUpViewModel::class.java]
     }
 
+    //todo 약관 표시하기
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         //백버튼 콜백 제어

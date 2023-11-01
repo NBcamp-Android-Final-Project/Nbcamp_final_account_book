@@ -12,6 +12,7 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.persentation.main.MainViewModel
+import kotlin.math.roundToInt
 
 class ChartViewModel(
     private val roomRepo: RoomRepository
@@ -21,7 +22,8 @@ class ChartViewModel(
         roomRepo.getLiveEntryByKey(key)
     }
 
-    val expenses: LiveData<List<ChartTagModel>> = liveEntryListInChart.map { entryList ->
+
+    private val expenses: LiveData<List<ChartTagModel>> = liveEntryListInChart.map { entryList ->
         val categoryMap = mutableMapOf<String, Double>()
 
         entryList.forEach { entry ->
@@ -34,14 +36,27 @@ class ChartViewModel(
             ChartTagModel(tag, amount, getCategoryColor(tag))
         }
     }
-}
 
-fun convertEntryToExpenseCategory(entry: EntryEntity): ChartTagModel {
-    return ChartTagModel(
-        name = entry.tag,
-        amount = entry.value.toDoubleOrNull() ?: 0.0,
-        color = getCategoryColor(entry.tag)
-    )
+    val chartItems: LiveData<List<ChartItem>> = expenses.map { chartTagModels ->
+        getChartItems(chartTagModels)
+    }
+
+    private fun getChartItems(chartTagModels: List<ChartTagModel>): List<ChartItem> {
+        val totalAmount = chartTagModels.sumByDouble { it.amount }
+        return chartTagModels.map { chartTagModel ->
+            ChartItem(
+                name = chartTagModel.name,
+                amount = chartTagModel.amount.roundToInt(),
+                percentage = calculatePercentage(chartTagModel.amount, totalAmount)
+            )
+        }
+    }
+
+    private fun calculatePercentage(amount: Double, totalAmount: Double): Int {
+        if (totalAmount == 0.0) return 0
+        return ((amount / totalAmount) * 100).roundToInt()
+    }
+
 }
 
 val colorMap = mapOf(
@@ -66,8 +81,6 @@ val colorMap = mapOf(
 fun getCategoryColor(tag: String): Color {
     return colorMap[tag] ?: Color.Gray // 찾는 태그가 없으면 기본 색상을 회색으로 반환
 }
-
-
 
 class ChartViewModelFactory(
     private val context: Context

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.databinding.FragmentEntryModalBinding
@@ -39,12 +40,11 @@ class EntryModalFragment : BottomSheetDialogFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-//		val dialog = dialog as BottomSheetDialog
-
+		val dialog = dialog as BottomSheetDialog
 
 		// 드래그 Disabled
-//		val bottomSheetBehavior = dialog.behavior
-//		bottomSheetBehavior.isDraggable = false
+		val bottomSheetBehavior = dialog.behavior
+		bottomSheetBehavior.isDraggable = false
 
 		initView()
 		initViewModel()

@@ -35,9 +35,11 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.ChartFragmentBinding
 import kotlin.math.cos
+import kotlin.math.roundToInt
 import kotlin.math.sin
 
 @Composable
@@ -142,7 +144,12 @@ fun PieChartWithStyles(expenses: List<ChartTagModel>) {
                         center.x + (arcRadius + 15.dp.toPx()) * cos(halfAngle.toDouble() * (Math.PI / 180)).toFloat(),
                         center.y + (arcRadius + 15.dp.toPx()) * sin(halfAngle.toDouble() * (Math.PI / 180)).toFloat()
                     )
-                    path.quadraticBezierTo(controlPoint.x, controlPoint.y, lineEndOffset.x, lineEndOffset.y)
+                    path.quadraticBezierTo(
+                        controlPoint.x,
+                        controlPoint.y,
+                        lineEndOffset.x,
+                        lineEndOffset.y
+                    )
 
                     drawPath(
                         path = path,
@@ -152,7 +159,7 @@ fun PieChartWithStyles(expenses: List<ChartTagModel>) {
 
                     // 텍스트 그리기
                     val textOffset = Offset(
-                        lineEndOffset.x + (if(lineEndOffset.x > center.x) 50.dp else (-50).dp).toPx(), // 텍스트 위치 조정
+                        lineEndOffset.x + (if (lineEndOffset.x > center.x) 50.dp else (-50).dp).toPx(), // 텍스트 위치 조정
                         lineEndOffset.y
                     )
                     val text = "${category.name} ${(category.amount / totalExpense * 100).toInt()}%"
@@ -199,6 +206,8 @@ fun ExpenseScreen(expenses: List<ChartTagModel>) {
 class ChartFragment : Fragment() {
 
     private var _binding: ChartFragmentBinding? = null
+
+    private lateinit var chartListAdapter: ChartListAdapter
     private val binding get() = _binding!!
 
     private val viewModel by lazy {
@@ -221,12 +230,17 @@ class ChartFragment : Fragment() {
         initView()
         initViewModel()
 
-        // ComposeView에서 Compose UI
-//        binding.composeView.setContent {
-//            MaterialTheme {
-//                ExpenseScreen(expenses)
-//            }
-//        }
+
+        // Chart RecyclerView
+        chartListAdapter = ChartListAdapter()
+        binding.chartTabRecyclerView.apply {
+            adapter = chartListAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+
+        viewModel.chartItems.observe(viewLifecycleOwner) { chartItems ->
+            chartListAdapter.setItems(chartItems)
+        }
     }
 
     private fun initView() = with(binding) { // 레이아웃 제어

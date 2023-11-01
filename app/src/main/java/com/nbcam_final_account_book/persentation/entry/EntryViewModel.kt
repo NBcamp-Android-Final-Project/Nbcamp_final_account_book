@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
-import com.nbcam_final_account_book.data.model.DummyData
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
@@ -18,79 +17,87 @@ import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.persentation.main.MainViewModel
 import kotlinx.coroutines.launch
 
-class EntryViewModel(
-    private val roomRepo: RoomRepository
-) : ViewModel() {
+class EntryViewModel(private val roomRepo: RoomRepository) : ViewModel() {
 
-    val dummyLiveEntryList: LiveData<List<EntryModel>> get() = DummyData.liveDummyEntry
+	private val _liveValue: MutableLiveData<String?> = MutableLiveData()
+	val liveValue: LiveData<String?> get() = _liveValue
 
-    private val _liveValue: MutableLiveData<String?> = MutableLiveData()
-    val liveValue: LiveData<String?> get() = _liveValue
+	private val _liveType: MutableLiveData<String?> = MutableLiveData()
+	val liveType: LiveData<String?> get() = _liveType
 
-    private val _liveType: MutableLiveData<String?> = MutableLiveData()
-    val liveType: LiveData<String?> get() = _liveType
+	//CurrentTemplateData
+	private val _entryLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
+	val entryLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _entryLiveCurrentTemplate
 
-    //CurrentTemplateData
-    private val _entryLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
-    val entryLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _entryLiveCurrentTemplate
+	private var _category = MutableLiveData<String>()
+	val category: LiveData<String> get() = _category
 
-    val liveTagList: LiveData<List<TagEntity>>
-        get() = MainViewModel.liveKey.switchMap { key ->
-            roomRepo.getLiveTagByKey(key)
-        }
+	private var _categoryDrawable = MutableLiveData<Int>()
+	val categoryDrawable: LiveData<Int> get() = _categoryDrawable
 
-    fun updateCurrentTemplateEntry(item: TemplateEntity?) {
-        if (item == null) return
-        _entryLiveCurrentTemplate.value = item
-    }
+	val liveTagList: LiveData<List<TagEntity>>
+		get() = MainViewModel.liveKey.switchMap { key ->
+			roomRepo.getLiveTagByKey(key)
+		}
 
-    fun getCurrentTemplateEntry(): TemplateEntity? {
-        return entryLiveCurrentTemplate.value
-    }
+	fun updateCurrentTemplateEntry(item: TemplateEntity?) {
+		if (item == null) return
+		_entryLiveCurrentTemplate.value = item
+	}
 
-    fun updateAmount(amount: String, type: String) {
-        _liveValue.value = amount
-        _liveType.value = type
-        Log.d("현재 값", liveValue.value.toString())
-        Log.d("현재 타입", liveType.value.toString())
-    }
+	fun getCurrentTemplateEntry(): TemplateEntity? {
+		return entryLiveCurrentTemplate.value
+	}
 
-    fun deleteTagById(item: TagEntity) {
-        viewModelScope.launch {
-            roomRepo.deleteTagById(item.id)
-        }
-    }
+	fun updateAmount(amount: String, type: String) {
+		_liveValue.value = amount
+		_liveType.value = type
+		Log.d("현재 값", liveValue.value.toString())
+		Log.d("현재 타입", liveType.value.toString())
+	}
 
-    fun getData(): Pair<String?, String?> {
-        val currentValue = liveValue.value?.toString()
-        val currentType = liveType.value?.toString()
-        return Pair(currentValue, currentType)
-    }
+	fun deleteTagById(item: TagEntity) {
+		viewModelScope.launch {
+			roomRepo.deleteTagById(item.id)
+		}
+	}
 
-    fun insertEntity(item: EntryEntity) {
-        viewModelScope.launch {
-            roomRepo.insertEntry(item)
-        }
+	fun getData(): Pair<String?, String?> {
+		val currentValue = liveValue.value?.toString()
+		val currentType = liveType.value?.toString()
+		return Pair(currentValue, currentType)
+	}
 
-    }
+	fun insertEntity(item: EntryEntity) {
+		viewModelScope.launch {
+			roomRepo.insertEntry(item)
+		}
 
+	}
 
+	fun setCategory(text: String) {
+		_category.value = text
+	}
+
+	fun setCategoryDrawable(drawable: Int) {
+		_categoryDrawable.value = drawable
+	}
 }
 
 class EntryViewModelFactory(
-    private val context: Context
+	private val context: Context
 ) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(EntryViewModel::class.java)) {
-            return EntryViewModel(
-                RoomRepositoryImpl(
-                    AndroidRoomDataBase.getInstance(context)
-                )
-            ) as T
-        } else {
-            throw IllegalArgumentException("Not found ViewModel class.")
-        }
-    }
+	override fun <T : ViewModel> create(modelClass: Class<T>): T {
+		if (modelClass.isAssignableFrom(EntryViewModel::class.java)) {
+			return EntryViewModel(
+				RoomRepositoryImpl(
+					AndroidRoomDataBase.getInstance(context)
+				)
+			) as T
+		} else {
+			throw IllegalArgumentException("Not found ViewModel class.")
+		}
+	}
 
 }

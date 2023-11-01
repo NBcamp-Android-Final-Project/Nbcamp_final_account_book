@@ -12,17 +12,19 @@
         <action
             android:id="@+id/action_entryFragment_to_tagFragment2"
             app:destination="@id/tagFragment2" />
-        <action
-            android:id="@+id/action_entryFragment_to_entryDetailFragment"
-            app:destination="@id/entryDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/tagFragment2"
         android:name="com.nbcam_final_account_book.persentation.tag.TagFragment"
         android:label="tag_fragment"
-        tools:layout="@layout/tag_fragment" />
+        tools:layout="@layout/tag_fragment" >
+        <action
+            android:id="@+id/action_tagFragment2_to_editTagFragment2"
+            app:destination="@id/editTagFragment2" />
+    </fragment>
     <fragment
-        android:id="@+id/entryDetailFragment"
-        android:name="com.nbcam_final_account_book.persentation.entry.EntryDetailFragment"
-        android:label="EntryDetailFragment" />
+        android:id="@+id/editTagFragment2"
+        android:name="com.nbcam_final_account_book.persentation.tag.edit.EditTagFragment"
+        android:label="edit_tag_fragment"
+        tools:layout="@layout/edit_tag_fragment" />
 </navigation>

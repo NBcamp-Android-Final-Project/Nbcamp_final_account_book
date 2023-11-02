@@ -1,11 +1,16 @@
 package com.nbcam_final_account_book.persentation.firstpage.splash
 
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -26,6 +31,8 @@ class SplashFragment : Fragment() {
     private var _binding: FirstSplashFragmentBinding? = null
     private val binding get() = _binding!!
     private val viewModel: LoginViewModel by activityViewModels()
+
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,12 +43,31 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+        startAnimation()
+    }
+
+    private fun startAnimation() {
+        val anim: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.splash_effect)
+        val coin01 = binding.splashCoinFirst
+        val coin02 = binding.splashCoinSecond
+        val coin03 = binding.splashCoinLast
+        val delayTime = 2000L
+
+        coin01.visibility = View.VISIBLE
+        coin01.startAnimation(anim)
+
+        coin02.visibility = View.VISIBLE
+        coin02.startAnimation(anim)
+
+        coin03.visibility = View.VISIBLE
+        coin03.startAnimation(anim)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            initView()
+        }, delayTime)
     }
 
     private fun initView() = with(binding) {
-
-        //TODO viewmodel 수준으로 옮기기
         val auth = FirebaseAuth.getInstance()
         val nowCurrentUser = auth.currentUser
 
@@ -51,7 +77,7 @@ class SplashFragment : Fragment() {
                 if (isFirstLogin()) {
                     toMainActivity()
                 } else {
-                    toTemplateActivity() //최초 로그인 시 템플릿으로 이동
+                    toTemplateActivity()
                 }
             }
         } else {

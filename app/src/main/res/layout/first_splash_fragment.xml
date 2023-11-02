@@ -6,14 +6,58 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".persentation.firstpage.splash.SplashFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/splash_coin_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/splash_bg"
+        android:src="@drawable/splash_coin_bg" />
+
+    <ImageView
+        android:id="@+id/splash_coin_logo"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="두툼"
-        android:textSize="40dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/splash_coin_logo"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/splash_coin_bg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/splash_coin_first"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:adjustViewBounds="true"
+        android:visibility="visible"
+        android:src="@drawable/splash_coin_01"
+        app:layout_constraintBottom_toBottomOf="@+id/splash_coin_bg"
+        app:layout_constraintStart_toStartOf="@+id/splash_coin_bg" />
+
+    <ImageView
+        android:id="@+id/splash_coin_second"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="132dp"
+        android:adjustViewBounds="true"
+        android:visibility="visible"
+        android:src="@drawable/splash_coin_02"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/splash_coin_last"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="10dp"
+        android:adjustViewBounds="true"
+        android:visibility="visible"
+        android:src="@drawable/splash_coin_03"
+        app:layout_constraintEnd_toEndOf="@+id/splash_coin_bg"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

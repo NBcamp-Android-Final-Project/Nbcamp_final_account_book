@@ -143,7 +143,8 @@
                     android:hint="비밀번호"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/signup_tv_email_warning">
+                    app:layout_constraintTop_toBottomOf="@+id/signup_tv_email_warning"
+                    app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/signup_ev_password"
@@ -180,7 +181,8 @@
                     android:hint="비밀번호 확인"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/signup_tv_password_warning">
+                    app:layout_constraintTop_toBottomOf="@+id/signup_tv_password_warning"
+                    app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/signup_ev_password_check"

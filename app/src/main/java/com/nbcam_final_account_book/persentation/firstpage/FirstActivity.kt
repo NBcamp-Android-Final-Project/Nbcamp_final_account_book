@@ -39,14 +39,7 @@ class FirstActivity : AppCompatActivity() {
             this@FirstActivity,
             LoginViewModelFactory(this@FirstActivity)
         )[LoginViewModel::class.java]
-
         with(viewModel) {
-
-
         }
-
-
     }
-
-
 }

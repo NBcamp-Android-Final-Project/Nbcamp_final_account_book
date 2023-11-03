@@ -1,6 +1,7 @@
 package com.nbcam_final_account_book.persentation.chart
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +15,8 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.persentation.main.MainViewModel
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 import kotlin.math.roundToInt
@@ -26,23 +29,14 @@ class ChartViewModel(
         roomRepo.getLiveEntryByKey(key)
     }
 
-
-    private val expenses: LiveData<List<ChartTagModel>> = liveEntryListInChart.map { entryList ->
-        val categoryMap = mutableMapOf<String, Double>()
-
-        entryList.forEach { entry ->
-            // value를 Double로 변환, 변환 불가능 시 0.0 사용
-            val amount = entry.value.toDoubleOrNull() ?: 0.0
-            categoryMap[entry.tag] = (categoryMap[entry.tag] ?: 0.0) + amount
-        }
-
-        categoryMap.map { (tag, amount) ->
-            ChartTagModel(tag, amount, getCategoryColor(tag))
-        }
-    }
+    private val expenses: MutableLiveData<List<ChartTagModel>> = MutableLiveData()
 
     val chartItems: LiveData<List<ChartItem>> = expenses.map { chartTagModels ->
         getChartItems(chartTagModels)
+    }
+
+    fun setExpenses(list: List<ChartTagModel>) {
+        expenses.value = list
     }
 
     private fun getChartItems(chartTagModels: List<ChartTagModel>): List<ChartItem> {
@@ -87,22 +81,64 @@ class ChartViewModel(
 
     fun setThisWeekRange() {
         val now = Calendar.getInstance()
-        val start = now.clone() as Calendar
-        start.set(Calendar.DAY_OF_WEEK, start.firstDayOfWeek)
-        val end = start.clone() as Calendar
-        end.add(Calendar.WEEK_OF_YEAR, 1)
-        end.add(Calendar.DAY_OF_MONTH, -1)
-        _dateRange.value = Pair(start, end)
+        val startDate = now.clone() as Calendar
+        startDate.set(Calendar.DAY_OF_WEEK, startDate.firstDayOfWeek)
+        val endDate = startDate.clone() as Calendar
+        endDate.add(Calendar.WEEK_OF_YEAR, 1)
+        endDate.add(Calendar.DAY_OF_MONTH, -1)
+        _dateRange.value = Pair(startDate, endDate)
+
+        val datesList = mutableListOf<String>()
+        val startLocalDate = LocalDate.of(
+            startDate.get(Calendar.YEAR),
+            startDate.get(Calendar.MONTH) + 1,
+            startDate.get(Calendar.DAY_OF_MONTH)
+        )
+        val endLocalDate = LocalDate.of(
+            endDate.get(Calendar.YEAR),
+            endDate.get(Calendar.MONTH) + 1,
+            endDate.get(Calendar.DAY_OF_MONTH)
+        )
+
+        var currentDate = startLocalDate
+        while (!currentDate.isAfter(endLocalDate)) {
+            datesList.add(currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+            currentDate = currentDate.plusDays(1)
+        }
+
+        Log.d("날짜.일주일.리스트", datesList.toString())
+
     }
 
     fun setThisMonthRange() {
         val now = Calendar.getInstance()
-        val start = now.clone() as Calendar
-        start.set(Calendar.DAY_OF_MONTH, 1)
-        val end = start.clone() as Calendar
-        end.add(Calendar.MONTH, 1)
-        end.add(Calendar.DAY_OF_MONTH, -1)
-        _dateRange.value = Pair(start, end)
+        val startDate = now.clone() as Calendar
+        startDate.set(Calendar.DAY_OF_MONTH, 1)
+        val endDate = startDate.clone() as Calendar
+        endDate.add(Calendar.MONTH, 1)
+        endDate.add(Calendar.DAY_OF_MONTH, -1)
+        _dateRange.value = Pair(startDate, endDate)
+
+        val datesList = mutableListOf<String>()
+        val startLocalDate = LocalDate.of(
+            startDate.get(Calendar.YEAR),
+            startDate.get(Calendar.MONTH) + 1,
+            startDate.get(Calendar.DAY_OF_MONTH)
+        )
+        val endLocalDate = LocalDate.of(
+            endDate.get(Calendar.YEAR),
+            endDate.get(Calendar.MONTH) + 1,
+            endDate.get(Calendar.DAY_OF_MONTH)
+        )
+
+        var currentDate = startLocalDate
+        while (!currentDate.isAfter(endLocalDate)) {
+            datesList.add(currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+            currentDate = currentDate.plusDays(1)
+        }
+
+        Log.d("날짜.월.리스트", datesList.toString())
+
     }
 
     fun setDateRange(startDate: Calendar, endDate: Calendar) {

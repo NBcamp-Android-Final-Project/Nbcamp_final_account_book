@@ -1,5 +1,6 @@
 package com.nbcam_final_account_book.persentation.chart
 
+import android.app.DatePickerDialog
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Bundle
@@ -36,8 +37,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.ChartFragmentBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import kotlin.math.cos
 import kotlin.math.roundToInt
 import kotlin.math.sin
@@ -241,9 +246,24 @@ class ChartFragment : Fragment() {
         viewModel.chartItems.observe(viewLifecycleOwner) { chartItems ->
             chartListAdapter.setItems(chartItems)
         }
+
+        binding.chartTabDay.performClick()
+        viewModel.dateRangeText.observe(viewLifecycleOwner) { dateRangeText ->
+            binding.chartDateTitle.text = dateRangeText
+        }
     }
 
+    private var startDate: Calendar? = null
+    private var endDate: Calendar? = null
+
     private fun initView() = with(binding) { // 레이아웃 제어
+
+        // 현재 날짜를 가져오기
+        val currentDate = Calendar.getInstance().time
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateString = dateFormat.format(currentDate)
+        chartDateTitle.text = dateString
+
         chartTabContainer.setOnCheckedChangeListener { _, selectedRadioButtonId ->
             val white = ContextCompat.getColor(requireContext(), R.color.white)
             val blue = ContextCompat.getColor(requireContext(), R.color.chart_tab_unselected_text)
@@ -253,13 +273,46 @@ class ChartFragment : Fragment() {
             chartTabPeriod.setTextColor(blue)
 
             when (selectedRadioButtonId) {
-                R.id.chart_tab_day -> chartTabDay.setTextColor(white)
-                R.id.chart_tab_week -> chartTabWeek.setTextColor(white)
-                R.id.chart_tab_month -> chartTabMonth.setTextColor(white)
+                R.id.chart_tab_day -> {
+                    chartTabDay.setTextColor(white)
+                    viewModel.setToday()
+                }
+                R.id.chart_tab_week -> {
+                    chartTabWeek.setTextColor(white)
+                    viewModel.setThisWeekRange()
+                }
+                R.id.chart_tab_month -> {
+                    chartTabMonth.setTextColor(white)
+                    viewModel.setThisMonthRange()
+                }
                 R.id.chart_tab_period -> chartTabPeriod.setTextColor(white)
             }
         }
+
+        // 기간 선택하기
+        chartTabPeriod.setOnClickListener {
+            showDateRangePicker()
+        }
     }
+
+    private fun showDateRangePicker() {
+        val dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
+            .setTitleText("Select dates")
+            .build()
+
+        dateRangePicker.addOnPositiveButtonClickListener { dateRange ->
+            val startDate = Calendar.getInstance()
+            startDate.timeInMillis = dateRange.first
+
+            val endDate = Calendar.getInstance()
+            endDate.timeInMillis = dateRange.second
+
+            viewModel.setDateRange(startDate, endDate)
+        }
+
+        dateRangePicker.show(childFragmentManager, dateRangePicker.toString())
+    }
+
 
     private fun initViewModel() = with(viewModel) {
         liveEntryListInChart.observe(viewLifecycleOwner) { entryList ->

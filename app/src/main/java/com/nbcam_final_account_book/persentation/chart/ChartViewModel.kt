@@ -3,6 +3,7 @@ package com.nbcam_final_account_book.persentation.chart
 import android.content.Context
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.map
@@ -12,6 +13,9 @@ import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.persentation.main.MainViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import kotlin.math.roundToInt
 
 class ChartViewModel(
@@ -55,6 +59,54 @@ class ChartViewModel(
     private fun calculatePercentage(amount: Double, totalAmount: Double): Int {
         if (totalAmount == 0.0) return 0
         return ((amount / totalAmount) * 100).roundToInt()
+    }
+
+    // 날짜 관련 LiveData
+    private val _dateRange = MutableLiveData<Pair<Calendar, Calendar>>()
+    val dateRange: LiveData<Pair<Calendar, Calendar>> = _dateRange
+
+    val dateRangeText: LiveData<String> = dateRange.map { (startDate, endDate) ->
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        if (startDate == endDate) {
+            // 오늘이 선택되었을 때
+            dateFormat.format(startDate.time)
+        } else {
+            // 기간이 선택되었을 때
+            "${dateFormat.format(startDate.time)} ~ ${dateFormat.format(endDate.time)}"
+        }
+    }
+
+    init {
+        setToday()
+    }
+
+    fun setToday() {
+        val today = Calendar.getInstance()
+        _dateRange.value = Pair(today, today)
+    }
+
+    fun setThisWeekRange() {
+        val now = Calendar.getInstance()
+        val start = now.clone() as Calendar
+        start.set(Calendar.DAY_OF_WEEK, start.firstDayOfWeek)
+        val end = start.clone() as Calendar
+        end.add(Calendar.WEEK_OF_YEAR, 1)
+        end.add(Calendar.DAY_OF_MONTH, -1)
+        _dateRange.value = Pair(start, end)
+    }
+
+    fun setThisMonthRange() {
+        val now = Calendar.getInstance()
+        val start = now.clone() as Calendar
+        start.set(Calendar.DAY_OF_MONTH, 1)
+        val end = start.clone() as Calendar
+        end.add(Calendar.MONTH, 1)
+        end.add(Calendar.DAY_OF_MONTH, -1)
+        _dateRange.value = Pair(start, end)
+    }
+
+    fun setDateRange(startDate: Calendar, endDate: Calendar) {
+        _dateRange.value = Pair(startDate, endDate)
     }
 
 }

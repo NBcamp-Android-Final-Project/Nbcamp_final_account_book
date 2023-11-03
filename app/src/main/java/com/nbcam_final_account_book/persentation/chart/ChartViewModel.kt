@@ -29,14 +29,15 @@ class ChartViewModel(
         roomRepo.getLiveEntryByKey(key)
     }
 
-    private val expenses: MutableLiveData<List<ChartTagModel>> = MutableLiveData()
+    private val _expenses: MutableLiveData<List<ChartTagModel>> = MutableLiveData()
+    val expenses: LiveData<List<ChartTagModel>> get() = _expenses
 
     val chartItems: LiveData<List<ChartItem>> = expenses.map { chartTagModels ->
         getChartItems(chartTagModels)
     }
 
     fun setExpenses(list: List<ChartTagModel>) {
-        expenses.value = list
+        _expenses.value = list
     }
 
     private fun getChartItems(chartTagModels: List<ChartTagModel>): List<ChartItem> {

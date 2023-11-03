@@ -5,5 +5,6 @@ import androidx.compose.ui.graphics.Color
 data class ChartTagModel(
     val name: String,
     val amount: Double,
-    val color: Color
+    val color: Color,
+    val day: String
 )

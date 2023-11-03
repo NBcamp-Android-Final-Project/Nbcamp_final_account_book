@@ -212,7 +212,9 @@ class ChartFragment : Fragment() {
 
     private var _binding: ChartFragmentBinding? = null
 
-    private lateinit var chartListAdapter: ChartListAdapter
+    private val chartListAdapter by lazy {
+        ChartListAdapter()
+    }
     private val binding get() = _binding!!
 
     private val viewModel by lazy {
@@ -235,28 +237,20 @@ class ChartFragment : Fragment() {
         initView()
         initViewModel()
 
-
-        // Chart RecyclerView
-        chartListAdapter = ChartListAdapter()
-        binding.chartTabRecyclerView.apply {
-            adapter = chartListAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-
-        viewModel.chartItems.observe(viewLifecycleOwner) { chartItems ->
-            chartListAdapter.setItems(chartItems)
-        }
-
-        binding.chartTabDay.performClick()
-        viewModel.dateRangeText.observe(viewLifecycleOwner) { dateRangeText ->
-            binding.chartDateTitle.text = dateRangeText
-        }
     }
 
     private var startDate: Calendar? = null
     private var endDate: Calendar? = null
 
     private fun initView() = with(binding) { // 레이아웃 제어
+
+
+        chartTabDay.performClick()
+
+        chartTabRecyclerView.apply {
+            adapter = chartListAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
 
         // 현재 날짜를 가져오기
         val currentDate = Calendar.getInstance().time
@@ -277,14 +271,17 @@ class ChartFragment : Fragment() {
                     chartTabDay.setTextColor(white)
                     viewModel.setToday()
                 }
+
                 R.id.chart_tab_week -> {
                     chartTabWeek.setTextColor(white)
                     viewModel.setThisWeekRange()
                 }
+
                 R.id.chart_tab_month -> {
                     chartTabMonth.setTextColor(white)
                     viewModel.setThisMonthRange()
                 }
+
                 R.id.chart_tab_period -> chartTabPeriod.setTextColor(white)
             }
         }
@@ -320,14 +317,25 @@ class ChartFragment : Fragment() {
                 ChartTagModel(
                     name = it.tag,
                     amount = it.value.toDouble(),
-                    color = getCategoryColor(it.tag)
+                    color = getCategoryColor(it.tag),
+                    day = it.dateTime
                 )
             }
+            setExpenses(expenses)
             binding.composeView.setContent {
                 MaterialTheme {
                     ExpenseScreen(expenses)
                 }
             }
         }
+
+        chartItems.observe(viewLifecycleOwner) { chartItems ->
+            chartListAdapter.setItems(chartItems)
+        }
+
+        dateRangeText.observe(viewLifecycleOwner) { dateRangeText ->
+            binding.chartDateTitle.text = dateRangeText
+        }
+
     }
 }

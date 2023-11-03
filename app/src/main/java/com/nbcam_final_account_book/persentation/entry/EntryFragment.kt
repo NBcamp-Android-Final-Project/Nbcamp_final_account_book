@@ -14,7 +14,6 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.FragmentEntryBinding
-import com.nbcam_final_account_book.persentation.tag.TagActivity
 import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_INCOME
 import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_PAY
 import java.text.DecimalFormat
@@ -50,37 +49,31 @@ class EntryFragment : Fragment() {
 			requireActivity().finish()
 		}
 
-		// 마이페이지 - 태그 관리 액티비티로 이동
-		ivTagAdd.setOnClickListener {
-			val intent = TagActivity.newIntent(requireActivity())
-			startActivity(intent)
-		}
-
-		tvDateInput.setOnClickListener {
+		edtDate.setOnClickListener {
 			showDatePicker()
 		}
 
-		tvTagInput.setOnClickListener {
+		edtTag.setOnClickListener {
 			val bottomSheet = EntryModalFragment()
 			bottomSheet.show(requireActivity().supportFragmentManager, bottomSheet.tag)
 		}
 
-		btnSave.setOnClickListener {
+		tvSave.setOnClickListener {
 			// Firebase RTDB 에 `태그`, `결제 수단`, `메모`, `금액` 저장 후, ModalBottomSheet 및 EntryActivity 종료
 
 			val tabPosition = tabLayoutPayment.selectedTabPosition
 			val payment =
 				if (tabPosition == 0) "Card" else "Cash"            // 카드 <-> 현금
 			val finance = tabLayoutFinance.selectedTabPosition      // 지출 <-> 수입
-			val date = tvDateInput.text.toString()                  // 날짜
+			val date = edtDate.text.toString()                  // 날짜
 			val amount = edtAmount.text.toString().replace(",", "")     // 금액
-			val tag = tvTagInput.text.toString()                    // 카테고리
+			val tag = edtTag.text.toString()                    // 카테고리
 			val title = edtTitle.text.toString()                    // 제목
 			val description = edtDescription.text.toString()        // 메모
 			val currentTemplate = getCurrentTemplateEntry()         // 템플릿
 			Log.d("현재 템플릿", currentTemplate.toString())
 
-			if (edtAmount.text.isNotEmpty() && currentTemplate != null) {
+			if (edtAmount.text!!.isNotEmpty() && currentTemplate != null) {
 				if (finance == 0) {
 					val entryEntity = EntryEntity(
 						id = 0,
@@ -108,22 +101,21 @@ class EntryFragment : Fragment() {
 					insertEntry(entryEntity)
 					requireActivity().finish()
 				}
-
-
 			}
 
-
+			if (amount.isEmpty()) binding.edtAmount.error = "금액을 입력해 주세요!"
+			if (tag.isEmpty()) binding.edtDate.error = "카테고리를 선택해 주세요!"
 		}
 	}
 
 	private fun initViewModel() {
 		viewModel.category.observe(viewLifecycleOwner) {
-			binding.tvTagInput.text = it
+			binding.edtTag.setText(it)
 		}
 
-		viewModel.categoryDrawable.observe(viewLifecycleOwner) {
-			binding.tvTagInput.setCompoundDrawablesWithIntrinsicBounds(it, 0, 0, 0)
-		}
+//		viewModel.categoryDrawable.observe(viewLifecycleOwner) {
+//			binding.tvTagInput.setCompoundDrawablesWithIntrinsicBounds(it, 0, 0, 0)
+//		}
 	}
 
 	private fun getCurrentTemplateEntry(): TemplateEntity? {
@@ -177,7 +169,7 @@ class EntryFragment : Fragment() {
 			val formattedDate = formatDate(year, month, day)
 
 
-			binding.tvDateInput.text = formattedDate
+			binding.edtDate.setText(formattedDate)
 		}
 
 	}

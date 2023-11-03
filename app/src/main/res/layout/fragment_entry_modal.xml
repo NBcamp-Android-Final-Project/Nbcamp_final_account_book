@@ -7,12 +7,33 @@
     android:layout_height="wrap_content"
     tools:context=".persentation.entry.EntryModalFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_tag_container"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:overScrollMode="never"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        tools:listitem="@layout/item_tag" />
+        android:layout_height="300dp"
+        android:minHeight="300dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_tag_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:padding="16dp"
+            android:src="@drawable/ic_modify" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_tag_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/item_tag" />
+    </LinearLayout>
+
 </FrameLayout>

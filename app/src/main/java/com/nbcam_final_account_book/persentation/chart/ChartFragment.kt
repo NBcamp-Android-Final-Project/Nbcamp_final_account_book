@@ -79,7 +79,7 @@ fun PieChartWithStyles(expenses: List<ChartTagModel>) {
         mutableStateOf(0f)
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(expenses) {
         val animationSpec = tween<Float>(
             durationMillis = animationDuration,
             easing = LinearOutSlowInEasing
@@ -197,6 +197,7 @@ fun PieChartWithStyles(expenses: List<ChartTagModel>) {
 
 // sp 값을 px 값으로 변환하는 확장 함수
 private fun Float.spToPx(density: Float): Float = this * density
+
 
 @Composable
 fun ExpenseScreen(expenses: List<ChartTagModel>) {
@@ -324,7 +325,7 @@ class ChartFragment : Fragment() {
         }
 
         expenses.observe(viewLifecycleOwner){
-            if (it.isNotEmpty()){
+            if (it != null){
                 binding.composeView.setContent {
                     MaterialTheme {
                         ExpenseScreen(it)

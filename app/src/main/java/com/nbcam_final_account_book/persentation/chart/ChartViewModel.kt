@@ -100,16 +100,23 @@ class ChartViewModel(
         setToday()
     }
 
-    fun setToday() {
-        val currentEntryList = liveEntryListInChart.value.orEmpty()
-        val currentExpenses = currentEntryList.map {
+    fun entryListToExpense(list:List<EntryEntity>) : List<ChartTagModel>{
+        val currentExpenses = list.map {
             ChartTagModel(
                 name = it.tag,
                 amount = it.value.toDouble(),
                 color = getCategoryColor(it.tag),
-                day = it.dateTime
+                day = it.dateTime,
+                title = it.title
             )
         }
+
+        return currentExpenses
+    }
+
+    fun setToday() {
+        val currentEntryList = liveEntryListInChart.value.orEmpty()
+        val currentExpenses = entryListToExpense(currentEntryList)
 
         setExpenses(currentExpenses)
         val today = Calendar.getInstance()
@@ -136,14 +143,7 @@ class ChartViewModel(
 
     fun setThisWeekRange() {
         val currentEntryList = liveEntryListInChart.value.orEmpty()
-        val currentExpenses = currentEntryList.map {
-            ChartTagModel(
-                name = it.tag,
-                amount = it.value.toDouble(),
-                color = getCategoryColor(it.tag),
-                day = it.dateTime
-            )
-        }
+        val currentExpenses = entryListToExpense(currentEntryList)
 
         setExpenses(currentExpenses)
 
@@ -191,14 +191,7 @@ class ChartViewModel(
 
     fun setThisMonthRange() {
         val currentEntryList = liveEntryListInChart.value.orEmpty()
-        val currentExpenses = currentEntryList.map {
-            ChartTagModel(
-                name = it.tag,
-                amount = it.value.toDouble(),
-                color = getCategoryColor(it.tag),
-                day = it.dateTime
-            )
-        }
+        val currentExpenses = entryListToExpense(currentEntryList)
 
         setExpenses(currentExpenses)
 

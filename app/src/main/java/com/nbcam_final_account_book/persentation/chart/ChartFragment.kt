@@ -313,14 +313,8 @@ class ChartFragment : Fragment() {
 
     private fun initViewModel() = with(viewModel) {
         liveEntryListInChart.observe(viewLifecycleOwner) { entryList ->
-            val expenses = entryList.map {
-                ChartTagModel(
-                    name = it.tag,
-                    amount = it.value.toDouble(),
-                    color = getCategoryColor(it.tag),
-                    day = it.dateTime
-                )
-            }
+            val expenses = entryListToExpense(entryList)
+
             binding.composeView.setContent {
                 MaterialTheme {
                     ExpenseScreen(expenses)

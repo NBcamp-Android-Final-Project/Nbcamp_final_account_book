@@ -6,5 +6,6 @@ data class ChartTagModel(
     val name: String,
     val amount: Double,
     val color: Color,
-    val day: String
+    val day: String,
+    val title: String
 )

@@ -36,6 +36,31 @@ class ChartViewModel(
         getChartItems(chartTagModels)
     }
 
+    fun firstExpense(list:List<ChartTagModel>){
+        setExpenses(list)
+
+        val today = Calendar.getInstance()
+        _dateRange.value = Pair(today, today)
+
+        val todayDate = LocalDate.of(
+            today.get(Calendar.YEAR),
+            today.get(Calendar.MONTH) + 1,
+            today.get(Calendar.DAY_OF_MONTH)
+        ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val currentList = expenses.value.orEmpty().toMutableList()
+        val resultList: MutableList<ChartTagModel> = mutableListOf()
+
+        for (item in currentList) {
+
+            if (item.day == todayDate) {
+                resultList.add(item)
+            }
+
+        }
+
+        _expenses.value = resultList
+    }
+
     fun setExpenses(list: List<ChartTagModel>) {
         _expenses.value = list
     }
@@ -76,11 +101,52 @@ class ChartViewModel(
     }
 
     fun setToday() {
+        val currentEntryList = liveEntryListInChart.value.orEmpty()
+        val currentExpenses = currentEntryList.map {
+            ChartTagModel(
+                name = it.tag,
+                amount = it.value.toDouble(),
+                color = getCategoryColor(it.tag),
+                day = it.dateTime
+            )
+        }
+
+        setExpenses(currentExpenses)
         val today = Calendar.getInstance()
         _dateRange.value = Pair(today, today)
+
+        val todayDate = LocalDate.of(
+            today.get(Calendar.YEAR),
+            today.get(Calendar.MONTH) + 1,
+            today.get(Calendar.DAY_OF_MONTH)
+        ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        val currentList = expenses.value.orEmpty().toMutableList()
+        val resultList: MutableList<ChartTagModel> = mutableListOf()
+
+        for (item in currentList) {
+
+                if (item.day == todayDate) {
+                    resultList.add(item)
+                }
+
+        }
+
+        _expenses.value = resultList
     }
 
     fun setThisWeekRange() {
+        val currentEntryList = liveEntryListInChart.value.orEmpty()
+        val currentExpenses = currentEntryList.map {
+            ChartTagModel(
+                name = it.tag,
+                amount = it.value.toDouble(),
+                color = getCategoryColor(it.tag),
+                day = it.dateTime
+            )
+        }
+
+        setExpenses(currentExpenses)
+
         val now = Calendar.getInstance()
         val startDate = now.clone() as Calendar
         startDate.set(Calendar.DAY_OF_WEEK, startDate.firstDayOfWeek)
@@ -107,11 +173,35 @@ class ChartViewModel(
             currentDate = currentDate.plusDays(1)
         }
 
-        Log.d("날짜.일주일.리스트", datesList.toString())
+        val currentList = expenses.value.orEmpty().toMutableList()
+        val resultList: MutableList<ChartTagModel> = mutableListOf()
+
+        for (item in currentList) {
+            for (day in datesList) {
+                if (item.day == day) {
+                    resultList.add(item)
+                }
+            }
+        }
+
+        _expenses.value = resultList
+
 
     }
 
     fun setThisMonthRange() {
+        val currentEntryList = liveEntryListInChart.value.orEmpty()
+        val currentExpenses = currentEntryList.map {
+            ChartTagModel(
+                name = it.tag,
+                amount = it.value.toDouble(),
+                color = getCategoryColor(it.tag),
+                day = it.dateTime
+            )
+        }
+
+        setExpenses(currentExpenses)
+
         val now = Calendar.getInstance()
         val startDate = now.clone() as Calendar
         startDate.set(Calendar.DAY_OF_MONTH, 1)
@@ -138,12 +228,54 @@ class ChartViewModel(
             currentDate = currentDate.plusDays(1)
         }
 
-        Log.d("날짜.월.리스트", datesList.toString())
+        val currentList = expenses.value.orEmpty().toMutableList()
+        val resultList: MutableList<ChartTagModel> = mutableListOf()
+
+        for (item in currentList) {
+            for (day in datesList) {
+                if (item.day == day) {
+                    resultList.add(item)
+                }
+            }
+        }
+
+        _expenses.value = resultList
 
     }
 
     fun setDateRange(startDate: Calendar, endDate: Calendar) {
         _dateRange.value = Pair(startDate, endDate)
+
+        val datesList = mutableListOf<String>()
+        val startLocalDate = LocalDate.of(
+            startDate.get(Calendar.YEAR),
+            startDate.get(Calendar.MONTH) + 1,
+            startDate.get(Calendar.DAY_OF_MONTH)
+        )
+        val endLocalDate = LocalDate.of(
+            endDate.get(Calendar.YEAR),
+            endDate.get(Calendar.MONTH) + 1,
+            endDate.get(Calendar.DAY_OF_MONTH)
+        )
+
+        var currentDate = startLocalDate
+        while (!currentDate.isAfter(endLocalDate)) {
+            datesList.add(currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+            currentDate = currentDate.plusDays(1)
+        }
+
+        val currentList = expenses.value.orEmpty().toMutableList()
+        val resultList: MutableList<ChartTagModel> = mutableListOf()
+
+        for (item in currentList) {
+            for (day in datesList) {
+                if (item.day == day) {
+                    resultList.add(item)
+                }
+            }
+        }
+
+        _expenses.value = resultList
     }
 
 }

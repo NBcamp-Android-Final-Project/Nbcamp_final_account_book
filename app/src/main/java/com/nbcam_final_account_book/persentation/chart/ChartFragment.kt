@@ -321,12 +321,12 @@ class ChartFragment : Fragment() {
                     day = it.dateTime
                 )
             }
-            setExpenses(expenses)
             binding.composeView.setContent {
                 MaterialTheme {
                     ExpenseScreen(expenses)
                 }
             }
+            firstExpense(expenses)
         }
 
         chartItems.observe(viewLifecycleOwner) { chartItems ->

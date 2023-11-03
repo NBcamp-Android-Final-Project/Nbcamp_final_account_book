@@ -9,6 +9,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.databinding.FragmentEntryModalBinding
+import com.nbcam_final_account_book.persentation.tag.TagActivity
 
 class EntryModalFragment : BottomSheetDialogFragment() {
 
@@ -51,6 +52,11 @@ class EntryModalFragment : BottomSheetDialogFragment() {
 
 	private fun initView() = with(binding) {
 		initRecyclerView()
+
+		ivTagAdd.setOnClickListener {
+			val intent = TagActivity.newIntent(requireActivity())
+			startActivity(intent)
+		}
 	}
 
 	private fun initViewModel() = with(viewModel) {

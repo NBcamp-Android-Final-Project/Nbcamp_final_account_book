@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -35,11 +36,14 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.ChartFragmentBinding
+import com.nbcam_final_account_book.persentation.tag.TagViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -212,7 +216,9 @@ class ChartFragment : Fragment() {
 
     private var _binding: ChartFragmentBinding? = null
 
-    private lateinit var chartListAdapter: ChartListAdapter
+    private val chartListAdapter by lazy {
+        ChartListAdapter()
+    }
     private val binding get() = _binding!!
 
     private val viewModel by lazy {
@@ -235,28 +241,20 @@ class ChartFragment : Fragment() {
         initView()
         initViewModel()
 
-
-        // Chart RecyclerView
-        chartListAdapter = ChartListAdapter()
-        binding.chartTabRecyclerView.apply {
-            adapter = chartListAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-
-        viewModel.chartItems.observe(viewLifecycleOwner) { chartItems ->
-            chartListAdapter.setItems(chartItems)
-        }
-
-        binding.chartTabDay.performClick()
-        viewModel.dateRangeText.observe(viewLifecycleOwner) { dateRangeText ->
-            binding.chartDateTitle.text = dateRangeText
-        }
     }
 
     private var startDate: Calendar? = null
     private var endDate: Calendar? = null
 
     private fun initView() = with(binding) { // 레이아웃 제어
+
+
+        chartTabDay.performClick()
+
+        chartTabRecyclerView.apply {
+            adapter = chartListAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
 
         // 현재 날짜를 가져오기
         val currentDate = Calendar.getInstance().time
@@ -277,14 +275,17 @@ class ChartFragment : Fragment() {
                     chartTabDay.setTextColor(white)
                     viewModel.setToday()
                 }
+
                 R.id.chart_tab_week -> {
                     chartTabWeek.setTextColor(white)
                     viewModel.setThisWeekRange()
                 }
+
                 R.id.chart_tab_month -> {
                     chartTabMonth.setTextColor(white)
                     viewModel.setThisMonthRange()
                 }
+
                 R.id.chart_tab_period -> chartTabPeriod.setTextColor(white)
             }
         }
@@ -316,18 +317,32 @@ class ChartFragment : Fragment() {
 
     private fun initViewModel() = with(viewModel) {
         liveEntryListInChart.observe(viewLifecycleOwner) { entryList ->
-            val expenses = entryList.map {
-                ChartTagModel(
-                    name = it.tag,
-                    amount = it.value.toDouble(),
-                    color = getCategoryColor(it.tag)
-                )
-            }
-            binding.composeView.setContent {
-                MaterialTheme {
-                    ExpenseScreen(expenses)
+
+            val  filter= entryListToExpense(entryList)
+            firstExpense(filter)
+
+        }
+
+        expenses.observe(viewLifecycleOwner){
+            if (it.isNotEmpty()){
+                binding.composeView.setContent {
+                    MaterialTheme {
+                        ExpenseScreen(it)
+                    }
                 }
+
             }
         }
+
+        chartItems.observe(viewLifecycleOwner) { chartItems ->
+            chartListAdapter.setItems(chartItems)
+        }
+
+        dateRangeText.observe(viewLifecycleOwner) { dateRangeText ->
+            binding.chartDateTitle.text = dateRangeText
+        }
+
     }
+
+
 }

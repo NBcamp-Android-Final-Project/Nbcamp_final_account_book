@@ -1,7 +1,6 @@
 package com.nbcam_final_account_book.persentation.chart
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -29,15 +28,30 @@ class ChartViewModel(
         roomRepo.getLiveEntryByKey(key)
     }
 
-    private val _expenses: MutableLiveData<List<ChartTagModel>> = MutableLiveData()
-    val expenses: LiveData<List<ChartTagModel>> get() = _expenses
+    private val _liveFilterData: MutableLiveData<List<ChartFilterModel>> = MutableLiveData()
+    val liveFilterData: LiveData<List<ChartFilterModel>> get() = _liveFilterData
+
+   val expenses: LiveData<List<ChartTagModel>> = liveFilterData.map { it->
+        val categoryMap = mutableMapOf<String, Double>()
+
+       it.forEach { filter ->
+            // value를 Double로 변환, 변환 불가능 시 0.0 사용
+            val amount = filter.amount?: 0.0
+            categoryMap[filter.name] = (categoryMap[filter.name] ?: 0.0) + amount
+        }
+
+        categoryMap.map { (tag, amount) ->
+            ChartTagModel(tag, amount, getCategoryColor(tag))
+        }
+    }
+
 
     val chartItems: LiveData<List<ChartItem>> = expenses.map { chartTagModels ->
         getChartItems(chartTagModels)
     }
 
-    fun firstExpense(list:List<ChartTagModel>){
-        setExpenses(list)
+    fun firstExpense(list:List<ChartFilterModel>){
+        setliveFilterData(list)
 
         val today = Calendar.getInstance()
         _dateRange.value = Pair(today, today)
@@ -47,8 +61,8 @@ class ChartViewModel(
             today.get(Calendar.MONTH) + 1,
             today.get(Calendar.DAY_OF_MONTH)
         ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        val currentList = expenses.value.orEmpty().toMutableList()
-        val resultList: MutableList<ChartTagModel> = mutableListOf()
+        val currentList = liveFilterData.value.orEmpty().toMutableList()
+        val resultList: MutableList<ChartFilterModel> = mutableListOf()
 
         for (item in currentList) {
 
@@ -58,11 +72,11 @@ class ChartViewModel(
 
         }
 
-        _expenses.value = resultList
+        _liveFilterData.value = resultList
     }
 
-    fun setExpenses(list: List<ChartTagModel>) {
-        _expenses.value = list
+    fun setliveFilterData(list: List<ChartFilterModel>) {
+        _liveFilterData.value = list
     }
 
     private fun getChartItems(chartTagModels: List<ChartTagModel>): List<ChartItem> {
@@ -100,14 +114,13 @@ class ChartViewModel(
         setToday()
     }
 
-    fun entryListToExpense(list:List<EntryEntity>) : List<ChartTagModel>{
+    fun entryListToExpense(list:List<EntryEntity>) : List<ChartFilterModel>{
         val currentExpenses = list.map {
-            ChartTagModel(
+            ChartFilterModel(
                 name = it.tag,
                 amount = it.value.toDouble(),
                 color = getCategoryColor(it.tag),
-                day = it.dateTime,
-                title = it.title
+                day = it.dateTime
             )
         }
 
@@ -118,7 +131,7 @@ class ChartViewModel(
         val currentEntryList = liveEntryListInChart.value.orEmpty()
         val currentExpenses = entryListToExpense(currentEntryList)
 
-        setExpenses(currentExpenses)
+        setliveFilterData(currentExpenses)
         val today = Calendar.getInstance()
         _dateRange.value = Pair(today, today)
 
@@ -127,8 +140,8 @@ class ChartViewModel(
             today.get(Calendar.MONTH) + 1,
             today.get(Calendar.DAY_OF_MONTH)
         ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-        val currentList = expenses.value.orEmpty().toMutableList()
-        val resultList: MutableList<ChartTagModel> = mutableListOf()
+        val currentList = liveFilterData.value.orEmpty().toMutableList()
+        val resultList: MutableList<ChartFilterModel> = mutableListOf()
 
         for (item in currentList) {
 
@@ -138,14 +151,14 @@ class ChartViewModel(
 
         }
 
-        _expenses.value = resultList
+        _liveFilterData.value = resultList
     }
 
     fun setThisWeekRange() {
         val currentEntryList = liveEntryListInChart.value.orEmpty()
         val currentExpenses = entryListToExpense(currentEntryList)
 
-        setExpenses(currentExpenses)
+        setliveFilterData(currentExpenses)
 
         val now = Calendar.getInstance()
         val startDate = now.clone() as Calendar
@@ -173,8 +186,8 @@ class ChartViewModel(
             currentDate = currentDate.plusDays(1)
         }
 
-        val currentList = expenses.value.orEmpty().toMutableList()
-        val resultList: MutableList<ChartTagModel> = mutableListOf()
+        val currentList = liveFilterData.value.orEmpty().toMutableList()
+        val resultList: MutableList<ChartFilterModel> = mutableListOf()
 
         for (item in currentList) {
             for (day in datesList) {
@@ -184,8 +197,7 @@ class ChartViewModel(
             }
         }
 
-        _expenses.value = resultList
-
+        _liveFilterData.value = resultList
 
     }
 
@@ -193,7 +205,7 @@ class ChartViewModel(
         val currentEntryList = liveEntryListInChart.value.orEmpty()
         val currentExpenses = entryListToExpense(currentEntryList)
 
-        setExpenses(currentExpenses)
+        setliveFilterData(currentExpenses)
 
         val now = Calendar.getInstance()
         val startDate = now.clone() as Calendar
@@ -221,8 +233,8 @@ class ChartViewModel(
             currentDate = currentDate.plusDays(1)
         }
 
-        val currentList = expenses.value.orEmpty().toMutableList()
-        val resultList: MutableList<ChartTagModel> = mutableListOf()
+        val currentList = liveFilterData.value.orEmpty().toMutableList()
+        val resultList: MutableList<ChartFilterModel> = mutableListOf()
 
         for (item in currentList) {
             for (day in datesList) {
@@ -232,11 +244,15 @@ class ChartViewModel(
             }
         }
 
-        _expenses.value = resultList
+        _liveFilterData.value = resultList
 
     }
 
     fun setDateRange(startDate: Calendar, endDate: Calendar) {
+        val currentEntryList = liveEntryListInChart.value.orEmpty()
+        val currentExpenses = entryListToExpense(currentEntryList)
+
+        setliveFilterData(currentExpenses)
         _dateRange.value = Pair(startDate, endDate)
 
         val datesList = mutableListOf<String>()
@@ -257,8 +273,9 @@ class ChartViewModel(
             currentDate = currentDate.plusDays(1)
         }
 
-        val currentList = expenses.value.orEmpty().toMutableList()
-        val resultList: MutableList<ChartTagModel> = mutableListOf()
+
+        val currentList = liveFilterData.value.orEmpty().toMutableList()
+        val resultList: MutableList<ChartFilterModel> = mutableListOf()
 
         for (item in currentList) {
             for (day in datesList) {
@@ -268,7 +285,7 @@ class ChartViewModel(
             }
         }
 
-        _expenses.value = resultList
+        _liveFilterData.value = resultList
     }
 
 }

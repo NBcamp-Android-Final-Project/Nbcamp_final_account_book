@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -35,11 +36,14 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.ChartFragmentBinding
+import com.nbcam_final_account_book.persentation.tag.TagViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -313,14 +317,21 @@ class ChartFragment : Fragment() {
 
     private fun initViewModel() = with(viewModel) {
         liveEntryListInChart.observe(viewLifecycleOwner) { entryList ->
-            val expenses = entryListToExpense(entryList)
 
-            binding.composeView.setContent {
-                MaterialTheme {
-                    ExpenseScreen(expenses)
+            val  filter= entryListToExpense(entryList)
+            firstExpense(filter)
+
+        }
+
+        expenses.observe(viewLifecycleOwner){
+            if (it.isNotEmpty()){
+                binding.composeView.setContent {
+                    MaterialTheme {
+                        ExpenseScreen(it)
+                    }
                 }
+
             }
-            firstExpense(expenses)
         }
 
         chartItems.observe(viewLifecycleOwner) { chartItems ->
@@ -332,4 +343,6 @@ class ChartFragment : Fragment() {
         }
 
     }
+
+
 }

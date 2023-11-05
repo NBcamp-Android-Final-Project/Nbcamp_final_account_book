@@ -15,9 +15,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.FirstSignUpFragmentBinding
-import com.google.firebase.ktx.Firebase
 
 
 class SignUpFragment : Fragment() {
@@ -92,7 +92,6 @@ class SignUpFragment : Fragment() {
             } else if (password != passwordCheck) {
                 makeShortToast("비밀번호가 일치하지 않습니다.")
             } else {
-
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -108,108 +107,50 @@ class SignUpFragment : Fragment() {
                             makeShortToast("이미 가입된 이메일입니다.")
                         }
                     }
-
             }
-
         }
 
         //TextWatcher
-
-        //이름 체크
-        signupEvName.addTextChangedListener(object : TextWatcher {
+        val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
             }
 
             override fun afterTextChanged(s: Editable?) {
-                val name = s.toString()
-
-                if (name.length < 10) {
-                    signupTvNameWarning.visibility = View.GONE
-                } else {
-                    signupTvNameWarning.visibility = View.VISIBLE
-                }
-
-            }
-
-        })
-
-        //email 체크
-        signupEvEmail.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                val email = s.toString()
-
-                if (emailCheck(email)) {
-                    signupTvEmailWarning.visibility = View.GONE
-                } else {
-                    signupTvEmailWarning.visibility = View.VISIBLE
-                }
-            }
-
-        })
-
-        //password 생성
-        signupEvPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                val password = s.toString()
+                val name = signupEvName.text.toString()
+                val email = signupEvEmail.text.toString()
+                val password = signupEvPassword.text.toString()
                 val passwordCheck = signupEvPasswordCheck.text.toString()
 
-                if (password.isEmpty()) {
-                    signupTvPasswordCheckWarning.visibility = View.GONE
-                } else if (password == passwordCheck) {
-                    signupTvPasswordCheckWarning.visibility = View.GONE
-                } else if (passwordCheck(password)) {
-                    signupTvPasswordWarning.visibility = View.GONE
+                val isNameValid = name.isNotEmpty() && name.length < 10
+                val isEmailValid = email.isNotEmpty() && emailCheck(email)
+                val isPasswordValid = password.isNotEmpty() && passwordCheck(password)
+                val isPasswordMatch = password.isNotEmpty() && (password == passwordCheck)
+
+                signupTvNameWarning.visibility = if (isNameValid) View.GONE else View.VISIBLE
+                signupTvEmailWarning.visibility = if (isEmailValid) View.GONE else View.VISIBLE
+                signupTvPasswordCheckWarning.visibility =
+                    if (isPasswordMatch || s.toString().isEmpty()) View.GONE else View.VISIBLE
+                signupTvPasswordWarning.visibility =
+                    if (isPasswordValid || password.isEmpty()) View.GONE else View.VISIBLE
+
+                val isAllFieldsValid = isNameValid && isEmailValid && isPasswordValid && isPasswordMatch
+                if (isAllFieldsValid) {
+                    signupBtnOk.isEnabled = true
+                    signupBtnOk.isClickable = true
                 } else {
-                    signupTvPasswordWarning.visibility = View.VISIBLE
+                    signupBtnOk.isEnabled = false
+                    signupBtnOk.isClickable = false
                 }
             }
+        }
 
-        })
-
-        //password 체크
-        signupEvPasswordCheck.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                val password = signupEvPassword.text.toString()
-
-                if (s.toString().isEmpty() || s.toString() == password) {
-                    signupTvPasswordCheckWarning.visibility = View.GONE
-                } else if (s.toString() != password) {
-                    signupTvPasswordCheckWarning.visibility = View.VISIBLE
-                }
-            }
-
-        })
-
-
+        signupEvName.addTextChangedListener(textWatcher)
+        signupEvEmail.addTextChangedListener(textWatcher)
+        signupEvPassword.addTextChangedListener(textWatcher)
+        signupEvPasswordCheck.addTextChangedListener(textWatcher)
     }
 
     private fun initViewModel() {
@@ -232,6 +173,4 @@ class SignUpFragment : Fragment() {
         val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,20}\$")
         return passwordRegex.matches(password)
     }
-
-
 }

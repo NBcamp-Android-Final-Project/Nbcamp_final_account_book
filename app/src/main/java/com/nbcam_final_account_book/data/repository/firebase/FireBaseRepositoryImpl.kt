@@ -52,7 +52,34 @@ class FireBaseRepositoryImpl(
             throw e
         }
 
+    }
 
+    override suspend fun getAllUserData(): List<UserDataEntity> {
+        val database = Firebase.database
+        val path = "User/user"
+
+        try {
+            val snapshot = database.getReference(path).get().await()
+
+            return if (snapshot.exists()) {
+                val responseList = mutableListOf<UserDataEntity>()
+                for (userSnapshot in snapshot.children) {
+                    val getData = userSnapshot.getValue(UserDataEntity::class.java)
+
+                    getData?.let {
+
+                        responseList.add(getData)
+                    }
+                }
+                responseList
+            } else {
+                emptyList()
+            }
+        } catch (e: Exception) {
+
+            Log.e("FirebaseRepo", "Tag 데이터 가져오기 중 오류 발생")
+            return emptyList()
+        }
     }
 
     //Template

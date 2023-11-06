@@ -19,6 +19,8 @@ interface FireBaseRepository {
 
     suspend fun getUserDataByKey(key: String): UserDataEntity
 
+    suspend fun getAllUserData() : List<UserDataEntity>
+
 
     //tempalte
 

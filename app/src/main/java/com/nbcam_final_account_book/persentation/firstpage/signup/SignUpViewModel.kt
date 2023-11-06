@@ -10,17 +10,20 @@ import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.data.model.remote.UserModel
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
+import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import com.nbcam_final_account_book.persentation.main.MainViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class SignUpViewModel(
-    private val fireRepo: FireBaseRepository
+    private val fireRepo: FireBaseRepository,
+    private val roomRepo: RoomRepository
 ) : ViewModel() {
 
     private lateinit var auth: FirebaseAuth
@@ -43,7 +46,13 @@ class SignUpViewModel(
         }
 
     fun updateUser(user: UserDataEntity) {
-        fireRepo.updateUser(user)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = viewModelScope.async(Dispatchers.IO) {
+                roomRepo.insertUserData(user)
+            }
+            result.await()
+            fireRepo.updateUser(user)
+        }
     }
 
 }
@@ -54,7 +63,10 @@ class SignUpViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SignUpViewModel::class.java)) {
             return SignUpViewModel(
-                FireBaseRepositoryImpl()
+                FireBaseRepositoryImpl(),
+                RoomRepositoryImpl(
+                    AndroidRoomDataBase.getInstance(context)
+                )
             ) as T
         } else {
             throw IllegalArgumentException("Not found ViewModel class.")

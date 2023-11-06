@@ -375,7 +375,7 @@ class RoomRepositoryImpl(
         dao.insertUserData(user)
     }
 
-    override fun getUserDataByKet(key: String): UserDataEntity {
+    override fun getUserDataByKet(key: String): UserDataEntity? {
         val dao = database?.userDataDao() ?: throw IllegalStateException("getUserDataByKet fail")
 
         return dao.getUserByKey(key)

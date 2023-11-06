@@ -8,7 +8,6 @@
         android:id="@+id/iv_circle"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:alpha="0.6"
         android:background="@drawable/circle_stroke_mix"
         app:layout_constraintStart_toStartOf="@id/tv_day"
         app:layout_constraintEnd_toEndOf="@id/tv_day"

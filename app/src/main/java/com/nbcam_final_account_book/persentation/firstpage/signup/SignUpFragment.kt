@@ -20,7 +20,6 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.FirstSignUpFragmentBinding
-import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.data.model.local.UserDataEntity
 
 

@@ -5,7 +5,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="divider">#FFEEEEEE</color>
 
-    <color name="primary_main">#FF000000</color>
+    <color name="primary_main">#1C1C1C</color>
 
     <!--Text Color-->
     <color name="text_primary">#FBFBFD</color>

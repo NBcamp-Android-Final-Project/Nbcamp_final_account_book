@@ -356,16 +356,16 @@ class MainViewModel(
 
     private fun loadSharedPrefPinNumber(): String {
         val sharedPref = sharedProvider.setSharedPref("pin_number")
-        return sharedPref.getString("pin_number", "") ?: ""
+        return sharedPref.getString("key_pin", "") ?: ""
     }
 
-    fun clearSharedPrefPinNumber() {
+    fun removeSharedPrefPinNumber() {
         _pin.value = ""
         _isPinSet.value = false
 
         val sharedPref = sharedProvider.setSharedPref("pin_number")
         val editor = sharedPref.edit()
-        editor.putString("pin_number", "") ?: ""
+        editor.remove("key_pin")
         editor.apply()
     }
 }

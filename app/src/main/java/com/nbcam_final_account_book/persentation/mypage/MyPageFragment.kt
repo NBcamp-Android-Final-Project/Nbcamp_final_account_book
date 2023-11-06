@@ -208,6 +208,7 @@ class MyPageFragment : Fragment() {
             val auth = FirebaseAuth.getInstance()
             backupDataByLogOut()
             auth.signOut()
+            removeSharedPrefPinNum()
             cleanRoom()
             val intent = Intent(requireContext(), FirstActivity::class.java)
             startActivity(intent)
@@ -220,6 +221,7 @@ class MyPageFragment : Fragment() {
             backupDataByLogOut()
             withdrawAccount(auth)
             auth.signOut()
+            removeSharedPrefPinNum()
             cleanRoom()
             val intent = Intent(requireContext(), FirstActivity::class.java)
             startActivity(intent)
@@ -500,5 +502,9 @@ class MyPageFragment : Fragment() {
 
         val regex = "^[a-zA-Z0-9가-힣]*$".toRegex()
         return regex.matches(name)
+    }
+
+    private fun removeSharedPrefPinNum() = with(sharedViewModel) {
+        removeSharedPrefPinNumber()
     }
 }

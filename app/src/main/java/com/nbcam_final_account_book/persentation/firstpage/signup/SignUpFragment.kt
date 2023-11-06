@@ -108,7 +108,7 @@ class SignUpFragment : Fragment() {
                         }
                     }
             }*/
-            signupBtnOk.setOnClickListener {
+        signupBtnOk.setOnClickListener {
 
             val name = signupEvName.text.toString()
             val email = signupEvEmail.text.toString()
@@ -125,27 +125,19 @@ class SignUpFragment : Fragment() {
             if (name.isEmpty() || email.isEmpty() || password.isEmpty() || passwordCheck.isEmpty()) {
                 makeShortToast("공란을 채워주세요")
             } else {
-                if (!emailCheck(email)) {
-                    signupInputLayoutEmail.error = "유효한 이메일을 입력해주세요"
-                } else if (!passwordCheck(password)) {
-                    signupInputLayoutPassword.error = "유효한 비밀번호를 입력해주세요"
-                } else if (password != passwordCheck) {
-                    makeShortToast("비밀번호가 일치하지 않습니다.")
-                } else {
-                    auth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                makeShortToast("회원 가입이 완료되었습니다.")
-                                val profileUpdate = userProfileChangeRequest {
-                                    displayName = name
-                                }
-                                auth.currentUser?.updateProfile(profileUpdate)
-                                findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
-                            } else {
-                                makeShortToast("이미 가입된 이메일입니다.")
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            makeShortToast("회원 가입이 완료되었습니다.")
+                            val profileUpdate = userProfileChangeRequest {
+                                displayName = name
                             }
+                            auth.currentUser?.updateProfile(profileUpdate)
+                            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+                        } else {
+                            makeShortToast("이미 가입된 이메일입니다.")
                         }
-                }
+                    }
             }
         }
 
@@ -166,17 +158,16 @@ class SignUpFragment : Fragment() {
                 val isNameValid = name.isNotEmpty() && name.length < 10
                 val isEmailValid = email.isNotEmpty() && emailCheck(email)
                 val isPasswordValid = password.isNotEmpty() && passwordCheck(password)
-                val isPasswordMatch = password.isNotEmpty() && (password == passwordCheck)
+                val isPasswordMatch = password.isNotEmpty() && passwordCheck.isNotEmpty() && (password == passwordCheck)
 
-                signupTvNameWarning.visibility = if (isNameValid) View.GONE else View.VISIBLE
-                signupTvEmailWarning.visibility = if (isEmailValid) View.GONE else View.VISIBLE
-                signupTvPasswordCheckWarning.visibility =
-                    if (isPasswordMatch || s.toString().isEmpty()) View.GONE else View.VISIBLE
-                signupTvPasswordWarning.visibility =
-                    if (isPasswordValid || password.isEmpty()) View.GONE else View.VISIBLE
+                signupInputLayoutEmail.error = if (isEmailValid) null else "유효한 이메일을 입력해주세요"
+                signupInputLayoutPassword.error =
+                    if (isEmailValid) null else "비밀번호는 알파벳, 숫자, 특수문자(.!@#$%)를 혼합하여 8~20자로 입력해주세요."
+                signupInputLayoutPasswordCheck.error =
+                    if (password == passwordCheck) null else "비밀번호가 일치하지 않습니다."
 
-                val isAllFieldsValid = isNameValid && isEmailValid && isPasswordValid && isPasswordMatch
-                signupBtnOk.isEnabled = isAllFieldsValid
+                signupBtnOk.isEnabled =
+                    isNameValid && isEmailValid && isPasswordValid && isPasswordMatch
             }
         }
 
@@ -203,7 +194,7 @@ class SignUpFragment : Fragment() {
     }
 
     private fun passwordCheck(password: String): Boolean {
-        val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,20}\$")
+        val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#\$%^&*]).{8,20}\$")
         return passwordRegex.matches(password)
     }
 }

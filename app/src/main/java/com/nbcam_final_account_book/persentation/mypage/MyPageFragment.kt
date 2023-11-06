@@ -162,19 +162,11 @@ class MyPageFragment : Fragment() {
             startActivity(intent)
         }
 
-        mypageSwitchPin.setOnCheckedChangeListener { _, isChecked ->
-            when (isChecked) {
-                true -> {}
-
-                false -> {
-                    sharedViewModel.clearSharedPrefPinNumber()
-                }
-            }
-        }
-
         mypageSwitchPin.setOnClickListener {
             if (sharedViewModel.pin.value.isNullOrEmpty()) {
                 navController.navigate(R.id.action_menu_mypage_to_pinFragment)
+            } else {
+                sharedViewModel.removeSharedPrefPinNumber()
             }
         }
 
@@ -477,9 +469,7 @@ class MyPageFragment : Fragment() {
 
     private fun nameTextWatcher(tvWarning: TextView, alertDialog: AlertDialog) =
         object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
 

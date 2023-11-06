@@ -70,11 +70,12 @@ class PinFragment : Fragment() {
             pinNumpad.btn7,
             pinNumpad.btn8,
             pinNumpad.btn9,
-            pinNumpad.btn0
+            pinNumpad.btn0,
         )
 
         setNumberButtonListeners()
         setDeleteButtonListener()
+        setCancelButonListener()
 
         /*if (sharedViewModel.isSwitch) {
             Toast.makeText(requireContext(), "비밀번호 변경", Toast.LENGTH_SHORT).show()
@@ -86,6 +87,12 @@ class PinFragment : Fragment() {
             setNumberButtonListeners()
             setDeleteButtonListener()
         }*/
+    }
+
+    private fun setCancelButonListener() = with(binding) {
+        pinNumpad.btnCancel.setOnClickListener {
+            navController.popBackStack(R.id.menu_mypage, false)
+        }
     }
 
     private fun setDeleteButtonListener() = with(binding) {

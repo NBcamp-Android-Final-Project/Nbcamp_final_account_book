@@ -77,25 +77,10 @@ class SignUpFragment : Fragment() {
         }
 
         //TextWatcher
-        val nameTextWatcher = createTextWatcher(
-            signupEvName, signupInputLayoutName,
-            signupEvEmail, signupEvPassword, signupEvPasswordCheck
-        )
-
-        val emailTextWatcher = createTextWatcher(
-            signupEvEmail, signupInputLayoutEmail,
-            signupEvName, signupEvPassword, signupEvPasswordCheck
-        )
-
-        val passwordTextWatcher = createTextWatcher(
-            signupEvPassword, signupInputLayoutPassword,
-            signupEvName, signupEvEmail, signupEvPasswordCheck
-        )
-
-        val passwordCheckTextWatcher = createTextWatcher(
-            signupEvPasswordCheck, signupInputLayoutPasswordCheck,
-            signupEvName, signupEvEmail, signupEvPassword
-        )
+        val nameTextWatcher = createTextWatcher(signupEvName, signupInputLayoutName)
+        val emailTextWatcher = createTextWatcher(signupEvEmail, signupInputLayoutEmail)
+        val passwordTextWatcher = createTextWatcher(signupEvPassword, signupInputLayoutPassword)
+        val passwordCheckTextWatcher = createTextWatcher(signupEvPasswordCheck, signupInputLayoutPasswordCheck)
 
         signupEvName.addTextChangedListener(nameTextWatcher)
         signupEvEmail.addTextChangedListener(emailTextWatcher)
@@ -142,8 +127,8 @@ class SignUpFragment : Fragment() {
     }
 
     private fun nameCheck(name: String): Boolean {
-        val nameRegex = Regex("^[a-zA-Z가-힣]{1,10}\$")
-        return nameRegex.matches(name)
+        val nameRegex = Regex("^[a-zA-Z가-힣\\d!@#\$%^&*]{1,10}\$")
+        return nameRegex.matches(name) && !name.contains(" ")
     }
 
     private fun emailCheck(email: String): Boolean {
@@ -159,10 +144,7 @@ class SignUpFragment : Fragment() {
     // TextField 유효성 검사
     private fun createTextWatcher(
         editText: TextInputEditText,
-        inputLayout: TextInputLayout,
-        otherEditText1: TextInputEditText,
-        otherEditText2: TextInputEditText,
-        otherEditText3: TextInputEditText
+        inputLayout: TextInputLayout
     ): TextWatcher = with(binding) {
         return object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -180,13 +162,13 @@ class SignUpFragment : Fragment() {
                 val isPasswordValid = password.isNotEmpty() && passwordCheck(password)
                 val isPasswordMatch = password.isNotEmpty() && passwordCheck.isNotEmpty() && (password == passwordCheck)
 
-                // 입력 필드에 따라 해당 에러 메시지를 설정, 유효한 경우 에러 메시지 제거
+                // 입력 필드에 따라 해당 에러 메시지를 설정, 입력 필드가 하거나 비어있거나 유효한 경우 에러 메시지 제거
                 inputLayout.error = when (editText) {
-                    signupEvName -> if (isNameValid) null else "이름은 1~10자 이내로 입력해주세요."
-                    signupEvEmail -> if (isEmailValid) null else "유효한 이메일을 입력해주세요"
-                    signupEvPassword -> if (isPasswordValid) null else "비밀번호는 알파벳, 숫자, 특수문자(.!@#$%)를 혼합하여 8~20자로 입력해주세요."
-                    signupEvPasswordCheck -> if (isPasswordMatch) null else "비밀번호가 일치하지 않습니다."
-                    else -> null
+                    signupEvName -> if (isNameValid || name.isEmpty()) "" else "이름은 1~10자 이내로 입력해주세요."
+                    signupEvEmail -> if (isEmailValid || email.isEmpty()) "" else "유효한 이메일을 입력해주세요"
+                    signupEvPassword -> if (isPasswordValid || password.isEmpty()) "" else "비밀번호는 알파벳, 숫자, 특수문자(.!@#$%)를 혼합하여 8~20자로 입력해주세요."
+                    signupEvPasswordCheck -> if (isPasswordMatch || passwordCheck.isEmpty()) "" else "비밀번호가 일치하지 않습니다."
+                    else -> ""
                 }
 
                 // 모든 필드가 유효한 경우에만 버튼을 활성화

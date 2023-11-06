@@ -4,7 +4,6 @@ package com.nbcam_final_account_book.data.repository.firebase
 import com.nbcam_final_account_book.data.model.local.DataEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.model.local.UserDataEntity
-import com.nbcam_final_account_book.data.model.remote.UserModel
 
 
 interface FireBaseRepository {
@@ -16,7 +15,9 @@ interface FireBaseRepository {
 
     fun logout()
 
-    fun updateUser(user: UserDataEntity)
+    fun updateUserData(user: UserDataEntity)
+
+    suspend fun getUserDataByKey(key: String): UserDataEntity
 
 
     //tempalte

@@ -7,14 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.nbcam_final_account_book.data.model.local.UserDataEntity
-import com.nbcam_final_account_book.data.model.remote.UserModel
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
-import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
-import com.nbcam_final_account_book.persentation.main.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -51,7 +48,7 @@ class SignUpViewModel(
                 roomRepo.insertUserData(user)
             }
             result.await()
-            fireRepo.updateUser(user)
+            fireRepo.updateUserData(user)
         }
     }
 

@@ -27,12 +27,32 @@ class FireBaseRepositoryImpl(
         auth.signOut()
     }
 
-    override fun updateUser(user: UserDataEntity) {
+    override fun updateUserData(user: UserDataEntity) {
         val database = Firebase.database
         val path = "User/user"
         val myRef = database.getReference(path)
 
         myRef.child(user.key).setValue(user)
+    }
+
+    override suspend fun getUserDataByKey(key: String): UserDataEntity {
+        val database = Firebase.database
+        val path = "User/user"
+
+        try {
+            val snapshot = database.getReference(path).child(key).get().await()
+            return if (snapshot.exists()) {
+                val user: UserDataEntity? = snapshot.getValue(UserDataEntity::class.java)
+                user ?: throw NullPointerException("Data for the key not found")
+            } else {
+                throw NullPointerException("Data for the key not found")
+            }
+        } catch (e: Exception) {
+
+            throw e
+        }
+
+
     }
 
     //Template

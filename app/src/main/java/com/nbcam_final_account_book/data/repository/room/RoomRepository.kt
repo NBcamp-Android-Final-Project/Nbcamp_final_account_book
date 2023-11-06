@@ -99,4 +99,6 @@ interface RoomRepository {
 
     fun getUserDataByKet(key: String): UserDataEntity?
 
+    fun getAllUserDataLiveData():LiveData<List<UserDataEntity>>
+
 }

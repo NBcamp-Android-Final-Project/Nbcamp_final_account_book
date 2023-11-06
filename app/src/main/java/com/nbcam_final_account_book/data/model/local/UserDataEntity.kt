@@ -10,9 +10,9 @@ data class UserDataEntity(
     @ColumnInfo(name = "user_uid")
     val key: String = "",
     @ColumnInfo(name = "user_name")
-    val name: String,
+    val name: String = "",
     @ColumnInfo(name = "user_id")
-    val id: String,
+    val id: String = "",
     @ColumnInfo(name = "user_img")
     val img: String = ""
 )

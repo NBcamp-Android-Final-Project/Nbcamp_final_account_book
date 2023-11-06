@@ -26,7 +26,7 @@ class LoginViewModel(
                 roomRepo.insertUserData(user)
             }
             result.await()
-            fireRepo.updateUser(user)
+            fireRepo.updateUserData(user)
         }
     }
 

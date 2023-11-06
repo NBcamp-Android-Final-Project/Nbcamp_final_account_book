@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
@@ -15,6 +16,7 @@ import com.nbcam_final_account_book.data.model.local.DataEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
+import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
@@ -39,6 +41,8 @@ class MainViewModel(
     }
 
     private val user = fireRepo.getUser()
+
+    val mainUserDataLive: LiveData<List<UserDataEntity>> = roomRepo.getAllUserDataLiveData()
 
     //CurrentTemplateData
     private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
@@ -163,8 +167,8 @@ class MainViewModel(
             val dataList: List<DataEntity> = roomRepo.getAllData()
             val templateList: List<TemplateEntity> = roomRepo.getAllListTemplate()
             val deleteKey = roomRepo.getAllDelete()
-            fireRepo.setTemplateList(user,templateList)
-            fireRepo.updateDataList(user,dataList)
+            fireRepo.setTemplateList(user, templateList)
+            fireRepo.updateDataList(user, dataList)
 
 
             if (deleteKey.isNotEmpty()) {
@@ -184,9 +188,21 @@ class MainViewModel(
     fun firstStartSynchronizationData() {
 
         viewModelScope.launch {
+            val currentUserDataList = mainUserDataLive.value.orEmpty()
+            val currentUser = FirebaseAuth.getInstance()
+            val uid = currentUser.uid ?: ""
+
             val backUpTemplate = fireRepo.getAllTemplate(user)
             val backUpData = fireRepo.getBackupData(user)
             if (backUpTemplate.isEmpty() || backUpData.isEmpty()) return@launch
+
+            val isData = currentUserDataList.find { it.key == uid }
+
+            if (isData == null) {
+                val userData = fireRepo.getUserDataByKey(uid)
+                Log.d("유저데이터", userData.toString())
+                roomRepo.insertUserData(userData)
+            }
 
             roomRepo.insertDataList(backUpData)
             with(roomRepo) {

@@ -12,6 +12,10 @@ object Unit {
     const val TEMPLATE_LIST = "template_list"
     const val TEMPLATE_DATA = "template_data"
 
+    //Template type
+    const val TEMPLATE_LOCAL = "template_local"
+    const val TEMPLATE_ONLINE = "template_online"
+
 
     //Todo owner를 android studio에서 고려
 

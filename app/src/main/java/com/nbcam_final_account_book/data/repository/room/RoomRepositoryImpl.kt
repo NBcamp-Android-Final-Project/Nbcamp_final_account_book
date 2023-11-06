@@ -29,11 +29,11 @@ class RoomRepositoryImpl(
         return dao.getLiveTemplateList()
     }
 
-    override suspend fun insertFirstTemplate(text: String): String {
+    override suspend fun insertFirstTemplate(text: String, uid: String): String {
         val dao = database?.templateDao() ?: throw IllegalStateException("insertFirstTemplate fail")
         val customKey = UUID.randomUUID().toString()
 
-        dao.insertTemplate(TemplateEntity(id = customKey, templateTitle = text))
+        dao.insertTemplate(TemplateEntity(id = customKey, templateTitle = text, user = uid))
         return customKey
     }
 

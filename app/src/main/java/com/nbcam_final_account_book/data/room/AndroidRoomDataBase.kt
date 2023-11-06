@@ -24,7 +24,7 @@ import com.nbcam_final_account_book.data.room.dao.UserDataDao
         EntryEntity::class, TagEntity::class,
         BudgetEntity::class, DeleteEntity::class,
         UserDataEntity::class],
-    version = 17
+    version = 18
 )
 abstract class AndroidRoomDataBase : RoomDatabase() {
 

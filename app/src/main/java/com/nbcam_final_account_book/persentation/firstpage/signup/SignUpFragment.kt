@@ -74,7 +74,7 @@ class SignUpFragment : Fragment() {
             findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
         }
 
-        signupBtnOk.setOnClickListener {
+        /*signupBtnOk.setOnClickListener {
 
             val name = signupEvName.text.toString()
             val email = signupEvEmail.text.toString()
@@ -107,6 +107,45 @@ class SignUpFragment : Fragment() {
                             makeShortToast("이미 가입된 이메일입니다.")
                         }
                     }
+            }*/
+            signupBtnOk.setOnClickListener {
+
+            val name = signupEvName.text.toString()
+            val email = signupEvEmail.text.toString()
+            val password = signupEvPassword.text.toString()
+            val passwordCheck = signupEvPasswordCheck.text.toString()
+
+            auth = Firebase.auth
+
+            signupInputLayoutName.error = null
+            signupInputLayoutEmail.error = null
+            signupInputLayoutPassword.error = null
+            signupInputLayoutPasswordCheck.error = null
+
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || passwordCheck.isEmpty()) {
+                makeShortToast("공란을 채워주세요")
+            } else {
+                if (!emailCheck(email)) {
+                    signupInputLayoutEmail.error = "유효한 이메일을 입력해주세요"
+                } else if (!passwordCheck(password)) {
+                    signupInputLayoutPassword.error = "유효한 비밀번호를 입력해주세요"
+                } else if (password != passwordCheck) {
+                    makeShortToast("비밀번호가 일치하지 않습니다.")
+                } else {
+                    auth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                makeShortToast("회원 가입이 완료되었습니다.")
+                                val profileUpdate = userProfileChangeRequest {
+                                    displayName = name
+                                }
+                                auth.currentUser?.updateProfile(profileUpdate)
+                                findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+                            } else {
+                                makeShortToast("이미 가입된 이메일입니다.")
+                            }
+                        }
+                }
             }
         }
 
@@ -137,13 +176,7 @@ class SignUpFragment : Fragment() {
                     if (isPasswordValid || password.isEmpty()) View.GONE else View.VISIBLE
 
                 val isAllFieldsValid = isNameValid && isEmailValid && isPasswordValid && isPasswordMatch
-                if (isAllFieldsValid) {
-                    signupBtnOk.isEnabled = true
-                    signupBtnOk.isClickable = true
-                } else {
-                    signupBtnOk.isEnabled = false
-                    signupBtnOk.isClickable = false
-                }
+                signupBtnOk.isEnabled = isAllFieldsValid
             }
         }
 

@@ -5,7 +5,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="divider">#FFEEEEEE</color>
 
-    <color name="primary_main">#629CFF</color>
+    <color name="primary_main">#1C1C1C</color>
+
+    <!--Text Color-->
+    <color name="text_primary">#FBFBFD</color>
+    <color name="text_highlight">#629CFF</color>
+    <color name="text_hint">#9A999E</color>
 
     <color name="expend">#FF2828</color>
     <color name="income">#5382FE</color>
@@ -40,5 +45,13 @@
     <color name="chart_ect">#D1D1D1</color>
 
     <color name="chart_tab_selected_text">#FFFFFF</color>
-    <color name="chart_tab_unselected_text">#B2C8ED</color>
+    <color name="chart_tab_unselected_text">#FF000000</color>
+
+    <!--CardView Color-->
+    <color name="card_background">#2C2C2E</color>
+
+    <!--Button Color-->
+    <color name="btn_enabled">#629CFF</color>
+    <color name="btn_disabled">#313035</color>
+    <color name="btn_clicked">#B2C8ED</color>
 </resources>

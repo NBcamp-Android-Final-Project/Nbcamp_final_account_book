@@ -1,9 +1,13 @@
 package com.nbcam_final_account_book.persentation.firstpage.login
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +16,9 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -159,7 +164,23 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
         }
 
+        // TextView 내 텍스트 색상 및 굵기 설정
+        val originalWelcome = loginTvWelcome.text.toString()
+        val welcomeSpannable = SpannableStringBuilder(originalWelcome)
+        val welcomeStartIndex = originalWelcome.indexOf("두툼 가계부")
+        val welcomeEndIndex = welcomeStartIndex + "두툼 가계부".length
+        val accentColor = ResourcesCompat.getColor(resources, R.color.text_highlight, null)
+        welcomeSpannable.setSpan(ForegroundColorSpan(accentColor), welcomeStartIndex, welcomeEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        welcomeSpannable.setSpan(StyleSpan(Typeface.BOLD), welcomeStartIndex, welcomeEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        loginTvWelcome.text = welcomeSpannable
 
+        val originalSignup = loginTvSignup.text.toString()
+        val signupSpannable = SpannableStringBuilder(originalSignup)
+        val signupStartIndex = originalSignup.indexOf("회원가입")
+        val signupEndIndex = signupStartIndex + "회원가입".length
+        signupSpannable.setSpan(ForegroundColorSpan(accentColor), signupStartIndex, signupEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        signupSpannable.setSpan(StyleSpan(Typeface.BOLD), signupStartIndex, signupEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        loginTvSignup.text = signupSpannable
     }
 
     private fun initViewModel() {

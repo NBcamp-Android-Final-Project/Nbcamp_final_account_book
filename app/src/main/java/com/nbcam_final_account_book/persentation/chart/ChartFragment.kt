@@ -111,9 +111,9 @@ fun PieChartWithStyles(expenses: List<ChartTagModel>) {
             val arcRadius = size.width * 0.4f
             val textRadius = size.width * 0.5f
 
-            // 중앙 흰원
+            // 중앙 원
             drawCircle(
-                color = Color.White,
+                color = Color(0xFF1C1C1C),
                 radius = innerCircleRadius,
                 center = center
             )
@@ -173,7 +173,7 @@ fun PieChartWithStyles(expenses: List<ChartTagModel>) {
                     )
                     val text = "${category.name} ${(category.amount / totalExpense * 100).toInt()}%"
                     val paint = Paint().apply {
-                        color = android.graphics.Color.BLACK
+                        color = android.graphics.Color.WHITE
                         textSize = 13f.spToPx(density)
                         typeface = Typeface.create(typeface, Typeface.BOLD)
                         textAlign = Paint.Align.CENTER

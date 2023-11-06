@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Text Size-->
+    <dimen name="text_size_title">20sp</dimen>
+    <dimen name="text_size_body">16sp</dimen>
+    <dimen name="text_size_button">18sp</dimen>
+
+    <!--Padding Size-->
+    <dimen name="padding">28dp</dimen>
+    <dimen name="padding_bottom">36dp</dimen>
+    <dimen name="edit_text_padding">18dp</dimen>
+
+    <!--Margin Size-->
+    <dimen name="margin_vertical">50dp</dimen>
+    <dimen name="field_margin_vertical">8dp</dimen>
+    <dimen name="field_btn_margin_vertical">50dp</dimen>
+    <dimen name="login_margin_vertical">60dp</dimen>
+    <dimen name="tv_margin_horizontal">10dp</dimen>
+
+    <!-- etc -->
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="button_height">55dp</dimen>
+    <dimen name="textfield_radius">12dp</dimen>
+</resources>

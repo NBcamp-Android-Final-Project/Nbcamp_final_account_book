@@ -195,7 +195,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         app:counterEnabled="true"
-        app:counterMaxLength="100"
+        app:counterMaxLength="200"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -209,8 +209,8 @@
             android:layout_height="wrap_content"
             android:gravity="top"
             android:hint="메모"
-            android:inputType="text"
-            android:maxLength="100"
+            android:inputType="textMultiLine"
+            android:maxLength="200"
             android:minHeight="200dp" />
     </com.google.android.material.textfield.TextInputLayout>
 

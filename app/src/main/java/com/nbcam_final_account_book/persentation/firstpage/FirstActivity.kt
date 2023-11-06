@@ -11,7 +11,7 @@ import com.nbcam_final_account_book.databinding.FirstActivityBinding
 class FirstActivity : AppCompatActivity() {
 
     private lateinit var binding: FirstActivityBinding
-    private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModel: FirstViewModel
 
     private var isFirst: Boolean = true //앱 최초 실행 판정
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +37,8 @@ class FirstActivity : AppCompatActivity() {
     private fun initViewModel() {
         viewModel = ViewModelProvider(
             this@FirstActivity,
-            LoginViewModelFactory(this@FirstActivity)
-        )[LoginViewModel::class.java]
+            FirstViewModelFactory(this@FirstActivity)
+        )[FirstViewModel::class.java]
         with(viewModel) {
         }
     }

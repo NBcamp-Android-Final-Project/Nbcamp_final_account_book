@@ -18,6 +18,8 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.FirstSignUpFragmentBinding
 import com.google.firebase.ktx.Firebase
+import com.nbcam_final_account_book.data.model.local.UserDataEntity
+import com.nbcam_final_account_book.data.model.remote.UserModel
 
 
 class SignUpFragment : Fragment() {
@@ -28,7 +30,10 @@ class SignUpFragment : Fragment() {
 
     private val binding get() = _binding!!
     private val viewModel by lazy {
-        ViewModelProvider(this@SignUpFragment)[SignUpViewModel::class.java]
+        ViewModelProvider(
+            this@SignUpFragment,
+            SignUpViewModelFactory(requireContext())
+        )[SignUpViewModel::class.java]
     }
 
     //todo 약관 표시하기
@@ -96,6 +101,18 @@ class SignUpFragment : Fragment() {
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
+
+                            val user = FirebaseAuth.getInstance().currentUser
+                            if (user != null) {
+                                val newUser = UserDataEntity(
+                                    key = user.uid,
+                                    name = name,
+                                    id = email
+                                )
+                                updateUser(newUser)
+                            }
+
+
 
                             makeShortToast("회원 가입이 완료되었습니다.")
                             val profileUpdate = userProfileChangeRequest {
@@ -231,6 +248,10 @@ class SignUpFragment : Fragment() {
     private fun passwordCheck(password: String): Boolean {
         val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,20}\$")
         return passwordRegex.matches(password)
+    }
+
+    private fun updateUser(user: UserDataEntity) {
+        viewModel.updateUser(user)
     }
 
 

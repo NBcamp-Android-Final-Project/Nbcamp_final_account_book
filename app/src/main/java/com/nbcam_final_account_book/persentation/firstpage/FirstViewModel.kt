@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-class LoginViewModel(
+class FirstViewModel(
     private val firebaseRepo: FireBaseRepository,
     private val sharedProvider: SharedProvider
 ) : ViewModel() {
@@ -54,12 +54,12 @@ class LoginViewModel(
 }
 
 
-class LoginViewModelFactory(
+class FirstViewModelFactory(
     private val context: Context
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel(
+        if (modelClass.isAssignableFrom(FirstViewModel::class.java)) {
+            return FirstViewModel(
                 FireBaseRepositoryImpl(),
                 SharedProviderImpl(context)
             ) as T

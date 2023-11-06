@@ -1,7 +1,6 @@
 package com.nbcam_final_account_book.persentation.firstpage.splash
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -17,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.FirstSplashFragmentBinding
-import com.nbcam_final_account_book.persentation.firstpage.LoginViewModel
+import com.nbcam_final_account_book.persentation.firstpage.FirstViewModel
 import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateActivity
 import com.nbcam_final_account_book.persentation.template.TemplateActivity.Companion.EXTRA_TEMPLATE_TYPE
@@ -30,7 +29,7 @@ import kotlinx.coroutines.launch
 class SplashFragment : Fragment() {
     private var _binding: FirstSplashFragmentBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: LoginViewModel by activityViewModels()
+    private val viewModel: FirstViewModel by activityViewModels()
 
     
     override fun onCreateView(

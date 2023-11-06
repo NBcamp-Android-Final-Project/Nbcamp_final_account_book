@@ -9,6 +9,7 @@ import com.nbcam_final_account_book.data.model.local.DeleteEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
+import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import java.util.UUID
 
@@ -364,6 +365,20 @@ class RoomRepositoryImpl(
         val dao = database?.deleteDao() ?: throw IllegalStateException("getAllDelete fail")
 
         return dao.getAllDelete()
+    }
+
+    //userDataEntity
+
+    override suspend fun insertUserData(user: UserDataEntity) {
+        val dao = database?.userDataDao() ?: throw IllegalStateException("insertUserData fail")
+
+        dao.insertUserData(user)
+    }
+
+    override fun getUserDataByKet(key: String): UserDataEntity {
+        val dao = database?.userDataDao() ?: throw IllegalStateException("getUserDataByKet fail")
+
+        return dao.getUserByKey(key)
     }
 
 

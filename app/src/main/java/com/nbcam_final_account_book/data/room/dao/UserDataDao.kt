@@ -23,7 +23,7 @@ interface UserDataDao {
     fun getALlUserLiveData(): LiveData<List<UserDataEntity>>
 
     @Query("SELECT * FROM user_data_table WHERE user_uid = :key")
-    suspend fun getUserByKey(key: String): UserDataEntity
+    fun getUserByKey(key: String): UserDataEntity
 
     //DELETE
     @Query("DELETE FROM user_data_table WHERE user_uid = :key")

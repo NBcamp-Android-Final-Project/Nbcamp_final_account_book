@@ -7,6 +7,7 @@ import com.nbcam_final_account_book.data.model.local.DeleteEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
+import com.nbcam_final_account_book.data.model.local.UserDataEntity
 
 interface RoomRepository {
 
@@ -91,5 +92,11 @@ interface RoomRepository {
     suspend fun deleteAllDeleteEntity()
     suspend fun insertDelete(item: DeleteEntity)
     fun getAllDelete(): List<DeleteEntity>
+
+    //UserDataEntity
+
+    suspend fun insertUserData(user: UserDataEntity)
+
+    fun getUserDataByKet(key: String): UserDataEntity
 
 }

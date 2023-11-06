@@ -133,10 +133,10 @@ class TemplateDialogFragment() : DialogFragment() {
             if (viewModel.getTemplateSizeInTemplateDialog(list)) View.VISIBLE else View.INVISIBLE
 
 		binding.templateIvPaid.visibility =
-			if (viewModel.getTemplateSizeInTemplateDialog(list)) View.GONE else View.VISIBLE
+			if (viewModel.getTemplateSizeInTemplateDialog(list)) View.INVISIBLE else View.VISIBLE
 
 		binding.templateTvSub.visibility =
-			if (viewModel.getTemplateSizeInTemplateDialog(list)) View.GONE else View.VISIBLE
+			if (viewModel.getTemplateSizeInTemplateDialog(list)) View.INVISIBLE else View.VISIBLE
 	}
 
 	private fun canDelete(list: List<TemplateEntity>): Boolean {

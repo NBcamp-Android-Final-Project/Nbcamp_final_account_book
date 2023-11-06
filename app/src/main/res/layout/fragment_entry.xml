@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
     tools:context=".persentation.entry.EntryFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -26,6 +25,16 @@
             android:src="@drawable/ic_calendar_unselected_arrow_left" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:text="수입/지출 입력하기"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            tools:layout_editor_absoluteX="118dp"
+            tools:layout_editor_absoluteY="12dp" />
+
+        <TextView
             android:id="@+id/tv_save"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -38,75 +47,23 @@
             tools:layout_editor_absoluteY="17dp" />
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_amount"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="금액"
-            android:inputType="number"
-            android:maxLength="10"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout_payment"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_amount"
-        app:tabBackground="@drawable/selector_tablayout"
-        app:tabIconTint="@null"
-        app:tabIndicator="@null"
-        app:tabRippleColor="@null"
-        app:tabSelectedTextColor="@color/white"
-        app:tabTextAppearance="@style/TextAppearance.AppCompat.Small">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="카드" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="현금" />
-    </com.google.android.material.tabs.TabLayout>
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout_finance"
         android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/entry_list_vertical_margin"
+        android:layout_marginEnd="10dp"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout_payment"
+        app:layout_constraintTop_toBottomOf="@+id/materialToolbar"
         app:tabBackground="@drawable/selector_tablayout"
         app:tabIconTint="@null"
         app:tabIndicator="@null"
         app:tabRippleColor="@null"
-        app:tabSelectedTextColor="@color/white"
-        app:tabTextAppearance="@style/TextAppearance.AppCompat.Small">
+        app:tabSelectedTextColor="@color/white">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -119,18 +76,47 @@
             android:text="수입" />
     </com.google.android.material.tabs.TabLayout>
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout_payment"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/entry_list_vertical_margin"
+        android:layout_marginEnd="10dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout_finance"
+        app:tabBackground="@drawable/selector_tablayout"
+        app:tabIconTint="@null"
+        app:tabIndicator="@null"
+        app:tabRippleColor="@null"
+        app:tabSelectedTextColor="@color/white">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="카드" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="현금" />
+    </com.google.android.material.tabs.TabLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout_date"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
-        android:layout_height="65dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toStartOf="@+id/textInputLayout_tag"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/entry_list_vertical_margin"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout_finance">
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout_payment">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_date"
@@ -142,16 +128,40 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_amount"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/entry_list_vertical_margin"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_date">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="금액"
+            android:inputType="number"
+            android:maxLength="10"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout_tag"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
-        android:layout_height="64dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout_date"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/entry_list_vertical_margin"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textInputLayout_date"
-        app:layout_constraintTop_toTopOf="@+id/textInputLayout_date">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_amount">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_tag"
@@ -164,11 +174,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout_title"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/entry_list_vertical_margin"
+        android:layout_marginEnd="10dp"
         app:counterEnabled="true"
         app:counterMaxLength="20"
         app:layout_constraintEnd_toEndOf="parent"
@@ -190,18 +200,15 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/entry_list_vertical_margin"
+        android:layout_marginEnd="10dp"
         app:counterEnabled="true"
         app:counterMaxLength="200"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_title"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_title">s
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_description"

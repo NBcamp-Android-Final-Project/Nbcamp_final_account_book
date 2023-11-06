@@ -21,4 +21,6 @@
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="button_height">55dp</dimen>
     <dimen name="textfield_radius">12dp</dimen>
+    <dimen name="entry_list_vertical_margin">16dp</dimen>
+    <dimen name="entry_list_horizontal_margin">24dp</dimen>
 </resources>

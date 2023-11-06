@@ -41,4 +41,17 @@
 
     <color name="chart_tab_selected_text">#FFFFFF</color>
     <color name="chart_tab_unselected_text">#B2C8ED</color>
+
+    <!--Text Color-->
+    <color name="text_primary">#FBFBFD</color>
+    <color name="text_highlight">#629CFF</color>
+    <color name="text_hint">#9A999E</color>
+
+    <!--CardView Color-->
+    <color name="card_background">#2C2C2E</color>
+
+    <!--Button Color-->
+    <color name="btn_enabled">#629CFF</color>
+    <color name="btn_disabled">#313035</color>
+    <color name="btn_clicked">#B2C8ED</color>
 </resources>

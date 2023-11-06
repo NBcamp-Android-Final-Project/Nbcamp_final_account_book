@@ -63,8 +63,8 @@
                     android:id="@+id/signup_container_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding"
                     android:paddingHorizontal="@dimen/padding"
+                    android:paddingTop="@dimen/padding"
                     android:paddingBottom="@dimen/padding_bottom">
 
                     <TextView
@@ -101,22 +101,6 @@
                             android:textAppearance="@style/TextFieldAppearance" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <TextView
-                        android:id="@+id/signup_tv_name_warning"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="10dp"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="5dp"
-                        android:text="이름은 최대 10자까지 입력하실 수 있습니다."
-                        android:textColor="@color/text_hint"
-                        android:visibility="gone"
-                        app:drawableLeftCompat="@drawable/ic_warning"
-                        app:drawableTint="@color/text_hint"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/signup_input_layout_name" />
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/signup_input_layout_email"
                         style="@style/TextInputLayoutStyle"
@@ -125,7 +109,7 @@
                         android:layout_marginTop="@dimen/field_margin_vertical"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/signup_tv_name_warning"
+                        app:layout_constraintTop_toBottomOf="@+id/signup_input_layout_name"
                         app:startIconDrawable="@drawable/ic_email">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -139,22 +123,6 @@
                             android:textAppearance="@style/TextFieldAppearance" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-
-                    <TextView
-                        android:id="@+id/signup_tv_email_warning"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="10dp"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="5dp"
-                        android:text="유효한 이메일을 입력해주세요."
-                        android:visibility="gone"
-                        app:drawableLeftCompat="@drawable/ic_warning"
-                        app:drawableTint="#454545"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/signup_input_layout_email" />
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/signup_input_layout_password"
                         style="@style/TextInputLayoutStyle"
@@ -163,7 +131,7 @@
                         android:layout_marginTop="@dimen/field_margin_vertical"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/signup_tv_email_warning"
+                        app:layout_constraintTop_toBottomOf="@+id/signup_input_layout_email"
                         app:passwordToggleEnabled="true"
                         app:startIconDrawable="@drawable/ic_lock">
 
@@ -180,23 +148,6 @@
                             android:textSize="@dimen/text_size_body" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-
-                    <TextView
-                        android:id="@+id/signup_tv_password_warning"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="10dp"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="5dp"
-                        android:text="비밀번호는 알파벳, 숫자, 특수문자(.!@#$%)를 혼합하여 8~20자로 입력해주세요."
-                        android:textColor="@color/text_hint"
-                        android:visibility="gone"
-                        app:drawableLeftCompat="@drawable/ic_warning"
-                        app:drawableTint="@color/text_hint"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/signup_input_layout_password" />
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/signup_input_layout_password_check"
                         style="@style/TextInputLayoutStyle"
@@ -205,7 +156,7 @@
                         android:layout_marginTop="@dimen/field_margin_vertical"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/signup_tv_password_warning"
+                        app:layout_constraintTop_toBottomOf="@+id/signup_input_layout_password"
                         app:passwordToggleEnabled="true"
                         app:startIconDrawable="@drawable/ic_lock">
 
@@ -221,21 +172,6 @@
                             android:textAppearance="@style/TextFieldAppearance"
                             android:textSize="@dimen/text_size_body" />
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:id="@+id/signup_tv_password_check_warning"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="10dp"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="5dp"
-                        android:text="비밀번호가 일치하지 않습니다."
-                        android:visibility="gone"
-                        app:drawableLeftCompat="@drawable/ic_warning"
-                        app:drawableTint="#454545"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/signup_input_layout_password_check" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
         </androidx.constraintlayout.widget.ConstraintLayout>

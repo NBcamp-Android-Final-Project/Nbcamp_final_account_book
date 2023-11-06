@@ -12,6 +12,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
@@ -74,107 +76,58 @@ class SignUpFragment : Fragment() {
             findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
         }
 
-        /*signupBtnOk.setOnClickListener {
-
-            val name = signupEvName.text.toString()
-            val email = signupEvEmail.text.toString()
-            val password = signupEvPassword.text.toString()
-            val passwordCheck = signupEvPasswordCheck.text.toString()
-
-            auth = Firebase.auth
-
-            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || passwordCheck.isEmpty()) {
-                makeShortToast("공란을 채워주세요")
-            } else if (!emailCheck(email)) {
-                makeShortToast("유효한 이메일을 입력해주세요")
-            } else if (!passwordCheck(password)) {
-                makeShortToast("유효한 비밀번호를 입력해주세요")
-            } else if (password != passwordCheck) {
-                makeShortToast("비밀번호가 일치하지 않습니다.")
-            } else {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-
-                            makeShortToast("회원 가입이 완료되었습니다.")
-                            val profileUpdate = userProfileChangeRequest {
-                                displayName = name
-                            }
-                            auth.currentUser?.updateProfile(profileUpdate)
-
-                            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
-                        } else {
-                            makeShortToast("이미 가입된 이메일입니다.")
-                        }
-                    }
-            }*/
-        signupBtnOk.setOnClickListener {
-
-            val name = signupEvName.text.toString()
-            val email = signupEvEmail.text.toString()
-            val password = signupEvPassword.text.toString()
-            val passwordCheck = signupEvPasswordCheck.text.toString()
-
-            auth = Firebase.auth
-
-            signupInputLayoutName.error = null
-            signupInputLayoutEmail.error = null
-            signupInputLayoutPassword.error = null
-            signupInputLayoutPasswordCheck.error = null
-
-            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || passwordCheck.isEmpty()) {
-                makeShortToast("공란을 채워주세요")
-            } else {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            makeShortToast("회원 가입이 완료되었습니다.")
-                            val profileUpdate = userProfileChangeRequest {
-                                displayName = name
-                            }
-                            auth.currentUser?.updateProfile(profileUpdate)
-                            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
-                        } else {
-                            makeShortToast("이미 가입된 이메일입니다.")
-                        }
-                    }
-            }
-        }
-
         //TextWatcher
-        val textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+        val nameTextWatcher = createTextWatcher(
+            signupEvName, signupInputLayoutName,
+            signupEvEmail, signupEvPassword, signupEvPasswordCheck
+        )
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
+        val emailTextWatcher = createTextWatcher(
+            signupEvEmail, signupInputLayoutEmail,
+            signupEvName, signupEvPassword, signupEvPasswordCheck
+        )
 
-            override fun afterTextChanged(s: Editable?) {
-                val name = signupEvName.text.toString()
-                val email = signupEvEmail.text.toString()
-                val password = signupEvPassword.text.toString()
-                val passwordCheck = signupEvPasswordCheck.text.toString()
+        val passwordTextWatcher = createTextWatcher(
+            signupEvPassword, signupInputLayoutPassword,
+            signupEvName, signupEvEmail, signupEvPasswordCheck
+        )
 
-                val isNameValid = name.isNotEmpty() && name.length < 10
-                val isEmailValid = email.isNotEmpty() && emailCheck(email)
-                val isPasswordValid = password.isNotEmpty() && passwordCheck(password)
-                val isPasswordMatch = password.isNotEmpty() && passwordCheck.isNotEmpty() && (password == passwordCheck)
+        val passwordCheckTextWatcher = createTextWatcher(
+            signupEvPasswordCheck, signupInputLayoutPasswordCheck,
+            signupEvName, signupEvEmail, signupEvPassword
+        )
 
-                signupInputLayoutEmail.error = if (isEmailValid) null else "유효한 이메일을 입력해주세요"
-                signupInputLayoutPassword.error =
-                    if (isEmailValid) null else "비밀번호는 알파벳, 숫자, 특수문자(.!@#$%)를 혼합하여 8~20자로 입력해주세요."
-                signupInputLayoutPasswordCheck.error =
-                    if (password == passwordCheck) null else "비밀번호가 일치하지 않습니다."
+        signupEvName.addTextChangedListener(nameTextWatcher)
+        signupEvEmail.addTextChangedListener(emailTextWatcher)
+        signupEvPassword.addTextChangedListener(passwordTextWatcher)
+        signupEvPasswordCheck.addTextChangedListener(passwordCheckTextWatcher)
 
-                signupBtnOk.isEnabled =
-                    isNameValid && isEmailValid && isPasswordValid && isPasswordMatch
+        signupBtnOk.setOnClickListener {
+            val name = signupEvName.text.toString()
+            val email = signupEvEmail.text.toString()
+            val password = signupEvPassword.text.toString()
+            val passwordCheck = signupEvPasswordCheck.text.toString()
+
+            auth = Firebase.auth
+
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || passwordCheck.isEmpty()) {
+                makeShortToast("공란을 채워주세요")
+            } else {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            makeShortToast("회원가입이 완료되었습니다.")
+                            val profileUpdate = userProfileChangeRequest {
+                                displayName = name
+                            }
+                            auth.currentUser?.updateProfile(profileUpdate)
+                            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+                        } else {
+                            makeShortToast("이미 가입된 이메일입니다.")
+                        }
+                    }
             }
         }
-
-        signupEvName.addTextChangedListener(textWatcher)
-        signupEvEmail.addTextChangedListener(textWatcher)
-        signupEvPassword.addTextChangedListener(textWatcher)
-        signupEvPasswordCheck.addTextChangedListener(textWatcher)
     }
 
     private fun initViewModel() {
@@ -188,6 +141,11 @@ class SignUpFragment : Fragment() {
         Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
     }
 
+    private fun nameCheck(name: String): Boolean {
+        val nameRegex = Regex("^[a-zA-Z가-힣]{1,10}\$")
+        return nameRegex.matches(name)
+    }
+
     private fun emailCheck(email: String): Boolean {
         val emailRegex = Regex("^[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\$")
         return emailRegex.matches(email)
@@ -196,5 +154,44 @@ class SignUpFragment : Fragment() {
     private fun passwordCheck(password: String): Boolean {
         val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#\$%^&*]).{8,20}\$")
         return passwordRegex.matches(password)
+    }
+
+    // TextField 유효성 검사
+    private fun createTextWatcher(
+        editText: TextInputEditText,
+        inputLayout: TextInputLayout,
+        otherEditText1: TextInputEditText,
+        otherEditText2: TextInputEditText,
+        otherEditText3: TextInputEditText
+    ): TextWatcher = with(binding) {
+        return object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val name = signupEvName.text.toString()
+                val email = signupEvEmail.text.toString()
+                val password = signupEvPassword.text.toString()
+                val passwordCheck = signupEvPasswordCheck.text.toString()
+
+                // 각 입력 필드의 유효성 검사하여 Boolean으로 저장
+                val isNameValid = name.isNotEmpty() && nameCheck(name)
+                val isEmailValid = email.isNotEmpty() && emailCheck(email)
+                val isPasswordValid = password.isNotEmpty() && passwordCheck(password)
+                val isPasswordMatch = password.isNotEmpty() && passwordCheck.isNotEmpty() && (password == passwordCheck)
+
+                // 입력 필드에 따라 해당 에러 메시지를 설정, 유효한 경우 에러 메시지 제거
+                inputLayout.error = when (editText) {
+                    signupEvName -> if (isNameValid) null else "이름은 1~10자 이내로 입력해주세요."
+                    signupEvEmail -> if (isEmailValid) null else "유효한 이메일을 입력해주세요"
+                    signupEvPassword -> if (isPasswordValid) null else "비밀번호는 알파벳, 숫자, 특수문자(.!@#$%)를 혼합하여 8~20자로 입력해주세요."
+                    signupEvPasswordCheck -> if (isPasswordMatch) null else "비밀번호가 일치하지 않습니다."
+                    else -> null
+                }
+
+                // 모든 필드가 유효한 경우에만 버튼을 활성화
+                signupBtnOk.isEnabled = isNameValid && isEmailValid && isPasswordValid && isPasswordMatch
+            }
+        }
     }
 }

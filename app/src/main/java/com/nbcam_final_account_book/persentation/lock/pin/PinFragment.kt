@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -13,23 +12,23 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.PinFragmentBinding
-import com.nbcam_final_account_book.persentation.lock.LockSharedViewModel
 import com.nbcam_final_account_book.persentation.main.MainActivity
+import com.nbcam_final_account_book.persentation.main.MainViewModel
 
 class PinFragment : Fragment() {
 
     private var _binding: PinFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val sharedViewModel: LockSharedViewModel by activityViewModels()
+    private val sharedViewModel: MainViewModel by activityViewModels()
     private lateinit var navController: NavController
 
-    private lateinit var ivLine: Array<ImageView>
+    private lateinit var ivCircle: Array<ImageView>
     private lateinit var numberButtons: Array<AppCompatButton>
 
     private var pin1 = ""
     private var pin2 = ""
-    private var currentLine = 0
+    private var currentCircle = 0
     private var isSecondInput = false
 
     override fun onCreateView(
@@ -58,8 +57,8 @@ class PinFragment : Fragment() {
 
     private fun initView() = with(binding) {
         pinTvAlert.text = "가계부 비밀번호를 입력해주세요."
-        ivLine = arrayOf(
-            pinIvLine1, pinIvLine2, pinIvLine3, pinIvLine4
+        ivCircle = arrayOf(
+            pinIvCircle1, pinIvCircle2, pinIvCircle3, pinIvCircle4
         )
         numberButtons = arrayOf(
             pinNumpad.btn1,
@@ -71,10 +70,14 @@ class PinFragment : Fragment() {
             pinNumpad.btn7,
             pinNumpad.btn8,
             pinNumpad.btn9,
-            pinNumpad.btn0
+            pinNumpad.btn0,
         )
 
-        if (sharedViewModel.isEdit) {
+        setNumberButtonListeners()
+        setDeleteButtonListener()
+        setCancelButonListener()
+
+        /*if (sharedViewModel.isSwitch) {
             Toast.makeText(requireContext(), "비밀번호 변경", Toast.LENGTH_SHORT).show()
             // TODO: 기본 비밀번호를 입력 받고 난 후 새로운 비밀번호를 설정할 수 있도록 해야함
             setNumberButtonListeners()
@@ -83,6 +86,12 @@ class PinFragment : Fragment() {
             Toast.makeText(requireContext(), "비밀번호 새로운 설정", Toast.LENGTH_SHORT).show()
             setNumberButtonListeners()
             setDeleteButtonListener()
+        }*/
+    }
+
+    private fun setCancelButonListener() = with(binding) {
+        pinNumpad.btnCancel.setOnClickListener {
+            navController.popBackStack(R.id.menu_mypage, false)
         }
     }
 
@@ -90,12 +99,12 @@ class PinFragment : Fragment() {
         pinNumpad.btnDelete.setOnClickListener {
             if (isSecondInput && pin2.isNotEmpty() && pin2.length <= 4) {
                 pin2 = pin2.dropLast(1)
-                ivLine[currentLine - 1].setImageResource(R.drawable.ic_line)
-                currentLine--
+                ivCircle[currentCircle - 1].setImageResource(R.drawable.ic_circle_inactive)
+                currentCircle--
             } else if (!isSecondInput && pin1.isNotEmpty() && pin1.length <= 4) {
                 pin1 = pin1.dropLast(1)
-                ivLine[currentLine - 1].setImageResource(R.drawable.ic_line)
-                currentLine--
+                ivCircle[currentCircle - 1].setImageResource(R.drawable.ic_circle_inactive)
+                currentCircle--
             }
         }
     }
@@ -106,8 +115,8 @@ class PinFragment : Fragment() {
                 val num = btn.text.toString()
                 if (!isSecondInput && pin1.length < 4) { // 첫 번째 입력
                     pin1 += num
-                    ivLine[currentLine].setImageResource(R.drawable.ic_circle)
-                    currentLine++
+                    ivCircle[currentCircle].setImageResource(R.drawable.ic_circle_active)
+                    currentCircle++
 
                     if (pin1.length == 4) {
                         resetInput()
@@ -116,12 +125,12 @@ class PinFragment : Fragment() {
                     }
                 } else if (isSecondInput && pin2.length < 4) {  // 두 번째 입력
                     pin2 += num
-                    ivLine[currentLine].setImageResource(R.drawable.ic_circle)
-                    currentLine++
+                    ivCircle[currentCircle].setImageResource(R.drawable.ic_circle_active)
+                    currentCircle++
 
                     if (pin2.length == 4) { // 두 번째 비밀번호가 4자리 입력되면
                         if (pin1 == pin2) {
-                            sharedViewModel.savePin(pin2)
+                            sharedViewModel.saveSharedPrefPinNumber(pin2)
                             navController.popBackStack(R.id.menu_mypage, false)
                         } else {
                             pinTvAlert.text = "비밀번호가 일치하지 않습니다.\n처음부터 다시 시도해주세요."
@@ -137,9 +146,9 @@ class PinFragment : Fragment() {
     }
 
     private fun resetInput() {
-        currentLine = 0
+        currentCircle = 0
         for (i in 0 until 4) {
-            ivLine[i].setImageResource(R.drawable.ic_line)
+            ivCircle[i].setImageResource(R.drawable.ic_circle_inactive)
         }
     }
 }

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:clickable="true"
     tools:context=".persentation.lock.pin.PinFragment">
 
@@ -58,6 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
+        android:textColor="@color/text_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pin_guideline_horizontal2" />
@@ -72,49 +72,49 @@
         app:layout_constraintTop_toBottomOf="@+id/pin_guideline_horizontal3">
 
         <ImageView
-            android:id="@+id/pin_iv_line_1"
+            android:id="@+id/pin_iv_circle1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="0dp"
             android:paddingEnd="30dp"
-            android:src="@drawable/ic_line"
+            android:src="@drawable/ic_circle_inactive"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="contentDescription" />
+            tools:ignore="contentDescription"/>
 
         <ImageView
-            android:id="@+id/pin_iv_line_2"
+            android:id="@+id/pin_iv_circle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="0dp"
             android:paddingEnd="30dp"
-            android:src="@drawable/ic_line"
+            android:src="@drawable/ic_circle_inactive"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/pin_iv_line_1"
+            app:layout_constraintStart_toEndOf="@+id/pin_iv_circle1"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="contentDescription" />
 
         <ImageView
-            android:id="@+id/pin_iv_line_3"
+            android:id="@+id/pin_iv_circle3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="0dp"
             android:paddingEnd="30dp"
-            android:src="@drawable/ic_line"
+            android:src="@drawable/ic_circle_inactive"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/pin_iv_line_2"
+            app:layout_constraintStart_toEndOf="@+id/pin_iv_circle2"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="contentDescription" />
 
         <ImageView
-            android:id="@+id/pin_iv_line_4"
+            android:id="@+id/pin_iv_circle4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_line"
+            android:src="@drawable/ic_circle_inactive"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/pin_iv_line_3"
+            app:layout_constraintStart_toEndOf="@+id/pin_iv_circle3"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="contentDescription" />
     </androidx.constraintlayout.widget.ConstraintLayout>

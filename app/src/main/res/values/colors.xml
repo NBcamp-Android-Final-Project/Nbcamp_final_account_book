@@ -49,6 +49,7 @@
 
     <!--CardView Color-->
     <color name="card_background">#2C2C2E</color>
+    <color name="card_sub">#313035</color>
 
     <!--Button Color-->
     <color name="btn_enabled">#629CFF</color>

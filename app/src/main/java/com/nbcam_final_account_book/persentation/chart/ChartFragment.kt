@@ -1,24 +1,21 @@
 package com.nbcam_final_account_book.persentation.chart
 
-import android.app.DatePickerDialog
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,6 +24,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -35,24 +33,22 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.ChartFragmentBinding
-import com.nbcam_final_account_book.persentation.tag.TagViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import kotlin.math.cos
-import kotlin.math.roundToInt
 import kotlin.math.sin
 
+
 @Composable
-fun PieChartWithStyles(expenses: List<ChartTagModel>) {
+fun PieChartWithStyles(expenses: List<ChartTagModel>, isEmpty: Boolean, alpha: Float = 1f) {
     val totalExpense = expenses.sumByDouble { it.amount }
 
     // 애니메이션 지속 시관과 지연 시간
@@ -103,9 +99,10 @@ fun PieChartWithStyles(expenses: List<ChartTagModel>) {
     Box(
         modifier = Modifier
             .size(150.dp)
-            .fillMaxSize()
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
+        Canvas(modifier = Modifier.fillMaxSize().alpha(alpha)) {
             // 원형 차트의 반경 / 텍스트의 위치
             val innerCircleRadius = size.width * 0.3f
             val arcRadius = size.width * 0.4f
@@ -119,7 +116,7 @@ fun PieChartWithStyles(expenses: List<ChartTagModel>) {
             )
 
             // 각 카테고리별 차트 부분
-            var startAngle = 0f
+            var startAngle = -90f
             for (index in expenses.indices) {
                 val category = expenses[index]
                 val animatedProgress = animationStateList[index].value
@@ -136,57 +133,31 @@ fun PieChartWithStyles(expenses: List<ChartTagModel>) {
 
                 // 카테고리의 이름과 퍼센트
                 if (animatedProgress > 0) {
-                    val halfAngle = startAngle + animatedProgress / 2
-                    val lineStartOffset = Offset(
-                        center.x + arcRadius * cos(halfAngle.toDouble() * (Math.PI / 180)).toFloat(),
-                        center.y + arcRadius * sin(halfAngle.toDouble() * (Math.PI / 180)).toFloat()
-                    )
-                    val lineEndOffset = Offset(
-                        center.x + (arcRadius + 60.dp.toPx()) * cos(halfAngle.toDouble() * (Math.PI / 180)).toFloat(), // 선의 길이 조정
-                        center.y + (arcRadius + 60.dp.toPx()) * sin(halfAngle.toDouble() * (Math.PI / 180)).toFloat()
-                    )
+                    // 각도를 라디안으로 변환
+                    val halfAngleRadians = Math.toRadians((startAngle + animatedProgress / 2).toDouble())
 
-                    // 연결선 그리기
-                    val path = androidx.compose.ui.graphics.Path()
-                    path.moveTo(lineStartOffset.x, lineStartOffset.y)
-                    val controlPoint = Offset(
-                        center.x + (arcRadius + 15.dp.toPx()) * cos(halfAngle.toDouble() * (Math.PI / 180)).toFloat(),
-                        center.y + (arcRadius + 15.dp.toPx()) * sin(halfAngle.toDouble() * (Math.PI / 180)).toFloat()
-                    )
-                    path.quadraticBezierTo(
-                        controlPoint.x,
-                        controlPoint.y,
-                        lineEndOffset.x,
-                        lineEndOffset.y
-                    )
-
-                    drawPath(
-                        path = path,
-                        color = category.color,
-                        style = Stroke(width = 2f.dp.toPx())
-                    )
+                    // 텍스트를 그릴 위치를 결정
+                    val textRadius = arcRadius / 2 + innerCircleRadius
+                    val textX = (center.x + textRadius * cos(halfAngleRadians)).toFloat()
+                    val textY = (center.y + textRadius * sin(halfAngleRadians)).toFloat()
 
                     // 텍스트 그리기
-                    val textOffset = Offset(
-                        lineEndOffset.x + (if (lineEndOffset.x > center.x) 50.dp else (-50).dp).toPx(), // 텍스트 위치 조정
-                        lineEndOffset.y
-                    )
                     val text = "${category.name} ${(category.amount / totalExpense * 100).toInt()}%"
-                    val paint = Paint().apply {
+                    val textPaint = Paint().apply {
                         color = android.graphics.Color.WHITE
                         textSize = 13f.spToPx(density)
-                        typeface = Typeface.create(typeface, Typeface.BOLD)
+                        typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
                         textAlign = Paint.Align.CENTER
                     }
 
-                    drawIntoCanvas { canvas ->
-                        canvas.nativeCanvas.drawText(
-                            text,
-                            textOffset.x,
-                            textOffset.y + (paint.descent() - paint.ascent()) / 2 - paint.descent(),
-                            paint
-                        )
-                    }
+                    // 텍스트의 상하 위치를 정렬하기 위해 텍스트의 높이를 계산
+                    val textHeight = textPaint.descent() - textPaint.ascent()
+                    drawContext.canvas.nativeCanvas.drawText(
+                        text,
+                        textX,
+                        textY - textHeight / 2 - textPaint.ascent(), // 텍스트를 수직 중앙에 맞춤
+                        textPaint
+                    )
                 }
 
                 startAngle += animatedProgress
@@ -202,13 +173,31 @@ private fun Float.spToPx(density: Float): Float = this * density
 @Composable
 fun ExpenseScreen(expenses: List<ChartTagModel>) {
 
-    // 중앙에 원형 차트
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()
+    val isEmpty = expenses.isEmpty()
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        PieChartWithStyles(expenses)
+        // 중앙에 원형 차트 - 데이터가 없으면 더미 데이터와 희미한 알파값을 적용
+        PieChartWithStyles(expenses = expenses, isEmpty = isEmpty, alpha = if (isEmpty) 0.3f else 1f)
+
+        // 데이터가 없을 때 텍스트 표시
+        if (isEmpty) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .background(Color.Black.copy(alpha = 0.8f))
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "현재 데이터가 없습니다",
+                    color = Color.White,
+                    fontSize = 16.sp
+                )
+            }
+        }
     }
 }
 

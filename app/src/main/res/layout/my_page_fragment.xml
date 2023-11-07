@@ -24,7 +24,8 @@
                 android:id="@+id/mypage_container_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/card_background"
+                android:background="@drawable/bg_mypage_profile_item"
+                android:backgroundTint="@color/card_background"
                 android:paddingHorizontal="25dp"
                 android:paddingVertical="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -152,6 +153,7 @@
                         android:text="사용중인 가계부"
                         android:textColor="@color/text_hint"
                         android:textSize="11sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -170,7 +172,7 @@
                         app:layout_constraintTop_toTopOf="@+id/mypage_rv_shared_users" />
 
                     <View
-                        android:id="@+id/view4"
+                        android:id="@+id/mypage_divider1"
                         android:layout_width="1dp"
                         android:layout_height="0dp"
                         android:layout_marginVertical="6dp"
@@ -187,6 +189,7 @@
                         android:text="공유중인 친구"
                         android:textColor="@color/text_hint"
                         android:textSize="11sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/guideline_v2"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -210,19 +213,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="@color/card_background"
+                android:background="@drawable/bg_mypage_profile_item"
+                android:backgroundTint="@color/card_background"
+                android:paddingVertical="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mypage_container_profile">
-
-                <View
-                    android:id="@+id/view1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/card_sub"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/mypage_tv_book"
@@ -238,10 +234,10 @@
                     app:drawableTint="@color/text_primary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view1" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <View
-                    android:id="@+id/view2"
+                    android:id="@+id/mypage_divider2"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/card_sub"
@@ -263,10 +259,10 @@
                     app:drawableTint="@color/text_primary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view2" />
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider2" />
 
                 <View
-                    android:id="@+id/view3"
+                    android:id="@+id/mypage_divider3"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/card_sub"
@@ -290,13 +286,13 @@
                     android:thumb="@drawable/my_page_switch_thumb"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view3"
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider3"
                     app:switchMinWidth="0dp"
                     app:thumbTextPadding="15dp"
                     app:track="@drawable/my_page_switch_track" />
 
                 <View
-                    android:id="@+id/view6"
+                    android:id="@+id/mypage_divider4"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/card_sub"
@@ -311,7 +307,7 @@
                     android:padding="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view6">
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider4">
 
                     <TextView
                         android:id="@+id/mypage_tv_backup"
@@ -343,7 +339,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
-                    android:id="@+id/view7"
+                    android:id="@+id/mypage_divider5"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/card_sub"
@@ -358,7 +354,7 @@
                     android:padding="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view7">
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider5">
 
                     <TextView
                         android:id="@+id/mypage_tv_sync"
@@ -390,7 +386,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
-                    android:id="@+id/view8"
+                    android:id="@+id/mypage_divider6"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/card_sub"
@@ -410,10 +406,10 @@
                     app:drawableTint="@color/text_primary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view8" />
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider6" />
 
                 <View
-                    android:id="@+id/view9"
+                    android:id="@+id/mypage_divider7"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/card_sub"
@@ -429,10 +425,10 @@
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view9" />
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider7" />
 
                 <View
-                    android:id="@+id/view10"
+                    android:id="@+id/mypage_divider8"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/card_sub"
@@ -448,10 +444,10 @@
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view10" />
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider8" />
 
                 <View
-                    android:id="@+id/view11"
+                    android:id="@+id/mypage_divider9"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/card_sub"
@@ -467,7 +463,7 @@
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view11" />
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider9" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

@@ -66,11 +66,23 @@ class MainViewModel(
         roomRepo.getLiveBudgetByKey(key)
     }
 
+    //MyPage Pin LiveData
+    private val _pin = MutableLiveData<String>()
+    val pin: LiveData<String> get() = _pin
+
+    private val _isPinSet = MutableLiveData<Boolean>()
+    val isPinSet: LiveData<Boolean> get() = _isPinSet
+
+    var isSwitch = false // 클릭한 버튼 정보를 저장하는 변수
+
     init {
         if (loadSharedPrefCurrentUser() != null) {
             _mainLiveCurrentTemplate.value = loadSharedPrefCurrentUser()
         }
         setKey()
+
+        _pin.value = loadSharedPrefPinNumber()
+        _isPinSet.value = _pin.value?.isNotEmpty() ?: false
     }
 
     fun getCurrentTemplate(): TemplateEntity? {
@@ -345,6 +357,32 @@ class MainViewModel(
         val sharedPref = sharedProvider.setSharedPref("name_isLogin")
 
         return sharedPref.getBoolean("key_isLogin", false)
+    }
+
+    // 앱 자체 비밀번호 설정을 위한 SharedPreferences
+    fun saveSharedPrefPinNumber(num: String) {
+        _pin.value = num
+        _isPinSet.value = num.isNotEmpty()
+
+        val sharedPref = sharedProvider.setSharedPref("pin_number")
+        val editor = sharedPref.edit()
+        editor.putString("key_pin", num)
+        editor.apply()
+    }
+
+    private fun loadSharedPrefPinNumber(): String {
+        val sharedPref = sharedProvider.setSharedPref("pin_number")
+        return sharedPref.getString("key_pin", "") ?: ""
+    }
+
+    fun removeSharedPrefPinNumber() {
+        _pin.value = ""
+        _isPinSet.value = false
+
+        val sharedPref = sharedProvider.setSharedPref("pin_number")
+        val editor = sharedPref.edit()
+        editor.remove("key_pin")
+        editor.apply()
     }
 }
 

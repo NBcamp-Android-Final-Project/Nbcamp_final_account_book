@@ -157,7 +157,7 @@ class TemplateDialogFragment() : DialogFragment() {
 
 	private fun replaceAlterDialog(item: TemplateEntity) {
 		val textView = TextView(requireActivity())
-		textView.text = "템플릿 삭제"
+		textView.text = "템플릿 이동"
 		textView.setPadding(70, 30, 20, 30)
 		textView.textSize = 20f
 		textView.setBackgroundColor(Color.WHITE)

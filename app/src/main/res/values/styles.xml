@@ -44,6 +44,14 @@
         <item name="cursorColor">@color/text_highlight</item>
     </style>
 
+    <style name="EntryTextInputLayoutStyle" parent="TextInputLayoutStyle">
+        <item name="boxCornerRadiusBottomEnd">2dp</item>
+        <item name="counterTextColor">@color/cheon_primary_bot_nav</item>
+        <item name="boxCornerRadiusBottomStart">2dp</item>
+        <item name="boxCornerRadiusTopEnd">2dp</item>
+        <item name="boxCornerRadiusTopStart">2dp</item>
+    </style>
+
     <style name="TextFieldAppearance">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
@@ -52,6 +60,7 @@
     </style>
 
     // 숫자 키패드 스타일
+
     <style name="NumberPadButtonStyle">
         <item name="android:backgroundTint">@android:color/transparent</item>
         <item name="android:stateListAnimator">@null</item>

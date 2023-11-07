@@ -6,6 +6,10 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -37,106 +41,107 @@ import java.util.Locale
 
 class MyPageFragment : Fragment() {
 
-    private lateinit var database: DatabaseReference
+	private lateinit var database: DatabaseReference
 
-    companion object {
-        const val REQUEST_IMAGE_PICK = 101
-    }
+	companion object {
+		const val REQUEST_IMAGE_PICK = 101
+	}
 
-    // 더미데이터 - 공유하는 사람
-    private val dummyUser = listOf(
-        SharedUser(
-            "1",
-            "David",
-            "https://images.pexels.com/photos/14661/pexels-photo-14661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        ),
-        SharedUser(
-            "2",
-            "Ian",
-            "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        ),
-        SharedUser(
-            "3",
-            "Chloe",
-            "https://images.pexels.com/photos/5186/person-woman-coffee-cup.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        ),
-        SharedUser(
-            "4",
-            "Felix",
-            "https://images.pexels.com/photos/25733/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        ),
-        SharedUser(
-            "5",
-            "Bentley",
-            "https://images.pexels.com/photos/109851/pexels-photo-109851.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        ),
-        SharedUser(
-            "6",
-            "Aurora",
-            "https://images.pexels.com/photos/55789/pexels-photo-55789.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        )
-    )
+	// 더미데이터 - 공유하는 사람
+	private val dummyUser = listOf(
+		SharedUser(
+			"1",
+			"David",
+			"https://images.pexels.com/photos/14661/pexels-photo-14661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+		),
+		SharedUser(
+			"2",
+			"Ian",
+			"https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+		),
+		SharedUser(
+			"3",
+			"Chloe",
+			"https://images.pexels.com/photos/5186/person-woman-coffee-cup.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+		),
+		SharedUser(
+			"4",
+			"Felix",
+			"https://images.pexels.com/photos/25733/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+		),
+		SharedUser(
+			"5",
+			"Bentley",
+			"https://images.pexels.com/photos/109851/pexels-photo-109851.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+		),
+		SharedUser(
+			"6",
+			"Aurora",
+			"https://images.pexels.com/photos/55789/pexels-photo-55789.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+		)
+	)
 
-    private var _binding: MyPageFragmentBinding? = null
-    private val binding get() = _binding!!
+	private var _binding: MyPageFragmentBinding? = null
+	private val binding get() = _binding!!
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this, MyPageViewModelFactory(
-                requireContext()
-            )
-        )[MyPageViewModel::class.java]
-    }
+	private val viewModel by lazy {
+		ViewModelProvider(
+			this, MyPageViewModelFactory(
+				requireContext()
+			)
+		)[MyPageViewModel::class.java]
+	}
 
-    private val sharedViewModel: MainViewModel by activityViewModels()
-    private val sharedUsersAdapter = SharedUsersAdapter(dummyUser)
-    private lateinit var navController: NavController
+	private val sharedViewModel: MainViewModel by activityViewModels()
+	private val sharedUsersAdapter = SharedUsersAdapter(dummyUser)
+	private lateinit var navController: NavController
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = MyPageFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+	override fun onCreateView(
+		inflater: LayoutInflater, container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View {
+		_binding = MyPageFragmentBinding.inflate(inflater, container, false)
+		return binding.root
+	}
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        navController = findNavController()
-        initView()
-        initViewModel()
-    }
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+		navController = findNavController()
+		initView()
+		initViewModel()
+	}
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_IMAGE_PICK) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) openGallery()
-            else deniedDialog()
-        }
-    }
+	override fun onRequestPermissionsResult(
+		requestCode: Int,
+		permissions: Array<out String>,
+		grantResults: IntArray
+	) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+		if (requestCode == REQUEST_IMAGE_PICK) {
+			if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) openGallery()
+			else deniedDialog()
+		}
+	}
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) =
-        with(binding) {
-            super.onActivityResult(requestCode, resultCode, data)
-            updateProfileImage(requestCode, resultCode, data)
-        }
+	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) =
+		with(binding) {
+			super.onActivityResult(requestCode, resultCode, data)
+			updateProfileImage(requestCode, resultCode, data)
+		}
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
+	override fun onDestroy() {
+		super.onDestroy()
+		_binding = null
+	}
 
-    private fun initView() = with(binding) {
-        val title = sharedViewModel.mainLiveCurrentTemplate.value?.templateTitle
-        mypageTvUsingName.text = title
+	private fun initView() = with(binding) {
+		val title = sharedViewModel.mainLiveCurrentTemplate.value?.templateTitle
+		mypageTvUsingName.text = title
 
-        getUserName()
-        getUserEmail()
+		getUserName()
+		getUserEmail()
 //        getUserPhotoUrl()
+
         loadProfileImage()
 
         mypageIvProfile.setOnClickListener {
@@ -436,4 +441,16 @@ class MyPageFragment : Fragment() {
     private fun removeSharedPrefPinNum() = with(sharedViewModel) {
         removeSharedPrefPinNumber()
     }
+
+	private fun changePassword(password: String) {
+		FirebaseAuth.getInstance().currentUser!!.updatePassword(password)
+			.addOnCompleteListener { task ->
+				if (task.isSuccessful) {
+					Toast.makeText(requireActivity(), "비밀번호가 변경되었습니다.", Toast.LENGTH_LONG).show()
+				} else {
+					Toast.makeText(requireActivity(), task.exception.toString(), Toast.LENGTH_LONG)
+						.show()
+				}
+			}
+	}
 }

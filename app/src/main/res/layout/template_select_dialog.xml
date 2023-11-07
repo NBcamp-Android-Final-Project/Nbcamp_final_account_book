@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
-    android:background="@drawable/shape_round">
+    android:background="@drawable/shape_round"
+    android:maxHeight="560dp"
+    android:minWidth="280dp">
 
     <TextView
         android:id="@+id/template_tv_title"

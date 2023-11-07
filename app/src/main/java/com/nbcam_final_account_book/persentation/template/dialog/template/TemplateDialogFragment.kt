@@ -1,6 +1,5 @@
 package com.nbcam_final_account_book.persentation.template.dialog.template
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -10,10 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.TemplateSelectDialogBinding
 import com.nbcam_final_account_book.persentation.main.MainViewModel
@@ -64,7 +66,6 @@ class TemplateDialogFragment() : DialogFragment() {
 		_binding = TemplateSelectDialogBinding.inflate(inflater, container, false)
 		dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 		dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-		initViewModel()
 		return binding.root
 	}
 
@@ -73,13 +74,20 @@ class TemplateDialogFragment() : DialogFragment() {
 
 
 		initView()
-//		initViewModel()
+		initViewModel()
 
 	}
 
 	private fun initView() = with(binding) {
 
 		templateSelectRecyclerViewTemplateList.adapter = adapter
+		templateSelectRecyclerViewTemplateList.hasFixedSize()
+		templateSelectRecyclerViewTemplateList.addItemDecoration(
+			DividerItemDecoration(
+				requireActivity(),
+				LinearLayoutManager.VERTICAL
+			)
+		)
 
 		templateBtnAdd.setOnClickListener {
 			toTemplateActivity()
@@ -88,6 +96,7 @@ class TemplateDialogFragment() : DialogFragment() {
 		templateTvCancel.setOnClickListener {
 			dismiss()
 		}
+
 
 	}
 
@@ -130,8 +139,8 @@ class TemplateDialogFragment() : DialogFragment() {
 	}
 
 	private fun btnVisibility(list: List<TemplateEntity>) {
-        binding.templateBtnAdd.visibility =
-            if (viewModel.getTemplateSizeInTemplateDialog(list)) View.VISIBLE else View.INVISIBLE
+		binding.templateBtnAdd.visibility =
+			if (viewModel.getTemplateSizeInTemplateDialog(list)) View.VISIBLE else View.INVISIBLE
 
 		binding.templateIvPaid.visibility =
 			if (viewModel.getTemplateSizeInTemplateDialog(list)) View.GONE else View.VISIBLE
@@ -147,8 +156,15 @@ class TemplateDialogFragment() : DialogFragment() {
 	}
 
 	private fun replaceAlterDialog(item: TemplateEntity) {
-		val builder = AlertDialog.Builder(context)
-		builder.setTitle("템플릿 변경")
+		val textView = TextView(requireActivity())
+		textView.text = "템플릿 삭제"
+		textView.setPadding(70, 30, 20, 30)
+		textView.textSize = 20f
+		textView.setBackgroundColor(Color.WHITE)
+		textView.setTextColor(Color.BLACK)
+
+		val builder = androidx.appcompat.app.AlertDialog.Builder(requireActivity())
+		builder.setCustomTitle(textView)
 		builder.setMessage("${item.templateTitle}으로 이동하시겠습니까??")
 		builder.setNegativeButton("예") { _, _ ->
 

@@ -1,12 +1,16 @@
 package com.nbcam_final_account_book.persentation.template.dialog.template
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.TemplateSelectItemBinding
+
 
 class TemplateDialogAdapter(
     private val onItemClick: (TemplateEntity) -> Unit,
@@ -55,10 +59,26 @@ class TemplateDialogAdapter(
                 onItemClick(item)
             }
 
-            itemView.setOnLongClickListener{
-                onItemDeleteClick(item)
+            ivTemplateDelete.setOnClickListener {
+                val textView = TextView(root.context)
+                textView.text = "템플릿 삭제"
+                textView.setPadding(70, 30, 20, 30)
+                textView.textSize = 20f
+                textView.setBackgroundColor(Color.WHITE)
+                textView.setTextColor(Color.BLACK)
 
-                true
+                val builder = AlertDialog.Builder(root.context)
+                builder.setCustomTitle(textView)
+                builder.setMessage("${item.templateTitle}을 삭제하시겠습니까??")
+                builder.setNegativeButton("예") { _, _ ->
+
+                    onItemDeleteClick(item)
+                }
+                builder.setPositiveButton("아니오") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                val dialog = builder.create()
+                dialog.show()
             }
 
         }

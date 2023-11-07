@@ -225,6 +225,16 @@ class MyPageFragment : Fragment() {
         }
 
         mypageTvChangePassword.setOnClickListener {
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user != null) {
+                for (userInfo in user.providerData) {
+                    if (userInfo.providerId == "google.com") {
+                        Toast.makeText(requireContext(), "구글 간편 로그인 사용자는 비밀번호를 변경할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+                }
+            }
+
             showChangePasswordDialog()
         }
     }

@@ -3,17 +3,14 @@ package com.nbcam_final_account_book.persentation.mypage
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -31,6 +28,7 @@ import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MyPageFragmentBinding
 import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
 import com.nbcam_final_account_book.persentation.main.MainViewModel
+import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageDeniedDialog
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageEditNameDialog
 import com.nbcam_final_account_book.persentation.tag.TagActivity
 import java.text.SimpleDateFormat
@@ -401,19 +399,7 @@ class MyPageFragment : Fragment() {
     }
 
     private fun deniedDialog() {
-        AlertDialog.Builder(requireContext())
-            .setMessage("갤러리를 열려면 권한이 필요합니다. 권한을 설정하시겠습니까?")
-            .setPositiveButton("설정") { _, _ ->
-                // 앱 설정 화면으로 이동
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                val uri = Uri.fromParts("package", requireContext().packageName, null)
-                intent.data = uri
-                startActivity(intent)
-            }
-            .setNegativeButton("취소") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+        MyPageDeniedDialog(requireContext())
     }
 
     private fun syncData() {

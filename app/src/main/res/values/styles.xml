@@ -50,4 +50,17 @@
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textColorHint">@color/text_hint</item>
     </style>
+
+    // 숫자 키패드 스타일
+    <style name="NumberPadButtonStyle">
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <style name="NumberPadTextAppearance">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorHighlight">@color/chart_tab_unselected_text</item>
+    </style>
 </resources>

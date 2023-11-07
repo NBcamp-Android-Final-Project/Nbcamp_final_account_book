@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/lock_gridlayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,104 +10,111 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn1"
+        style="@style/NumberPadButtonStyle"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
-        android:background="@drawable/bg_more_btn"
         android:text="1"
-        android:textColor="@color/black" />
+        android:textAppearance="@style/NumberPadTextAppearance" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_2"
+        style="@style/NumberPadButtonStyle"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
-        android:background="@drawable/bg_more_btn"
         android:text="2"
-        android:textColor="@color/black" />
+        android:textAppearance="@style/NumberPadTextAppearance" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_3"
+        style="@style/NumberPadButtonStyle"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
-        android:background="@drawable/bg_more_btn"
         android:text="3"
-        android:textColor="@color/black" />
+        android:textAppearance="@style/NumberPadTextAppearance" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_4"
+        style="@style/NumberPadButtonStyle"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
-        android:background="@drawable/bg_more_btn"
         android:text="4"
-        android:textColor="@color/black" />
+        android:textAppearance="@style/NumberPadTextAppearance" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_5"
+        style="@style/NumberPadButtonStyle"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
-        android:background="@drawable/bg_more_btn"
         android:text="5"
-        android:textColor="@color/black" />
+        android:textAppearance="@style/NumberPadTextAppearance" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_6"
+        style="@style/NumberPadButtonStyle"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
-        android:background="@drawable/bg_more_btn"
         android:text="6"
-        android:textColor="@color/black" />
+        android:textAppearance="@style/NumberPadTextAppearance" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_7"
+        style="@style/NumberPadButtonStyle"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
-        android:background="@drawable/bg_more_btn"
         android:text="7"
-        android:textColor="@color/black" />
+        android:textAppearance="@style/NumberPadTextAppearance" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_8"
+        style="@style/NumberPadButtonStyle"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
-        android:background="@drawable/bg_more_btn"
         android:text="8"
-        android:textColor="@color/black" />
+        android:textAppearance="@style/NumberPadTextAppearance" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_9"
+        style="@style/NumberPadButtonStyle"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
-        android:background="@drawable/bg_more_btn"
         android:text="9"
-        android:textColor="@color/black" />
+        android:textAppearance="@style/NumberPadTextAppearance" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_cancel"
+        style="@style/NumberPadButtonStyle"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:text="취소"
+        android:textAppearance="@style/NumberPadTextAppearance" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_0"
+        style="@style/NumberPadButtonStyle"
         android:layout_rowWeight="1"
-        android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
-        android:background="@drawable/bg_more_btn"
         android:text="0"
-        android:textColor="@color/black" />
+        android:textAppearance="@style/NumberPadTextAppearance" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btn_delete"
+        style="@style/NumberPadButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_rowWeight="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
-        android:background="@drawable/bg_more_btn"
         android:gravity="center"
-        android:src="@drawable/ic_backspace"
-        android:textColor="@color/black" />
+        android:src="@drawable/number_pad_backspace_color" />
 </GridLayout>

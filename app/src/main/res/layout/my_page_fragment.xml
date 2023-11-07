@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cheon_primary_bot_nav"
     tools:context=".persentation.mypage.MyPageFragment">
 
     <ScrollView
@@ -25,7 +24,7 @@
                 android:id="@+id/mypage_container_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/card_background"
                 android:paddingHorizontal="25dp"
                 android:paddingVertical="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +71,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:tint="#454545"
+                        app:tint="@color/text_hint"
                         tools:ignore="contentDescription" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -90,7 +89,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="사용자 이메일"
-                        android:textColor="#555555"
+                        android:textColor="@color/text_hint"
                         android:textSize="11sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -105,7 +104,7 @@
                         android:maxLength="10"
                         android:maxLines="1"
                         android:padding="0dp"
-                        android:textColor="#454545"
+                        android:textColorHint="@color/text_hint"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -119,10 +118,10 @@
                         android:layout_marginStart="5dp"
                         android:padding="5dp"
                         android:src="@drawable/ic_edit"
-                        android:textColor="#454545"
                         app:layout_constraintBottom_toBottomOf="@+id/mypage_et_name"
                         app:layout_constraintStart_toEndOf="@+id/mypage_et_name"
                         app:layout_constraintTop_toTopOf="@+id/mypage_et_name"
+                        app:tint="@color/text_hint"
                         tools:ignore="contentDescription" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -151,7 +150,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="사용중인 가계부"
-                        android:textColor="#555555"
+                        android:textColor="@color/text_hint"
                         android:textSize="11sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -163,7 +162,6 @@
                         android:layout_marginEnd="20dp"
                         android:gravity="center"
                         android:text="ooo 가계부"
-                        android:textColor="#454545"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/mypage_rv_shared_users"
@@ -176,7 +174,7 @@
                         android:layout_width="1dp"
                         android:layout_height="0dp"
                         android:layout_marginVertical="6dp"
-                        android:background="@color/white"
+                        android:background="@color/card_background"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/guideline_v2"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -187,7 +185,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:text="공유중인 친구"
-                        android:textColor="#555555"
+                        android:textColor="@color/text_hint"
                         android:textSize="11sp"
                         app:layout_constraintStart_toEndOf="@+id/guideline_v2"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -212,7 +210,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="@color/white"
+                android:background="@color/card_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mypage_container_profile">
@@ -221,7 +219,7 @@
                     android:id="@+id/view1"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_gray"
+                    android:background="@color/card_sub"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -234,11 +232,10 @@
                     android:gravity="center_vertical"
                     android:padding="15dp"
                     android:text="가계부 관리"
-                    android:textColor="#454545"
                     android:textSize="15sp"
                     app:drawableLeftCompat="@drawable/ic_template"
                     app:drawableRightCompat="@drawable/ic_calendar_selector_arrow_right"
-                    app:drawableTint="#E6454545"
+                    app:drawableTint="@color/text_primary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view1" />
@@ -247,7 +244,7 @@
                     android:id="@+id/view2"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_gray"
+                    android:background="@color/card_sub"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_tv_book" />
@@ -260,11 +257,10 @@
                     android:gravity="center_vertical"
                     android:padding="15dp"
                     android:text="태그 관리"
-                    android:textColor="#454545"
                     android:textSize="15sp"
                     app:drawableLeftCompat="@drawable/ic_tag"
                     app:drawableRightCompat="@drawable/ic_calendar_selector_arrow_right"
-                    app:drawableTint="#E6454545"
+                    app:drawableTint="@color/text_primary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view2" />
@@ -273,7 +269,7 @@
                     android:id="@+id/view3"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_gray"
+                    android:background="@color/card_sub"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_tv_tag" />
@@ -285,13 +281,13 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_lock"
                     android:drawablePadding="10dp"
+                    android:drawableTint="@color/text_primary"
                     android:padding="15dp"
                     android:text="비밀번호 잠금"
-                    android:textColor="#454545"
+                    android:textColor="@color/text_primary"
                     android:textOff=""
                     android:textOn=""
                     android:thumb="@drawable/my_page_switch_thumb"
-                    app:drawableTint="#E6454545"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view3"
@@ -303,7 +299,7 @@
                     android:id="@+id/view6"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_gray"
+                    android:background="@color/card_sub"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_switch_pin" />
@@ -324,10 +320,9 @@
                         android:clickable="true"
                         android:drawablePadding="10dp"
                         android:text="백업"
-                        android:textColor="#454545"
                         android:textSize="15sp"
                         app:drawableLeftCompat="@drawable/ic_backup"
-                        app:drawableTint="#E6454545"
+                        app:drawableTint="@color/text_primary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -338,7 +333,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text=""
-                        android:textColor="#CC454545"
+                        android:textColor="@color/text_hint"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -351,7 +346,7 @@
                     android:id="@+id/view7"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_gray"
+                    android:background="@color/card_sub"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_container_backup" />
@@ -372,10 +367,9 @@
                         android:clickable="true"
                         android:drawablePadding="10dp"
                         android:text="동기화"
-                        android:textColor="#454545"
                         android:textSize="15sp"
                         app:drawableLeftCompat="@drawable/ic_sync"
-                        app:drawableTint="#E6454545"
+                        app:drawableTint="@color/text_primary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -386,7 +380,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text=""
-                        android:textColor="#CC454545"
+                        android:textColor="@color/text_hint"
                         android:textSize="13sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -399,7 +393,7 @@
                     android:id="@+id/view8"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_gray"
+                    android:background="@color/card_sub"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_container_sync" />
@@ -411,10 +405,9 @@
                     android:drawablePadding="10dp"
                     android:padding="15dp"
                     android:text="로그아웃"
-                    android:textColor="#454545"
                     android:textSize="15sp"
                     app:drawableLeftCompat="@drawable/ic_logout"
-                    app:drawableTint="#E6454545"
+                    app:drawableTint="@color/text_primary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view8" />
@@ -423,7 +416,7 @@
                     android:id="@+id/view9"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_gray"
+                    android:background="@color/card_sub"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_tv_logout" />
 
@@ -433,19 +426,18 @@
                     android:layout_height="0dp"
                     android:padding="15dp"
                     android:text="공유하기"
-                    android:textColor="#454545"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view9" />
 
                 <View
-                android:id="@+id/view10"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mypage_tv_share" />
+                    android:id="@+id/view10"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/card_sub"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_tv_share" />
 
                 <TextView
                     android:id="@+id/mypage_tv_change_password"
@@ -453,7 +445,6 @@
                     android:layout_height="0dp"
                     android:padding="15dp"
                     android:text="비밀번호 변경"
-                    android:textColor="#454545"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -463,7 +454,7 @@
                     android:id="@+id/view11"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_gray"
+                    android:background="@color/card_sub"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_tv_change_password" />
 
@@ -473,7 +464,6 @@
                     android:layout_height="0dp"
                     android:padding="15dp"
                     android:text="탈퇴하기"
-                    android:textColor="#454545"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

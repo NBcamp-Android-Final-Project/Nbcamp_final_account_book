@@ -64,6 +64,7 @@ class TemplateDialogFragment() : DialogFragment() {
 		_binding = TemplateSelectDialogBinding.inflate(inflater, container, false)
 		dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 		dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+		initViewModel()
 		return binding.root
 	}
 
@@ -72,7 +73,7 @@ class TemplateDialogFragment() : DialogFragment() {
 
 
 		initView()
-		initViewModel()
+//		initViewModel()
 
 	}
 
@@ -133,10 +134,10 @@ class TemplateDialogFragment() : DialogFragment() {
             if (viewModel.getTemplateSizeInTemplateDialog(list)) View.VISIBLE else View.INVISIBLE
 
 		binding.templateIvPaid.visibility =
-			if (viewModel.getTemplateSizeInTemplateDialog(list)) View.INVISIBLE else View.VISIBLE
+			if (viewModel.getTemplateSizeInTemplateDialog(list)) View.GONE else View.VISIBLE
 
 		binding.templateTvSub.visibility =
-			if (viewModel.getTemplateSizeInTemplateDialog(list)) View.INVISIBLE else View.VISIBLE
+			if (viewModel.getTemplateSizeInTemplateDialog(list)) View.GONE else View.VISIBLE
 	}
 
 	private fun canDelete(list: List<TemplateEntity>): Boolean {

@@ -63,7 +63,7 @@
         android:text="무료 버전은 최대 3개의 가계부를 제공합니다!"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         android:textColor="@android:color/darker_gray"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:drawableLeftCompat="@drawable/ic_warning"
         app:drawableTint="@android:color/holo_red_dark"
         app:layout_constraintEnd_toEndOf="parent"

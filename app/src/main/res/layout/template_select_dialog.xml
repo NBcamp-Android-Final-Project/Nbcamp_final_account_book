@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
-    android:background="@drawable/shape_round">
+    android:background="@drawable/shape_round"
+    android:maxHeight="560dp"
+    android:minWidth="280dp">
 
     <TextView
         android:id="@+id/template_tv_title"
@@ -17,6 +18,7 @@
         android:text="가계부 선택"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +63,8 @@
         android:maxLines="1"
         android:text="무료 버전은 최대 3개의 가계부를 제공합니다!"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        android:visibility="invisible"
+        android:textColor="@android:color/darker_gray"
+        android:visibility="gone"
         app:drawableLeftCompat="@drawable/ic_warning"
         app:drawableTint="@android:color/holo_red_dark"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,6 +81,7 @@
         android:layout_marginBottom="24dp"
         android:text="취소"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@android:color/darker_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/template_btn_add"
         app:layout_constraintTop_toBottomOf="@+id/template_tv_sub" />

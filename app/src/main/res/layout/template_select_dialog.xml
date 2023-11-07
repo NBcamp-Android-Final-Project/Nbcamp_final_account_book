@@ -61,6 +61,7 @@
         android:maxLines="1"
         android:text="무료 버전은 최대 3개의 가계부를 제공합니다!"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:visibility="invisible"
         app:drawableLeftCompat="@drawable/ic_warning"
         app:drawableTint="@android:color/holo_red_dark"
         app:layout_constraintEnd_toEndOf="parent"
@@ -103,6 +104,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:src="@drawable/ic_shopping_cart"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/template_tv_sub" />

@@ -3,7 +3,6 @@ package com.nbcam_final_account_book.persentation.mypage
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -15,10 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -36,6 +32,8 @@ import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MyPageFragmentBinding
 import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
 import com.nbcam_final_account_book.persentation.main.MainViewModel
+import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageDeniedDialog
+import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageEditNameDialog
 import com.nbcam_final_account_book.persentation.tag.TagActivity
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -143,381 +141,306 @@ class MyPageFragment : Fragment() {
 		getUserName()
 		getUserEmail()
 //        getUserPhotoUrl()
-		loadProfileImage()
 
-		mypageIvProfile.setOnClickListener {
-			galleryBottomSheet()
-		}
+        loadProfileImage()
 
-		val spacingInDp = 5
-		val spacingInPixels = (spacingInDp * resources.displayMetrics.density).toInt()
-		mypageRvSharedUsers.addItemDecoration(ItemSpacingDecoration(spacingInPixels))
-		mypageRvSharedUsers.adapter = sharedUsersAdapter
+        mypageIvProfile.setOnClickListener {
+            galleryBottomSheet()
+        }
 
-		mypageIvEdit.setOnClickListener {
-			editNameDialog()
-		}
+        val spacingInDp = 5
+        val spacingInPixels = (spacingInDp * resources.displayMetrics.density).toInt()
+        mypageRvSharedUsers.addItemDecoration(ItemSpacingDecoration(spacingInPixels))
+        mypageRvSharedUsers.adapter = sharedUsersAdapter
 
-		mypageTvTag.setOnClickListener {
-			val intent = TagActivity.newIntent(requireActivity())
-			startActivity(intent)
-		}
+        mypageIvEdit.setOnClickListener {
+            showEditNameDialog()
+        }
 
-		mypageSwitchPin.setOnClickListener {
-			if (sharedViewModel.pin.value.isNullOrEmpty()) {
-				navController.navigate(R.id.action_menu_mypage_to_pinFragment)
-			} else {
-				sharedViewModel.removeSharedPrefPinNumber()
-			}
-		}
+        mypageTvTag.setOnClickListener {
+            val intent = TagActivity.newIntent(requireActivity())
+            startActivity(intent)
+        }
 
-		// TODO: 비밀번호 변경 기능 나중에 추가!
+        mypageSwitchPin.setOnClickListener {
+            if (sharedViewModel.pin.value.isNullOrEmpty()) {
+                navController.navigate(R.id.action_menu_mypage_to_pinFragment)
+            } else {
+                sharedViewModel.removeSharedPrefPinNumber()
+            }
+        }
 
-		mypageContainerBackup.setOnClickListener {
-			val currentTime = getCurrentTime()
-			mypageTvBackupDate.text = "최근 백업 시간 $currentTime"
-			setBackupTime(currentTime)
+        // TODO: 비밀번호 변경 기능 나중에 추가!
 
-			backupDate()
-		}
+        mypageContainerBackup.setOnClickListener {
+            val currentTime = getCurrentTime()
+            mypageTvBackupDate.text = "최근 백업 시간 $currentTime"
+            setBackupTime(currentTime)
 
-		mypageContainerSync.setOnClickListener {
-			val currentTime = getCurrentTime()
-			mypageTvSyncDate.text = "최근 동기화 시간 $currentTime"
-			setSyncTime(currentTime)
-			syncData()
-		}
+            backupDate()
+        }
 
-		backupTime()?.let { backupTime ->
-			if (backupTime != "") {
-				mypageTvBackupDate.text = "최근 백업 시간 $backupTime"
-			} else {
-				mypageTvBackupDate.text = ""
-			}
-		}
+        mypageContainerSync.setOnClickListener {
+            val currentTime = getCurrentTime()
+            mypageTvSyncDate.text = "최근 동기화 시간 $currentTime"
+            setSyncTime(currentTime)
+            syncData()
+        }
 
-		syncTime()?.let { syncTime ->
-			if (syncTime != "") {
-				mypageTvSyncDate.text = "최근 동기화 시간 $syncTime"
-			} else {
-				mypageTvSyncDate.text = ""
-			}
-		}
+        backupTime()?.let { backupTime ->
+            if (backupTime != "") {
+                mypageTvBackupDate.text = "최근 백업 시간 $backupTime"
+            } else {
+                mypageTvBackupDate.text = ""
+            }
+        }
 
-		mypageTvLogout.setOnClickListener {
+        syncTime()?.let { syncTime ->
+            if (syncTime != "") {
+                mypageTvSyncDate.text = "최근 동기화 시간 $syncTime"
+            } else {
+                mypageTvSyncDate.text = ""
+            }
+        }
 
-			val auth = FirebaseAuth.getInstance()
-			backupDataByLogOut()
-			auth.signOut()
-			removeSharedPrefPinNum()
-			cleanRoom()
-			val intent = Intent(requireContext(), FirstActivity::class.java)
-			startActivity(intent)
-			requireActivity().finish()
-		}
+        mypageTvLogout.setOnClickListener {
 
-		mypageTvWithdraw.setOnClickListener {
+            val auth = FirebaseAuth.getInstance()
+            backupDataByLogOut()
+            auth.signOut()
+            removeSharedPrefPinNum()
+            cleanRoom()
+            val intent = Intent(requireContext(), FirstActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
 
-			val auth = FirebaseAuth.getInstance()
-			backupDataByLogOut()
-			withdrawAccount(auth)
-			auth.signOut()
-			removeSharedPrefPinNum()
-			cleanRoom()
-			val intent = Intent(requireContext(), FirstActivity::class.java)
-			startActivity(intent)
-		}
+        mypageTvWithdraw.setOnClickListener {
 
-		mypageTvChangePassword.setOnClickListener {
-			val editText = EditText(requireActivity())
-			editText.transformationMethod = PasswordTransformationMethod.getInstance()
-			val alertDialog = AlertDialog.Builder(requireActivity())
-			alertDialog.setTitle("패스워드 변경")
-			alertDialog.setMessage("변경하고 싶은 패스워드를 입력하세요")
-			alertDialog.setView(editText)
-			alertDialog.setPositiveButton(
-				"변경"
-			) { dialogInterface, i -> changePassword(editText.text.toString()) }
-			alertDialog.setNegativeButton("취소") { dialogInterface, i -> dialogInterface.dismiss() }
-			alertDialog.show()
-		}
-	}
+            val auth = FirebaseAuth.getInstance()
+            backupDataByLogOut()
+            withdrawAccount(auth)
+            auth.signOut()
+            removeSharedPrefPinNum()
+            cleanRoom()
+            val intent = Intent(requireContext(), FirstActivity::class.java)
+            startActivity(intent)
+        }
 
-	//TODO: name, email, photoUrl 함수를 각각 만들어서....여기에서 bindng 언급ㄴㄴ
-	private fun initViewModel() = with(viewModel) {
+        mypageTvChangePassword.setOnClickListener {
+            // 패스워드 변경 기능 구현
+        }
+    }
 
-		with(binding) {
-			getUserName()
-			name.observe(viewLifecycleOwner) { name ->
-				if (name != null) {
-					mypageEtName.text = name
-				}
-			}
+    //TODO: name, email, photoUrl 함수를 각각 만들어서....여기에서 bindng 언급ㄴㄴ
+    private fun initViewModel() = with(viewModel) {
 
-			getUserEmail()
-			email.observe(viewLifecycleOwner) { email ->
-				if (email != null) {
-					mypageTvEmail.text = email
-				}
-			}
+        with(binding) {
+            getUserName()
+            name.observe(viewLifecycleOwner) { name ->
+                if (name != null) {
+                    mypageEtName.text = name
+                }
+            }
+
+            getUserEmail()
+            email.observe(viewLifecycleOwner) { email ->
+                if (email != null) {
+                    mypageTvEmail.text = email
+                }
+            }
 
 //            getUserPhotoUrl()
-			loadProfileImage()
-			photoUrl.observe(viewLifecycleOwner) { photoUrl ->
-				if (photoUrl != null) {
-					mypageIvProfile.load(photoUrl) {
-						crossfade(true)
-						transformations(CircleCropTransformation())
-						listener { _, _ ->
-							mypageIvProfile.setPadding(0, 0, 0, 0)
-						}
-					}
-				}
-			}
+            loadProfileImage()
+            photoUrl.observe(viewLifecycleOwner) { photoUrl ->
+                if (photoUrl != null) {
+                    mypageIvProfile.load(photoUrl) {
+                        crossfade(true)
+                        transformations(CircleCropTransformation())
+                        listener { _, _ ->
+                            mypageIvProfile.setPadding(0, 0, 0, 0)
+                        }
+                    }
+                }
+            }
 
-			Log.d("MyPageFragment", "Name: ${name.value}")
-			Log.d("MyPageFragment", "Email: ${email.value}")
-			Log.d("MyPageFragment", "Photo URL: ${photoUrl.value}")
+            Log.d("MyPageFragment", "Name: ${name.value}")
+            Log.d("MyPageFragment", "Email: ${email.value}")
+            Log.d("MyPageFragment", "Photo URL: ${photoUrl.value}")
 
-			sharedViewModel.isPinSet.observe(viewLifecycleOwner) {
-				mypageSwitchPin.isChecked = it
-			}
-		}
-	}
+            sharedViewModel.isPinSet.observe(viewLifecycleOwner) {
+                mypageSwitchPin.isChecked = it
+            }
+        }
+    }
 
-	private fun loadProfileImage() = with(binding) {
-		viewModel.downloadProfileImage(
-			onSuccess = { uri ->
-				mypageIvProfile.load(uri) {
-					crossfade(true)
-					transformations(CircleCropTransformation())
-					listener { _, _ ->
-						mypageIvProfile.setPadding(0, 0, 0, 0)
-					}
-				}
-			},
-			onFailure = { exception ->
-				Log.e("MyPageFragment", "Profile image download failed: $exception")
-			}
-		)
-	}
+    private fun loadProfileImage() = with(binding) {
+        viewModel.downloadProfileImage(
+            onSuccess = { uri ->
+                mypageIvProfile.load(uri) {
+                    crossfade(true)
+                    transformations(CircleCropTransformation())
+                    listener { _, _ ->
+                        mypageIvProfile.setPadding(0, 0, 0, 0)
+                    }
+                }
+            },
+            onFailure = { exception ->
+                Log.e("MyPageFragment", "Profile image download failed: $exception")
+            }
+        )
+    }
 
-	private fun backupDate() {
-		sharedViewModel.backupData()
-	}
+    private fun backupDate() {
+        sharedViewModel.backupData()
+    }
 
-	private fun setBackupTime(time: String) = with(viewModel) {
-		saveBackupTime(time)
-	}
+    private fun setBackupTime(time: String) = with(viewModel) {
+        saveBackupTime(time)
+    }
 
-	private fun setSyncTime(time: String) = with(viewModel) {
-		saveSyncTime(time)
-	}
+    private fun setSyncTime(time: String) = with(viewModel) {
+        saveSyncTime(time)
+    }
 
-	private fun backupTime() = with(viewModel) {
-		getBackupTime()
-	}
+    private fun backupTime() = with(viewModel) {
+        getBackupTime()
+    }
 
-	private fun syncTime() = with(viewModel) {
-		getSyncTime()
-	}
+    private fun syncTime() = with(viewModel) {
+        getSyncTime()
+    }
 
-	private fun getCurrentTime(): String {
-		return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-	}
+    private fun getCurrentTime(): String {
+        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+    }
 
-	private fun backupDataByLogOut() {
+    private fun backupDataByLogOut() {
 
-		sharedViewModel.backupDataByLogOut()
-	}
+        sharedViewModel.backupDataByLogOut()
+    }
 
-	private fun cleanRoom() = with(viewModel) {
-		cleanRoom()
-	}
+    private fun cleanRoom() = with(viewModel) {
+        cleanRoom()
+    }
 
-	private fun getUserName() = with(viewModel) {
-		getName()
-	}
+    private fun getUserName() = with(viewModel) {
+        getName()
+    }
 
-	private fun getUserEmail() = with(viewModel) {
-		getEmail()
-	}
+    private fun getUserEmail() = with(viewModel) {
+        getEmail()
+    }
 
-	/*    private fun getUserPhotoUrl() = with(viewModel) {
-			getPhotoUrl()
-		}*/
+    /*    private fun getUserPhotoUrl() = with(viewModel) {
+            getPhotoUrl()
+        }*/
 
-	private fun withdrawAccount(auth: FirebaseAuth) {
-		database = Firebase.database.reference
-		val user = auth.currentUser!!
-		val uid = user.uid
+    private fun withdrawAccount(auth: FirebaseAuth) {
+        database = Firebase.database.reference
+        val user = auth.currentUser!!
+        val uid = user.uid
 
-		// Firebase Auth 에서 사용자 삭제
-		user.delete()
-			.addOnCompleteListener { task ->
-				if (task.isSuccessful) {
-					Toast.makeText(requireActivity(), "정상적으로 회원 탈퇴 되었습니다", Toast.LENGTH_SHORT)
-						.show()
-				}
-			}
+        // Firebase Auth 에서 사용자 삭제
+        user.delete()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(requireActivity(), "정상적으로 회원 탈퇴 되었습니다", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
 
-		// Firebase RTDB 에서 사용자 UID 가 존재할 경우 삭제
-		database.child(uid).removeValue()
-	}
+        // Firebase RTDB 에서 사용자 UID 가 존재할 경우 삭제
+        database.child(uid).removeValue()
+    }
 
-	private fun updateProfileName(newName: String) = with(viewModel) {
-		updateUserName(newName)
-	}
+    private fun updateProfileName(newName: String) = with(viewModel) {
+        updateUserName(newName)
+    }
 
-	private fun updateProfileImage(requestCode: Int, resultCode: Int, data: Intent?) =
-		with(viewModel) {
-			handleImageSelection(requestCode, resultCode, data)
-		}
+    private fun updateProfileImage(requestCode: Int, resultCode: Int, data: Intent?) =
+        with(viewModel) {
+            handleImageSelection(requestCode, resultCode, data)
+        }
 
-	private fun galleryBottomSheet() {
-		val bottomSheet = layoutInflater.inflate(R.layout.my_page_gallery_bottom_sheet, null)
-		val dialog = BottomSheetDialog(requireContext())
-		dialog.setContentView(bottomSheet)
+    private fun galleryBottomSheet() {
+        val bottomSheet = layoutInflater.inflate(R.layout.my_page_gallery_bottom_sheet, null)
+        val dialog = BottomSheetDialog(requireContext())
+        dialog.setContentView(bottomSheet)
 
-		val optionGallery = bottomSheet.findViewById<View>(R.id.option_gallery)
-		optionGallery.setOnClickListener {
-			openGallery()
-			dialog.dismiss()
-		}
+        val optionGallery = bottomSheet.findViewById<View>(R.id.option_gallery)
+        optionGallery.setOnClickListener {
+            openGallery()
+            dialog.dismiss()
+        }
 
-		val optionRemove = bottomSheet.findViewById<View>(R.id.option_remove)
-		optionRemove.setOnClickListener {
-			removeCurrentImage()
-			dialog.dismiss()
-		}
+        val optionRemove = bottomSheet.findViewById<View>(R.id.option_remove)
+        optionRemove.setOnClickListener {
+            removeCurrentImage()
+            dialog.dismiss()
+        }
 
-		dialog.show()
-	}
+        dialog.show()
+    }
 
-	private fun removeCurrentImage() = with(binding) {
-		mypageIvProfile.load(R.drawable.ic_mypage_profile) {
-			listener { _, _ ->
-				mypageIvProfile.setPadding(10, 10, 10, 10)
-			}
-		}
-	}
+    private fun removeCurrentImage() = with(binding) {
+        mypageIvProfile.load(R.drawable.ic_mypage_profile) {
+            listener { _, _ ->
+                mypageIvProfile.setPadding(10, 10, 10, 10)
+            }
+        }
+    }
 
-	private fun openGallery() {
-		// 권한 확인
-		if (checkGalleryPermission()) {
-			// 권한이 있는 경우, 갤러리 앱을 열어 이미지 선택
-			val galleryIntent =
-				Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-			startActivityForResult(galleryIntent, REQUEST_IMAGE_PICK)
-		} else {
-			requestGalleryPermission()
-		}
-	}
+    private fun openGallery() {
+        // 권한 확인
+        if (checkGalleryPermission()) {
+            // 권한이 있는 경우, 갤러리 앱을 열어 이미지 선택
+            val galleryIntent =
+                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(galleryIntent, REQUEST_IMAGE_PICK)
+        } else {
+            requestGalleryPermission()
+        }
+    }
 
-	private fun deniedDialog() {
-		AlertDialog.Builder(requireContext())
-			.setMessage("갤러리를 열려면 권한이 필요합니다. 권한을 설정하시겠습니까?")
-			.setPositiveButton("설정") { _, _ ->
-				// 앱 설정 화면으로 이동
-				val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-				val uri = Uri.fromParts("package", requireContext().packageName, null)
-				intent.data = uri
-				startActivity(intent)
-			}
-			.setNegativeButton("취소") { dialog, _ ->
-				dialog.dismiss()
-			}
-			.show()
-	}
+    private fun deniedDialog() {
+        MyPageDeniedDialog(requireContext())
+    }
 
-	private fun syncData() {
-		sharedViewModel.synchronizationDataWithBtn()
-	}
+    private fun syncData() {
+        sharedViewModel.synchronizationDataWithBtn()
+    }
 
-	private fun checkGalleryPermission(): Boolean {
-		val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-			Manifest.permission.READ_MEDIA_IMAGES
-		} else {
-			Manifest.permission.READ_EXTERNAL_STORAGE
-		}
-		return checkSelfPermission(
-			requireContext(),
-			permission
-		) == PackageManager.PERMISSION_GRANTED
-	}
+    private fun checkGalleryPermission(): Boolean {
+        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.READ_MEDIA_IMAGES
+        } else {
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        }
+        return checkSelfPermission(
+            requireContext(),
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
 
-	private fun requestGalleryPermission() {
-		requestPermissions(
-			arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-			REQUEST_IMAGE_PICK
-		)
-	}
+    private fun requestGalleryPermission() {
+        requestPermissions(
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            REQUEST_IMAGE_PICK
+        )
+    }
 
-	private fun editNameDialog() = with(binding) {
-		val dialogView = layoutInflater.inflate(R.layout.my_page_edit_name_dialog, null)
-		val editName = dialogView.findViewById<EditText>(R.id.ev_edit_name)
-		val tvWarning = dialogView.findViewById<TextView>(R.id.tv_warning)
+    private fun showEditNameDialog() = with(binding) {
+        val currentName = mypageEtName.text.toString()
+        MyPageEditNameDialog(requireContext(), currentName) { newName ->
+            mypageEtName.text = newName
+            updateProfileName(newName)
+        }
+    }
 
-		editName.setText(mypageEtName.text.toString())
-
-		val alertDialog = AlertDialog.Builder(requireContext())
-			.setTitle("이름 수정")
-			.setView(dialogView)
-			.setPositiveButton("저장") { _, _ ->
-				val newName = editName.text.toString()
-				mypageEtName.text = newName
-				updateProfileName(newName)
-			}
-			.setNegativeButton("취소") { dialog, _ ->
-				dialog.dismiss()
-			}
-			.create()
-
-		val textWatcher = nameTextWatcher(tvWarning, alertDialog)
-		editName.addTextChangedListener(textWatcher)
-
-		alertDialog.show()
-		alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-	}
-
-	private fun nameTextWatcher(tvWarning: TextView, alertDialog: AlertDialog) =
-		object : TextWatcher {
-			override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-			override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-			}
-
-			override fun afterTextChanged(s: Editable?) {
-				val newName = s.toString()
-				val isValid = isNameValid(newName)
-
-				if (isValid) {
-					tvWarning.visibility = View.INVISIBLE
-				} else {
-					tvWarning.visibility = View.VISIBLE
-					if (newName.length > 10) {
-						tvWarning.text = "이름은 10글자 이하로 입력하세요."
-					} else {
-						tvWarning.text = "2~10자 이내로, 영어, 한글, 숫자만 입력 가능합니다."
-					}
-				}
-
-				// 저장 버튼 활성화/비활성화
-				alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = isValid
-			}
-		}
-
-	private fun isNameValid(name: String): Boolean {
-		if (name.length < 2 || name.length > 10) {
-			return false
-		}
-
-		val regex = "^[a-zA-Z0-9가-힣]*$".toRegex()
-		return regex.matches(name)
-	}
-
-	private fun removeSharedPrefPinNum() = with(sharedViewModel) {
-		removeSharedPrefPinNumber()
-	}
+    private fun removeSharedPrefPinNum() = with(sharedViewModel) {
+        removeSharedPrefPinNumber()
+    }
 
 	private fun changePassword(password: String) {
 		FirebaseAuth.getInstance().currentUser!!.updatePassword(password)

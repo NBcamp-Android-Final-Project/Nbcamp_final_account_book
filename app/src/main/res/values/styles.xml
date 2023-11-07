@@ -72,4 +72,12 @@
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textColorHighlight">@color/chart_tab_unselected_text</item>
     </style>
+
+    //다이얼로그 스타일
+    <style name="EditNameAlertDialogStyle" parent="Theme.Material3.Dark.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/my_page_alert_dialog</item>
+        <item name="colorPrimary">@color/text_highlight</item>
+        <item name="colorOnPrimary">@color/text_hint</item>
+    </style>
+
 </resources>

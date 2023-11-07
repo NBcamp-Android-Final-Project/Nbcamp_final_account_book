@@ -6,14 +6,11 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -31,6 +28,7 @@ import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MyPageFragmentBinding
 import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
 import com.nbcam_final_account_book.persentation.main.MainViewModel
+import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageChangePasswordDialog
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageDeniedDialog
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageEditNameDialog
 import com.nbcam_final_account_book.persentation.tag.TagActivity
@@ -227,17 +225,7 @@ class MyPageFragment : Fragment() {
         }
 
         mypageTvChangePassword.setOnClickListener {
-            val editText = EditText(requireActivity())
-            editText.transformationMethod = PasswordTransformationMethod.getInstance()
-            val alertDialog = AlertDialog.Builder(requireActivity())
-            alertDialog.setTitle("패스워드 변경")
-            alertDialog.setMessage("변경하고 싶은 패스워드를 입력하세요")
-            alertDialog.setView(editText)
-            alertDialog.setPositiveButton(
-                "변경"
-            ) { dialogInterface, i -> changePassword(editText.text.toString()) }
-            alertDialog.setNegativeButton("취소") { dialogInterface, i -> dialogInterface.dismiss() }
-            alertDialog.show()
+            showChangePasswordDialog()
         }
     }
 
@@ -445,6 +433,10 @@ class MyPageFragment : Fragment() {
             mypageEtName.text = newName
             updateProfileName(newName)
         }
+    }
+
+    private fun showChangePasswordDialog() {
+        MyPageChangePasswordDialog(requireContext())
     }
 
     private fun removeSharedPrefPinNum() = with(sharedViewModel) {

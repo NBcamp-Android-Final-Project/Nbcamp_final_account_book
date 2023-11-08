@@ -200,21 +200,9 @@ class MainViewModel(
     fun firstStartSynchronizationData() {
 
         viewModelScope.launch {
-            val currentUserDataList = mainUserDataLive.value.orEmpty()
-            val currentUser = FirebaseAuth.getInstance()
-            val uid = currentUser.uid ?: ""
-
             val backUpTemplate = fireRepo.getAllTemplate(user)
             val backUpData = fireRepo.getBackupData(user)
             if (backUpTemplate.isEmpty() || backUpData.isEmpty()) return@launch
-
-            val isData = currentUserDataList.find { it.key == uid }
-
-            if (isData == null) {
-                val userData = fireRepo.getUserDataByKey(uid)
-                Log.d("유저데이터", userData.toString())
-                roomRepo.insertUserData(userData)
-            }
 
             roomRepo.insertDataList(backUpData)
             with(roomRepo) {

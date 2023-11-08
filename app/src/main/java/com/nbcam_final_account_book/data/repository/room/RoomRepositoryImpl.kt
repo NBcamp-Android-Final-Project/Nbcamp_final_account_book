@@ -387,5 +387,11 @@ class RoomRepositoryImpl(
         return dao.getALlUserLiveData()
     }
 
+    override fun getAllUserDataList(): List<UserDataEntity> {
+        val dao = database?.userDataDao() ?: throw IllegalStateException("getAllUserDataList fail")
+
+        return dao.getALlUserList()
+    }
+
 
 }

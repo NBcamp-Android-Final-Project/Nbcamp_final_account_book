@@ -16,7 +16,8 @@ interface FireBaseRepository {
     fun logout()
 
     suspend fun updateUserInFireStore(user: UserDataEntity)
-    suspend fun  deleteUserInFireStore(email: String)
+    suspend fun deleteUserInFireStore(email: String)
+    suspend fun getUserInFireStore(uid: String) : UserDataEntity?
 
 
     //tempalte

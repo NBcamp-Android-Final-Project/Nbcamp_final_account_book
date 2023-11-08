@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class LoginViewModel(
@@ -29,6 +30,33 @@ class LoginViewModel(
             result.await()
             fireRepo.updateUserInFireStore(user)
         }
+    }
+
+    fun updateUserData(user: UserDataEntity) {
+        val currentUserDataList = roomRepo.getAllUserDataList()
+        val findUser = currentUserDataList.find { it.key == user.key }
+
+        if (findUser == null) {
+            viewModelScope.launch(IO) {
+                roomRepo.insertUserData(user)
+            }
+        }
+
+    }
+
+    fun getUserInFireStore(key: String) {
+
+        viewModelScope.launch(IO) {
+            val currentUserDataList = roomRepo.getAllUserDataList()
+            val user = fireRepo.getUserInFireStore(key)
+            val findUser = currentUserDataList.find { it.key == user?.key }
+
+            if (findUser == null && user != null) {
+                roomRepo.insertUserData(user)
+            }
+
+        }
+
     }
 
 

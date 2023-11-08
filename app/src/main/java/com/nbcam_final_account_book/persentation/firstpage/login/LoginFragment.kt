@@ -102,6 +102,9 @@ class LoginFragment : Fragment() {
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener() { task ->
+                        val uid = auth.uid ?: ""
+                        getUserInFireStore(uid)
+
                         if (task.isSuccessful) {
                             Toast.makeText(
                                 requireContext(),
@@ -276,6 +279,10 @@ class LoginFragment : Fragment() {
 
     private fun updateUser(user: UserDataEntity) {
         viewModel.updateUser(user)
+    }
+
+    private fun getUserInFireStore(key:String){
+        viewModel.getUserInFireStore(key)
     }
 
 

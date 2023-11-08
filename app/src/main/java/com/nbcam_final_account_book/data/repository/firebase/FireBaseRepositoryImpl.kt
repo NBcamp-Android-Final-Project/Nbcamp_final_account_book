@@ -3,6 +3,7 @@ package com.nbcam_final_account_book.data.repository.firebase
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.data.model.local.DataEntity
@@ -30,6 +31,7 @@ class FireBaseRepositoryImpl(
 
     override suspend fun updateUserInFireStore(user: UserDataEntity) {
         val db = Firebase.firestore
+        val id = user.id
 
         val userData = hashMapOf(
             "uid" to user.key,
@@ -37,6 +39,7 @@ class FireBaseRepositoryImpl(
             "email" to user.id,
             "photoUrl" to user.img,
         )
+
 
         db.collection("Users").document(user.id).set(userData)
             .addOnSuccessListener {
@@ -47,6 +50,7 @@ class FireBaseRepositoryImpl(
             }
             .addOnFailureListener { e -> Log.w("firestore error", "Error writing document", e) }
 
+
     }
 
     override suspend fun deleteUserInFireStore(email: String) {
@@ -54,8 +58,38 @@ class FireBaseRepositoryImpl(
         db.collection("Users").document(email).delete()
     }
 
+    override suspend fun getUserInFireStore(uid: String): UserDataEntity? {
+        val db = Firebase.firestore
 
-    //Template
+        try {
+            val responseData = db.collection("Users")
+                .whereEqualTo("uid", uid)
+                .get()
+                .await()
+
+            var resultUserData: UserDataEntity? = null
+
+            for (document in responseData) {
+                val uid = document.getString("uid") ?: ""
+                val name = document.getString("name") ?: ""
+                val email = document.getString("email") ?: ""
+                val photoUrl = document.getString("photoUrl") ?: ""
+
+                val userData = UserDataEntity(key = uid, name = name, id = email, img = photoUrl)
+                resultUserData = userData
+            }
+
+            return resultUserData
+
+        } catch (e: Exception) {
+            Log.e("FirebaseRepo", "UserData 가져오기 중 오류 발생")
+            return null
+        }
+
+    }
+
+
+//Template
 
     override suspend fun getAllTemplate(user: String): List<TemplateEntity> {
         val database = Firebase.database

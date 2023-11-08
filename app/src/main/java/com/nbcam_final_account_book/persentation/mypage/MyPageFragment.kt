@@ -27,6 +27,7 @@ import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MyPageFragmentBinding
 import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
+import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.main.MainViewModel
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageChangePasswordDialog
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageDeniedDialog
@@ -69,6 +70,7 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as MainActivity).toggleToolbar(false)
         navController = findNavController()
         initView()
         initViewModel()
@@ -94,11 +96,12 @@ class MyPageFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        (requireActivity() as MainActivity).toggleToolbar(true)
         _binding = null
     }
 
     private fun initView() = with(binding) {
-        val title = sharedViewModel.mainLiveCurrentTemplate.value?.templateTitle
+//        val title = sharedViewModel.mainLiveCurrentTemplate.value?.templateTitle
 //        mypageTvUsingName.text = title
 
         getUserName()
@@ -120,6 +123,10 @@ class MyPageFragment : Fragment() {
             showEditNameDialog()
         }
 
+        mypageTvBook.setOnClickListener {
+            (requireActivity() as MainActivity).showTemplateDialog()
+        }
+
         mypageTvTag.setOnClickListener {
             val intent = TagActivity.newIntent(requireActivity())
             startActivity(intent)
@@ -137,7 +144,7 @@ class MyPageFragment : Fragment() {
 
         mypageContainerBackup.setOnClickListener {
             val currentTime = getCurrentTime()
-            mypageTvBackupDate.text = "최근 백업 시간 $currentTime"
+            mypageTvBackupDate.text = "$currentTime"
             setBackupTime(currentTime)
 
             backupDate()
@@ -145,25 +152,17 @@ class MyPageFragment : Fragment() {
 
         mypageContainerSync.setOnClickListener {
             val currentTime = getCurrentTime()
-            mypageTvSyncDate.text = "최근 동기화 시간 $currentTime"
+            mypageTvSyncDate.text = "$currentTime"
             setSyncTime(currentTime)
             syncData()
         }
 
         backupTime()?.let { backupTime ->
-            if (backupTime != "") {
-                mypageTvBackupDate.text = "최근 백업 시간 $backupTime"
-            } else {
-                mypageTvBackupDate.text = ""
-            }
+            mypageTvBackupDate.text = if (backupTime != "") "$backupTime" else ""
         }
 
         syncTime()?.let { syncTime ->
-            if (syncTime != "") {
-                mypageTvSyncDate.text = "최근 동기화 시간 $syncTime"
-            } else {
-                mypageTvSyncDate.text = ""
-            }
+            mypageTvSyncDate.text = if (syncTime != "") "$syncTime" else ""
         }
 
         //로그아웃
@@ -196,7 +195,11 @@ class MyPageFragment : Fragment() {
             if (user != null) {
                 for (userInfo in user.providerData) {
                     if (userInfo.providerId == "google.com") {
-                        Toast.makeText(requireContext(), "구글 간편 로그인 사용자는 비밀번호를 변경할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "구글 간편 로그인 사용자는 비밀번호를 변경할 수 없습니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         return@setOnClickListener
                     }
                 }
@@ -283,7 +286,7 @@ class MyPageFragment : Fragment() {
     }
 
     private fun getCurrentTime(): String {
-        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+        return SimpleDateFormat("MM월 dd일 a HH:mm", Locale.getDefault()).format(Date())
     }
 
     private fun backupDataByLogOut() {

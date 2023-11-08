@@ -7,6 +7,7 @@
         <item name="android:colorAccent">@color/primary_main</item>
         <item name="colorPrimary">@color/primary_main</item>
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
+        <item name="android:statusBarColor">@color/primary_main</item>
     </style>
 
     <style name="Theme.Nbcam_Final_Account_Book" parent="Base.Theme.Nbcam_Final_Account_Book" />

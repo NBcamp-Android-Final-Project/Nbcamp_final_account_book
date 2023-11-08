@@ -4,76 +4,109 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="20dp"
     tools:context=".persentation.template.addbudget.TemplateBudgetFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/template_budget_constrain_container"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:background="@color/cheon_primary_selected_home_icon"
+    <TextView
+        android:id="@+id/template_budget_btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/text_primary"
+        android:text="확인"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="예산"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/logo_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dutoom_w"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.20"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/template_intro_1"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/template_budget_layout_input"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <TextView
+        android:id="@+id/template_intro_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="안녕하세요"
+        android:textColor="@color/text_primary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/logo_iv"
+        app:layout_constraintBottom_toTopOf="@id/template_intro_2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/template_intro_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="시작 전 간단한 정보가 필요합니다."
+        android:textColor="@color/text_primary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/template_intro_1"
+        app:layout_constraintTop_toBottomOf="@id/template_intro_1"
+        app:layout_constraintBottom_toTopOf="@id/template_intro_3"/>
+
+    <TextView
+        android:id="@+id/template_intro_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="가계부의 예산을 정해주세요"
+        android:textColor="@color/text_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/template_intro_1"
+        app:layout_constraintTop_toBottomOf="@id/template_intro_2"
+        app:layout_constraintBottom_toTopOf="@id/template_intro_4"/>
+
+    <TextView
+        android:id="@+id/template_intro_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="(사용 중 언제든 변경 가능합니다.)"
+        android:textColor="@color/text_primary_60"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/template_intro_1"
+        app:layout_constraintTop_toBottomOf="@id/template_intro_3"
+        app:layout_constraintBottom_toTopOf="@id/template_edt_input"/>
+
+    <EditText
+        android:id="@+id/template_edt_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:hint="초기 예산"
+        android:hint="가계부 예산을 입력해 주세요."
+        android:textSize="24sp"
+        android:inputType="number"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/text_primary"
+        android:backgroundTint="@color/text_primary"
+        android:textColorHint="@color/text_primary_60"
+        app:layout_constraintTop_toBottomOf="@id/template_intro_4"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/template_budget_edt_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:maxLength="15"
-            android:maxLines="1"
-            android:textSize="30sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
+        android:focusableInTouchMode="true"
+        app:layout_constraintEnd_toEndOf="parent">
+        <requestFocus/>
+    </EditText>
 
     <TextView
         android:id="@+id/template_budget_tv_error"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
         android:textSize="16dp"
+        android:textColor="@color/text_primary_40"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/template_budget_layout_input" />
-
-    <Button
-        android:id="@+id/template_budget_btn_ok"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="@color/cheon_primary_selected_home_icon"
-        android:text="확인"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/template_budget_layout_input" />
-
+        app:layout_constraintTop_toBottomOf="@+id/template_edt_input" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

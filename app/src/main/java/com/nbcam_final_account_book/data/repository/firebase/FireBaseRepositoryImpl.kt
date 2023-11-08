@@ -3,9 +3,12 @@ package com.nbcam_final_account_book.data.repository.firebase
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.auth.User
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.data.model.local.DataEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
+import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.unit.Unit.TEMPLATE_DATA
 import com.nbcam_final_account_book.unit.Unit.TEMPLATE_LIST
 import kotlinx.coroutines.tasks.await
@@ -26,11 +29,71 @@ class FireBaseRepositoryImpl(
         auth.signOut()
     }
 
-    //Template
+    override suspend fun updateUserInFireStore(user: UserDataEntity) {
+        val db = Firebase.firestore
+        val id = user.id
+
+        val userData = hashMapOf(
+            "uid" to user.key,
+            "name" to user.name,
+            "email" to user.id,
+            "photoUrl" to user.img,
+        )
+
+
+        db.collection("Users").document(user.id).set(userData)
+            .addOnSuccessListener {
+                Log.d(
+                    "firestore successfully",
+                    "DocumentSnapshot successfully written!"
+                )
+            }
+            .addOnFailureListener { e -> Log.w("firestore error", "Error writing document", e) }
+
+
+    }
+
+    override suspend fun deleteUserInFireStore(email: String) {
+        val db = Firebase.firestore
+        db.collection("Users").document(email).delete()
+    }
+
+    override suspend fun getUserInFireStore(uid: String): UserDataEntity? {
+        val db = Firebase.firestore
+
+        try {
+            val responseData = db.collection("Users")
+                .whereEqualTo("uid", uid)
+                .get()
+                .await()
+
+            var resultUserData: UserDataEntity? = null
+
+            for (document in responseData) {
+                val uid = document.getString("uid") ?: ""
+                val name = document.getString("name") ?: ""
+                val email = document.getString("email") ?: ""
+                val photoUrl = document.getString("photoUrl") ?: ""
+
+                val userData = UserDataEntity(key = uid, name = name, id = email, img = photoUrl)
+                resultUserData = userData
+            }
+
+            return resultUserData
+
+        } catch (e: Exception) {
+            Log.e("FirebaseRepo", "UserData 가져오기 중 오류 발생")
+            return null
+        }
+
+    }
+
+
+//Template
 
     override suspend fun getAllTemplate(user: String): List<TemplateEntity> {
         val database = Firebase.database
-        val path = "$user/$TEMPLATE_LIST"
+        val path = "$user/$TEMPLATE_LIST/TEMPLATE"
 
         try {
             val snapshot = database.getReference(path).get().await()
@@ -58,7 +121,7 @@ class FireBaseRepositoryImpl(
 
     override suspend fun setTemplate(user: String, item: TemplateEntity): List<TemplateEntity> {
         val database = Firebase.database
-        val path = "$user/$TEMPLATE_LIST"
+        val path = "$user/$TEMPLATE_LIST/TEMPLATE"
         val myRef = database.getReference(path)
 
         myRef.child(item.id).setValue(item)
@@ -89,9 +152,9 @@ class FireBaseRepositoryImpl(
 
     override suspend fun setTemplateList(user: String, items: List<TemplateEntity>) {
         val database = Firebase.database
-        val path = "$user/$TEMPLATE_LIST"
+        val path = "$user/$TEMPLATE_LIST/TEMPLATE"
         val myRef = database.getReference(path)
-        for (item in items){
+        for (item in items) {
             myRef.child(item.id).setValue(item)
         }
 
@@ -99,7 +162,7 @@ class FireBaseRepositoryImpl(
 
     override suspend fun deleteTemplate(user: String, key: String) {
         val database = Firebase.database
-        val myRef = database.getReference("$user/$TEMPLATE_LIST")
+        val myRef = database.getReference("$user/$TEMPLATE_LIST/TEMPLATE")
 
         myRef.child(key).removeValue()
     }
@@ -117,7 +180,7 @@ class FireBaseRepositoryImpl(
         val path = "$user/$TEMPLATE_DATA"
         val myRef = database.getReference(path)
 
-        for (item in items){
+        for (item in items) {
             myRef.child(item.id).setValue(item)
         }
 

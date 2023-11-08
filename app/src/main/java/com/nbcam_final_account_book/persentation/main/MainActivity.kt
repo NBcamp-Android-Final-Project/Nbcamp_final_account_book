@@ -54,6 +54,15 @@ class MainActivity : AppCompatActivity() {
         hideActionBar()
     }
 
+    /**
+     * 임시 백업. onStop 시 백업하는 메소드 추가
+     */
+
+    override fun onStop() {
+        super.onStop()
+        backupAllDataToRealTimeBase()
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -208,6 +217,9 @@ class MainActivity : AppCompatActivity() {
         val customDialog = TemplateDialogFragment()
 
         customDialog.show(supportFragmentManager, "templateDialog")
+    }
+    private fun backupAllDataToRealTimeBase(){
+        viewModel.backupData()
     }
 }
 

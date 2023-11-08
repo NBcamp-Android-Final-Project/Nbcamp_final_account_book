@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
@@ -22,12 +23,11 @@ class TemplateBudgetViewModel(
     private val sharedProvider: SharedProvider,
     private val fireRepo: FireBaseRepository
 ) : ViewModel() {
-
+    private val auth = FirebaseAuth.getInstance()
 
     suspend fun insertTemplate(title: String, budget: String) = withContext(Dispatchers.IO) {
 
-
-        val key = roomRepo.insertFirstTemplate(title)  // room에 데이터 삽입
+        val key = roomRepo.insertFirstTemplate(title, auth.uid ?: "")  // room에 데이터 삽입
 
         val currentTemplate = roomRepo.selectTemplateByKey(key)
         val budgetEntity = BudgetEntity(

@@ -18,7 +18,7 @@ interface TemplateDao {
     @Query("SELECT * FROM template_table")
     fun getLiveTemplateList(): LiveData<List<TemplateEntity>>
 
-    @Query("SELECT * FROM template_table WHERE id = :id")
+    @Query("SELECT * FROM template_table WHERE template_id = :id")
     suspend fun getFirstTemplate(id: String): TemplateEntity
 
     //Insert
@@ -30,7 +30,7 @@ interface TemplateDao {
 
 
     //DELETE
-    @Query("DELETE FROM template_table WHERE id = :id")
+    @Query("DELETE FROM template_table WHERE template_id = :id")
     suspend fun deleteTemplate(id: String)
 
     @Query("DELETE FROM template_table")

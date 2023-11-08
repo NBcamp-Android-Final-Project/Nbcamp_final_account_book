@@ -75,7 +75,7 @@ class TemplateBudgetFragment : Fragment() {
 
     private fun initView() = with(binding) {
 
-        templateBudgetEdtInput.addTextChangedListener(object : TextWatcher {
+        templateEdtInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -96,10 +96,10 @@ class TemplateBudgetFragment : Fragment() {
                     val formattedText = decimalFormat.format(number)
 
                     // EditText에 포맷된 숫자를 설정
-                    templateBudgetEdtInput.removeTextChangedListener(this) // 무한 루프 방지를 위해 TextWatcher 제거
-                    templateBudgetEdtInput.setText(formattedText)
-                    templateBudgetEdtInput.setSelection(formattedText.length) // 커서 위치를 맨 뒤로 이동
-                    templateBudgetEdtInput.addTextChangedListener(this) //
+                    templateEdtInput.removeTextChangedListener(this) // 무한 루프 방지를 위해 TextWatcher 제거
+                    templateEdtInput.setText(formattedText)
+                    templateEdtInput.setSelection(formattedText.length) // 커서 위치를 맨 뒤로 이동
+                    templateEdtInput.addTextChangedListener(this) //
 
                 }
 
@@ -107,7 +107,7 @@ class TemplateBudgetFragment : Fragment() {
         })
 
         templateBudgetBtnOk.setOnClickListener {
-            val text = templateBudgetEdtInput.text.toString()
+            val text = templateEdtInput.text.toString()
             val number: Long = try {
                 if (text.isNotEmpty()) {
                     text.replace(",", "").toLong()

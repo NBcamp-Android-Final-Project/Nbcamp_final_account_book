@@ -28,10 +28,13 @@ import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MyPageFragmentBinding
 import com.nbcam_final_account_book.persentation.firstpage.FirstActivity
+import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.main.MainViewModel
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageChangePasswordDialog
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageDeniedDialog
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageEditNameDialog
+import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageLogoutDialog
+import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageWithdrawDialog
 import com.nbcam_final_account_book.persentation.tag.TagActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -74,6 +77,7 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as MainActivity).toggleToolbar(false)
         navController = findNavController()
         initView()
         initViewModel()
@@ -97,13 +101,19 @@ class MyPageFragment : Fragment() {
             updateProfileImage(requestCode, resultCode, data)
         }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (requireActivity() as MainActivity).toggleToolbar(true)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+//        (requireActivity() as MainActivity).toggleToolbar(true)
         _binding = null
     }
 
     private fun initView() = with(binding) {
-        val title = sharedViewModel.mainLiveCurrentTemplate.value?.templateTitle
+//        val title = sharedViewModel.mainLiveCurrentTemplate.value?.templateTitle
 //        mypageTvUsingName.text = title
 
         getUserName()
@@ -125,6 +135,10 @@ class MyPageFragment : Fragment() {
             showEditNameDialog()
         }
 
+        mypageTvBook.setOnClickListener {
+            (requireActivity() as MainActivity).showTemplateDialog()
+        }
+
         mypageTvTag.setOnClickListener {
             val intent = TagActivity.newIntent(requireActivity())
             startActivity(intent)
@@ -142,7 +156,7 @@ class MyPageFragment : Fragment() {
 
         mypageContainerBackup.setOnClickListener {
             val currentTime = getCurrentTime()
-            mypageTvBackupDate.text = "최근 백업 시간 $currentTime"
+            mypageTvBackupDate.text = "$currentTime"
             setBackupTime(currentTime)
 
             backupDate()
@@ -150,54 +164,27 @@ class MyPageFragment : Fragment() {
 
         mypageContainerSync.setOnClickListener {
             val currentTime = getCurrentTime()
-            mypageTvSyncDate.text = "최근 동기화 시간 $currentTime"
+            mypageTvSyncDate.text = "$currentTime"
             setSyncTime(currentTime)
             syncData()
         }
 
         backupTime()?.let { backupTime ->
-            if (backupTime != "") {
-                mypageTvBackupDate.text = "최근 백업 시간 $backupTime"
-            } else {
-                mypageTvBackupDate.text = ""
-            }
+            mypageTvBackupDate.text = if (backupTime != "") "$backupTime" else ""
         }
 
         syncTime()?.let { syncTime ->
-            if (syncTime != "") {
-                mypageTvSyncDate.text = "최근 동기화 시간 $syncTime"
-            } else {
-                mypageTvSyncDate.text = ""
-            }
+            mypageTvSyncDate.text = if (syncTime != "") "$syncTime" else ""
         }
 
         //로그아웃
         mypageTvLogout.setOnClickListener {
-            CoroutineScope(Dispatchers.Main).launch {
-
-                if (backupDataByLogOut()){
-                    val auth = FirebaseAuth.getInstance()
-                    auth.signOut()
-//            removeSharedPrefPinNum()
-                    cleanRoom()
-                    val intent = Intent(requireContext(), FirstActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
-                }
-
-            }
-
+            showLogoutDialog()
         }
 
-        //회원탈퇴
+        //계정 삭제
         mypageTvWithdraw.setOnClickListener {
-            val auth = FirebaseAuth.getInstance()
-            withdrawAccount(auth)
-            auth.signOut()
-//            removeSharedPrefPinNum()
-            cleanRoom()
-            val intent = Intent(requireContext(), FirstActivity::class.java)
-            startActivity(intent)
+            showWithdrawDialog()
         }
 
         // Change the password (except Social Login users)
@@ -208,7 +195,7 @@ class MyPageFragment : Fragment() {
                     if (userInfo.providerId == "google.com") {
                         Toast.makeText(
                             requireContext(),
-                            "구글 간편 로그인 사용자는 비밀번호를 변경할 수 없습니다.",
+                            "SNS 로그인 사용자는 비밀번호를 변경할 수 없습니다.",
                             Toast.LENGTH_SHORT
                         ).show()
                         return@setOnClickListener
@@ -297,7 +284,7 @@ class MyPageFragment : Fragment() {
     }
 
     private fun getCurrentTime(): String {
-        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+        return SimpleDateFormat("MM월 dd일 a HH:mm", Locale.getDefault()).format(Date())
     }
 
     private suspend fun backupDataByLogOut(): Boolean {
@@ -426,6 +413,36 @@ class MyPageFragment : Fragment() {
     // Change the password
     private fun showChangePasswordDialog() {
         MyPageChangePasswordDialog(requireContext())
+    }
+
+    // Logout
+    private fun showLogoutDialog() {
+        MyPageLogoutDialog(requireContext()) {
+            CoroutineScope(Dispatchers.Main).launch {
+                if (backupDataByLogOut()){
+                    val auth = FirebaseAuth.getInstance()
+                    auth.signOut()
+//            removeSharedPrefPinNum()
+                    cleanRoom()
+                    val intent = Intent(requireContext(), FirstActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+            }
+        }
+    }
+
+    // Withdraw
+    private fun showWithdrawDialog() {
+        MyPageWithdrawDialog(requireContext()) {
+            val auth = FirebaseAuth.getInstance()
+            withdrawAccount(auth)
+            auth.signOut()
+//            removeSharedPrefPinNum()
+            cleanRoom()
+            val intent = Intent(requireContext(), FirstActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     // LockScreen - Remove the pin number

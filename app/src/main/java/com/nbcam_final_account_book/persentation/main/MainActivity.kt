@@ -213,7 +213,7 @@ class MainActivity : AppCompatActivity() {
         mainToolbar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
-    private fun showTemplateDialog() {
+    fun showTemplateDialog() {
         val customDialog = TemplateDialogFragment()
 
         customDialog.show(supportFragmentManager, "templateDialog")

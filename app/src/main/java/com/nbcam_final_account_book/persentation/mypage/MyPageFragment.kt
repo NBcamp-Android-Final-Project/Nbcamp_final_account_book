@@ -1,7 +1,6 @@
 package com.nbcam_final_account_book.persentation.mypage
 
 import android.Manifest
-import android.content.ContentUris
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -284,7 +283,7 @@ class MyPageFragment : Fragment() {
     }
 
     private fun getCurrentTime(): String {
-        return SimpleDateFormat("MM월 dd일 a HH:mm", Locale.getDefault()).format(Date())
+        return SimpleDateFormat("MM월 dd일 a hh:mm", Locale.getDefault()).format(Date())
     }
 
     private suspend fun backupDataByLogOut(): Boolean {

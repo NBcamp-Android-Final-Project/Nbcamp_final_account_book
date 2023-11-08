@@ -16,24 +16,7 @@ class SharedTemplateViewModel(
     private val fireRepo: FireBaseRepository
 ) : ViewModel() {
 
-    private val _userListLiveData: MutableLiveData<List<UserDataEntity>> = MutableLiveData()
 
-    val userListLiveData: LiveData<List<UserDataEntity>> get() = _userListLiveData
-
-    init {
-        listSet()
-    }
-
-    private fun listSet() {
-        viewModelScope.launch {
-            val list = fireRepo.getAllUserData()
-            _userListLiveData.value = list
-        }
-    }
-
-    fun filterList(name:String){
-
-    }
 
 }
 

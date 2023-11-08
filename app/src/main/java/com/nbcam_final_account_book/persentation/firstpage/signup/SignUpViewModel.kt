@@ -48,7 +48,7 @@ class SignUpViewModel(
                 roomRepo.insertUserData(user)
             }
             result.await()
-            fireRepo.updateUserData(user)
+            fireRepo.updateUserInFireStore(user)
         }
     }
 

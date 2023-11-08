@@ -84,7 +84,8 @@ class SignUpFragment : Fragment() {
         val nameTextWatcher = createTextWatcher(signupEvName, signupInputLayoutName)
         val emailTextWatcher = createTextWatcher(signupEvEmail, signupInputLayoutEmail)
         val passwordTextWatcher = createTextWatcher(signupEvPassword, signupInputLayoutPassword)
-        val passwordCheckTextWatcher = createTextWatcher(signupEvPasswordCheck, signupInputLayoutPasswordCheck)
+        val passwordCheckTextWatcher =
+            createTextWatcher(signupEvPasswordCheck, signupInputLayoutPasswordCheck)
 
         signupEvName.addTextChangedListener(nameTextWatcher)
         signupEvEmail.addTextChangedListener(emailTextWatcher)
@@ -182,7 +183,8 @@ class SignUpFragment : Fragment() {
                 val isNameValid = name.isNotEmpty() && nameCheck(name)
                 val isEmailValid = email.isNotEmpty() && emailCheck(email)
                 val isPasswordValid = password.isNotEmpty() && passwordCheck(password)
-                val isPasswordMatch = password.isNotEmpty() && passwordCheck.isNotEmpty() && (password == passwordCheck)
+                val isPasswordMatch =
+                    password.isNotEmpty() && passwordCheck.isNotEmpty() && (password == passwordCheck)
 
                 // 입력 필드에 따라 해당 에러 메시지를 설정, 입력 필드가 하거나 비어있거나 유효한 경우 에러 메시지 제거
                 inputLayout.error = when (editText) {
@@ -194,7 +196,8 @@ class SignUpFragment : Fragment() {
                 }
 
                 // 모든 필드가 유효한 경우에만 버튼을 활성화
-                signupBtnOk.isEnabled = isNameValid && isEmailValid && isPasswordValid && isPasswordMatch
+                signupBtnOk.isEnabled =
+                    isNameValid && isEmailValid && isPasswordValid && isPasswordMatch
             }
         }
     }

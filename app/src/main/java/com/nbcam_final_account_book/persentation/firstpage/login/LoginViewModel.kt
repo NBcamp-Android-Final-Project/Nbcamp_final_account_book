@@ -10,6 +10,7 @@ import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryI
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -21,12 +22,12 @@ class LoginViewModel(
 ) : ViewModel() {
 
     fun updateUser(user: UserDataEntity) {
-        viewModelScope.launch(IO) {
-            val result = viewModelScope.async(IO) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = viewModelScope.async(Dispatchers.IO) {
                 roomRepo.insertUserData(user)
             }
             result.await()
-            fireRepo.updateUserData(user)
+            fireRepo.updateUserInFireStore(user)
         }
     }
 

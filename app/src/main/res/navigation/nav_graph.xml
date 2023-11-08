@@ -16,11 +16,6 @@
         android:label="chart"
         tools:layout="@layout/chart_fragment" />
     <fragment
-        android:id="@+id/menu_chat"
-        android:name="com.nbcam_final_account_book.persentation.chat.ChatFragment"
-        android:label="chat"
-        tools:layout="@layout/chat_fragment" />
-    <fragment
         android:id="@+id/menu_mypage"
         android:name="com.nbcam_final_account_book.persentation.mypage.MyPageFragment"
         android:label="mypage"

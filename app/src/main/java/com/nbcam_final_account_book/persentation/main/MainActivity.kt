@@ -17,8 +17,8 @@ import com.google.android.material.navigation.NavigationBarView
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.MainActivityBinding
-import com.nbcam_final_account_book.persentation.template.dialog.template.TemplateDialogFragment
 import com.nbcam_final_account_book.persentation.template.addbudget.TemplateBudgetFragment
+import com.nbcam_final_account_book.persentation.template.dialog.template.TemplateDialogFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -99,11 +99,6 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.menu_statistics -> {
                     navController.navigate(R.id.menu_statistics)
-                    true
-                }
-
-                R.id.menu_chat -> {
-                    navController.navigate(R.id.menu_chat)
                     true
                 }
 

@@ -1,6 +1,7 @@
 package com.nbcam_final_account_book.persentation.mypage
 
 import android.Manifest
+import android.content.ContentUris
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -32,6 +33,9 @@ import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageChang
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageDeniedDialog
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageEditNameDialog
 import com.nbcam_final_account_book.persentation.tag.TagActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -56,7 +60,8 @@ class MyPageFragment : Fragment() {
     }
 
     private val sharedViewModel: MainViewModel by activityViewModels()
-//    private val sharedUsersAdapter = SharedUsersAdapter(dummyUser)
+
+    //    private val sharedUsersAdapter = SharedUsersAdapter(dummyUser)
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -168,20 +173,25 @@ class MyPageFragment : Fragment() {
 
         //로그아웃
         mypageTvLogout.setOnClickListener {
-            val auth = FirebaseAuth.getInstance()
-            backupDataByLogOut()
-            auth.signOut()
+            CoroutineScope(Dispatchers.Main).launch {
+
+                if (backupDataByLogOut()){
+                    val auth = FirebaseAuth.getInstance()
+                    auth.signOut()
 //            removeSharedPrefPinNum()
-            cleanRoom()
-            val intent = Intent(requireContext(), FirstActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+                    cleanRoom()
+                    val intent = Intent(requireContext(), FirstActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+
+            }
+
         }
 
         //회원탈퇴
         mypageTvWithdraw.setOnClickListener {
             val auth = FirebaseAuth.getInstance()
-            backupDataByLogOut()
             withdrawAccount(auth)
             auth.signOut()
 //            removeSharedPrefPinNum()
@@ -196,7 +206,11 @@ class MyPageFragment : Fragment() {
             if (user != null) {
                 for (userInfo in user.providerData) {
                     if (userInfo.providerId == "google.com") {
-                        Toast.makeText(requireContext(), "구글 간편 로그인 사용자는 비밀번호를 변경할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "구글 간편 로그인 사용자는 비밀번호를 변경할 수 없습니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         return@setOnClickListener
                     }
                 }
@@ -286,9 +300,9 @@ class MyPageFragment : Fragment() {
         return SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
     }
 
-    private fun backupDataByLogOut() {
+    private suspend fun backupDataByLogOut(): Boolean {
 
-        sharedViewModel.backupDataByLogOut()
+        return sharedViewModel.backupDataByLogOut()
     }
 
     private fun cleanRoom() = with(viewModel) {

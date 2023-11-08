@@ -27,6 +27,7 @@ import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainViewModel(
@@ -144,29 +145,31 @@ class MainViewModel(
     //반드시 로그아웃 시 호출되어야 함.
 
 
-    fun backupDataByLogOut() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val templateList = roomRepo.getAllListTemplate()
-            val dataList: List<DataEntity> = roomRepo.getAllData()
-            val deleteKey = roomRepo.getAllDelete()
+    suspend fun backupDataByLogOut(): Boolean = withContext(Dispatchers.IO) {
 
-            val templateListDeferred = async { fireRepo.setTemplateList(user, templateList) }
-            val dataListDeferred = async { fireRepo.updateDataList(user, dataList) }
+        val templateList = roomRepo.getAllListTemplate()
+        val dataList: List<DataEntity> = roomRepo.getAllData()
+        val deleteKey = roomRepo.getAllDelete()
 
-            templateListDeferred.await()
-            dataListDeferred.await()
+        val templateListDeferred = async { fireRepo.setTemplateList(user, templateList) }
+        val dataListDeferred = async { fireRepo.updateDataList(user, dataList) }
 
-            if (deleteKey.isNotEmpty()) {
-                for (key in deleteKey) {
-                    fireRepo.deleteData(user, key.key)
-                    fireRepo.deleteTemplate(user, key.key)
-                }
+        templateListDeferred.await()
+        dataListDeferred.await()
+
+        if (deleteKey.isNotEmpty()) {
+            for (key in deleteKey) {
+                fireRepo.deleteData(user, key.key)
+                fireRepo.deleteTemplate(user, key.key)
             }
-            roomRepo.deleteAllDeleteEntity()
-            Log.d("딜리트", deleteKey.size.toString())
-            saveSharedPrefIsLogin(false)
-            roomRepo.deleteAllData()
         }
+        roomRepo.deleteAllDeleteEntity()
+        Log.d("딜리트", deleteKey.size.toString())
+        saveSharedPrefIsLogin(false)
+        roomRepo.deleteAllData()
+
+        true
+
     }
 
     fun backupData() {

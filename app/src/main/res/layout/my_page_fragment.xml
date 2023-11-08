@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/padding_horizontal"
     tools:context=".persentation.mypage.MyPageFragment">
 
     <ScrollView
@@ -62,17 +63,32 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="contentDescription" />
 
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline2"
+                        android:layout_width="1dp"
+                        android:layout_height="1dp"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.72" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline3"
+                        android:layout_width="1dp"
+                        android:layout_height="1dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.72" />
+
                     <ImageView
                         android:id="@+id/imageView"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginBottom="5dp"
-                        android:padding="5dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/my_page_bg_camera"
+                        android:padding="4dp"
                         android:src="@drawable/ic_camera"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:tint="@color/text_hint"
+                        app:layout_constraintStart_toStartOf="@+id/guideline2"
+                        app:layout_constraintTop_toTopOf="@+id/guideline3"
+                        app:tint="@color/text_primary"
                         tools:ignore="contentDescription" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -101,32 +117,32 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:backgroundTint="@android:color/transparent"
-                        android:hint="새 이름"
-                        android:maxLength="10"
-                        android:maxLines="1"
-                        android:padding="0dp"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
                         android:textColorHint="@color/text_hint"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:drawableEndCompat="@drawable/ic_edit"
+                        app:drawableTint="@color/text_hint"
                         app:layout_constraintStart_toStartOf="@+id/mypage_tv_email"
                         app:layout_constraintTop_toBottomOf="@id/mypage_tv_email" />
 
-                    <ImageView
-                        android:id="@+id/mypage_iv_edit"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="5dp"
-                        android:padding="5dp"
-                        android:src="@drawable/ic_edit"
-                        app:layout_constraintBottom_toBottomOf="@+id/mypage_et_name"
-                        app:layout_constraintStart_toEndOf="@+id/mypage_et_name"
-                        app:layout_constraintTop_toTopOf="@+id/mypage_et_name"
-                        app:tint="@color/text_hint"
-                        tools:ignore="contentDescription" />
+                    <TextView
+                        android:id="@+id/mypage_tv_change_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="비밀번호 변경"
+                        android:textColor="@color/text_hint"
+                        android:textSize="11sp"
+                        app:drawableEndCompat="@drawable/ic_my_page_arrow_right"
+                        app:drawableTint="@color/text_hint"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mypage_et_name" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <!--<androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/mypage_container_account_book"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -205,14 +221,14 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline_v2"
                         app:layout_constraintTop_toBottomOf="@+id/mypage_tv_shared_users" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>-->
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mypage_container_list"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/bg_mypage_profile_item"
                 android:backgroundTint="@color/card_background"
                 android:paddingVertical="4dp"
@@ -220,7 +236,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mypage_container_profile">
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/mypage_tv_book"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -243,7 +259,7 @@
                     android:background="@color/card_sub"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mypage_tv_book" />
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_tv_book" />-->
 
                 <TextView
                     android:id="@+id/mypage_tv_tag"
@@ -259,7 +275,7 @@
                     app:drawableTint="@color/text_primary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider2" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <View
                     android:id="@+id/mypage_divider3"
@@ -270,8 +286,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_tv_tag" />
 
-
-                <androidx.appcompat.widget.SwitchCompat
+                <!--<androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/mypage_switch_pin"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -279,7 +294,7 @@
                     android:drawablePadding="10dp"
                     android:drawableTint="@color/text_primary"
                     android:padding="15dp"
-                    android:text="비밀번호 잠금"
+                    android:text="화면 잠금"
                     android:textColor="@color/text_primary"
                     android:textOff=""
                     android:textOn=""
@@ -298,7 +313,7 @@
                     android:background="@color/card_sub"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mypage_switch_pin" />
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_switch_pin" />-->
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/mypage_container_backup"
@@ -307,7 +322,7 @@
                     android:padding="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider4">
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider3">
 
                     <TextView
                         android:id="@+id/mypage_tv_backup"
@@ -416,7 +431,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_tv_logout" />
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/mypage_tv_share"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -433,37 +448,21 @@
                     android:layout_height="1dp"
                     android:background="@color/card_sub"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mypage_tv_share" />
-
-                <TextView
-                    android:id="@+id/mypage_tv_change_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:padding="15dp"
-                    android:text="비밀번호 변경"
-                    android:textSize="15sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider8" />
-
-                <View
-                    android:id="@+id/mypage_divider9"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/card_sub"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mypage_tv_change_password" />
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_tv_share" />-->
 
                 <TextView
                     android:id="@+id/mypage_tv_withdraw"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:drawablePadding="10dp"
                     android:padding="15dp"
                     android:text="탈퇴하기"
                     android:textSize="15sp"
+                    app:drawableLeftCompat="@drawable/ic_unregister"
+                    app:drawableTint="@color/text_primary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider9" />
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider7" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

@@ -9,6 +9,7 @@
     <dimen name="padding">28dp</dimen>
     <dimen name="padding_bottom">36dp</dimen>
     <dimen name="edit_text_padding">18dp</dimen>
+    <dimen name="padding_horizontal">12dp</dimen>
 
     <!--Margin Size-->
     <dimen name="margin_vertical">50dp</dimen>

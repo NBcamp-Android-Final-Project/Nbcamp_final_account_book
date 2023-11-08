@@ -85,7 +85,9 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
                         ?: listOf()
 
                 val bottomSheetFragment =
-                    HomeBottomSheetFragment(relatedEntries, clickedDate)
+                    HomeBottomSheetFragment(relatedEntries, clickedDate) {
+                        startEntryActivity()
+                    }
                 bottomSheetFragment.show(parentFragmentManager, "BottomSheetFragment")
             }
         }
@@ -96,6 +98,13 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
             showDatePickerDialog()
         }
         return binding.root
+    }
+
+    private fun startEntryActivity() {
+        val intent = EntryActivity.newIntent(requireActivity()).apply {
+            putExtra(HomeFragment.EXTRA_CURRENT_TEMPLATE, getCurrentTemplate())
+        }
+        startActivity(intent)
     }
 
     private fun updateCalendarHeader() {

@@ -1,13 +1,12 @@
 package com.nbcam_final_account_book.persentation.template.dialog.template
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.TemplateSelectItemBinding
 
@@ -25,25 +24,20 @@ class TemplateDialogAdapter(
         override fun areContentsTheSame(oldItem: TemplateEntity, newItem: TemplateEntity): Boolean {
             return oldItem == newItem
         }
-
     }
 ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-
             TemplateSelectItemBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
-            ), onItemClick
-            , onItemDeleteClick
-
+            ), onItemClick, onItemDeleteClick
         )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
-
     }
 
     class ViewHolder(
@@ -60,22 +54,14 @@ class TemplateDialogAdapter(
             }
 
             ivTemplateDelete.setOnClickListener {
-                val textView = TextView(root.context)
-                textView.text = "템플릿 삭제"
-                textView.setPadding(70, 30, 20, 30)
-                textView.textSize = 20f
-                textView.setBackgroundColor(Color.WHITE)
-                textView.setTextColor(Color.BLACK)
-
-                val builder = AlertDialog.Builder(root.context)
-                builder.setCustomTitle(textView)
+                val builder = AlertDialog.Builder(root.context, R.style.EditNameAlertDialogStyle)
+                builder.setTitle("템플릿 삭제")
                 builder.setMessage("${item.templateTitle}을 삭제하시겠습니까??")
-                builder.setNegativeButton("예") { _, _ ->
-
-                    onItemDeleteClick(item)
-                }
-                builder.setPositiveButton("아니오") { dialog, _ ->
+                builder.setNegativeButton("취소") { dialog, _ ->
                     dialog.dismiss()
+                }
+                builder.setPositiveButton("확인") { _, _ ->
+                    onItemDeleteClick(item)
                 }
                 val dialog = builder.create()
                 dialog.show()

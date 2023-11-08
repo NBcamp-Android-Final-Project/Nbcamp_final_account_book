@@ -44,40 +44,6 @@ class MyPageFragment : Fragment() {
         const val REQUEST_IMAGE_PICK = 101
     }
 
-    // 더미데이터 - 공유하는 사람
-    private val dummyUser = listOf(
-        SharedUser(
-            "1",
-            "David",
-            "https://images.pexels.com/photos/14661/pexels-photo-14661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        ),
-        SharedUser(
-            "2",
-            "Ian",
-            "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        ),
-        SharedUser(
-            "3",
-            "Chloe",
-            "https://images.pexels.com/photos/5186/person-woman-coffee-cup.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        ),
-        SharedUser(
-            "4",
-            "Felix",
-            "https://images.pexels.com/photos/25733/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        ),
-        SharedUser(
-            "5",
-            "Bentley",
-            "https://images.pexels.com/photos/109851/pexels-photo-109851.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        ),
-        SharedUser(
-            "6",
-            "Aurora",
-            "https://images.pexels.com/photos/55789/pexels-photo-55789.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        )
-    )
-
     private var _binding: MyPageFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -90,7 +56,7 @@ class MyPageFragment : Fragment() {
     }
 
     private val sharedViewModel: MainViewModel by activityViewModels()
-    private val sharedUsersAdapter = SharedUsersAdapter(dummyUser)
+//    private val sharedUsersAdapter = SharedUsersAdapter(dummyUser)
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -133,7 +99,7 @@ class MyPageFragment : Fragment() {
 
     private fun initView() = with(binding) {
         val title = sharedViewModel.mainLiveCurrentTemplate.value?.templateTitle
-        mypageTvUsingName.text = title
+//        mypageTvUsingName.text = title
 
         getUserName()
         getUserEmail()
@@ -147,10 +113,10 @@ class MyPageFragment : Fragment() {
 
         val spacingInDp = 5
         val spacingInPixels = (spacingInDp * resources.displayMetrics.density).toInt()
-        mypageRvSharedUsers.addItemDecoration(ItemSpacingDecoration(spacingInPixels))
-        mypageRvSharedUsers.adapter = sharedUsersAdapter
+        /*mypageRvSharedUsers.addItemDecoration(ItemSpacingDecoration(spacingInPixels))
+        mypageRvSharedUsers.adapter = sharedUsersAdapter*/
 
-        mypageIvEdit.setOnClickListener {
+        mypageEtName.setOnClickListener {
             showEditNameDialog()
         }
 
@@ -159,13 +125,13 @@ class MyPageFragment : Fragment() {
             startActivity(intent)
         }
 
-        mypageSwitchPin.setOnClickListener {
+        /*mypageSwitchPin.setOnClickListener {
             if (sharedViewModel.pin.value.isNullOrEmpty()) {
                 navController.navigate(R.id.action_menu_mypage_to_pinFragment)
             } else {
                 sharedViewModel.removeSharedPrefPinNumber()
             }
-        }
+        }*/
 
         // TODO: 비밀번호 변경 기능 나중에 추가!
 
@@ -200,30 +166,31 @@ class MyPageFragment : Fragment() {
             }
         }
 
+        //로그아웃
         mypageTvLogout.setOnClickListener {
-
             val auth = FirebaseAuth.getInstance()
             backupDataByLogOut()
             auth.signOut()
-            removeSharedPrefPinNum()
+//            removeSharedPrefPinNum()
             cleanRoom()
             val intent = Intent(requireContext(), FirstActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
         }
 
+        //회원탈퇴
         mypageTvWithdraw.setOnClickListener {
-
             val auth = FirebaseAuth.getInstance()
             backupDataByLogOut()
             withdrawAccount(auth)
             auth.signOut()
-            removeSharedPrefPinNum()
+//            removeSharedPrefPinNum()
             cleanRoom()
             val intent = Intent(requireContext(), FirstActivity::class.java)
             startActivity(intent)
         }
 
+        // Change the password (except Social Login users)
         mypageTvChangePassword.setOnClickListener {
             val user = FirebaseAuth.getInstance().currentUser
             if (user != null) {
@@ -271,13 +238,10 @@ class MyPageFragment : Fragment() {
                 }
             }
 
-            Log.d("MyPageFragment", "Name: ${name.value}")
-            Log.d("MyPageFragment", "Email: ${email.value}")
-            Log.d("MyPageFragment", "Photo URL: ${photoUrl.value}")
-
-            sharedViewModel.isPinSet.observe(viewLifecycleOwner) {
+            // Check the status of the pin settings
+            /*sharedViewModel.isPinSet.observe(viewLifecycleOwner) {
                 mypageSwitchPin.isChecked = it
-            }
+            }*/
         }
     }
 
@@ -343,6 +307,7 @@ class MyPageFragment : Fragment() {
             getPhotoUrl()
         }*/
 
+    // Unregister from dutoom
     private fun withdrawAccount(auth: FirebaseAuth) {
         database = Firebase.database.reference
         val user = auth.currentUser!!
@@ -399,9 +364,7 @@ class MyPageFragment : Fragment() {
     }
 
     private fun openGallery() {
-        // 권한 확인
         if (checkGalleryPermission()) {
-            // 권한이 있는 경우, 갤러리 앱을 열어 이미지 선택
             val galleryIntent =
                 Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(galleryIntent, REQUEST_IMAGE_PICK)
@@ -437,6 +400,7 @@ class MyPageFragment : Fragment() {
         )
     }
 
+    // Edit user name
     private fun showEditNameDialog() = with(binding) {
         val currentName = mypageEtName.text.toString()
         MyPageEditNameDialog(requireContext(), currentName) { newName ->
@@ -445,23 +409,13 @@ class MyPageFragment : Fragment() {
         }
     }
 
+    // Change the password
     private fun showChangePasswordDialog() {
         MyPageChangePasswordDialog(requireContext())
     }
 
+    // LockScreen - Remove the pin number
     private fun removeSharedPrefPinNum() = with(sharedViewModel) {
         removeSharedPrefPinNumber()
-    }
-
-    private fun changePassword(password: String) {
-        FirebaseAuth.getInstance().currentUser!!.updatePassword(password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(requireActivity(), "비밀번호가 변경되었습니다.", Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(requireActivity(), task.exception.toString(), Toast.LENGTH_LONG)
-                        .show()
-                }
-            }
     }
 }

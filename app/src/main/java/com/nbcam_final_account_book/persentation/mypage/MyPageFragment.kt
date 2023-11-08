@@ -96,9 +96,14 @@ class MyPageFragment : Fragment() {
             updateProfileImage(requestCode, resultCode, data)
         }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (requireActivity() as MainActivity).toggleToolbar(true)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        (requireActivity() as MainActivity).toggleToolbar(true)
+//        (requireActivity() as MainActivity).toggleToolbar(true)
         _binding = null
     }
 

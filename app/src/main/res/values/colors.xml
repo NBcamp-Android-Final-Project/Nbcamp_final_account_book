@@ -26,7 +26,7 @@
     <color name="calendar_unselected_arrow_icon">#FFFFFFFF</color>
     <color name="calendar_selected_arrow_icon">#EEEEEE</color>
 
-    <color name="primary">#1C1C1C</color>
+    <color name="primary">#DEE5F1</color>
 
     <!--차트 태그 색-->
     <color name="chart_food">#A0FFA1</color>

@@ -13,6 +13,7 @@
 
     <!--Margin Size-->
     <dimen name="margin_vertical">50dp</dimen>
+    <dimen name="margin_top">18dp</dimen>
     <dimen name="field_margin_vertical">8dp</dimen>
     <dimen name="field_btn_margin_vertical">50dp</dimen>
     <dimen name="login_margin_vertical">60dp</dimen>

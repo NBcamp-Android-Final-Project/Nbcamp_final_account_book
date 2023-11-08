@@ -1,11 +1,13 @@
 package com.nbcam_final_account_book.persentation.home
 
+import android.icu.text.NumberFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.databinding.HomeBottomSheetItemBinding
 import com.nbcam_final_account_book.persentation.entry.EntryModel
+import java.util.Locale
 
 class EntryAdapter(var entries: List<EntryEntity>) : RecyclerView.Adapter<EntryAdapter.ViewHolder>() {
 
@@ -20,7 +22,10 @@ class EntryAdapter(var entries: List<EntryEntity>) : RecyclerView.Adapter<EntryA
         val entry = entries[position]
         holder.binding.tvCategory.text = entry.tag
         holder.binding.tvTitle.text = entry.title
-        holder.binding.tvValue.text = entry.value
+
+        // 천 단위 구분자를 추가하고, '원'을 붙여서 표시합니다.
+        val formattedValue = NumberFormat.getNumberInstance(Locale.KOREA).format(entry.value.toInt()) + "원"
+        holder.binding.tvValue.text = formattedValue
     }
 
     override fun getItemCount(): Int = entries.size

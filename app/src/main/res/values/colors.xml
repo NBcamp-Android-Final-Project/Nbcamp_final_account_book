@@ -15,7 +15,7 @@
     <color name="text_hint">#9A999E</color>
 
     <color name="expend">#FF2828</color>
-    <color name="income">#5382FE</color>
+    <color name="income">#0147FF</color>
 
     <color name="cheon_primary_bot_nav">#DEE5F1</color>
     <color name="cheon_primary_unselected_home_icon">#32E6E6E6</color>
@@ -25,6 +25,7 @@
     <color name="calendar_saturday">#0040FF</color>
     <color name="calendar_unselected_arrow_icon">#FFFFFFFF</color>
     <color name="calendar_selected_arrow_icon">#EEEEEE</color>
+
     <color name="primary">#DEE5F1</color>
 
     <!--차트 태그 색-->

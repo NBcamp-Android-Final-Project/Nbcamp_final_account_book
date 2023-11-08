@@ -1,7 +1,9 @@
 package com.nbcam_final_account_book.persentation.firstpage
 
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.nbcam_final_account_book.R
@@ -19,8 +21,12 @@ class FirstActivity : AppCompatActivity() {
         binding = FirstActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initView()
-        initViewModel()
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			window.statusBarColor = ContextCompat.getColor(this, R.color.primary_main);
+		}
+
+		initView()
+		initViewModel()
 
 
     }

@@ -3,12 +3,14 @@ package com.nbcam_final_account_book.persentation.template
 import android.content.ContentUris
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -39,6 +41,10 @@ class TemplateActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         binding = TemplateActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.primary_main);
+        }
 
         initViewModel()
         initView()

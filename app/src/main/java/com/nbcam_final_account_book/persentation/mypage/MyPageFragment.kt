@@ -32,6 +32,8 @@ import com.nbcam_final_account_book.persentation.main.MainViewModel
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageChangePasswordDialog
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageDeniedDialog
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageEditNameDialog
+import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageLogoutDialog
+import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageWithdrawDialog
 import com.nbcam_final_account_book.persentation.tag.TagActivity
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -167,26 +169,12 @@ class MyPageFragment : Fragment() {
 
         //로그아웃
         mypageTvLogout.setOnClickListener {
-            val auth = FirebaseAuth.getInstance()
-            backupDataByLogOut()
-            auth.signOut()
-//            removeSharedPrefPinNum()
-            cleanRoom()
-            val intent = Intent(requireContext(), FirstActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+            showLogoutDialog()
         }
 
-        //회원탈퇴
+        //계정 삭제
         mypageTvWithdraw.setOnClickListener {
-            val auth = FirebaseAuth.getInstance()
-            backupDataByLogOut()
-            withdrawAccount(auth)
-            auth.signOut()
-//            removeSharedPrefPinNum()
-            cleanRoom()
-            val intent = Intent(requireContext(), FirstActivity::class.java)
-            startActivity(intent)
+            showWithdrawDialog()
         }
 
         // Change the password (except Social Login users)
@@ -197,7 +185,7 @@ class MyPageFragment : Fragment() {
                     if (userInfo.providerId == "google.com") {
                         Toast.makeText(
                             requireContext(),
-                            "구글 간편 로그인 사용자는 비밀번호를 변경할 수 없습니다.",
+                            "SNS 로그인 사용자는 비밀번호를 변경할 수 없습니다.",
                             Toast.LENGTH_SHORT
                         ).show()
                         return@setOnClickListener
@@ -415,6 +403,34 @@ class MyPageFragment : Fragment() {
     // Change the password
     private fun showChangePasswordDialog() {
         MyPageChangePasswordDialog(requireContext())
+    }
+
+    // Logout
+    private fun showLogoutDialog() {
+        MyPageLogoutDialog(requireContext()) {
+            val auth = FirebaseAuth.getInstance()
+            backupDataByLogOut()
+            auth.signOut()
+//            removeSharedPrefPinNum()
+            cleanRoom()
+            val intent = Intent(requireContext(), FirstActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
+    }
+
+    // Withdraw
+    private fun showWithdrawDialog() {
+        MyPageWithdrawDialog(requireContext()) {
+            val auth = FirebaseAuth.getInstance()
+            backupDataByLogOut()
+            withdrawAccount(auth)
+            auth.signOut()
+//            removeSharedPrefPinNum()
+            cleanRoom()
+            val intent = Intent(requireContext(), FirstActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     // LockScreen - Remove the pin number

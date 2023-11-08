@@ -13,7 +13,11 @@ import com.nbcam_final_account_book.databinding.HomeBottomSheetBinding
 import com.nbcam_final_account_book.persentation.entry.EntryActivity
 import com.nbcam_final_account_book.persentation.entry.EntryModel
 
-class HomeBottomSheetFragment(private val entries: List<EntryEntity>, private val clickedDate: String) : BottomSheetDialogFragment() {
+class HomeBottomSheetFragment(
+    private val entries: List<EntryEntity>,
+    private val clickedDate: String,
+    private val onAddClickListener: (() -> Unit)? = null
+) : BottomSheetDialogFragment() {
 
     private var _binding: HomeBottomSheetBinding? = null
     private val binding get() = _binding!!
@@ -41,7 +45,7 @@ class HomeBottomSheetFragment(private val entries: List<EntryEntity>, private va
         binding.recyclerViewEntryList.adapter = adapter
 
         binding.ivBottomSheetAdd.setOnClickListener {
-
+            onAddClickListener?.invoke()
         }
 
         // 선택한 날짜를 TextView에 설정합니다.

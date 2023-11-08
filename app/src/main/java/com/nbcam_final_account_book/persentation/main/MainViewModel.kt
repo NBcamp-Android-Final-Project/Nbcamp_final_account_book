@@ -169,11 +169,6 @@ class MainViewModel(
         }
     }
 
-    //todo back 시 삭제된 데이터는 어떻게 관리될 것인가?
-    //삭제 데이터에 대한 dataclass를 만들고
-    //그 동작을 한 후에 db를 지운다면?
-    //혹은 sharedpref를 사용한다거나
-    // 싱글턴 리스트 사용은 하지 않는다. 중간에 앱 종료 시 잘못된 데이터 사용이 될 수 있음.
     fun backupData() {
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()

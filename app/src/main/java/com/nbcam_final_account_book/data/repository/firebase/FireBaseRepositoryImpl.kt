@@ -93,7 +93,7 @@ class FireBaseRepositoryImpl(
 
     override suspend fun getAllTemplate(user: String): List<TemplateEntity> {
         val database = Firebase.database
-        val path = "$user/$TEMPLATE_LIST"
+        val path = "$user/$TEMPLATE_LIST/TEMPLATE"
 
         try {
             val snapshot = database.getReference(path).get().await()
@@ -121,7 +121,7 @@ class FireBaseRepositoryImpl(
 
     override suspend fun setTemplate(user: String, item: TemplateEntity): List<TemplateEntity> {
         val database = Firebase.database
-        val path = "$user/$TEMPLATE_LIST"
+        val path = "$user/$TEMPLATE_LIST/TEMPLATE"
         val myRef = database.getReference(path)
 
         myRef.child(item.id).setValue(item)
@@ -152,7 +152,7 @@ class FireBaseRepositoryImpl(
 
     override suspend fun setTemplateList(user: String, items: List<TemplateEntity>) {
         val database = Firebase.database
-        val path = "$user/$TEMPLATE_LIST"
+        val path = "$user/$TEMPLATE_LIST/TEMPLATE"
         val myRef = database.getReference(path)
         for (item in items) {
             myRef.child(item.id).setValue(item)
@@ -162,7 +162,7 @@ class FireBaseRepositoryImpl(
 
     override suspend fun deleteTemplate(user: String, key: String) {
         val database = Firebase.database
-        val myRef = database.getReference("User/Data/$user/$TEMPLATE_LIST")
+        val myRef = database.getReference("$user/$TEMPLATE_LIST/TEMPLATE")
 
         myRef.child(key).removeValue()
     }

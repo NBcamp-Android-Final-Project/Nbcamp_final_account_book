@@ -66,8 +66,6 @@ class TemplateDialogAdapter(
                 val dialog = builder.create()
                 dialog.show()
             }
-
         }
-
     }
 }

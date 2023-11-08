@@ -3,28 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:minWidth="280dp">
 
     <TextView
         android:id="@+id/template_item_tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
         android:gravity="center_horizontal"
+        android:maxLines="1"
         android:padding="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_template_delete"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
         tools:text="공유용" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/divider"
+    <ImageView
+        android:id="@+id/iv_template_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_delete"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/template_item_tv_title"
-        app:layout_constraintVertical_bias="0.5"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/template_item_tv_title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

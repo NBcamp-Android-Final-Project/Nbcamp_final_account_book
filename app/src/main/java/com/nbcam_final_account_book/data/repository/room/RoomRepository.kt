@@ -7,6 +7,7 @@ import com.nbcam_final_account_book.data.model.local.DeleteEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
+import com.nbcam_final_account_book.data.model.local.UserDataEntity
 
 interface RoomRepository {
 
@@ -19,7 +20,7 @@ interface RoomRepository {
     //Template
     fun getAllListTemplate(): List<TemplateEntity> //list형태로 모든 템플릿 이름을 가져옵니다
     fun getAllLiveTemplate(): LiveData<List<TemplateEntity>> // live형태로 모든 템플릿 이름을 가져옵니다
-    suspend fun insertFirstTemplate(text: String): String // 템플릿을 추가합니다.
+    suspend fun insertFirstTemplate(text: String, uid: String): String // 템플릿을 추가합니다.
     suspend fun insertTemplate(text: String): List<TemplateEntity> // 템플릿을 추가한 뒤 list로 반환합니다.
     suspend fun insertTemplateList(item: List<TemplateEntity>) // 템플릿을 list형태로 대량으로 추가합니다
     suspend fun deleteTemplate(item: TemplateEntity) // 템플릿의 id를 추적해 삭제한 뒤 템플릿 리스트를 반환합니다.
@@ -91,5 +92,14 @@ interface RoomRepository {
     suspend fun deleteAllDeleteEntity()
     suspend fun insertDelete(item: DeleteEntity)
     fun getAllDelete(): List<DeleteEntity>
+
+    //UserDataEntity
+
+    suspend fun insertUserData(user: UserDataEntity)
+
+    fun getUserDataByKet(key: String): UserDataEntity?
+
+    fun getAllUserDataLiveData(): LiveData<List<UserDataEntity>>
+    fun getAllUserDataList(): List<UserDataEntity>
 
 }

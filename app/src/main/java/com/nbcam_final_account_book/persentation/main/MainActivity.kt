@@ -45,9 +45,22 @@ class MainActivity : AppCompatActivity() {
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.primary_main);
+        }
+
         initViewModel()
         initView()
         hideActionBar()
+    }
+
+    /**
+     * 임시 백업. onStop 시 백업하는 메소드 추가
+     */
+
+    override fun onStop() {
+        super.onStop()
+        backupAllDataToRealTimeBase()
     }
 
 
@@ -204,6 +217,9 @@ class MainActivity : AppCompatActivity() {
         val customDialog = TemplateDialogFragment()
 
         customDialog.show(supportFragmentManager, "templateDialog")
+    }
+    private fun backupAllDataToRealTimeBase(){
+        viewModel.backupData()
     }
 }
 

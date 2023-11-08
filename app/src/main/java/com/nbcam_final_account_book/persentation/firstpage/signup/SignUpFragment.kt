@@ -20,6 +20,7 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.FirstSignUpFragmentBinding
+import com.nbcam_final_account_book.data.model.local.UserDataEntity
 
 
 class SignUpFragment : Fragment() {
@@ -30,7 +31,10 @@ class SignUpFragment : Fragment() {
 
     private val binding get() = _binding!!
     private val viewModel by lazy {
-        ViewModelProvider(this@SignUpFragment)[SignUpViewModel::class.java]
+        ViewModelProvider(
+            this@SignUpFragment,
+            SignUpViewModelFactory(requireContext())
+        )[SignUpViewModel::class.java]
     }
 
     //todo 약관 표시하기
@@ -80,7 +84,8 @@ class SignUpFragment : Fragment() {
         val nameTextWatcher = createTextWatcher(signupEvName, signupInputLayoutName)
         val emailTextWatcher = createTextWatcher(signupEvEmail, signupInputLayoutEmail)
         val passwordTextWatcher = createTextWatcher(signupEvPassword, signupInputLayoutPassword)
-        val passwordCheckTextWatcher = createTextWatcher(signupEvPasswordCheck, signupInputLayoutPasswordCheck)
+        val passwordCheckTextWatcher =
+            createTextWatcher(signupEvPasswordCheck, signupInputLayoutPasswordCheck)
 
         signupEvName.addTextChangedListener(nameTextWatcher)
         signupEvEmail.addTextChangedListener(emailTextWatcher)
@@ -102,6 +107,20 @@ class SignUpFragment : Fragment() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             makeShortToast("회원가입이 완료되었습니다.")
+
+                            val user = FirebaseAuth.getInstance().currentUser
+                            if (user != null) {
+                                val newUser = UserDataEntity(
+                                    key = user.uid,
+                                    name = name,
+                                    id = email
+                                )
+                                updateUser(newUser)
+                            }
+
+
+
+                            makeShortToast("회원 가입이 완료되었습니다.")
                             val profileUpdate = userProfileChangeRequest {
                                 displayName = name
                             }
@@ -137,8 +156,12 @@ class SignUpFragment : Fragment() {
     }
 
     private fun passwordCheck(password: String): Boolean {
-        val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#\$%^&*]).{8,20}\$")
+        val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,20}\$")
         return passwordRegex.matches(password)
+    }
+
+    private fun updateUser(user: UserDataEntity) {
+        viewModel.updateUser(user)
     }
 
     // TextField 유효성 검사
@@ -160,7 +183,8 @@ class SignUpFragment : Fragment() {
                 val isNameValid = name.isNotEmpty() && nameCheck(name)
                 val isEmailValid = email.isNotEmpty() && emailCheck(email)
                 val isPasswordValid = password.isNotEmpty() && passwordCheck(password)
-                val isPasswordMatch = password.isNotEmpty() && passwordCheck.isNotEmpty() && (password == passwordCheck)
+                val isPasswordMatch =
+                    password.isNotEmpty() && passwordCheck.isNotEmpty() && (password == passwordCheck)
 
                 // 입력 필드에 따라 해당 에러 메시지를 설정, 입력 필드가 하거나 비어있거나 유효한 경우 에러 메시지 제거
                 inputLayout.error = when (editText) {
@@ -172,7 +196,8 @@ class SignUpFragment : Fragment() {
                 }
 
                 // 모든 필드가 유효한 경우에만 버튼을 활성화
-                signupBtnOk.isEnabled = isNameValid && isEmailValid && isPasswordValid && isPasswordMatch
+                signupBtnOk.isEnabled =
+                    isNameValid && isEmailValid && isPasswordValid && isPasswordMatch
             }
         }
     }

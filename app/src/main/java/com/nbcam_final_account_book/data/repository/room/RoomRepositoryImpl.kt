@@ -9,6 +9,7 @@ import com.nbcam_final_account_book.data.model.local.DeleteEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
+import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
 import java.util.UUID
 
@@ -29,11 +30,11 @@ class RoomRepositoryImpl(
         return dao.getLiveTemplateList()
     }
 
-    override suspend fun insertFirstTemplate(text: String): String {
+    override suspend fun insertFirstTemplate(text: String, uid: String): String {
         val dao = database?.templateDao() ?: throw IllegalStateException("insertFirstTemplate fail")
         val customKey = UUID.randomUUID().toString()
 
-        dao.insertTemplate(TemplateEntity(id = customKey, templateTitle = text))
+        dao.insertTemplate(TemplateEntity(id = customKey, templateTitle = text, user = uid))
         return customKey
     }
 
@@ -364,6 +365,32 @@ class RoomRepositoryImpl(
         val dao = database?.deleteDao() ?: throw IllegalStateException("getAllDelete fail")
 
         return dao.getAllDelete()
+    }
+
+    //userDataEntity
+
+    override suspend fun insertUserData(user: UserDataEntity) {
+        val dao = database?.userDataDao() ?: throw IllegalStateException("insertUserData fail")
+
+        dao.insertUserData(user)
+    }
+
+    override fun getUserDataByKet(key: String): UserDataEntity? {
+        val dao = database?.userDataDao() ?: throw IllegalStateException("getUserDataByKet fail")
+
+        return dao.getUserByKey(key)
+    }
+
+    override fun getAllUserDataLiveData(): LiveData<List<UserDataEntity>> {
+        val dao = database?.userDataDao() ?: throw IllegalStateException("getAllUserDataLiveData fail")
+
+        return dao.getALlUserLiveData()
+    }
+
+    override fun getAllUserDataList(): List<UserDataEntity> {
+        val dao = database?.userDataDao() ?: throw IllegalStateException("getAllUserDataList fail")
+
+        return dao.getALlUserList()
     }
 
 

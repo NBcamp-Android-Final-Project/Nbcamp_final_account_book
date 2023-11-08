@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -31,8 +32,9 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
+import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.databinding.FirstLoginFragmentBinding
-import com.nbcam_final_account_book.persentation.firstpage.LoginViewModel
+import com.nbcam_final_account_book.persentation.firstpage.FirstViewModel
 import com.nbcam_final_account_book.persentation.main.MainActivity
 import com.nbcam_final_account_book.persentation.template.TemplateActivity
 import com.nbcam_final_account_book.persentation.template.TemplateType
@@ -45,11 +47,19 @@ class LoginFragment : Fragment() {
 
     private var _binding: FirstLoginFragmentBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: LoginViewModel by activityViewModels()
+    private val sharedViewModel: FirstViewModel by activityViewModels()
     private lateinit var auth: FirebaseAuth
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
     private var isFirst: Boolean = true //앱 최초 실행 판정
+
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this@LoginFragment,
+            LoginViewModelFactory(requireContext())
+        )[LoginViewModel::class.java]
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,6 +81,7 @@ class LoginFragment : Fragment() {
 
             })
         initView()
+        initViewModel()
     }
 
     private fun initView() = with(binding) {
@@ -91,6 +102,9 @@ class LoginFragment : Fragment() {
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener() { task ->
+                        val uid = auth.uid ?: ""
+                        getUserInFireStore(uid)
+
                         if (task.isSuccessful) {
                             Toast.makeText(
                                 requireContext(),
@@ -173,6 +187,17 @@ class LoginFragment : Fragment() {
         loginTvSignup.text = signupSpannable
     }
 
+    private fun initViewModel() {
+        with(viewModel) {
+
+        }
+        with(sharedViewModel) {
+
+        }
+
+
+    }
+
 
     private fun toMainActivity() {
         val intent = Intent(requireContext(), MainActivity::class.java)
@@ -188,12 +213,12 @@ class LoginFragment : Fragment() {
         requireActivity().finish()
     }
 
-    private fun loadisFirst(): Boolean = with(viewModel) {
+    private fun loadisFirst(): Boolean = with(sharedViewModel) {
         loadSharedisFirst()
     }
 
     private suspend fun isFirstLogin(): Boolean {
-        val data = viewModel.getAllTemplateSize()
+        val data = sharedViewModel.getAllTemplateSize()
 
         return data > 0
     }
@@ -209,6 +234,20 @@ class LoginFragment : Fragment() {
             auth.signInWithCredential(credential)
                 .addOnCompleteListener() { firebaseTask ->
                     if (firebaseTask.isSuccessful) {
+                        val currentUser = auth.currentUser
+                        if (currentUser != null) {
+                            val user = UserDataEntity(
+                                key = currentUser.uid,
+                                id = currentUser.email ?: "",
+                                name = currentUser.displayName ?: "",
+                                img = currentUser.photoUrl.toString() ?: ""
+                            )
+
+                            updateUser(user)
+                        }
+
+
+
                         Toast.makeText(
                             requireContext(),
                             "환영합니다 ${auth.currentUser?.displayName}님",
@@ -236,6 +275,14 @@ class LoginFragment : Fragment() {
             Toast.makeText(requireContext(), "Google login failed", Toast.LENGTH_SHORT).show()
             Log.e("구글.로그인.에러", "로그인 에러 ")
         }
+    }
+
+    private fun updateUser(user: UserDataEntity) {
+        viewModel.updateUser(user)
+    }
+
+    private fun getUserInFireStore(key:String){
+        viewModel.getUserInFireStore(key)
     }
 
 

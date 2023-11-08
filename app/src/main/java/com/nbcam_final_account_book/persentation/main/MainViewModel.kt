@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
@@ -15,6 +16,7 @@ import com.nbcam_final_account_book.data.model.local.DataEntity
 import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
+import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
@@ -25,6 +27,7 @@ import com.nbcam_final_account_book.data.sharedprovider.SharedProviderImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainViewModel(
@@ -39,6 +42,8 @@ class MainViewModel(
     }
 
     private val user = fireRepo.getUser()
+
+    val mainUserDataLive: LiveData<List<UserDataEntity>> = roomRepo.getAllUserDataLiveData()
 
     //CurrentTemplateData
     private val _mainLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
@@ -140,43 +145,40 @@ class MainViewModel(
     //반드시 로그아웃 시 호출되어야 함.
 
 
-    fun backupDataByLogOut() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val templateList = roomRepo.getAllListTemplate()
-            val dataList: List<DataEntity> = roomRepo.getAllData()
-            val deleteKey = roomRepo.getAllDelete()
+    suspend fun backupDataByLogOut(): Boolean = withContext(Dispatchers.IO) {
 
-            val templateListDeferred = async { fireRepo.setTemplateList(user, templateList) }
-            val dataListDeferred = async { fireRepo.updateDataList(user, dataList) }
+        val templateList = roomRepo.getAllListTemplate()
+        val dataList: List<DataEntity> = roomRepo.getAllData()
+        val deleteKey = roomRepo.getAllDelete()
 
-            templateListDeferred.await()
-            dataListDeferred.await()
+        val templateListDeferred = async { fireRepo.setTemplateList(user, templateList) }
+        val dataListDeferred = async { fireRepo.updateDataList(user, dataList) }
 
-            if (deleteKey.isNotEmpty()) {
-                for (key in deleteKey) {
-                    fireRepo.deleteData(user, key.key)
-                    fireRepo.deleteTemplate(user, key.key)
-                }
+        templateListDeferred.await()
+        dataListDeferred.await()
+
+        if (deleteKey.isNotEmpty()) {
+            for (key in deleteKey) {
+                fireRepo.deleteData(user, key.key)
+                fireRepo.deleteTemplate(user, key.key)
             }
-            roomRepo.deleteAllDeleteEntity()
-            Log.d("딜리트", deleteKey.size.toString())
-            saveSharedPrefIsLogin(false)
-            roomRepo.deleteAllData()
         }
+        roomRepo.deleteAllDeleteEntity()
+        Log.d("딜리트", deleteKey.size.toString())
+        saveSharedPrefIsLogin(false)
+        roomRepo.deleteAllData()
+
+        true
+
     }
 
-    //todo back 시 삭제된 데이터는 어떻게 관리될 것인가?
-    //삭제 데이터에 대한 dataclass를 만들고
-    //그 동작을 한 후에 db를 지운다면?
-    //혹은 sharedpref를 사용한다거나
-    // 싱글턴 리스트 사용은 하지 않는다. 중간에 앱 종료 시 잘못된 데이터 사용이 될 수 있음.
     fun backupData() {
         viewModelScope.launch(Dispatchers.IO) {
             val dataList: List<DataEntity> = roomRepo.getAllData()
             val templateList: List<TemplateEntity> = roomRepo.getAllListTemplate()
             val deleteKey = roomRepo.getAllDelete()
-            fireRepo.setTemplateList(user,templateList)
-            fireRepo.updateDataList(user,dataList)
+            fireRepo.setTemplateList(user, templateList)
+            fireRepo.updateDataList(user, dataList)
 
 
             if (deleteKey.isNotEmpty()) {

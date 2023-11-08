@@ -1,6 +1,7 @@
 package com.nbcam_final_account_book.persentation.mypage
 
 import android.Manifest
+import android.content.ContentUris
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -35,6 +36,9 @@ import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageEditN
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageLogoutDialog
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageWithdrawDialog
 import com.nbcam_final_account_book.persentation.tag.TagActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -59,7 +63,8 @@ class MyPageFragment : Fragment() {
     }
 
     private val sharedViewModel: MainViewModel by activityViewModels()
-//    private val sharedUsersAdapter = SharedUsersAdapter(dummyUser)
+
+    //    private val sharedUsersAdapter = SharedUsersAdapter(dummyUser)
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -282,9 +287,9 @@ class MyPageFragment : Fragment() {
         return SimpleDateFormat("MM월 dd일 a HH:mm", Locale.getDefault()).format(Date())
     }
 
-    private fun backupDataByLogOut() {
+    private suspend fun backupDataByLogOut(): Boolean {
 
-        sharedViewModel.backupDataByLogOut()
+        return sharedViewModel.backupDataByLogOut()
     }
 
     private fun cleanRoom() = with(viewModel) {
@@ -413,14 +418,17 @@ class MyPageFragment : Fragment() {
     // Logout
     private fun showLogoutDialog() {
         MyPageLogoutDialog(requireContext()) {
-            val auth = FirebaseAuth.getInstance()
-            backupDataByLogOut()
-            auth.signOut()
+            CoroutineScope(Dispatchers.Main).launch {
+                if (backupDataByLogOut()){
+                    val auth = FirebaseAuth.getInstance()
+                    auth.signOut()
 //            removeSharedPrefPinNum()
-            cleanRoom()
-            val intent = Intent(requireContext(), FirstActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+                    cleanRoom()
+                    val intent = Intent(requireContext(), FirstActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+            }
         }
     }
 
@@ -428,7 +436,6 @@ class MyPageFragment : Fragment() {
     private fun showWithdrawDialog() {
         MyPageWithdrawDialog(requireContext()) {
             val auth = FirebaseAuth.getInstance()
-            backupDataByLogOut()
             withdrawAccount(auth)
             auth.signOut()
 //            removeSharedPrefPinNum()

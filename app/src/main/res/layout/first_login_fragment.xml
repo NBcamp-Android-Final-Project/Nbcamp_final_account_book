@@ -20,22 +20,33 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/padding">
 
+            <ImageView
+                android:id="@+id/login_iv_dutoom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dutoom_w"
+                app:layout_constraintBottom_toBottomOf="@+id/login_tv_welcome"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/login_tv_welcome"
+                tools:ignore="contentDescription" />
+
             <TextView
                 android:id="@+id/login_tv_welcome"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_horizontal"
                 android:layout_marginTop="@dimen/login_margin_vertical"
                 android:text="두툼 가계부에 오신 것을\n환영합니다."
                 android:textSize="@dimen/text_size_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/login_iv_dutoom"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/login_content_layout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginVertical="@dimen/login_margin_vertical"
+                android:layout_marginVertical="@dimen/field_btn_margin_vertical"
                 app:cardBackgroundColor="@color/card_background"
                 app:cardCornerRadius="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"

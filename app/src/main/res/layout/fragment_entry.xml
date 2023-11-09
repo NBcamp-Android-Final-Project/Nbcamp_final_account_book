@@ -188,7 +188,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/entry_list_horizontal_margin"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="@dimen/entry_list_vertical_margin"
             android:layout_marginEnd="@dimen/entry_list_horizontal_margin"
             app:counterEnabled="true"
             app:counterMaxLength="20"

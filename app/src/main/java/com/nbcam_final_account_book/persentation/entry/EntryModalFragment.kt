@@ -40,9 +40,8 @@ class EntryModalFragment : BottomSheetDialogFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		val dialog = dialog as BottomSheetDialog
-
 		// 드래그 Disabled
+		val dialog = dialog as BottomSheetDialog
 		val bottomSheetBehavior = dialog.behavior
 		bottomSheetBehavior.isDraggable = false
 

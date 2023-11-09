@@ -18,6 +18,7 @@
 
     <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
+        <item name="backgroundTint">@android:color/transparent</item>
     </style>
 
     <style name="CustomShapeAppearanceBottomSheetDialog" parent="">

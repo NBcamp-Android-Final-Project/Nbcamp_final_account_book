@@ -73,7 +73,7 @@ class EntryFragment : Fragment() {
 			val currentTemplate = getCurrentTemplateEntry()         // 템플릿
 			Log.d("현재 템플릿", currentTemplate.toString())
 
-			if (edtAmount.text!!.isNotEmpty() && currentTemplate != null) {
+			if (date.isNotEmpty() && amount.isNotEmpty() && tag.isNotEmpty() && title.isNotEmpty() && currentTemplate != null) {
 				if (finance == 0) {
 					val entryEntity = EntryEntity(
 						id = 0,
@@ -103,8 +103,10 @@ class EntryFragment : Fragment() {
 				}
 			}
 
+			if (date.isEmpty()) binding.edtDate.error = "날짜를 선택해 주세요!"
 			if (amount.isEmpty()) binding.edtAmount.error = "금액을 입력해 주세요!"
-			if (tag.isEmpty()) binding.edtDate.error = "카테고리를 선택해 주세요!"
+			if (tag.isEmpty()) binding.edtTag.error = "카테고리를 선택해 주세요!"
+			if (title.isEmpty()) binding.edtTitle.error = "제목를 입력해 주세요!"
 		}
 	}
 
@@ -112,10 +114,6 @@ class EntryFragment : Fragment() {
 		viewModel.category.observe(viewLifecycleOwner) {
 			binding.edtTag.setText(it)
 		}
-
-//		viewModel.categoryDrawable.observe(viewLifecycleOwner) {
-//			binding.tvTagInput.setCompoundDrawablesWithIntrinsicBounds(it, 0, 0, 0)
-//		}
 	}
 
 	private fun getCurrentTemplateEntry(): TemplateEntity? {

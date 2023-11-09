@@ -10,7 +10,6 @@ class MyPageLogoutDialog(context: Context, onLogoutConfirmed: () -> Unit) {
     init {
         val builder = AlertDialog.Builder(context, R.style.EditNameAlertDialogStyle)
         builder.apply {
-            setTitle("DuToom")
             setMessage("로그아웃 하시겠습니까?")
             setPositiveButton("확인") { _, _ ->
                 onLogoutConfirmed()

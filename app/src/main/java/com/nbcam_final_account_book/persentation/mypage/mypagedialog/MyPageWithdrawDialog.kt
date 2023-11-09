@@ -13,7 +13,6 @@ class MyPageWithdrawDialog(context: Context, onWithdrawConfirmed: () -> Unit) {
         val customView = View.inflate(context, R.layout.my_page_withdraw_dialog, null)
 
         builder.apply {
-            setTitle("DuToom")
             setView(customView)
             setPositiveButton("확인") { _, _ ->
                 onWithdrawConfirmed()

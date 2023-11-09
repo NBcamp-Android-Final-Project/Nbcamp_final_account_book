@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -40,6 +41,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.ChartFragmentBinding
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -49,6 +51,7 @@ import kotlin.math.sin
 
 @Composable
 fun PieChartWithStyles(expenses: List<ChartTagModel>, isEmpty: Boolean, alpha: Float = 1f) {
+    val coroutineScope = rememberCoroutineScope()
     val totalExpense = expenses.sumByDouble { it.amount }
 
     // 애니메이션 지속 시관과 지연 시간
@@ -70,21 +73,21 @@ fun PieChartWithStyles(expenses: List<ChartTagModel>, isEmpty: Boolean, alpha: F
         )
     }
 
-    // LaunchedEffect를 사용하여 애니메이션 시작을 제어
     val animationStateList = expenses.map {
         mutableStateOf(0f)
     }
 
-    LaunchedEffect(expenses) {
-        val animationSpec = tween<Float>(
-            durationMillis = animationDuration,
-            easing = LinearOutSlowInEasing
-        )
+    val animationSpec = tween<Float>(
+        durationMillis = animationDuration,
+        easing = LinearOutSlowInEasing
+    )
 
-        // 각 카테고리별로 애니메이션의 진행 상태를 업데이트
-        animationStateList.forEachIndexed { index, state ->
-            val category = expenses[index]
-            val sweep = (360.0 * (category.amount / totalExpense)).toFloat()
+    // 각 카테고리별로 애니메이션의 진행 상태를 업데이트
+    animationStateList.forEachIndexed { index, state ->
+        val category = expenses[index]
+        val sweep = (360.0 * (category.amount / totalExpense)).toFloat()
+
+        coroutineScope.launch {
             animate(
                 initialValue = 0f,
                 targetValue = sweep.toFloat(),
@@ -102,7 +105,9 @@ fun PieChartWithStyles(expenses: List<ChartTagModel>, isEmpty: Boolean, alpha: F
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Canvas(modifier = Modifier.fillMaxSize().alpha(alpha)) {
+        Canvas(modifier = Modifier
+            .fillMaxSize()
+            .alpha(alpha)) {
             // 원형 차트의 반경 / 텍스트의 위치
             val innerCircleRadius = size.width * 0.3f
             val arcRadius = size.width * 0.4f
@@ -169,7 +174,6 @@ fun PieChartWithStyles(expenses: List<ChartTagModel>, isEmpty: Boolean, alpha: F
 // sp 값을 px 값으로 변환하는 확장 함수
 private fun Float.spToPx(density: Float): Float = this * density
 
-
 @Composable
 fun ExpenseScreen(expenses: List<ChartTagModel>) {
 
@@ -201,7 +205,6 @@ fun ExpenseScreen(expenses: List<ChartTagModel>) {
     }
 }
 
-
 class ChartFragment : Fragment() {
 
     private var _binding: ChartFragmentBinding? = null
@@ -209,6 +212,7 @@ class ChartFragment : Fragment() {
     private val chartListAdapter by lazy {
         ChartListAdapter()
     }
+
     private val binding get() = _binding!!
 
     private val viewModel by lazy {
@@ -230,14 +234,12 @@ class ChartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initViewModel()
-
     }
 
     private var startDate: Calendar? = null
     private var endDate: Calendar? = null
 
     private fun initView() = with(binding) { // 레이아웃 제어
-
 
         chartTabDay.performClick()
 
@@ -320,7 +322,6 @@ class ChartFragment : Fragment() {
                         ExpenseScreen(it)
                     }
                 }
-
             }
         }
 
@@ -331,8 +332,5 @@ class ChartFragment : Fragment() {
         dateRangeText.observe(viewLifecycleOwner) { dateRangeText ->
             binding.chartDateTitle.text = dateRangeText
         }
-
     }
-
-
 }

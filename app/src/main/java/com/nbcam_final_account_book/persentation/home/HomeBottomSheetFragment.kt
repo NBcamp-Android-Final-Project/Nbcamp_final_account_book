@@ -45,6 +45,7 @@ class HomeBottomSheetFragment(
         binding.recyclerViewEntryList.adapter = adapter
 
         binding.ivBottomSheetAdd.setOnClickListener {
+            dismiss()
             onAddClickListener?.invoke()
         }
 

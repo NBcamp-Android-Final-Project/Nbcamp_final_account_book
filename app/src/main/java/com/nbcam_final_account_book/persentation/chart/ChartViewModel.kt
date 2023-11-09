@@ -291,22 +291,22 @@ class ChartViewModel(
 }
 
 val colorMap = mapOf(
-    "식비" to Color(0xFFA0FFA1),
-    "교통" to Color(0xFF8BE5F5),
-    "취미" to Color(0xFFE6FFA1),
-    "쇼핑" to Color(0xFFF2AAFF),
+    "식비" to Color(0xFFf37a32),
+    "교통" to Color(0xFFca9232),
+    "취미" to Color(0xFF34af8c),
+    "쇼핑" to Color(0xFFf66ab7),
     "통신" to Color(0xFF629CFF),
-    "주거" to Color(0xFFB2FFC2),
-    "할부" to Color(0xFF6ABEFF),
-    "보험" to Color(0xFFF2AAF2),
+    "주거" to Color(0xFF9fa131),
+    "할부" to Color(0xFF39a7d5),
+    "보험" to Color(0xFF32b25c),
     "미용" to Color(0xFFA0FFC6),
-    "경조사" to Color(0xFF99C6FF),
-    "의료" to Color(0xFFE6FFC6),
-    "월급" to Color(0xFFF2C6AA),
-    "부수입" to Color(0xFFA0FFE6),
-    "상여" to Color(0xFFFFE6FF),
-    "용돈" to Color(0xFFD9FFF0),
-    "기타" to Color(0xFFD1D1D1)
+    "경조사" to Color(0xFFcc7af4),
+    "의료" to Color(0xFF36ada4),
+    "월급" to Color(0xFFca9232),
+    "부수입" to Color(0xFF6e9bf4),
+    "상여" to Color(0xFFbb9832),
+    "용돈" to Color(0xFFf77468 ),
+    "기타" to Color(0xFF808080)
 )
 
 fun getCategoryColor(tag: String): Color {

@@ -1,17 +1,21 @@
 package com.nbcam_final_account_book.persentation.template.dialog.template
 
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.graphics.Canvas
+import android.graphics.Color
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.TemplateSelectDialogBinding
@@ -22,6 +26,7 @@ import com.nbcam_final_account_book.persentation.template.TemplateType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 
 class TemplateDialogFragment() : DialogFragment() {
@@ -82,12 +87,22 @@ class TemplateDialogFragment() : DialogFragment() {
 	private fun initView() = with(binding) {
 		templateSelectRecyclerViewTemplateList.adapter = adapter
 		templateSelectRecyclerViewTemplateList.hasFixedSize()
-		templateSelectRecyclerViewTemplateList.addItemDecoration(
-			DividerItemDecoration(
-				requireActivity(),
-				LinearLayoutManager.VERTICAL
-			)
-		)
+		templateSelectRecyclerViewTemplateList.addItemDecoration(object : DividerItemDecoration(requireActivity(), LinearLayoutManager.VERTICAL) {
+			override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+				val divider = ColorDrawable(Color.parseColor("#343434"))
+				val left = parent.paddingLeft
+				val right = parent.width - parent.paddingRight
+
+				for (i in 0 until parent.childCount - 1) {
+					val child = parent.getChildAt(i)
+					val params = child.layoutParams as RecyclerView.LayoutParams
+					val top = child.bottom + params.bottomMargin
+					val bottom = top + divider.intrinsicHeight
+					divider.setBounds(left, top, right, bottom)
+					divider.draw(c)
+				}
+			}
+		})
 
 		templateBtnAdd.setOnClickListener {
 			toTemplateActivity()

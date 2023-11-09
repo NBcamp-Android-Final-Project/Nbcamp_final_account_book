@@ -19,7 +19,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
+import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.databinding.FirstSignUpFragmentBinding
+import java.security.SecureRandom
 
 
 class SignUpFragment : Fragment() {

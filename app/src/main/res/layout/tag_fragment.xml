@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_modify" />
+            android:src="@drawable/ic_add" />
     </android.widget.Toolbar>
 
     <androidx.constraintlayout.widget.ConstraintLayout

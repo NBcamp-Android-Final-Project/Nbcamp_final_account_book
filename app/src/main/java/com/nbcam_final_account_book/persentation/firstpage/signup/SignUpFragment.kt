@@ -19,8 +19,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
-import com.nbcam_final_account_book.databinding.FirstSignUpFragmentBinding
 import com.nbcam_final_account_book.data.model.local.UserDataEntity
+import com.nbcam_final_account_book.databinding.FirstSignUpFragmentBinding
+import java.security.SecureRandom
 
 
 class SignUpFragment : Fragment() {
@@ -125,7 +126,9 @@ class SignUpFragment : Fragment() {
                                 displayName = name
                             }
                             auth.currentUser?.updateProfile(profileUpdate)
-                            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+//                            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
+                            val action = R.id.action_signUpFragment_to_emailVerificationFragment
+                            findNavController().navigate(action)
                         } else {
                             makeShortToast("이미 가입된 이메일입니다.")
                         }
@@ -139,6 +142,10 @@ class SignUpFragment : Fragment() {
 
         }
 
+    }
+
+    private fun getRandomPassword(): String {
+        return SecureRandom().nextDouble().toString().replace(".", "")
     }
 
     private fun makeShortToast(text: String) {

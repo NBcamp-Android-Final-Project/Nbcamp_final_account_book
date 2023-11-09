@@ -46,6 +46,7 @@
 
     <style name="EntryTextInputLayoutStyle" parent="TextInputLayoutStyle">
         <item name="boxCornerRadiusBottomEnd">2dp</item>
+        <item name="errorEnabled">false</item>
         <item name="counterTextColor">@color/cheon_primary_bot_nav</item>
         <item name="boxCornerRadiusBottomStart">2dp</item>
         <item name="boxCornerRadiusTopEnd">2dp</item>
@@ -74,6 +75,7 @@
     </style>
 
     //다이얼로그 스타일
+
     <style name="EditNameAlertDialogStyle" parent="Theme.Material3.Dark.Dialog.Alert">
         <item name="android:windowBackground">@drawable/my_page_alert_dialog</item>
         <item name="colorPrimary">@color/text_highlight</item>

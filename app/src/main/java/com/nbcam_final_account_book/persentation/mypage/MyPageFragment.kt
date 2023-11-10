@@ -337,7 +337,7 @@ class MyPageFragment : Fragment() {
 
     private fun galleryBottomSheet() {
         val bottomSheet = layoutInflater.inflate(R.layout.my_page_gallery_bottom_sheet, null)
-        val dialog = BottomSheetDialog(requireContext())
+        val dialog = BottomSheetDialog(requireContext(), R.style.CustomBottomSheetDialog)
         dialog.setContentView(bottomSheet)
 
         val optionGallery = bottomSheet.findViewById<View>(R.id.option_gallery)

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/primary_main">
+    android:paddingVertical="@dimen/padding_vertical"
+    android:background="@drawable/shape_bottom_sheet">
 
     <TextView
         android:id="@+id/option_gallery"
@@ -19,6 +20,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/card_sub"
+        app:layout_constraintTop_toBottomOf="@id/option_gallery"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:id="@+id/option_remove"
         android:layout_width="0dp"
@@ -32,5 +42,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/option_gallery" />
+        app:layout_constraintTop_toBottomOf="@+id/divider1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

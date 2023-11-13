@@ -126,8 +126,7 @@ class SignUpFragment : Fragment() {
                                 displayName = name
                             }
                             auth.currentUser?.updateProfile(profileUpdate)
-//                            findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
-                            val action = R.id.action_signUpFragment_to_emailVerificationFragment
+                            val action = R.id.action_signUpFragment_to_loginFragment
                             findNavController().navigate(action)
                         } else {
                             makeShortToast("이미 가입된 이메일입니다.")

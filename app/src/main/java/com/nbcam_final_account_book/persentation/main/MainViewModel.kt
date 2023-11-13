@@ -258,7 +258,7 @@ class MainViewModel(
             val backUpTemplate = fireRepo.getAllTemplate(user)
             val backUpData = fireRepo.getBackupData(user)
 
-            if (backUpData.isEmpty()) return@launch
+            if (backUpData.isEmpty() || backUpTemplate.isEmpty()) return@launch
 
             roomRepo.insertDataList(backUpData)
             with(roomRepo) {

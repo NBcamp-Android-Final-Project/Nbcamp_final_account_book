@@ -59,7 +59,6 @@ class TagManageAdapter(
 
 		@SuppressLint("ClickableViewAccessibility")
 		fun onBind(item: TagEntity) = with(binding) {
-			ivTagImg.setImageResource(item.img)
 			tvTagName.text = item.title
 
 			vHandlerTouch.setOnClickListener {

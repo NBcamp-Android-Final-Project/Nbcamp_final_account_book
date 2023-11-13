@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1073898028283-1diqusjro6ttu0l3no4aa3ukcq715857.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nbcam_final_account_book",
+            "certificate_hash": "11ec1f3ae6e440e137ad8619f6374201e17fc967"
+          }
+        },
+        {
           "client_id": "1073898028283-68p8h0r18m8emdh4ue9p2qfm2rt1vvu6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

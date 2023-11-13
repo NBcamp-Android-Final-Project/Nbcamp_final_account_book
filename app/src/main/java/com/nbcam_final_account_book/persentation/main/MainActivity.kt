@@ -82,7 +82,6 @@ class MainActivity : AppCompatActivity() {
             synchronizationDataFromFireBase()
             backupAllDataToRealTimeBase()
             Toast.makeText(this@MainActivity, "동기화가 완료 되었습니다.", Toast.LENGTH_SHORT).show()
-            backupAllDataToRealTimeBase()
         }
 
         Log.d("도착", extraTemplate.toString())

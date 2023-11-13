@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
@@ -200,7 +199,6 @@ class MainViewModel(
         viewModelScope.launch {
             val backUpTemplate = fireRepo.getAllTemplate(user)
             val backUpData = fireRepo.getBackupData(user)
-            if (backUpTemplate.isEmpty() || backUpData.isEmpty()) return@launch
 
             roomRepo.insertDataList(backUpData)
             with(roomRepo) {
@@ -257,6 +255,8 @@ class MainViewModel(
 
             val backUpTemplate = fireRepo.getAllTemplate(user)
             val backUpData = fireRepo.getBackupData(user)
+
+            if (backUpTemplate.isEmpty() || backUpData.isEmpty()) return@launch
 
             roomRepo.insertDataList(backUpData)
             with(roomRepo) {

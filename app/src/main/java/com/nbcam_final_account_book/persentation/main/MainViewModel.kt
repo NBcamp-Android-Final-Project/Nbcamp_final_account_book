@@ -215,7 +215,7 @@ class MainViewModel(
                 if (currentTemplate != null) {
                     viewModelScope.launch {
 
-                        if (backUpData != null) {
+                        if (backUpData.isNotEmpty()) {
                             for (loadData in backUpData) {
                                 val loadEntry: List<EntryEntity> =
                                     Gson().fromJson(
@@ -258,6 +258,8 @@ class MainViewModel(
             val backUpTemplate = fireRepo.getAllTemplate(user)
             val backUpData = fireRepo.getBackupData(user)
 
+            if (backUpData.isEmpty() || backUpTemplate.isEmpty()) return@launch
+
             roomRepo.insertDataList(backUpData)
             with(roomRepo) {
                 deleteAllTemplate()
@@ -276,7 +278,7 @@ class MainViewModel(
                 if (currentTemplate != null) {
                     viewModelScope.launch {
 
-                        if (backUpData != null) {
+                        if (backUpData.isNotEmpty()) {
                             for (loadData in backUpData) {
                                 val loadEntry: List<EntryEntity> =
                                     Gson().fromJson(

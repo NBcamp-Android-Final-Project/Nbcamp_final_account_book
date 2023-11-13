@@ -3,7 +3,6 @@ package com.nbcam_final_account_book.data.repository.firebase
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
-import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.data.model.local.DataEntity
@@ -86,6 +85,55 @@ class FireBaseRepositoryImpl(
             return null
         }
 
+    }
+
+    override suspend fun searchUserDataInFireStore(keyword: String): List<UserDataEntity> {
+        val db = Firebase.firestore
+
+        try {
+            val nameQuery = db.collection("Users")
+                .whereEqualTo("name", keyword)
+                .get()
+                .await()
+
+            val emailQuery = db.collection("Users")
+                .whereEqualTo("email", keyword)
+                .get()
+                .await()
+
+            val resultUserDataList: MutableList<UserDataEntity> = mutableListOf()
+
+            for (document in nameQuery) {
+                val uid = document.getString("uid") ?: ""
+                val name = document.getString("name") ?: ""
+                val email = document.getString("email") ?: ""
+                val photoUrl = document.getString("photoUrl") ?: ""
+
+                val userData = UserDataEntity(key = uid, name = name, id = email, img = photoUrl)
+
+                resultUserDataList.add(userData)
+            }
+
+            for (document in emailQuery) {
+                val uid = document.getString("uid") ?: ""
+                val name = document.getString("name") ?: ""
+                val email = document.getString("email") ?: ""
+                val photoUrl = document.getString("photoUrl") ?: ""
+
+                val userData = UserDataEntity(key = uid, name = name, id = email, img = photoUrl)
+
+
+                if (!resultUserDataList.contains(userData)) {
+                    resultUserDataList.add(userData)
+                }
+            }
+
+            return resultUserDataList
+
+        } catch (e: Exception) {
+            Log.e("FirebaseRepo", "UserData 가져오기 중 오류 발생: ${e.message}")
+            return emptyList()
+        }
     }
 
 

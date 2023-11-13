@@ -18,6 +18,7 @@ interface FireBaseRepository {
     suspend fun updateUserInFireStore(user: UserDataEntity)
     suspend fun deleteUserInFireStore(email: String)
     suspend fun getUserInFireStore(uid: String) : UserDataEntity?
+    suspend fun searchUserDataInFireStore(keyword:String) : List<UserDataEntity> //email or name으로 검색
 
 
     //tempalte

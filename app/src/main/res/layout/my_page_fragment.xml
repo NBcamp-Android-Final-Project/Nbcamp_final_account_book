@@ -125,11 +125,11 @@
                         android:id="@+id/mypage_tv_email"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="사용자 이메일"
                         android:textColor="@color/text_hint"
                         android:textSize="11sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="사용자 이메일" />
 
                     <TextView
                         android:id="@+id/mypage_et_name"
@@ -162,7 +162,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/mypage_et_name" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!--<androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/mypage_container_account_book"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -180,7 +180,7 @@
                         android:layout_width="1dp"
                         android:layout_height="1dp"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_begin="171dp" />
+                        app:layout_constraintGuide_percent="0.5" />
 
                     <TextView
                         android:id="@+id/mypage_tv_using_book"
@@ -199,13 +199,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
                         android:gravity="center"
-                        android:text="ooo 가계부"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/mypage_rv_shared_users"
                         app:layout_constraintEnd_toStartOf="@+id/guideline_v2"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/mypage_rv_shared_users" />
+                        app:layout_constraintTop_toTopOf="@+id/mypage_rv_shared_users"
+                        tools:text="ooo 가계부" />
 
                     <View
                         android:id="@+id/mypage_divider1"
@@ -241,7 +241,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline_v2"
                         app:layout_constraintTop_toBottomOf="@+id/mypage_tv_shared_users" />
-                </androidx.constraintlayout.widget.ConstraintLayout>-->
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -265,6 +265,7 @@
                     android:text="가계부 공유"
                     android:textSize="15sp"
                     app:drawableLeftCompat="@drawable/ic_share"
+                    app:drawableRightCompat="@drawable/ic_calendar_selector_arrow_right"
                     app:drawableTint="@color/text_primary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

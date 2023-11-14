@@ -11,6 +11,8 @@ import com.nbcam_final_account_book.data.model.local.TagEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 class RoomRepositoryImpl(
@@ -375,10 +377,11 @@ class RoomRepositoryImpl(
         dao.insertUserData(user)
     }
 
-    override fun getUserDataByKet(key: String): UserDataEntity? {
-        val dao = database?.userDataDao() ?: throw IllegalStateException("getUserDataByKet fail")
-
-        return dao.getUserByKey(key)
+    override suspend fun getUserDataByKey(key: String): UserDataEntity? {
+        val dao = database?.userDataDao() ?: throw IllegalStateException("getUserDataByKey fail")
+        return withContext(Dispatchers.IO) {
+            dao.getUserByKey(key)
+        }
     }
 
     override fun getAllUserDataLiveData(): LiveData<List<UserDataEntity>> {

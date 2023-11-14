@@ -1,6 +1,7 @@
 package com.nbcam_final_account_book.persentation.mypage
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -260,9 +261,6 @@ class MyPageFragment : Fragment() {
 				mypageIvProfile.load(uri) {
 					crossfade(true)
 					transformations(CircleCropTransformation())
-					listener { _, _ ->
-						mypageIvProfile.setPadding(0, 0, 0, 0)
-					}
 				}
 			},
 			onFailure = { exception ->
@@ -342,10 +340,15 @@ class MyPageFragment : Fragment() {
 		updateUserName(newName)
 	}
 
-	private fun updateProfileImage(requestCode: Int, resultCode: Int, data: Intent?) =
-		with(viewModel) {
-			handleImageSelection(requestCode, resultCode, data)
+	private fun updateProfileImage(requestCode: Int, resultCode: Int, data: Intent?) {
+		if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK && data != null) {
+			val imageUri = data.data
+			if (imageUri != null) {
+				// Call the function to upload the profile image to Firebase Storage
+				viewModel.uploadProfileImage(imageUri)
+			}
 		}
+	}
 
 	private fun galleryBottomSheet() {
 		val bottomSheet = layoutInflater.inflate(R.layout.my_page_gallery_bottom_sheet, null)
@@ -385,14 +388,6 @@ class MyPageFragment : Fragment() {
 		}
 	}
 
-	private fun deniedDialog() {
-		MyPageDeniedDialog(requireContext())
-	}
-
-	private fun syncData() {
-		sharedViewModel.synchronizationDataWithBtn()
-	}
-
 	private fun checkGalleryPermission(): Boolean {
 		val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 			Manifest.permission.READ_MEDIA_IMAGES
@@ -412,6 +407,15 @@ class MyPageFragment : Fragment() {
 		)
 	}
 
+	private fun deniedDialog() {
+		MyPageDeniedDialog(requireContext())
+	}
+
+	private fun syncData() {
+		sharedViewModel.synchronizationDataWithBtn()
+	}
+
+
 	// Edit user name
 	private fun showEditNameDialog() = with(binding) {
 		val currentName = mypageEtName.text.toString()
@@ -422,7 +426,7 @@ class MyPageFragment : Fragment() {
 			key = firebase.auth.currentUser?.uid ?: ""
 			name = newName
 			id = firebase.auth.currentUser?.email ?: ""
-			img = ""
+			img = (firebase.auth.currentUser?.photoUrl ?: "").toString()
 			viewModel.storeUser(key = key, name = name, id = id, img = img)
 		}
 	}

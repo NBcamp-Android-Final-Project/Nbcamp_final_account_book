@@ -112,8 +112,9 @@ class MyPageFragment : Fragment() {
     }
 
     private fun initView() = with(binding) {
-//        val title = sharedViewModel.mainLiveCurrentTemplate.value?.templateTitle
-//        mypageTvUsingName.text = title
+        //현재 사용중인 가계부 이름
+        val title = sharedViewModel.mainLiveCurrentTemplate.value?.templateTitle
+        mypageTvUsingName.text = title
 
         getUserName()
         getUserEmail()
@@ -132,6 +133,10 @@ class MyPageFragment : Fragment() {
 
         mypageEtName.setOnClickListener {
             showEditNameDialog()
+        }
+
+        mypageTvShare.setOnClickListener {
+            navController.navigate(R.id.action_menu_mypage_to_sharedTemplateFragment)
         }
 
         mypageTvBook.setOnClickListener {

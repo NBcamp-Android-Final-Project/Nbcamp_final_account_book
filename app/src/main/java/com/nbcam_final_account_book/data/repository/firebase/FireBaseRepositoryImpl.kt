@@ -10,7 +10,9 @@ import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.unit.Unit.TEMPLATE_DATA
 import com.nbcam_final_account_book.unit.Unit.TEMPLATE_LIST
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.lang.Exception
 
 class FireBaseRepositoryImpl(
@@ -87,7 +89,27 @@ class FireBaseRepositoryImpl(
 
     }
 
-    override suspend fun searchUserDataInFireStore(keyword: String): List<UserDataEntity> {
+    override suspend fun getAllUsers(): List<UserDataEntity> = withContext(Dispatchers.IO) {
+        val db = Firebase.firestore
+
+        try {
+            val querySnapshot = db.collection("Users").get().await()
+            val users = querySnapshot.documents.mapNotNull { document ->
+                document.toObject(UserDataEntity::class.java)
+            }
+            // 성공적으로 데이터를 가져온 경우 로그 출력
+            Log.d("FirebaseRepo", "가져온 UserData의 개수: ${users.size}")
+            return@withContext users
+
+        } catch (e: Exception) {
+            // 오류 발생 시 로그 출력
+            Log.e("FirebaseRepo", "모든 UserData 가져오기 중 오류 발생: ${e.message}")
+            emptyList()
+        }
+    }
+
+    override suspend fun searchUserDataInFireStore(keyword: String): List<UserDataEntity> =
+        withContext(Dispatchers.IO) {
         val db = Firebase.firestore
 
         try {
@@ -128,11 +150,11 @@ class FireBaseRepositoryImpl(
                 }
             }
 
-            return resultUserDataList
+            resultUserDataList
 
         } catch (e: Exception) {
             Log.e("FirebaseRepo", "UserData 가져오기 중 오류 발생: ${e.message}")
-            return emptyList()
+            emptyList()
         }
     }
 

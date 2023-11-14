@@ -11,11 +11,12 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/shared_input_layout"
         style="@style/TextInputLayoutStyle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:errorEnabled="false"
         app:startIconDrawable="@drawable/ic_person">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -28,14 +29,26 @@
             android:maxLength="10"
             android:padding="@dimen/edit_text_padding"
             android:textAppearance="@style/TextFieldAppearance" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ImageView
+        android:id="@+id/shared_item_iv_search"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_search"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/shared_input_layout"
+        app:layout_constraintBottom_toBottomOf="@id/shared_input_layout"
+        app:tint="@color/text_primary" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shared_recycler_user_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

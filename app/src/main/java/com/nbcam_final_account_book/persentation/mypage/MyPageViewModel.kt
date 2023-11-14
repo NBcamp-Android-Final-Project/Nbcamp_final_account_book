@@ -15,6 +15,8 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
+import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
 import com.nbcam_final_account_book.data.repository.room.RoomRepositoryImpl
 import com.nbcam_final_account_book.data.room.AndroidRoomDataBase
@@ -24,135 +26,154 @@ import com.nbcam_final_account_book.persentation.mypage.MyPageFragment.Companion
 import kotlinx.coroutines.launch
 
 class MyPageViewModel(
-    private val roomRepo: RoomRepository,
-    private val sharedProvider: SharedProvider
+	private val fireRepo: FireBaseRepository,
+	private val roomRepo: RoomRepository,
+	private val sharedProvider: SharedProvider
 ) : ViewModel() {
 
-    companion object {
-        const val MY_PAGE_VIEW_MODEL = "MyPageViewModel"
-        const val MY_PAGE_PREFS = "MyPagePrefS"
-        const val BACKUP_TIME = "BackupTime"
-        const val SYNC_TIME = "SyncTime"
-    }
+	companion object {
+		const val MY_PAGE_VIEW_MODEL = "MyPageViewModel"
+		const val MY_PAGE_PREFS = "MyPagePrefS"
+		const val BACKUP_TIME = "BackupTime"
+		const val SYNC_TIME = "SyncTime"
+	}
 
-    private val _name = MutableLiveData<String?>()
-    val name: LiveData<String?> get() = _name
+	private val _name = MutableLiveData<String?>()
+	val name: LiveData<String?> get() = _name
 
-    private val _email = MutableLiveData<String?>()
-    val email: LiveData<String?> get() = _email
+	private val _email = MutableLiveData<String?>()
+	val email: LiveData<String?> get() = _email
 
-    private val _photoUrl = MutableLiveData<Uri?>()
-    val photoUrl: LiveData<Uri?> get() = _photoUrl
+	private val _photoUrl = MutableLiveData<Uri?>()
+	val photoUrl: LiveData<Uri?> get() = _photoUrl
 
-    private val user = Firebase.auth.currentUser
-    private val storage = FirebaseStorage.getInstance()
-    private val storageReference = storage.reference
+	private val user = Firebase.auth.currentUser
+	private val storage = FirebaseStorage.getInstance()
+	private val storageReference = storage.reference
 
-    private val sharedPrefs: SharedPreferences = sharedProvider.setSharedPref(MY_PAGE_PREFS)
+	private val sharedPrefs: SharedPreferences = sharedProvider.setSharedPref(MY_PAGE_PREFS)
 
-    fun saveBackupTime(time: String) {
-        sharedPrefs.edit().putString(BACKUP_TIME, time).apply()
-    }
+	fun saveBackupTime(time: String) {
+		sharedPrefs.edit().putString(BACKUP_TIME, time).apply()
+	}
 
-    fun getBackupTime(): String? {
-        return sharedPrefs.getString(BACKUP_TIME, "")
-    }
+	fun getBackupTime(): String? {
+		return sharedPrefs.getString(BACKUP_TIME, "")
+	}
 
-    fun saveSyncTime(time: String) {
-        sharedPrefs.edit().putString(SYNC_TIME, time).apply()
-    }
+	fun saveSyncTime(time: String) {
+		sharedPrefs.edit().putString(SYNC_TIME, time).apply()
+	}
 
-    fun getSyncTime(): String? {
-        return sharedPrefs.getString(SYNC_TIME, "")
-    }
+	fun getSyncTime(): String? {
+		return sharedPrefs.getString(SYNC_TIME, "")
+	}
 
-    fun cleanRoom() = with(roomRepo) {
-        viewModelScope.launch {
-            deleteAllTemplate()
-            deleteAllBudget()
-            deleteAllEntry()
-            deleteAllTag()
-        }
-    }
+	fun cleanRoom() = with(roomRepo) {
+		viewModelScope.launch {
+			deleteAllTemplate()
+			deleteAllBudget()
+			deleteAllEntry()
+			deleteAllTag()
+		}
+	}
 
-    fun getName() {
-        val name = user?.displayName
-        _name.value = name
-    }
+	fun getName() {
+		val name = user?.displayName
+		_name.value = name
+	}
 
-    fun getEmail() {
-        val email = user?.email
-        _email.value = email
-    }
+	fun getEmail() {
+		val email = user?.email
+		_email.value = email
+	}
 
-    fun getPhotoUrl() {
-        val photoUrl = user?.photoUrl
-        _photoUrl.value = photoUrl
-    }
+	fun getPhotoUrl() {
+		val photoUrl = user?.photoUrl
+		_photoUrl.value = photoUrl
+	}
 
-    fun updateUserName(newName: String) {
-        val profileUpdates = UserProfileChangeRequest.Builder()
-            .setDisplayName(newName)
-            .build()
+	fun updateUserName(newName: String) {
+		val profileUpdates = UserProfileChangeRequest.Builder()
+			.setDisplayName(newName)
+			.build()
 
-        user?.updateProfile(profileUpdates)?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d(MY_PAGE_VIEW_MODEL, "User name updated.")
-            } else {
-                Log.w(MY_PAGE_VIEW_MODEL, "User name update failed.", task.exception)
-            }
-        }
-    }
+		user?.updateProfile(profileUpdates)?.addOnCompleteListener { task ->
+			if (task.isSuccessful) {
+				Log.d(MY_PAGE_VIEW_MODEL, "User name updated.")
+			} else {
+				Log.w(MY_PAGE_VIEW_MODEL, "User name update failed.", task.exception)
+			}
+		}
+	}
 
-    // TODO: 리팩토링 할거에여....
-    fun handleImageSelection(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK) {
-            val selectedImageUri: Uri? = data?.data
-            if (selectedImageUri != null) {
-                val userUid = user?.uid
-                val profileImageRef = storageReference.child("profile_images/$userUid.jpg")
+	// TODO: 리팩토링 할거에여....
+	fun handleImageSelection(requestCode: Int, resultCode: Int, data: Intent?) {
+		if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK) {
+			val selectedImageUri: Uri? = data?.data
+			if (selectedImageUri != null) {
+				val userUid = user?.uid
+				val profileImageRef = storageReference.child("profile_images/$userUid.jpg")
 
-                profileImageRef.putFile(selectedImageUri)
-                    .addOnSuccessListener {
-                        profileImageRef.downloadUrl.addOnSuccessListener { uri ->
-                            _photoUrl.value = uri
-                        }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w(MY_PAGE_VIEW_MODEL, "User name update failed.", exception)
-                    }
-            }
-        }
-    }
+				profileImageRef.putFile(selectedImageUri)
+					.addOnSuccessListener {
+						profileImageRef.downloadUrl.addOnSuccessListener { uri ->
+							_photoUrl.value = uri
+						}
+					}
+					.addOnFailureListener { exception ->
+						Log.w(MY_PAGE_VIEW_MODEL, "User name update failed.", exception)
+					}
+			}
+		}
+	}
 
-    fun downloadProfileImage(onSuccess: (Uri) -> Unit, onFailure: (Exception) -> Unit) {
-        val userUid = user?.uid
-        val profileImageRef = storageReference.child("profile_images/$userUid.jpg")
+	fun downloadProfileImage(onSuccess: (Uri) -> Unit, onFailure: (Exception) -> Unit) {
+		val userUid = user?.uid
+		val profileImageRef = storageReference.child("profile_images/$userUid.jpg")
 
-        profileImageRef.downloadUrl
-            .addOnSuccessListener { uri ->
-                _photoUrl.value = uri
-                onSuccess(uri)
-            }
-            .addOnFailureListener { exception ->
-                onFailure(exception)
-            }
-    }
+		profileImageRef.downloadUrl
+			.addOnSuccessListener { uri ->
+				_photoUrl.value = uri
+				onSuccess(uri)
+			}
+			.addOnFailureListener { exception ->
+				onFailure(exception)
+			}
+	}
+
+	private fun deleteData(user: String, key: String) {
+		viewModelScope.launch {
+			fireRepo.deleteData(user, key)
+		}
+	}
+
+	private fun deleteUserInFireStore(email: String) {
+		viewModelScope.launch {
+			fireRepo.deleteUserInFireStore(email)
+		}
+	}
+
+	fun deleteAllData(user: String, key: String, email: String) {
+		deleteData(user, key)
+		deleteUserInFireStore(email)
+	}
 }
 
 class MyPageViewModelFactory(
-    private val context: Context
+	private val context: Context
 ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MyPageViewModel::class.java)) {
-            return MyPageViewModel(
-                RoomRepositoryImpl(
-                    AndroidRoomDataBase.getInstance(context)
-                ),
-                SharedProviderImpl(context)
-            ) as T
-        } else {
-            throw IllegalArgumentException("Not found ViewModel class.")
-        }
-    }
+	override fun <T : ViewModel> create(modelClass: Class<T>): T {
+		if (modelClass.isAssignableFrom(MyPageViewModel::class.java)) {
+			return MyPageViewModel(
+				FireBaseRepositoryImpl(),
+				RoomRepositoryImpl(
+					AndroidRoomDataBase.getInstance(context)
+				),
+				SharedProviderImpl(context)
+			) as T
+		} else {
+			throw IllegalArgumentException("Not found ViewModel class.")
+		}
+	}
 }

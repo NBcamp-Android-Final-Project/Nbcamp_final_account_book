@@ -48,6 +48,7 @@ class UserListAdapter(
             }
             sharedItemName.text = item.name
             sharedItemEmail.text = item.id
+            sharedItemIcShared.load(item.img)
         }
     }
 }

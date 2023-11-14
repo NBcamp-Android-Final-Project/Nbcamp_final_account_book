@@ -6,6 +6,7 @@
     android:backgroundTint="@color/card_background"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
+    android:layout_marginBottom="10dp"
     app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,27 +14,16 @@
         android:layout_height="wrap_content"
         android:padding="20dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/shared_item_iv_profile_container"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_mypage_profile"
-            android:padding="1dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
             <ImageView
                 android:id="@+id/shared_item_iv_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_mypage_profile"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="contentDescription" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/shared_item_name"
@@ -43,7 +33,7 @@
             tools:text="이름"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/shared_item_iv_profile_container"
+            app:layout_constraintStart_toEndOf="@+id/shared_item_iv_profile"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -53,8 +43,18 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
             tools:text="test@test.com"
-            app:layout_constraintStart_toEndOf="@+id/shared_item_iv_profile_container"
+            app:layout_constraintStart_toEndOf="@+id/shared_item_iv_profile"
             app:layout_constraintTop_toBottomOf="@+id/shared_item_name" />
+
+        <ImageView
+            android:id="@+id/shared_item_ic_shared"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_share"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/text_primary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

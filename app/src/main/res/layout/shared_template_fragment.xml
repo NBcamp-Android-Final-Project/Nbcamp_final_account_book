@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:hint="사용자 이메일"
             android:inputType="text"
-            android:maxLength="10"
             android:padding="@dimen/edit_text_padding"
             android:textAppearance="@style/TextFieldAppearance" />
 

@@ -15,6 +15,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
 import com.nbcam_final_account_book.data.repository.room.RoomRepository
@@ -157,6 +158,24 @@ class MyPageViewModel(
 	fun deleteAllData(user: String, key: String, email: String) {
 		deleteData(user, key)
 		deleteUserInFireStore(email)
+	}
+
+	/**
+	 * Room 으로 기기에 현재 로그인 User 정보 저장하는 영역
+	 */
+	private fun currentUser(key: String, name: String, id: String, img: String): UserDataEntity {
+		return UserDataEntity(key = key, name = name, id = id, img = img)
+	}
+
+	private fun updateUser(user: UserDataEntity) {
+		viewModelScope.launch {
+			roomRepo.updateUser(user)
+		}
+	}
+
+	fun storeUser(key: String, name: String, id: String, img: String) {
+		val user = currentUser(key, name, id, img)
+		updateUser(user)
 	}
 }
 

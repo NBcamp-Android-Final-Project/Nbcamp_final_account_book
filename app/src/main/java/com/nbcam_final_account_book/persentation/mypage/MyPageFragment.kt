@@ -44,6 +44,12 @@ import java.util.Locale
 
 class MyPageFragment : Fragment() {
 
+	private val firebase by lazy { Firebase }
+	private lateinit var key: String
+	private lateinit var name: String
+	private lateinit var id: String
+	private lateinit var img: String
+
 	companion object {
 		const val REQUEST_IMAGE_PICK = 101
 	}
@@ -412,6 +418,12 @@ class MyPageFragment : Fragment() {
 		MyPageEditNameDialog(requireContext(), currentName) { newName ->
 			mypageEtName.text = newName
 			updateProfileName(newName)
+
+			key = firebase.auth.currentUser?.uid ?: ""
+			name = newName
+			id = firebase.auth.currentUser?.email ?: ""
+			img = ""
+			viewModel.storeUser(key = key, name = name, id = id, img = img)
 		}
 	}
 

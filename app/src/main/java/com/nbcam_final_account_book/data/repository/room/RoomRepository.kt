@@ -102,4 +102,5 @@ interface RoomRepository {
     fun getAllUserDataLiveData(): LiveData<List<UserDataEntity>>
     fun getAllUserDataList(): List<UserDataEntity>
 
+    suspend fun updateUser(item: UserDataEntity)
 }

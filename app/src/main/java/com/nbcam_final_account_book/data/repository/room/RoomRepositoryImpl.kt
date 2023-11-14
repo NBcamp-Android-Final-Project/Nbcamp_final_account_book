@@ -393,5 +393,11 @@ class RoomRepositoryImpl(
         return dao.getALlUserList()
     }
 
+    override suspend fun updateUser(item: UserDataEntity) {
+        val dao = database?.userDataDao() ?: throw IllegalStateException("getAllUserDataList fail")
+
+        return dao.updateUser(item)
+    }
+
 
 }

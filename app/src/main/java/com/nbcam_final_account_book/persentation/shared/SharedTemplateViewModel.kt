@@ -16,7 +16,22 @@ class SharedTemplateViewModel(
     private val fireRepo: FireBaseRepository
 ) : ViewModel() {
 
+    private val _searchResultList : MutableLiveData<List<UserDataEntity>> = MutableLiveData()
+    val searchResultList get() = _searchResultList
 
+    fun setFilter(keyword: String) {
+        viewModelScope.launch {
+            val result = fireRepo.searchUserDataInFireStore(keyword)
+            _searchResultList.value = result
+        }
+    }
+
+    fun loadAllUsers() {
+        viewModelScope.launch {
+            val allUsers = fireRepo.getAllUsers()
+            _searchResultList.value = allUsers
+        }
+    }
 
 }
 

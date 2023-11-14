@@ -235,7 +235,7 @@ class MyPageFragment : Fragment() {
 			}
 
 //            getUserPhotoUrl()
-			loadProfileImage()
+			//loadProfileImage()
 			photoUrl.observe(viewLifecycleOwner) { photoUrl ->
 				if (photoUrl != null) {
 					mypageIvProfile.load(photoUrl) {
@@ -340,12 +340,12 @@ class MyPageFragment : Fragment() {
 		updateUserName(newName)
 	}
 
-	private fun updateProfileImage(requestCode: Int, resultCode: Int, data: Intent?) {
+	private fun updateProfileImage(requestCode: Int, resultCode: Int, data: Intent?) = with(viewModel) {
 		if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK && data != null) {
 			val imageUri = data.data
 			if (imageUri != null) {
 				// Call the function to upload the profile image to Firebase Storage
-				viewModel.uploadProfileImage(imageUri)
+				uploadProfileImage(imageUri)
 			}
 		}
 	}

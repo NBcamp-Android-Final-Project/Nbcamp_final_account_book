@@ -107,7 +107,6 @@ class MyPageViewModel(
         }
     }
 
-
     fun downloadProfileImage(onSuccess: (Uri) -> Unit, onFailure: (Exception) -> Unit) {
         val userUid = user?.uid
         val profileImageRef = storageReference.child("profile_images/$userUid.jpg")
@@ -123,33 +122,37 @@ class MyPageViewModel(
     }
 
     fun uploadProfileImage(imageUri: Uri) {
+        Log.d(MY_PAGE_VIEW_MODEL, "Uploading profile image: Uri=$imageUri")
+
         val storageRef = FirebaseStorage.getInstance().reference
         val user = FirebaseAuth.getInstance().currentUser
 
         // 사용자 UID를 이용하여 Storage 경로 설정
         val imageRef = storageRef.child("profile_images/${user?.uid}")
 
-        // 이미지를 업로드
+        // Storage에 이미지를 업로드
         imageRef.putFile(imageUri)
             .addOnSuccessListener {
                 // 업로드 성공 시, 업로드된 이미지의 다운로드 URL을 가져옴
                 imageRef.downloadUrl.addOnSuccessListener { uri ->
-                    // 다운로드 URL을 이용하여 Firestore와 Room 업데이트
+                    // 다운로드 URL로 Firestore와 Room 업데이트
                     updateUserData(user?.uid, uri)
                 }
             }
             .addOnFailureListener { exception ->
-                Log.e("Firebase Storage", "Image upload failed: $exception")
+                Log.e("FirebaseStorage", "Image upload failed: $exception")
             }
     }
 
     // Firestore, Room에 이미지 업데이트
     private fun updateUserData(uid: String?, photoUrl: Uri) {
+        Log.d(MY_PAGE_VIEW_MODEL, "Updating user data: UID=$uid, Photo URL=$photoUrl")
         if (uid != null) {
             // Firestore 업데이트
             val db = FirebaseFirestore.getInstance()
             val user = FirebaseAuth.getInstance().currentUser
             val email = user?.email
+            Log.d(MY_PAGE_VIEW_MODEL, "Firestore update: User email=$email")
 
             val userRef = email?.let { db.collection("Users").document(it) }
             val updates = hashMapOf<String, Any>("photoUrl" to photoUrl)
@@ -165,10 +168,12 @@ class MyPageViewModel(
                 val userDao = roomRepo.getUserDataByKey(uid)
                 if (userDao != null) {
                     userDao.img = photoUrl.toString()
-                    roomRepo.updateUser(userDao)
+                    updateUser(userDao)
                 }
             }
 
+            // LiveData 업데이트
+            _photoUrl.value = photoUrl
         } else {
             Log.e("Firestore", "User email is null.")
         }

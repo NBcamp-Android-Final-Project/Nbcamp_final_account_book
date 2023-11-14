@@ -14,5 +14,5 @@ data class UserDataEntity(
     @ColumnInfo(name = "user_id")
     val id: String = "",
     @ColumnInfo(name = "user_img")
-    val img: String = ""
+    var img: String = ""
 )

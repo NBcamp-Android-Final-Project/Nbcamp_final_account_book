@@ -97,7 +97,7 @@ interface RoomRepository {
 
     suspend fun insertUserData(user: UserDataEntity)
 
-    fun getUserDataByKet(key: String): UserDataEntity?
+    suspend fun getUserDataByKey(key: String): UserDataEntity?
 
     fun getAllUserDataLiveData(): LiveData<List<UserDataEntity>>
     fun getAllUserDataList(): List<UserDataEntity>

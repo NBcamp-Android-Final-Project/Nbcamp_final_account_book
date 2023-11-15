@@ -384,7 +384,7 @@ class MyPageFragment : Fragment() {
                 // Firestore 및 Room에서 이미지 URL 삭제
                 viewModel.deleteProfileImageFromFirestoreAndRoom()
                 // UI를 기본 이미지로 업데이트
-                updateProfileImageUI(defaultImageResId = R.drawable.ic_default_profile)
+                updateProfileImageUI(defaultImageResId = R.drawable.default_profile)
             },
             onFailure = { exception ->
                 Log.e("MyPageFragment", "프로필 이미지 삭제 오류: $exception")

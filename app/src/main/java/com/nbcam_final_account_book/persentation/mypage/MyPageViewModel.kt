@@ -126,9 +126,10 @@ class MyPageViewModel(
 
         val storageRef = FirebaseStorage.getInstance().reference
         val user = FirebaseAuth.getInstance().currentUser
+        val userUid = user?.uid
 
         // 사용자 UID를 이용하여 Storage 경로 설정
-        val imageRef = storageRef.child("profile_images/${user?.uid}")
+        val imageRef = storageRef.child("profile_images/$userUid.jpg")
 
         // Storage에 이미지를 업로드
         imageRef.putFile(imageUri)

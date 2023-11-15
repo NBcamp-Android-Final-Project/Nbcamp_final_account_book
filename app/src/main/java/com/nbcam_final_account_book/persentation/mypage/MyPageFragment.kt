@@ -117,6 +117,11 @@ class MyPageFragment : Fragment() {
     }
 
     private fun initView() = with(binding) {
+        // 알림 - 가계부 공유 요청
+        toolbarNotifications.setOnClickListener {
+            navController.navigate(R.id.action_menu_mypage_to_sharedNotificationFragment)
+        }
+
         //현재 사용중인 가계부 이름
         val title = sharedViewModel.mainLiveCurrentTemplate.value?.templateTitle
         mypageTvUsingName.text = title
@@ -379,7 +384,7 @@ class MyPageFragment : Fragment() {
                 // Firestore 및 Room에서 이미지 URL 삭제
                 viewModel.deleteProfileImageFromFirestoreAndRoom()
                 // UI를 기본 이미지로 업데이트
-                updateProfileImageUI(defaultImageResId = R.drawable.ic_mypage_profile)
+                updateProfileImageUI(defaultImageResId = R.drawable.default_profile)
             },
             onFailure = { exception ->
                 Log.e("MyPageFragment", "프로필 이미지 삭제 오류: $exception")
@@ -388,11 +393,7 @@ class MyPageFragment : Fragment() {
     }
 
     private fun updateProfileImageUI(defaultImageResId: Int) = with(binding) {
-        mypageIvProfile.load(defaultImageResId) {
-            listener { _, _ ->
-                mypageIvProfile.setPadding(10, 10, 10, 10)
-            }
-        }
+        mypageIvProfile.load(defaultImageResId)
     }
 
     private fun openGallery() {

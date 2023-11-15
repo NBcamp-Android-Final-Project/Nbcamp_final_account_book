@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_menu_mypage_to_sharedTemplateFragment"
             app:destination="@id/sharedTemplateFragment" />
+        <action
+            android:id="@+id/action_menu_mypage_to_sharedNotificationFragment"
+            app:destination="@id/sharedNotificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/pinFragment"
@@ -43,6 +46,14 @@
         tools:layout="@layout/shared_template_fragment" >
         <action
             android:id="@+id/action_sharedTemplateFragment_to_menu_mypage"
+            app:destination="@id/menu_mypage" />
+    </fragment>
+    <fragment
+        android:id="@+id/sharedNotificationFragment"
+        android:name="com.nbcam_final_account_book.persentation.shared.notification.SharedNotificationFragment"
+        android:label="SharedNotificationFragment" >
+        <action
+            android:id="@+id/action_sharedNotificationFragment_to_menu_mypage"
             app:destination="@id/menu_mypage" />
     </fragment>
 </navigation>

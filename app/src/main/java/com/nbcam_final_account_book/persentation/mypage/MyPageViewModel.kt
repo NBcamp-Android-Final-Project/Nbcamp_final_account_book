@@ -49,7 +49,7 @@ class MyPageViewModel(
 
     private val user = Firebase.auth.currentUser
     private val storage = FirebaseStorage.getInstance()
-    private val storageReference = storage.reference
+    private val storageRef = storage.reference
 
     private val sharedPrefs: SharedPreferences = sharedProvider.setSharedPref(MY_PAGE_PREFS)
 
@@ -127,12 +127,8 @@ class MyPageViewModel(
 
     fun uploadProfileImage(imageUri: Uri) {
         Log.d(MY_PAGE_VIEW_MODEL, "Uploading profile image: Uri=$imageUri")
-
-        val storageRef = FirebaseStorage.getInstance().reference
         val user = FirebaseAuth.getInstance().currentUser
         val userUid = user?.uid
-
-        // 사용자 UID를 이용하여 Storage 경로 설정
         val imageRef = storageRef.child("profile_images/$userUid.jpg")
 
         // Storage에 이미지를 업로드
@@ -183,6 +179,55 @@ class MyPageViewModel(
             Log.e("Firestore", "User email is null.")
         }
     }
+
+    fun deleteProfileImageFromStorage(onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        val user = FirebaseAuth.getInstance().currentUser
+        val userUid = user?.uid
+        val imageRef = storageRef.child("profile_images/$userUid.jpg")
+
+        // Storage에서 이미지 삭제
+        imageRef.delete()
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
+
+    fun deleteProfileImageFromFirestoreAndRoom() {
+        val user = Firebase.auth.currentUser
+        val email = user?.email
+        val uid = user?.uid
+
+        // Firestore에서 이미지 URL 삭제
+        if (email != null) {
+            val db = FirebaseFirestore.getInstance()
+            val userRef = db.collection("Users").document(email)
+            val updates = hashMapOf<String, Any>("photoUrl" to "")
+
+            userRef.update(updates)
+                .addOnSuccessListener {
+                    Log.d("Firestore", "이미지 URL 성공적으로 삭제됨.")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Firestore", "이미지 URL 삭제 오류: $e")
+                }
+        }
+
+        // Room에서 이미지 URL 삭제
+        viewModelScope.launch {
+            val userDao = uid?.let { roomRepo.getUserDataByKey(it) }
+            if (userDao != null) {
+                userDao.img = ""
+                updateUser(userDao)
+            }
+        }
+
+        // LiveData 업데이트
+        _photoUrl.value = null
+    }
+
 
     private fun deleteData(user: String, key: String) {
         viewModelScope.launch {

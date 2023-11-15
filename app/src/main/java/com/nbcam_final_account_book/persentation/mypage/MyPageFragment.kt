@@ -324,12 +324,13 @@ class MyPageFragment : Fragment() {
         val db = Firebase.database.reference
         db.child(uid).removeValue()
 
+        viewModel.deleteAllData(user = name, email = email, key = uid)
+
         // Firebase Auth 에서 사용자 삭제
         Log.d("result", "${auth.currentUser}")
         auth.currentUser?.delete()
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    viewModel.deleteAllData(user = name, email = email, key = uid)
                     Toast.makeText(requireActivity(), "정상적으로 회원 탈퇴 되었습니다", Toast.LENGTH_SHORT)
                         .show()
                 }

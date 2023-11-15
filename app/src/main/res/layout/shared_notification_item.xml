@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="10dp">
+
+    <ImageView
+        android:id="@+id/profileImageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/default_profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ledgerNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rejectButton"
+        app:layout_constraintStart_toEndOf="@+id/profileImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text=" △△△ 가계부를 공유하려 합니다." />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/rejectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:paddingHorizontal="10dp"
+        android:text="삭제"
+        app:layout_constraintBottom_toBottomOf="@+id/ledgerNameTextView"
+        app:layout_constraintEnd_toStartOf="@+id/acceptButton"
+        app:layout_constraintTop_toTopOf="@+id/ledgerNameTextView" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/acceptButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:paddingHorizontal="10dp"
+        android:text="확인"
+        app:layout_constraintBottom_toBottomOf="@+id/rejectButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rejectButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>

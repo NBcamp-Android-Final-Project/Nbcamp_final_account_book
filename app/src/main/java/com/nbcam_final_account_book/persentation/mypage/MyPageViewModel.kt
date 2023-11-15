@@ -109,16 +109,20 @@ class MyPageViewModel(
 
     fun downloadProfileImage(onSuccess: (Uri) -> Unit, onFailure: (Exception) -> Unit) {
         val userUid = user?.uid
-        val profileImageRef = storageReference.child("profile_images/$userUid.jpg")
-
-        profileImageRef.downloadUrl
-            .addOnSuccessListener { uri ->
-                _photoUrl.value = uri
-                onSuccess(uri)
+        viewModelScope.launch {
+            val userDao = userUid?.let { roomRepo.getUserDataByKey(it) }
+            if (userDao != null) {
+                val photoUrl = userDao.img
+                if (!photoUrl.isNullOrEmpty()) {
+                    _photoUrl.value = Uri.parse(photoUrl)
+                    onSuccess(Uri.parse(photoUrl))
+                } else {
+                    onFailure(Exception("Image URL is empty"))
+                }
+            } else {
+                onFailure(Exception("User not found in Room database"))
             }
-            .addOnFailureListener { exception ->
-                onFailure(exception)
-            }
+        }
     }
 
     fun uploadProfileImage(imageUri: Uri) {

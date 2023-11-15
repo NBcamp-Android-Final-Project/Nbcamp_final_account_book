@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.CircleCropTransformation
 import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.databinding.SharedItemBinding
 import com.nbcam_final_account_book.databinding.TemplateSelectItemBinding
@@ -44,11 +45,12 @@ class UserListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: UserDataEntity) = with(binding) {
             if (item.img.isNotEmpty()){
-                sharedItemIvProfile.load(item.img)
+                sharedItemIvProfile.load(item.img) {
+                    transformations(CircleCropTransformation())
+                }
             }
             sharedItemName.text = item.name
             sharedItemEmail.text = item.id
-            sharedItemIcShared.load(item.img)
         }
     }
 }

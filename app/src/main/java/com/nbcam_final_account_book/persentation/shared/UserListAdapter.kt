@@ -13,7 +13,7 @@ import com.nbcam_final_account_book.databinding.TemplateSelectItemBinding
 import com.nbcam_final_account_book.persentation.template.dialog.template.TemplateDialogAdapter
 
 class UserListAdapter(
-
+    private val onItemClicked: (UserDataEntity) -> Unit
 ) : ListAdapter<UserDataEntity, UserListAdapter.ViewHolder>(
     object : DiffUtil.ItemCallback<UserDataEntity>() {
         override fun areItemsTheSame(oldItem: UserDataEntity, newItem: UserDataEntity): Boolean {
@@ -39,6 +39,9 @@ class UserListAdapter(
         val item = getItem(position)
 
         holder.bind(item)
+        holder.itemView.setOnClickListener {
+            onItemClicked(item)
+        }
     }
 
     class ViewHolder(private val binding: SharedItemBinding) :

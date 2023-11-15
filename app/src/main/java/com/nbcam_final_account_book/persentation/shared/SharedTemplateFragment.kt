@@ -25,7 +25,10 @@ class SharedTemplateFragment : Fragment() {
     }
 
     private val adapter by lazy {
-        UserListAdapter()
+        UserListAdapter { _ ->
+            // 아이템 클릭 시 다이얼로그를 표시
+            SharedPostDialog().show(childFragmentManager, "SharedPostDialog")
+        }
     }
 
     override fun onCreateView(

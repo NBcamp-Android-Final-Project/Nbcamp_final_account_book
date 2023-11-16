@@ -22,74 +22,95 @@ import kotlinx.coroutines.launch
 
 
 class SharedTemplateViewModel(
-    private val fireRepo: FireBaseRepository
+	private val fireRepo: FireBaseRepository
 ) : ViewModel() {
 
-    private val _searchResultList : MutableLiveData<List<UserDataEntity>> = MutableLiveData()
-    val searchResultList get() = _searchResultList
+	private val _searchResultList: MutableLiveData<List<UserDataEntity>> = MutableLiveData()
+	val searchResultList get() = _searchResultList
 
-    fun setFilter(keyword: String) {
-        viewModelScope.launch {
-            val result = fireRepo.searchUserDataInFireStore(keyword)
-            _searchResultList.value = result
-        }
-    }
+	fun setFilter(keyword: String) {
+		viewModelScope.launch {
+			val result = fireRepo.searchUserDataInFireStore(keyword)
+			_searchResultList.value = result
+		}
+	}
 
-    fun sharedTemplate(sharedUid: String, template: TemplateEntity) {
-        viewModelScope.launch {
-            // 템플릿 타입을 online으로 설정
-            val sharedTemplate = template.copy(type = Unit.TEMPLATE_ONLINE)
+	fun sharedTemplate(sharedUid: String, template: TemplateEntity) {
+		viewModelScope.launch {
+			// 템플릿 타입을 online으로 설정
+			val sharedTemplate = template.copy(type = Unit.TEMPLATE_ONLINE)
 
-            // Firebase에 저장 경로를 설정
-            val sharedPath = "$sharedUid/$TEMPLATE_LIST/$SHARED_PATH"
+			// Firebase에 저장 경로를 설정
+			val sharedPath = "$sharedUid/$TEMPLATE_LIST/$SHARED_PATH"
 
-            // Firebase에 공유 템플릿 저장
-            fireRepo.sharedTemplate(sharedPath, sharedTemplate)
-        }
-    }
+			// Firebase에 공유 템플릿 저장
+			fireRepo.sharedTemplate(sharedPath, sharedTemplate)
+		}
+	}
 
-    fun loadAllUsers() {
-        viewModelScope.launch {
-            val allUsers = fireRepo.getAllUsers()
-            _searchResultList.value = allUsers
-        }
-    }
+	fun loadAllUsers() {
+		viewModelScope.launch {
+			val allUsers = fireRepo.getAllUsers()
+			_searchResultList.value = allUsers
+		}
+	}
 
-    /**
-     * Firebase RTDB 에서 shared template 를 얻어오는 영역
-     */
-    // Firebase RTDB 에서 UID/template_list/SHARED 경로의 데이터 유무 판단
-    private fun isSharedEnabled(uid: String) : Boolean {
-        val database = Firebase.database.reference
-        val path = "$uid/$TEMPLATE_LIST/$SHARED_PATH"
-        var isSharedExisted: Boolean = false
+	/**
+	 * Firebase RTDB 에서 shared template 를 얻어오는 영역
+	 */
+	// Firebase RTDB 에서 UID/template_list/SHARED 경로의 데이터 유무 판단
+	private fun isSharedEnabled(uid: String): Boolean {
+		val database = Firebase.database.reference
+		val path = "$uid/$TEMPLATE_LIST/$SHARED_PATH"
+		var isSharedEnabled = false
 
-        val sharedListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val snapshotExists: Boolean = snapshot.exists()
-                isSharedExisted = snapshotExists
-            }
+		val sharedListener = object : ValueEventListener {
+			override fun onDataChange(snapshot: DataSnapshot) {
+				isSharedEnabled = snapshot.exists()
+			}
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.w("shared", "loadShared:onCancelled", error.toException())
-            }
-        }
-        database.child(path).addValueEventListener(sharedListener)
+			override fun onCancelled(error: DatabaseError) {
+				Log.w("shared", "loadShared:onCancelled", error.toException())
+			}
+		}
+		database.child(path).addValueEventListener(sharedListener)
 
-        return isSharedExisted
-    }
+		return isSharedEnabled
+	}
+
+	//
+	private fun getSharedTemplateInfoFromDB(uid: String) {
+		val database = Firebase.database.reference
+		val path = "$uid/$TEMPLATE_LIST/$SHARED_PATH"
+		var sharedTemplateInfo = mutableListOf<TemplateEntity>()
+
+		val sharedListener = object : ValueEventListener {
+			override fun onDataChange(snapshot: DataSnapshot) {
+				for (template in snapshot.children) {
+					val data = template.getValue(TemplateEntity::class.java)!!
+
+					sharedTemplateInfo.add(data)
+				}
+			}
+
+			override fun onCancelled(error: DatabaseError) {
+				Log.w("shared", "loadShared:onCancelled", error.toException())
+			}
+		}
+		database.child(path).addValueEventListener(sharedListener)
+	}
 }
 
 class SharedTemplateViewModelFactory(
-    private val context: Context
+	private val context: Context
 ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SharedTemplateViewModel::class.java)) {
-            return SharedTemplateViewModel(
-                FireBaseRepositoryImpl()
-            ) as T
-        } else {
-            throw IllegalArgumentException("Not found ViewModel class.")
-        }
-    }
+	override fun <T : ViewModel> create(modelClass: Class<T>): T {
+		if (modelClass.isAssignableFrom(SharedTemplateViewModel::class.java)) {
+			return SharedTemplateViewModel(
+				FireBaseRepositoryImpl()
+			) as T
+		} else {
+			throw IllegalArgumentException("Not found ViewModel class.")
+		}
+	}
 }

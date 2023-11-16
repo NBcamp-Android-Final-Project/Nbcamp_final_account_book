@@ -1,18 +1,24 @@
 package com.nbcam_final_account_book.persentation.shared
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
-import kotlinx.coroutines.launch
 import com.nbcam_final_account_book.unit.Unit
 import com.nbcam_final_account_book.unit.Unit.SHARED_PATH
 import com.nbcam_final_account_book.unit.Unit.TEMPLATE_LIST
+import kotlinx.coroutines.launch
 
 
 class SharedTemplateViewModel(
@@ -49,6 +55,29 @@ class SharedTemplateViewModel(
         }
     }
 
+    /**
+     * Firebase RTDB 에서 shared template 를 얻어오는 영역
+     */
+    // Firebase RTDB 에서 UID/template_list/SHARED 경로의 데이터 유무 판단
+    private fun isSharedEnabled(uid: String) : Boolean {
+        val database = Firebase.database.reference
+        val path = "$uid/$TEMPLATE_LIST/$SHARED_PATH"
+        var isSharedExisted: Boolean = false
+
+        val sharedListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val snapshotExists: Boolean = snapshot.exists()
+                isSharedExisted = snapshotExists
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("shared", "loadShared:onCancelled", error.toException())
+            }
+        }
+        database.child(path).addValueEventListener(sharedListener)
+
+        return isSharedExisted
+    }
 }
 
 class SharedTemplateViewModelFactory(

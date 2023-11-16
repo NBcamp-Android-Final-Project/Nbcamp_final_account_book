@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +14,8 @@ import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.HomeFragmentBinding
 import com.nbcam_final_account_book.persentation.entry.EntryActivity
 import com.nbcam_final_account_book.persentation.main.MainViewModel
+import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_INCOME
+import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_PAY
 import java.util.Calendar
 
 
@@ -21,7 +24,6 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
     companion object {
         const val EXTRA_CURRENT_TEMPLATE = "extra_current_template"
     }
-
 
     private var _binding: HomeFragmentBinding? = null
     private val binding get() = _binding!!
@@ -123,7 +125,7 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
 
         // 월의 첫 번째 날짜가 무슨 요일인지에 따라 빈 칸을 추가
         for (i in 1 until firstDayOfMonth) {
-            days.add(Day(0, false))
+            days.add(Day(0, EventType.NONE))
         }
 
         val maxDaysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
@@ -133,9 +135,17 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
                 "%02d",
                 currentMonth + 1
             ) + "-" + String.format("%02d", i)
-            val hasEvent = viewModel.getListAll().any { it.dateTime == currentDate }
 
-            days.add(Day(i, hasEvent))
+            // 이벤트 유형 결정
+            val eventType = viewModel.getListAll().filter { it.dateTime == currentDate }.let {
+                when {
+                    it.isEmpty() -> EventType.NONE
+                    it.all { entry -> entry.type == INPUT_TYPE_INCOME } -> EventType.INCOME
+                    it.all { entry -> entry.type == INPUT_TYPE_PAY } -> EventType.EXPEND
+                    else -> EventType.MIX
+                }
+            }
+            days.add(Day(i, eventType))
         }
 
         val adapter = CalendarAdapter(requireContext(), days)
@@ -162,8 +172,6 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
 
         initViewModel()
         initView()
-
-
     }
 
     private fun initView() = with(binding) { //레이아웃 제어
@@ -177,14 +185,11 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
             }
             startActivity(intent)
         }
-
-
     }
 
     private fun getTotalBudget(): String {
         return viewModel.getTotalBudget()
     }
-
 
     private fun getCurrentTemplate(): TemplateEntity? {
         return sharedViewModel.getCurrentTemplate()
@@ -207,13 +212,11 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
                     setIncomeAndPay(it)
                 }
             }
-
         }
 
         with(sharedViewModel) {
 
         }
-
     }
 
     private fun setIncomeAndPay(list: List<EntryEntity>) {
@@ -221,12 +224,9 @@ class HomeFragment : Fragment(), SpinnerDatePickerDialog.OnDateSetListener {
         val pay = viewModel.getTotalIncomeAndPay(list).second
         val result = viewModel.getTotalBudget(list)
 
-
         binding.incomeTvTitle.text = income
         binding.payTitleTxt.text = pay
 
         binding.tvBalanceDescription.text = result
     }
-
-
 }

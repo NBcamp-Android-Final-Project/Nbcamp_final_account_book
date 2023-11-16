@@ -23,7 +23,6 @@ class HomeViewModel(
     private val roomRepo: RoomRepository
 ) : ViewModel() {
 
-
     val homeCurrentLiveEntryList: LiveData<List<EntryEntity>> =
         MainViewModel.liveKey.switchMap { key ->
             roomRepo.getLiveEntryByKey(key)
@@ -34,8 +33,6 @@ class HomeViewModel(
     }
 
     // 설정한 예산의 총합
-
-
     fun getListAll(): List<EntryEntity> {
         val list = homeCurrentLiveEntryList.value.orEmpty().toMutableList()
         return list
@@ -50,7 +47,6 @@ class HomeViewModel(
             it.type == INPUT_TYPE_INCOME
         }
         val totalIncome = totalIncomeList.sumOf { it.value.toInt() }
-
 
         val totalPayList = homeCurrentLiveEntryList.value.orEmpty().toMutableList().filter {
             it.type == INPUT_TYPE_PAY
@@ -86,9 +82,7 @@ class HomeViewModel(
         val incomeNumFormat = decimalFormat.format(incomeNum)
         val payNumFormat = decimalFormat.format(payNum)
 
-
         return Pair(incomeNumFormat, payNumFormat)
-
     }
 
     fun getTotalBudget(list: List<EntryEntity>): String {
@@ -108,18 +102,13 @@ class HomeViewModel(
         val decimalFormat = DecimalFormat("#,###")
 
         return decimalFormat.format(resultBudget)
-
-
     }
 
     fun getTotalPay(): String {
         return homeCurrentLiveEntryList.value.orEmpty().toMutableList().filter {
             it.type == INPUT_TYPE_PAY
         }.sumOf { it.value.toInt() }.toString()
-
-
     }
-
 }
 
 class HomeViewModelModelFactory(

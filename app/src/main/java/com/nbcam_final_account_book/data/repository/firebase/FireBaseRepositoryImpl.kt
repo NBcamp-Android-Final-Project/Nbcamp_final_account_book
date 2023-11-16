@@ -1,5 +1,6 @@
 package com.nbcam_final_account_book.data.repository.firebase
 
+import android.net.wifi.WifiConfiguration.AuthAlgorithm.SHARED
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
@@ -14,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.lang.Exception
+import com.nbcam_final_account_book.unit.Unit
 
 class FireBaseRepositoryImpl(
 
@@ -157,6 +159,12 @@ class FireBaseRepositoryImpl(
             emptyList()
         }
     }
+
+	override suspend fun sharedTemplate(path: String, template: TemplateEntity) {
+		val database = Firebase.database
+		val myRef = database.getReference(path)
+		myRef.child(template.id).setValue(template)
+	}
 
 
 //Template

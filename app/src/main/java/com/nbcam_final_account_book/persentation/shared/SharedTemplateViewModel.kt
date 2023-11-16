@@ -1,15 +1,18 @@
 package com.nbcam_final_account_book.persentation.shared
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepository
 import com.nbcam_final_account_book.data.repository.firebase.FireBaseRepositoryImpl
 import kotlinx.coroutines.launch
+import com.nbcam_final_account_book.unit.Unit
+import com.nbcam_final_account_book.unit.Unit.SHARED_PATH
+import com.nbcam_final_account_book.unit.Unit.TEMPLATE_LIST
 
 
 class SharedTemplateViewModel(
@@ -23,6 +26,19 @@ class SharedTemplateViewModel(
         viewModelScope.launch {
             val result = fireRepo.searchUserDataInFireStore(keyword)
             _searchResultList.value = result
+        }
+    }
+
+    fun sharedTemplate(sharedUid: String, template: TemplateEntity) {
+        viewModelScope.launch {
+            // 템플릿 타입을 online으로 설정
+            val sharedTemplate = template.copy(type = Unit.TEMPLATE_ONLINE)
+
+            // Firebase에 저장 경로를 설정
+            val sharedPath = "$sharedUid/$TEMPLATE_LIST/$SHARED_PATH"
+
+            // Firebase에 공유 템플릿 저장
+            fireRepo.sharedTemplate(sharedPath, sharedTemplate)
         }
     }
 

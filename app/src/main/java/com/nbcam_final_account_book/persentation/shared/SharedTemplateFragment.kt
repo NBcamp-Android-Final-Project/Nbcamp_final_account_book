@@ -1,5 +1,6 @@
 package com.nbcam_final_account_book.persentation.shared
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,10 +10,18 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nbcam_final_account_book.R
+import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.SharedTemplateFragmentBinding
+import com.nbcam_final_account_book.persentation.main.MainViewModel
 
 
 class SharedTemplateFragment : Fragment() {
+    private lateinit var mainViewModel: MainViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+    }
 
     private var _binding: SharedTemplateFragmentBinding? = null
     private val binding get() = _binding!!
@@ -25,9 +34,20 @@ class SharedTemplateFragment : Fragment() {
     }
 
     private val adapter by lazy {
-        UserListAdapter { _ ->
-            // 아이템 클릭 시 다이얼로그를 표시
-            SharedPostDialog().show(childFragmentManager, "SharedPostDialog")
+        UserListAdapter { selectedUser ->
+            // 현재 템플릿을 가져옴
+            val currentTemplate = mainViewModel.getCurrentTemplate()
+            val dialog = SharedPostDialog().apply {
+                this.selectedUser = selectedUser
+                this.currentTemplate = currentTemplate
+                listener = object : SharedPostDialog.SharedPostDialogListener {
+                    override fun onConfirmSharedTemplate(template: TemplateEntity) {
+                        // SharedTemplateViewModel의 sharedTemplate 메서드 호출
+                        viewModel.sharedTemplate(selectedUser.key, template)
+                    }
+                }
+            }
+            dialog.show(childFragmentManager, "SharedPostDialog")
         }
     }
 
@@ -41,6 +61,7 @@ class SharedTemplateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initView()
         initViewModel()
     }

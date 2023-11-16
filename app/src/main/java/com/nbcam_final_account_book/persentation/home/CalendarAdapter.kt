@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.CalendarItemDayBinding
 
 class CalendarAdapter(private val context: Context, private val days: List<Day>) : BaseAdapter() {
@@ -22,14 +23,21 @@ class CalendarAdapter(private val context: Context, private val days: List<Day>)
         val day = getItem(position)
         binding.tvDay.text = if (day.date == 0) "" else day.date.toString()
 
-        if (day.hasEvent) {
-            binding.ivCircle.visibility = View.VISIBLE
-        } else {
-            binding.ivCircle.visibility = View.GONE
+
+        binding.ivCircle.visibility = View.VISIBLE
+        when (day.eventType) {
+            EventType.INCOME -> binding.ivCircle.setBackgroundResource(R.drawable.circle_stroke_income)
+            EventType.EXPEND -> binding.ivCircle.setBackgroundResource(R.drawable.circle_stroke_expend)
+            EventType.MIX -> binding.ivCircle.setBackgroundResource(R.drawable.circle_stroke_mix)
+            else -> binding.ivCircle.visibility = View.GONE
         }
 
         return binding.root
     }
 }
 
-data class Day(val date: Int, val hasEvent: Boolean)
+enum class EventType {
+    NONE, INCOME, EXPEND, MIX
+}
+
+data class Day(val date: Int, val eventType: EventType)

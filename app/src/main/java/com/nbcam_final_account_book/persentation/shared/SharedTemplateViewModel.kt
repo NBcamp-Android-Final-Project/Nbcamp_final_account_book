@@ -2,10 +2,12 @@ package com.nbcam_final_account_book.persentation.shared
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -27,6 +29,9 @@ class SharedTemplateViewModel(
 
 	private val _searchResultList: MutableLiveData<List<UserDataEntity>> = MutableLiveData()
 	val searchResultList get() = _searchResultList
+
+	private val _sharedTemplateInfo = MutableLiveData<List<TemplateEntity>>()
+	val sharedTemplateInfo: LiveData<List<TemplateEntity>> get() = _sharedTemplateInfo
 
 	fun setFilter(keyword: String) {
 		viewModelScope.launch {
@@ -78,11 +83,11 @@ class SharedTemplateViewModel(
 		return isSharedEnabled
 	}
 
-	//
-	private fun getSharedTemplateInfoFromDB(uid: String) {
+	// Firebase RTDB 에서 공유된 가계부 Info 획득
+	private fun getSharedTemplateInfoFromDB(uid: String): MutableList<TemplateEntity> {
 		val database = Firebase.database.reference
 		val path = "$uid/$TEMPLATE_LIST/$SHARED_PATH"
-		var sharedTemplateInfo = mutableListOf<TemplateEntity>()
+		val sharedTemplateInfo = mutableListOf<TemplateEntity>()
 
 		val sharedListener = object : ValueEventListener {
 			override fun onDataChange(snapshot: DataSnapshot) {
@@ -98,6 +103,16 @@ class SharedTemplateViewModel(
 			}
 		}
 		database.child(path).addValueEventListener(sharedListener)
+
+		return sharedTemplateInfo
+	}
+
+	// SHARED 에 데이터가 존재할 경우 SHARED/TemplateEntity 를 획득
+	fun getSharedTemplateInfo() {
+		val uid = Firebase.auth.currentUser.toString()
+		if (isSharedEnabled(uid)) {
+			_sharedTemplateInfo.value = getSharedTemplateInfoFromDB(uid)
+		}
 	}
 }
 

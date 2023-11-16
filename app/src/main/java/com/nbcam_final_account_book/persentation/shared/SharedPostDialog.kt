@@ -10,9 +10,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
+import com.nbcam_final_account_book.data.model.DummyData.currentTemplate
+import com.nbcam_final_account_book.data.model.local.TemplateEntity
+import com.nbcam_final_account_book.data.model.local.UserDataEntity
 import com.nbcam_final_account_book.databinding.DialogSharedPostBinding
 
 class SharedPostDialog : DialogFragment() {
+    interface SharedPostDialogListener {
+        fun onConfirmSharedTemplate(template: TemplateEntity)
+    }
+
+    var listener: SharedPostDialogListener? = null
+
+    var selectedUser: UserDataEntity? = null
+    var currentTemplate: TemplateEntity? = null
+
     private var _binding: DialogSharedPostBinding? = null
     private val binding get() = _binding!!
 
@@ -25,6 +37,12 @@ class SharedPostDialog : DialogFragment() {
         binding.tvDialogCancel.setOnClickListener {
             dismiss()
         }
+
+        binding.tvDialogCheck.setOnClickListener {
+            listener?.onConfirmSharedTemplate(currentTemplate!!)
+            dismiss()
+        }
+
         return binding.root
     }
 

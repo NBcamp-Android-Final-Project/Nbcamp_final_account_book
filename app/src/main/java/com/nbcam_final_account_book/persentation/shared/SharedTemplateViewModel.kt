@@ -1,6 +1,5 @@
 package com.nbcam_final_account_book.persentation.shared
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -32,6 +31,10 @@ class SharedTemplateViewModel(
 
 	private val _sharedTemplateInfo = MutableLiveData<List<TemplateEntity>>()
 	val sharedTemplateInfo: LiveData<List<TemplateEntity>> get() = _sharedTemplateInfo
+
+	init {
+		getSharedTemplateInfo()
+	}
 
 	fun setFilter(keyword: String) {
 		viewModelScope.launch {
@@ -108,7 +111,7 @@ class SharedTemplateViewModel(
 	}
 
 	// SHARED 에 데이터가 존재할 경우 SHARED/TemplateEntity 를 획득
-	fun getSharedTemplateInfo() {
+	private fun getSharedTemplateInfo() {
 		val uid = Firebase.auth.currentUser.toString()
 		if (isSharedEnabled(uid)) {
 			_sharedTemplateInfo.value = getSharedTemplateInfoFromDB(uid)
@@ -116,9 +119,7 @@ class SharedTemplateViewModel(
 	}
 }
 
-class SharedTemplateViewModelFactory(
-	private val context: Context
-) : ViewModelProvider.Factory {
+class SharedTemplateViewModelFactory : ViewModelProvider.Factory {
 	override fun <T : ViewModel> create(modelClass: Class<T>): T {
 		if (modelClass.isAssignableFrom(SharedTemplateViewModel::class.java)) {
 			return SharedTemplateViewModel(

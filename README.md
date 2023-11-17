@@ -45,7 +45,7 @@
   </tbody>
 </table>
 
-## 💻 시스템구조
+## 💻 System Structure
 ![시스템-구조](https://github.com/NBcamp-Android-Final-Project/Nbcamp_final_account_book/assets/124041716/cbe31b77-d2df-43b0-b874-a96f21229932)
 
 

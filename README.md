@@ -2,10 +2,10 @@
 사용자의 소비습관을 개선하여 지갑을 두툼하게 만들자는 의미를 담은 **가계부** 어플리케이션
 
 ## 📑 Description
-![1_3_Home](https://github.com/NBcamp-Android-Final-Project/Nbcamp_final_account_book/assets/124041716/2b739f8a-6182-4887-947f-8a0795364a00)
-![1_4_Entry_(1)](https://github.com/NBcamp-Android-Final-Project/Nbcamp_final_account_book/assets/124041716/4e1f0ec1-9a2d-44bf-af8a-623b2335fbd5)
-![1_5_Chart](https://github.com/NBcamp-Android-Final-Project/Nbcamp_final_account_book/assets/124041716/3c04694a-d798-4805-86a4-c99fd1c65e0e)
-![1_6_MyPage](https://github.com/NBcamp-Android-Final-Project/Nbcamp_final_account_book/assets/124041716/852474ea-41f6-404e-818a-c86a44bd3ecb)
+![1_3_Home](https://github.com/NBcamp-Android-Final-Project/Nbcamp_final_account_book/assets/124041716/00714255-57d1-4dc9-ab1f-ea29851bb6ff)
+![1_4_Entry_(1)](https://github.com/NBcamp-Android-Final-Project/Nbcamp_final_account_book/assets/124041716/d377b0c6-46de-4326-ac60-cd739d1fc869)
+![1_5_Chart](https://github.com/NBcamp-Android-Final-Project/Nbcamp_final_account_book/assets/124041716/c43acd01-56c8-44cb-94e1-d5cd06d30959)
+![1_6_MyPage](https://github.com/NBcamp-Android-Final-Project/Nbcamp_final_account_book/assets/124041716/bc227927-ed4e-4a09-ba6b-7c0c531a9a20)
 
 
 

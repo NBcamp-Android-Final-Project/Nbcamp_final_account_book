@@ -9,6 +9,7 @@
     tools:context=".persentation.entry.EntryFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/entry_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

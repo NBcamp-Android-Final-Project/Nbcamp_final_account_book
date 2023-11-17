@@ -310,7 +310,7 @@ val colorMap = mapOf(
 )
 
 fun getCategoryColor(tag: String): Color {
-    return colorMap[tag] ?: Color.DarkGray // 찾는 태그가 없으면 기본 색상을 회색으로 반환
+    return colorMap[tag] ?: Color(0xFF9CC1E7) // 찾는 태그가 없으면 기본 색상을 회색으로 반환
 }
 
 class ChartViewModelFactory(

@@ -25,6 +25,14 @@ class EntryViewModel(private val roomRepo: RoomRepository) : ViewModel() {
 	private val _liveType: MutableLiveData<String?> = MutableLiveData()
 	val liveType: LiveData<String?> get() = _liveType
 
+	private val _currentEntry = MutableLiveData<EntryEntity>()
+	val currentEntry: LiveData<EntryEntity> get() = _currentEntry
+
+	// EntryEntity 업데이트
+	fun updateEntryEntity(entry: EntryEntity) {
+		_currentEntry.value = entry
+	}
+
 	//CurrentTemplateData
 	private val _entryLiveCurrentTemplate: MutableLiveData<TemplateEntity?> = MutableLiveData()
 	val entryLiveCurrentTemplate: LiveData<TemplateEntity?> get() = _entryLiveCurrentTemplate
@@ -73,6 +81,12 @@ class EntryViewModel(private val roomRepo: RoomRepository) : ViewModel() {
 			roomRepo.insertEntry(item)
 		}
 
+	}
+
+	fun updateEntity(item: EntryEntity) {
+		viewModelScope.launch {
+			roomRepo.updateEntry(item)
+		}
 	}
 
 	fun setCategory(text: String) {

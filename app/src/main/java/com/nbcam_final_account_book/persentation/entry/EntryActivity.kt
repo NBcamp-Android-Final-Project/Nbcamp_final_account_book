@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.nbcam_final_account_book.R
+import com.nbcam_final_account_book.data.model.local.EntryEntity
 import com.nbcam_final_account_book.data.model.local.TemplateEntity
 import com.nbcam_final_account_book.databinding.ActivityEntryBinding
 import com.nbcam_final_account_book.persentation.home.HomeFragment
@@ -47,7 +48,25 @@ class EntryActivity : AppCompatActivity() {
 
 		initViewModel()
 		initView()
+
+		val entryEntity = intent.getSerializableExtra(EXTRA_ENTRY) as? EntryEntity
+		entryEntity?.let {
+			startEntryFragment(it)
+		}
 	}
+
+	private fun startEntryFragment(entry: EntryEntity) {
+		val bundle = Bundle().apply {
+			putSerializable("entry", entry)
+		}
+		val fragment = EntryFragment().apply {
+			arguments = bundle
+		}
+		supportFragmentManager.beginTransaction()
+			.replace(R.id.fragmentContainerView, fragment)
+			.commit()
+	}
+
 
 	private fun initViewModel() {
 		viewModel =
@@ -55,8 +74,6 @@ class EntryActivity : AppCompatActivity() {
 				this@EntryActivity,
 				EntryViewModelFactory(this@EntryActivity)
 			)[EntryViewModel::class.java]
-
-
 	}
 
 	private fun initView() {

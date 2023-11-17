@@ -26,6 +26,9 @@ class EntryFragment : Fragment() {
 	private val binding get() = _binding!!
 	private val viewModel: EntryViewModel by activityViewModels()
 
+	// 기존 엔트리의 ID 저장 변수
+	private var existingEntryId: Long = 0
+
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -41,6 +44,21 @@ class EntryFragment : Fragment() {
 		initView()
 		editTextFormat()
 
+		// EntryEntity 객체를 받아서 뷰 초기화
+		arguments?.getSerializable("entry")?.let {
+			if (it is EntryEntity) {
+				existingEntryId = it.id // 기존 엔트리의 ID 저장
+				initViewWithEntryData(it)
+			}
+		}
+	}
+
+	private fun initViewWithEntryData(entry: EntryEntity) {
+		binding.edtDate.setText(entry.dateTime)
+		binding.edtAmount.setText(entry.value)
+		binding.edtTag.setText(entry.tag)
+		binding.edtTitle.setText(entry.title)
+		binding.edtDescription.setText(entry.description)
 	}
 
 	private fun initView() = with(binding) {
@@ -76,29 +94,43 @@ class EntryFragment : Fragment() {
 			if (date.isNotEmpty() && amount.isNotEmpty() && tag.isNotEmpty() && title.isNotEmpty() && currentTemplate != null) {
 				if (finance == 0) {
 					val entryEntity = EntryEntity(
-						id = 0,
-						key = currentTemplate.id,
-						type = INPUT_TYPE_PAY,
+						id = existingEntryId, // 기존 엔트리인 경우 기존 id, 새 엔트리인 경우 0
+						key = currentTemplate?.id ?: "",
+						type = if (finance == 0) INPUT_TYPE_PAY else INPUT_TYPE_INCOME,
 						dateTime = date,
 						value = amount,
 						tag = tag,
 						title = title,
 						description = description
 					)
-					insertEntry(entryEntity)
+
+					// 기존 엔트리 수정 또는 새 엔트리 추가
+					if (existingEntryId != 0L) {
+						updateEntry(entryEntity) // 기존 엔트리 수정
+					} else {
+						insertEntry(entryEntity) // 새 엔트리 추가
+					}
+
 					requireActivity().finish()
 				} else {
 					val entryEntity = EntryEntity(
-						id = 0,
-						key = currentTemplate.id,
-						type = INPUT_TYPE_INCOME,
+						id = existingEntryId, // 기존 엔트리인 경우 기존 id, 새 엔트리인 경우 0
+						key = currentTemplate?.id ?: "",
+						type = if (finance == 0) INPUT_TYPE_PAY else INPUT_TYPE_INCOME,
 						dateTime = date,
 						value = amount,
 						tag = tag,
 						title = title,
 						description = description
 					)
-					insertEntry(entryEntity)
+
+					// 기존 엔트리 수정 또는 새 엔트리 추가
+					if (existingEntryId != 0L) {
+						updateEntry(entryEntity) // 기존 엔트리 수정
+					} else {
+						insertEntry(entryEntity) // 새 엔트리 추가
+					}
+
 					requireActivity().finish()
 				}
 			}
@@ -122,6 +154,10 @@ class EntryFragment : Fragment() {
 
 	private fun insertEntry(item: EntryEntity) {
 		viewModel.insertEntity(item)
+	}
+
+	fun updateEntry(item: EntryEntity) {
+		viewModel.updateEntity(item)
 	}
 
 	private fun getData(): Pair<String?, String?> {

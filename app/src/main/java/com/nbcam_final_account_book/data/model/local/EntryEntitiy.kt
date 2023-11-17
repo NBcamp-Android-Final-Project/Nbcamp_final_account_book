@@ -3,6 +3,7 @@ package com.nbcam_final_account_book.data.model.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "entry_table")
 data class EntryEntity(
@@ -26,4 +27,4 @@ data class EntryEntity(
     @ColumnInfo(name = "entry_description")
     val description: String = ""// 수입/지출 상세 내용 (ex. 홍대역에서 합정역까지 택시로 이동
 
-)
+) : Serializable

@@ -45,6 +45,10 @@
   </tbody>
 </table>
 
+## 💻 시스템구조
+![시스템-구조](https://github.com/NBcamp-Android-Final-Project/Nbcamp_final_account_book/assets/124041716/cbe31b77-d2df-43b0-b874-a96f21229932)
+
+
 ## 💻 Tech
 <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=flat&logo=kotlin&logoColor=white"> <img src="https://img.shields.io/badge/Android-3DDC84?style=flat&logo=android&logoColor=white">
 <img src="https://img.shields.io/badge/firebase-FFCA28?style=flat&logo=firebase&logoColor=white"><br>

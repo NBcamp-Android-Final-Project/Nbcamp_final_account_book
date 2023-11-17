@@ -65,19 +65,20 @@ class SharedPostDialog : DialogFragment() {
         // 다이얼로그 크기 조정
         val width = (resources.displayMetrics.widthPixels * 0.85).toInt()
         val height = ViewGroup.LayoutParams.WRAP_CONTENT
-        dialog?.window?.apply {
-            setLayout(width, height)
-            // 다이얼로그 위치 조정
-            val attributes = attributes
-            attributes.gravity = Gravity.TOP
-
-            // dp를 px로 변환
-            val downDialogPx = (100 * resources.displayMetrics.density).toInt()
-            // y 값을 설정하여 다이얼로그를 아래로 이동
-            attributes.y = downDialogPx
-
-            this.attributes = attributes
-        }
+        dialog?.window?.setLayout(width, height)
+//        dialog?.window?.apply {
+//            setLayout(width, height)
+//            // 다이얼로그 위치 조정
+//            val attributes = attributes
+//            attributes.gravity = Gravity.TOP
+//
+//            // dp를 px로 변환
+//            val downDialogPx = (100 * resources.displayMetrics.density).toInt()
+//            // y 값을 설정하여 다이얼로그를 아래로 이동
+//            attributes.y = downDialogPx
+//
+//            this.attributes = attributes
+//        }
     }
 
     override fun onDestroyView() {

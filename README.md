@@ -55,6 +55,9 @@
 
 `Room`, `Gson`, `ViewModel`, `Coil`, `Coroutine`, `LiveData`, `Navigation`,`Compose`, `CustomView`
 
+## 🚀 플레이스토어 배포(2023. 11. 13)
+<!-- ![unnamed](https://github.com/NBcamp-Android-Final-Project/Nbcamp_final_account_book/assets/124041716/23926794-adb1-4632-b800-f31a7d4d45c3) -->
+<a href='https://play.google.com/store/apps/details?id=com.nbcam_final_account_book&hl=ko-KR'><img alt='두툼' src='https://github.com/NBcamp-Android-Final-Project/Nbcamp_final_account_book/assets/124041716/23926794-adb1-4632-b800-f31a7d4d45c3' width='100'/></a>
 
 
 

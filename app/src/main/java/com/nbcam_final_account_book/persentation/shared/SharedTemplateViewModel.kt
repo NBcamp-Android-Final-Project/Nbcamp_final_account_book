@@ -112,8 +112,8 @@ class SharedTemplateViewModel(
 
 	// SHARED 에 데이터가 존재할 경우 SHARED/TemplateEntity 를 획득
 	private fun getSharedTemplateInfo() {
-		val uid = Firebase.auth.currentUser.toString()
-		if (isSharedEnabled(uid)) {
+		val uid = Firebase.auth.currentUser?.uid
+		if (uid != null && isSharedEnabled(uid)) {
 			_sharedTemplateInfo.value = getSharedTemplateInfoFromDB(uid)
 		}
 	}

@@ -451,7 +451,8 @@ class MyPageFragment : Fragment() {
 
     // Change the password
     private fun showChangePasswordDialog() {
-        MyPageChangePasswordDialog(requireContext())
+        val dialog = MyPageChangePasswordDialog()
+        dialog.show(parentFragmentManager, "MyPageChangePasswordDialog")
     }
 
     // Logout

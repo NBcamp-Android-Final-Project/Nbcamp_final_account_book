@@ -30,9 +30,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="금액"
-        android:layout_marginStart="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintEnd_toStartOf="@id/iv_edt"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_edt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_edit"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/iv_delete"
+        app:tint="@color/text_primary" />
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_delete"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/text_primary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

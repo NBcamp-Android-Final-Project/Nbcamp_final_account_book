@@ -90,6 +90,19 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="contentDescription" />
 
+                    <ProgressBar
+                        android:id="@+id/progressIndicator"
+                        style="@style/CustomProgressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guideline2"
                         android:layout_width="1dp"

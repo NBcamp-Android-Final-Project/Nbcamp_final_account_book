@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -128,7 +127,6 @@ class MyPageFragment : Fragment() {
 
         getUserName()
         getUserEmail()
-//        getUserPhotoUrl()
 
         loadProfileImage()
 
@@ -207,11 +205,10 @@ class MyPageFragment : Fragment() {
             if (user != null) {
                 for (userInfo in user.providerData) {
                     if (userInfo.providerId == "google.com") {
-                        Toast.makeText(
+                        showToast(
                             requireContext(),
-                            "SNS 로그인 사용자는 비밀번호를 변경할 수 없습니다.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                            "SNS 로그인 사용자는 비밀번호를 변경할 수 없습니다."
+                        )
                         return@setOnClickListener
                     }
                 }
@@ -239,17 +236,20 @@ class MyPageFragment : Fragment() {
                 }
             }
 
-//            getUserPhotoUrl()
-            //loadProfileImage()
             photoUrl.observe(viewLifecycleOwner) { photoUrl ->
+                showProgressBar()
+
                 if (photoUrl != null) {
                     mypageIvProfile.load(photoUrl) {
                         crossfade(true)
                         transformations(CircleCropTransformation())
                         listener { _, _ ->
                             mypageIvProfile.setPadding(0, 0, 0, 0)
+                            hideProgressBar()
                         }
                     }
+                } else {
+                    hideProgressBar()
                 }
             }
 
@@ -261,15 +261,22 @@ class MyPageFragment : Fragment() {
     }
 
     private fun loadProfileImage() = with(binding) {
+        showProgressBar()
+
         viewModel.downloadProfileImage(
             onSuccess = { uri ->
                 mypageIvProfile.load(uri) {
                     crossfade(true)
                     transformations(CircleCropTransformation())
+                    listener { _, _ ->
+                        mypageIvProfile.setPadding(0, 0, 0, 0)
+                        hideProgressBar()
+                    }
                 }
             },
             onFailure = { exception ->
-                Log.e("MyPageFragment", "Profile image download failed: $exception")
+                Log.e("MyPageFragment", "프로필 이미지 다운로드 실패: $exception")
+                hideProgressBar()
             }
         )
     }
@@ -504,5 +511,13 @@ class MyPageFragment : Fragment() {
     // LockScreen - Remove the pin number
     private fun removeSharedPrefPinNum() = with(sharedViewModel) {
         removeSharedPrefPinNumber()
+    }
+
+    private fun showProgressBar() {
+        binding.progressIndicator.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        binding.progressIndicator.visibility = View.GONE
     }
 }

@@ -12,8 +12,15 @@ import java.util.Locale
 class EntryAdapter(var entries: List<EntryEntity>) : RecyclerView.Adapter<EntryAdapter.ViewHolder>() {
 
     var onItemClickListener: ((EntryEntity) -> Unit)? = null
+    var onEditClickListener: ((EntryEntity) -> Unit)? = null
 
-    inner class ViewHolder(val binding: HomeBottomSheetItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: HomeBottomSheetItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.ivEdt.setOnClickListener {
+                onEditClickListener?.invoke(entries[adapterPosition])
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = HomeBottomSheetItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)

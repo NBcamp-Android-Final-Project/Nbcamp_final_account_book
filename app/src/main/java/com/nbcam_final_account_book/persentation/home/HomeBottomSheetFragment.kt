@@ -47,7 +47,7 @@ class HomeBottomSheetFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = EntryAdapter(entries)
-        adapter.onItemClickListener = { entryEntity ->
+        adapter.onEditClickListener  = { entryEntity ->
             // 바텀시트 닫기
             dismiss()
             val intent = Intent(context, EntryActivity::class.java).apply {

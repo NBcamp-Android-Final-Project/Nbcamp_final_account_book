@@ -26,13 +26,13 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/toolbar_notifications"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:src="@drawable/ic_notifications"
-            app:tint="@color/text_primary" />
+            app:tint="@color/text_primary" />-->
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
@@ -182,7 +182,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/mypage_et_name" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <!--<androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/mypage_container_account_book"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -261,7 +261,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline_v2"
                         app:layout_constraintTop_toBottomOf="@+id/mypage_tv_shared_users" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>-->
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -276,7 +276,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mypage_container_profile">
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/mypage_tv_share"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -298,7 +298,7 @@
                     android:background="@color/card_sub"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mypage_tv_share" />
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_tv_share" />-->
 
                 <TextView
                     android:id="@+id/mypage_tv_book"
@@ -314,7 +314,7 @@
                     app:drawableTint="@color/text_primary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mypage_divider2" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <View
                     android:id="@+id/mypage_divider3"
@@ -395,7 +395,7 @@
                         android:layout_height="wrap_content"
                         android:clickable="true"
                         android:drawablePadding="10dp"
-                        android:text="백업"
+                        android:text="데이터 저장하기"
                         android:textSize="15sp"
                         app:drawableLeftCompat="@drawable/ic_backup"
                         app:drawableTint="@color/text_primary"
@@ -442,7 +442,7 @@
                         android:layout_height="wrap_content"
                         android:clickable="true"
                         android:drawablePadding="10dp"
-                        android:text="동기화"
+                        android:text="데이터 가져오기"
                         android:textSize="15sp"
                         app:drawableLeftCompat="@drawable/ic_sync"
                         app:drawableTint="@color/text_primary"

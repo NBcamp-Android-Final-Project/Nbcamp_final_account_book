@@ -48,7 +48,7 @@ interface RoomRepository {
     suspend fun insertEntry(item: EntryEntity) // entry를 하나 삽입합니다.
     suspend fun insertEntryList(item: List<EntryEntity>) // entrty를 리스트로
     suspend fun deleteAllEntry() // 모든 엔트리 테이블 자체를 삭제합니다.
-    suspend fun deleteEntry(id: Int) /// id를 추적헤 entry를 삭제합니다.
+    suspend fun deleteEntry(id: Long) /// id를 추적헤 entry를 삭제합니다.
     suspend fun deleteEntryByKey(key: String?) // 템플릿 삭제 시 모두 삭제해야 하는 데이터
 
     suspend fun updateEntry(item: EntryEntity)

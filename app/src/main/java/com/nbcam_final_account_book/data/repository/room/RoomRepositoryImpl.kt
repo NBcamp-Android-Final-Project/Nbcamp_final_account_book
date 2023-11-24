@@ -179,7 +179,7 @@ class RoomRepositoryImpl(
         dao.deleteAllEntry()
     }
 
-    override suspend fun deleteEntry(id: Int) {
+    override suspend fun deleteEntry(id: Long) {
         val dao = database?.entryDao() ?: throw IllegalStateException("deleteEntry fail")
         dao.deleteEntryById(id)
     }

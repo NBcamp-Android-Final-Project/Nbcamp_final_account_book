@@ -1,41 +1,100 @@
 package com.nbcam_final_account_book.persentation.mypage.mypagedialog
 
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import androidx.appcompat.app.AlertDialog
-import com.google.android.material.textfield.TextInputEditText
+import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputLayout
 import com.nbcam_final_account_book.R
+import com.nbcam_final_account_book.databinding.MyPageEditNameDialogBinding
+import com.nbcam_final_account_book.util.ContextUtil.showToast
 
-class MyPageEditNameDialog(context: Context, currentName: String, private val onNameUpdated: (String) -> Unit) {
+class MyPageEditNameDialog(
+    private val currentName: String,
+    private val onNameUpdated: (String) -> Unit
+) : DialogFragment() {
 
-    private val alertDialog: AlertDialog
+    private var _binding: MyPageEditNameDialogBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var mContext: Context
+    private lateinit var alertDialog: AlertDialog
 
-    init {
-        val dialogView = View.inflate(context, R.layout.my_page_edit_name_dialog, null)
-        val editNameInputLayout = dialogView.findViewById<TextInputLayout>(R.id.edit_name_input_layout)
-        val editNameEditText = editNameInputLayout.findViewById<TextInputEditText>(R.id.edit_name_ev)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = MyPageEditNameDialogBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        _binding = MyPageEditNameDialogBinding.inflate(layoutInflater, null, false)
+        val dialog = Dialog(requireContext())
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(binding.root)
+        return dialog
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val width = (resources.displayMetrics.widthPixels * 0.85).toInt()
+        val height = ViewGroup.LayoutParams.WRAP_CONTENT
+        dialog?.window?.setLayout(width, height)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun initView() = with(binding) {
+        editNameEv.setText(currentName)
         val textWatcher = nameTextWatcher(editNameInputLayout)
 
-        editNameEditText.setText(currentName)
-
-        alertDialog = AlertDialog.Builder(context, R.style.EditNameAlertDialogStyle)
+        alertDialog = AlertDialog.Builder(mContext, R.style.EditNameAlertDialogStyle)
             .setTitle("이름 수정")
-            .setView(dialogView)
-            .setPositiveButton("저장") { _, _ ->
-                val newName = editNameEditText.text.toString()
-                onNameUpdated(newName)
+            .setView(root)
+            .setNegativeButton("취소", null)
+            .setPositiveButton("저장", null)
+            .create().apply {
+                setCancelable(false)
             }
-            .setNegativeButton("취소") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
 
-        editNameEditText.addTextChangedListener(textWatcher)
-        alertDialog.show()
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+        tvDialogCancel.setOnClickListener {
+            dismiss()
+        }
+
+        tvDialogSave.isEnabled = false
+        tvDialogSave.setOnClickListener {
+            val newName = editNameEv.text.toString()
+            onNameUpdated(newName)
+            showToast(mContext, "이름을 수정하였습니다.")
+            dismiss()
+        }
+
+        editNameEv.addTextChangedListener(textWatcher)
     }
 
     private fun nameTextWatcher(editNameInputLayout: TextInputLayout) =
@@ -47,13 +106,8 @@ class MyPageEditNameDialog(context: Context, currentName: String, private val on
                 val newName = s.toString()
                 val isValid = isNameValid(newName)
 
-                if (isValid) {
-                    editNameInputLayout.error = null
-                } else {
-                    editNameInputLayout.error = "1~10자 이내로 띄어쓰기 없이 입력하세요."
-                }
-
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = isValid
+                editNameInputLayout.error = if (isValid) "" else "1~10자 이내로 띄어쓰기 없이 입력하세요."
+                binding.tvDialogSave.isEnabled = isValid
             }
         }
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_round"
+    android:padding="@dimen/padding"
+    tools:context=".persentation.mypage.mypagedialog.MyPageWithdrawDialog">
+
+    <TextView
+        android:id="@+id/tv_logout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="로그아웃 하시겠습니까?"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="20dp"
+        android:text="취소"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_logout" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/text_primary"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_cancel"
+        app:layout_constraintEnd_toStartOf="@+id/tv_okay"
+        app:layout_constraintStart_toEndOf="@+id/tv_cancel"
+        app:layout_constraintTop_toTopOf="@+id/tv_cancel" />
+
+    <TextView
+        android:id="@+id/tv_okay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="확인"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/btn_text_color"
+        app:layout_constraintBottom_toBottomOf="@+id/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider"
+        app:layout_constraintTop_toTopOf="@+id/divider" />
+</androidx.constraintlayout.widget.ConstraintLayout>

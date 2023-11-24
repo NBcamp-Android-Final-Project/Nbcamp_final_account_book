@@ -38,7 +38,7 @@ interface EntryDao {
     //DELETE
 
     @Query("DELETE FROM entry_table WHERE entry_id = :id")
-    suspend fun deleteEntryById(id: Int)
+    suspend fun deleteEntryById(id: Long)
 
     @Query("DELETE FROM entry_table WHERE entry_key = :key")
     suspend fun deleteEntryByKey(key: String) // 템플릿 삭제 시 모두 삭제해야 하는 데이터

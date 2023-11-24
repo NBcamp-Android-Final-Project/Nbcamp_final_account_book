@@ -446,6 +446,9 @@ class MyPageFragment : Fragment() {
                     auth.signOut()
 //            removeSharedPrefPinNum()
                     cleanRoom()
+
+                    viewModel.clearSharedPreferences()
+
                     val intent = Intent(requireContext(), FirstActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
@@ -460,6 +463,8 @@ class MyPageFragment : Fragment() {
         val dialog = MyPageWithdrawDialog {
             val auth = FirebaseAuth.getInstance()
             withdrawAccount(auth)
+
+            viewModel.clearSharedPreferences()
         }
         dialog.show(parentFragmentManager, "MyPageWithdrawDialog")
     }

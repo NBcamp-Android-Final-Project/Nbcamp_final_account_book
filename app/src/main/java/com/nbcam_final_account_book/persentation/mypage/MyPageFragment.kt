@@ -433,20 +433,25 @@ class MyPageFragment : Fragment() {
         sharedViewModel.synchronizationDataWithBtn()
     }
 
-
     // Edit user name
     private fun showEditNameDialog() = with(binding) {
         val currentName = mypageEtName.text.toString()
-        MyPageEditNameDialog(requireContext(), currentName) { newName ->
-            mypageEtName.text = newName
-            updateProfileName(newName)
-
-            key = firebase.auth.currentUser?.uid ?: ""
-            name = newName
-            id = firebase.auth.currentUser?.email ?: ""
-            img = (firebase.auth.currentUser?.photoUrl ?: "").toString()
-            viewModel.storeUser(key = key, name = name, id = id, img = img)
+        val dialog = MyPageEditNameDialog(currentName) { newName ->
+            updateName(newName)
         }
+        dialog.show(parentFragmentManager, "MyPageEditNameDialog")
+    }
+
+    private fun updateName(newName: String) = with(binding) {
+        val currentUser = firebase.auth.currentUser
+        mypageEtName.text = newName
+        updateProfileName(newName)
+
+        key = currentUser?.uid ?: ""
+        name = newName
+        id = currentUser?.email ?: ""
+        img = (currentUser?.photoUrl ?: "").toString()
+        viewModel.storeUser(key = key, name = name, id = id, img = img)
     }
 
     // Change the password

@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 class MyPageViewModel(
     private val fireRepo: FireBaseRepository,
     private val roomRepo: RoomRepository,
-    private val sharedProvider: SharedProvider
+    sharedProvider: SharedProvider
 ) : ViewModel() {
 
     companion object {
@@ -88,11 +88,6 @@ class MyPageViewModel(
         _email.value = email
     }
 
-    fun getPhotoUrl() {
-        val photoUrl = user?.photoUrl
-        _photoUrl.value = photoUrl
-    }
-
     fun updateUserName(newName: String) {
         val profileUpdates = UserProfileChangeRequest.Builder()
             .setDisplayName(newName)
@@ -101,9 +96,31 @@ class MyPageViewModel(
         user?.updateProfile(profileUpdates)?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(MY_PAGE_VIEW_MODEL, "User name updated.")
+                updateUserNameInFirestore(newName)
             } else {
                 Log.w(MY_PAGE_VIEW_MODEL, "User name update failed.", task.exception)
             }
+        }
+    }
+
+    private fun updateUserNameInFirestore(newName: String) {
+        val user = FirebaseAuth.getInstance().currentUser
+        val email = user?.email
+
+        if (email != null) {
+            val db = FirebaseFirestore.getInstance()
+            val userRef = db.collection("Users").document(email)
+            val updates = hashMapOf<String, Any>("name" to newName)
+
+            userRef.update(updates)
+                .addOnSuccessListener {
+                    Log.d("Firestore", "User name updated successfully in Firestore.")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Firestore", "Error updating user name in Firestore: $e")
+                }
+        } else {
+            Log.e("Firestore", "User email is null.")
         }
     }
 
@@ -113,7 +130,7 @@ class MyPageViewModel(
             val userDao = userUid?.let { roomRepo.getUserDataByKey(it) }
             if (userDao != null) {
                 val photoUrl = userDao.img
-                if (!photoUrl.isNullOrEmpty()) {
+                if (photoUrl.isNotEmpty()) {
                     _photoUrl.value = Uri.parse(photoUrl)
                     onSuccess(Uri.parse(photoUrl))
                 } else {

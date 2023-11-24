@@ -1,6 +1,8 @@
 package com.nbcam_final_account_book.persentation.template.dialog.template
 
 import android.content.Intent
+import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
@@ -8,8 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import android.graphics.Canvas
-import android.graphics.Color
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -146,9 +146,6 @@ class TemplateDialogFragment() : DialogFragment() {
 	private fun btnVisibility(list: List<TemplateEntity>) {
 		binding.templateBtnAdd.visibility =
 			if (viewModel.getTemplateSizeInTemplateDialog(list)) View.VISIBLE else View.INVISIBLE
-
-		binding.templateIvPaid.visibility =
-			if (viewModel.getTemplateSizeInTemplateDialog(list)) View.GONE else View.VISIBLE
 	}
 
 	private fun canDelete(list: List<TemplateEntity>): Boolean {
@@ -162,7 +159,7 @@ class TemplateDialogFragment() : DialogFragment() {
 		builder.setMessage("${item.templateTitle}으로 이동하시겠습니까??")
 		builder.setPositiveButton("확인") { dialog, _ ->
 			sharedViewModel.updateCurrentTemplate(item)
-			Toast.makeText(requireContext(), "${item.templateTitle}", Toast.LENGTH_SHORT).show()
+			Toast.makeText(requireContext(), item.templateTitle, Toast.LENGTH_SHORT).show()
 			dialog.dismiss()
 			dismiss()
 		}

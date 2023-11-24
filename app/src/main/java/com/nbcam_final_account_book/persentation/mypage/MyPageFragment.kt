@@ -23,7 +23,6 @@ import coil.transform.CircleCropTransformation
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MyPageFragmentBinding
@@ -36,6 +35,7 @@ import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageEditN
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageLogoutDialog
 import com.nbcam_final_account_book.persentation.mypage.mypagedialog.MyPageWithdrawDialog
 import com.nbcam_final_account_book.persentation.tag.TagActivity
+import com.nbcam_final_account_book.util.ContextUtil.showToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -319,29 +319,6 @@ class MyPageFragment : Fragment() {
             getPhotoUrl()
         }*/
 
-    // Unregister from dutoom
-    private fun withdrawAccount(auth: FirebaseAuth) {
-        val user = Firebase.auth.currentUser
-        val name = user?.displayName.toString()
-        val email = user?.email.toString()
-        val uid = user?.uid.toString()
-
-        val db = Firebase.database.reference
-        db.child(uid).removeValue()
-
-        viewModel.deleteAllData(user = name, email = email, key = uid)
-
-        // Firebase Auth 에서 사용자 삭제
-        Log.d("result", "${auth.currentUser}")
-        auth.currentUser?.delete()
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(requireActivity(), "정상적으로 회원 탈퇴 되었습니다", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-    }
-
     private fun updateProfileName(newName: String) = with(viewModel) {
         updateUserName(newName)
     }
@@ -479,15 +456,43 @@ class MyPageFragment : Fragment() {
 
     // Withdraw
     private fun showWithdrawDialog() {
-        MyPageWithdrawDialog(requireContext()) {
+        val dialog = MyPageWithdrawDialog {
             val auth = FirebaseAuth.getInstance()
             withdrawAccount(auth)
-            auth.signOut()
-//            removeSharedPrefPinNum()
-            cleanRoom()
-            val intent = Intent(requireContext(), FirstActivity::class.java)
-            startActivity(intent)
         }
+        dialog.show(parentFragmentManager, "MyPageWithdrawDialog")
+    }
+
+
+    // Unregister from dutoom
+    private fun withdrawAccount(auth: FirebaseAuth) {
+        val user = Firebase.auth.currentUser
+        val name = user?.displayName.toString()
+        val email = user?.email.toString()
+        val uid = user?.uid.toString()
+
+        // Realtiem DB에서 사용자 데이터 삭제
+        viewModel.deleteUserInRealtimeDB(uid)
+
+        // Firestore에서 사용자 데이터 삭제
+        viewModel.deleteAllData(user = name, email = email, key = uid)
+
+        // Firebase Auth에서 사용자 삭제
+        Log.d("result", "${auth.currentUser}")
+        auth.currentUser?.delete()
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    showToast(requireActivity(), "정상적으로 회원 탈퇴 되었습니다.")
+                    // 로그아웃 및 화면 전환
+                    auth.signOut()
+                    cleanRoom()
+                    val intent = Intent(requireContext(), FirstActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    showToast(requireActivity(), "회원 탈퇴에 실패했습니다.")
+                    Log.e("result", "Error: ${task.exception}")
+                }
+            }
     }
 
     // LockScreen - Remove the pin number

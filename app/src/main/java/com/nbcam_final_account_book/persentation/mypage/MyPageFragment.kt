@@ -439,7 +439,7 @@ class MyPageFragment : Fragment() {
 
     // Logout
     private fun showLogoutDialog() {
-        MyPageLogoutDialog(requireContext()) {
+        val dialog = MyPageLogoutDialog {
             CoroutineScope(Dispatchers.Main).launch {
                 if (backupDataByLogOut()) {
                     val auth = FirebaseAuth.getInstance()
@@ -452,6 +452,7 @@ class MyPageFragment : Fragment() {
                 }
             }
         }
+        dialog.show(parentFragmentManager, "MyPageLogoutDialog")
     }
 
     // Withdraw

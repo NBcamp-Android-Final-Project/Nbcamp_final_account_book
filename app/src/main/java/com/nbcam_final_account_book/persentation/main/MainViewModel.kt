@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.nbcam_final_account_book.data.model.local.BudgetEntity
@@ -371,6 +370,15 @@ class MainViewModel(
         val editor = sharedPref.edit()
         editor.remove("key_pin")
         editor.apply()
+    }
+
+    fun deleteEntry(id: Long) {
+        viewModelScope.launch {
+            try {
+                roomRepo.deleteEntry(id)
+            } catch (_: Exception) {
+            }
+        }
     }
 }
 

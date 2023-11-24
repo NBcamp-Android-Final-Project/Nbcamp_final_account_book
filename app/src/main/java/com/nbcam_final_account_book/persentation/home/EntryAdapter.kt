@@ -13,11 +13,16 @@ class EntryAdapter(var entries: List<EntryEntity>) : RecyclerView.Adapter<EntryA
 
     var onItemClickListener: ((EntryEntity) -> Unit)? = null
     var onEditClickListener: ((EntryEntity) -> Unit)? = null
+    var onDeleteClickListener: ((EntryEntity) -> Unit)? = null
 
     inner class ViewHolder(val binding: HomeBottomSheetItemBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.ivEdt.setOnClickListener {
                 onEditClickListener?.invoke(entries[adapterPosition])
+            }
+
+            binding.ivDelete.setOnClickListener {
+                onDeleteClickListener?.invoke(entries[adapterPosition])
             }
         }
     }

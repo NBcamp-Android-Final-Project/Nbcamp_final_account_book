@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -20,6 +19,7 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.nbcam_final_account_book.R
 import com.nbcam_final_account_book.databinding.MyPageChangePasswordDialogBinding
+import com.nbcam_final_account_book.util.ContextUtil.showToast
 
 class MyPageChangePasswordDialog : DialogFragment() {
 
@@ -115,17 +115,17 @@ class MyPageChangePasswordDialog : DialogFragment() {
                         currentUser.updatePassword(newPassword)
                             .addOnCompleteListener { passwordUpdateTask ->
                                 if (passwordUpdateTask.isSuccessful) {
-                                    mContext.showToast("비밀번호가 변경되었습니다.")
+                                    showToast(mContext,"비밀번호가 변경되었습니다.")
                                     dismiss()
                                 } else {
-                                    mContext.showToast("비밀번호 변경에 실패했습니다.")
+                                    showToast(mContext,"비밀번호 변경에 실패했습니다.")
                                 }
                             }
                     } else {
-                        mContext.showToast("새로운 비밀번호와 확인 비밀번호가 일치하지 않습니다.")
+                        showToast(mContext, "새로운 비밀번호와 확인 비밀번호가 일치하지 않습니다.")
                     }
                 } else {
-                    mContext.showToast("현재 비밀번호가 올바르지 않습니다.")
+                    showToast(mContext, "현재 비밀번호가 올바르지 않습니다.")
                 }
             }
     }
@@ -160,9 +160,5 @@ class MyPageChangePasswordDialog : DialogFragment() {
     private fun isPasswordValid(password: String): Boolean {
         val passwordRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#\$%^&*]).{8,20}\$")
         return passwordRegex.matches(password)
-    }
-
-    private fun Context.showToast(msg: String) {
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 }

@@ -82,4 +82,8 @@
         <item name="colorOnPrimary">@color/text_hint</item>
     </style>
 
+    <style name="CustomProgressBar" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminateTint">@color/text_highlight</item>
+    </style>
+
 </resources>

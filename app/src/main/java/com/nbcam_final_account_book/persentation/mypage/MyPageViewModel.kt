@@ -69,6 +69,10 @@ class MyPageViewModel(
         return sharedPrefs.getString(SYNC_TIME, "")
     }
 
+    fun clearSharedPreferences() {
+        sharedPrefs.edit().remove(BACKUP_TIME).remove(SYNC_TIME).apply()
+    }
+
     fun cleanRoom() = with(roomRepo) {
         viewModelScope.launch {
             deleteAllTemplate()

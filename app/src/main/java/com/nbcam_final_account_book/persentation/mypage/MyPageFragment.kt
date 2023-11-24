@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -112,7 +111,6 @@ class MyPageFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-//        (requireActivity() as MainActivity).toggleToolbar(true)
         _binding = null
     }
 
@@ -128,7 +126,6 @@ class MyPageFragment : Fragment() {
 
         getUserName()
         getUserEmail()
-//        getUserPhotoUrl()
 
         loadProfileImage()
 
@@ -207,11 +204,10 @@ class MyPageFragment : Fragment() {
             if (user != null) {
                 for (userInfo in user.providerData) {
                     if (userInfo.providerId == "google.com") {
-                        Toast.makeText(
+                        showToast(
                             requireContext(),
-                            "SNS 로그인 사용자는 비밀번호를 변경할 수 없습니다.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                            "SNS 로그인 사용자는 비밀번호를 변경할 수 없습니다."
+                        )
                         return@setOnClickListener
                     }
                 }
@@ -239,17 +235,19 @@ class MyPageFragment : Fragment() {
                 }
             }
 
-//            getUserPhotoUrl()
-            //loadProfileImage()
             photoUrl.observe(viewLifecycleOwner) { photoUrl ->
+                showProgressBar()
+
                 if (photoUrl != null) {
                     mypageIvProfile.load(photoUrl) {
                         crossfade(true)
                         transformations(CircleCropTransformation())
                         listener { _, _ ->
-                            mypageIvProfile.setPadding(0, 0, 0, 0)
+                            hideProgressBar()
                         }
                     }
+                } else {
+                    hideProgressBar()
                 }
             }
 
@@ -258,20 +256,6 @@ class MyPageFragment : Fragment() {
                 mypageSwitchPin.isChecked = it
             }*/
         }
-    }
-
-    private fun loadProfileImage() = with(binding) {
-        viewModel.downloadProfileImage(
-            onSuccess = { uri ->
-                mypageIvProfile.load(uri) {
-                    crossfade(true)
-                    transformations(CircleCropTransformation())
-                }
-            },
-            onFailure = { exception ->
-                Log.e("MyPageFragment", "Profile image download failed: $exception")
-            }
-        )
     }
 
     private fun backupDate() {
@@ -298,13 +282,21 @@ class MyPageFragment : Fragment() {
         return SimpleDateFormat("MM월 dd일 a hh:mm", Locale.getDefault()).format(Date())
     }
 
-    private suspend fun backupDataByLogOut(): Boolean {
+    private fun syncData() {
+        sharedViewModel.synchronizationDataWithBtn()
+    }
 
+    private suspend fun backupDataByLogOut(): Boolean {
         return sharedViewModel.backupDataByLogOut()
     }
 
     private fun cleanRoom() = with(viewModel) {
         cleanRoom()
+    }
+
+    // LockScreen - Remove the pin number
+    private fun removeSharedPrefPinNum() = with(sharedViewModel) {
+        removeSharedPrefPinNumber()
     }
 
     private fun getUserName() = with(viewModel) {
@@ -314,25 +306,6 @@ class MyPageFragment : Fragment() {
     private fun getUserEmail() = with(viewModel) {
         getEmail()
     }
-
-    /*    private fun getUserPhotoUrl() = with(viewModel) {
-            getPhotoUrl()
-        }*/
-
-    private fun updateProfileName(newName: String) = with(viewModel) {
-        updateUserName(newName)
-    }
-
-    private fun updateProfileImage(requestCode: Int, resultCode: Int, data: Intent?) =
-        with(viewModel) {
-            if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK && data != null) {
-                val imageUri = data.data
-                if (imageUri != null) {
-                    // Call the function to upload the profile image to Firebase Storage
-                    uploadProfileImage(imageUri)
-                }
-            }
-        }
 
     private fun galleryBottomSheet() {
         val bottomSheet = layoutInflater.inflate(R.layout.my_page_gallery_bottom_sheet, null)
@@ -354,24 +327,6 @@ class MyPageFragment : Fragment() {
         dialog.show()
     }
 
-    private fun removeCurrentImage() {
-        // Storage에서 이미지 삭제
-        viewModel.deleteProfileImageFromStorage(
-            onSuccess = {
-                // Firestore 및 Room에서 이미지 URL 삭제
-                viewModel.deleteProfileImageFromFirestoreAndRoom()
-                // UI를 기본 이미지로 업데이트
-                updateProfileImageUI(defaultImageResId = R.drawable.default_profile)
-            },
-            onFailure = { exception ->
-                Log.e("MyPageFragment", "프로필 이미지 삭제 오류: $exception")
-            }
-        )
-    }
-
-    private fun updateProfileImageUI(defaultImageResId: Int) = with(binding) {
-        mypageIvProfile.load(defaultImageResId)
-    }
 
     private fun openGallery() {
         if (checkGalleryPermission()) {
@@ -406,8 +361,61 @@ class MyPageFragment : Fragment() {
         MyPageDeniedDialog(requireContext())
     }
 
-    private fun syncData() {
-        sharedViewModel.synchronizationDataWithBtn()
+    private fun updateProfileImage(requestCode: Int, resultCode: Int, data: Intent?) =
+        with(viewModel) {
+            if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK && data != null) {
+                val imageUri = data.data
+                if (imageUri != null) {
+                    uploadProfileImage(imageUri)
+                    showToast(
+                        requireContext(),
+                        "프로필 이미지가 변경되었습니다."
+                    )
+                }
+            }
+        }
+
+    private fun removeCurrentImage() {
+        // Storage에서 이미지 삭제
+        viewModel.deleteProfileImageFromStorage(
+            onSuccess = {
+                // Firestore 및 Room 이미지 URL 삭제
+                viewModel.deleteProfileImageFromFirestoreAndRoom()
+                // UI를 기본 이미지로 업데이트
+                updateProfileImageUI(R.drawable.default_profile)
+                showToast(requireContext(), "프로필 이미지가 삭제되었습니다.")
+            },
+            onFailure = { exception ->
+                Log.e("MyPageFragment", "프로필 이미지 삭제 오류: $exception")
+            }
+        )
+    }
+
+    private fun updateProfileImageUI(defaultImageResId: Int) = with(binding) {
+        mypageIvProfile.load(defaultImageResId) {
+            crossfade(true)
+            transformations(CircleCropTransformation())
+        }
+    }
+
+    private fun loadProfileImage() = with(binding) {
+        showProgressBar()
+
+        viewModel.downloadProfileImage(
+            onSuccess = { uri ->
+                mypageIvProfile.load(uri) {
+                    crossfade(true)
+                    transformations(CircleCropTransformation())
+                    listener { _, _ ->
+                        hideProgressBar()
+                    }
+                }
+            },
+            onFailure = { exception ->
+                Log.e("MyPageFragment", "프로필 이미지 다운로드 실패: $exception")
+                hideProgressBar()
+            }
+        )
     }
 
     // Edit user name
@@ -431,6 +439,10 @@ class MyPageFragment : Fragment() {
         viewModel.storeUser(key = key, name = name, id = id, img = img)
     }
 
+    private fun updateProfileName(newName: String) = with(viewModel) {
+        updateUserName(newName)
+    }
+
     // Change the password
     private fun showChangePasswordDialog() {
         val dialog = MyPageChangePasswordDialog()
@@ -439,19 +451,23 @@ class MyPageFragment : Fragment() {
 
     // Logout
     private fun showLogoutDialog() {
-        MyPageLogoutDialog(requireContext()) {
+        val dialog = MyPageLogoutDialog {
             CoroutineScope(Dispatchers.Main).launch {
                 if (backupDataByLogOut()) {
                     val auth = FirebaseAuth.getInstance()
                     auth.signOut()
 //            removeSharedPrefPinNum()
                     cleanRoom()
+
+                    viewModel.clearSharedPreferences()
+
                     val intent = Intent(requireContext(), FirstActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
                 }
             }
         }
+        dialog.show(parentFragmentManager, "MyPageLogoutDialog")
     }
 
     // Withdraw
@@ -459,6 +475,8 @@ class MyPageFragment : Fragment() {
         val dialog = MyPageWithdrawDialog {
             val auth = FirebaseAuth.getInstance()
             withdrawAccount(auth)
+
+            viewModel.clearSharedPreferences()
         }
         dialog.show(parentFragmentManager, "MyPageWithdrawDialog")
     }
@@ -495,8 +513,11 @@ class MyPageFragment : Fragment() {
             }
     }
 
-    // LockScreen - Remove the pin number
-    private fun removeSharedPrefPinNum() = with(sharedViewModel) {
-        removeSharedPrefPinNumber()
+    private fun showProgressBar() {
+        binding.progressIndicator.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        binding.progressIndicator.visibility = View.GONE
     }
 }

@@ -258,6 +258,12 @@ class MyPageViewModel(
         }
     }
 
+    fun deleteUserInRealtimeDB(uid: String) {
+        viewModelScope.launch {
+            fireRepo.deleteUserInRealtimeDB(uid)
+        }
+    }
+
     fun deleteAllData(user: String, key: String, email: String) {
         deleteData(user, key)
         deleteUserInFireStore(email)

@@ -116,13 +116,13 @@ class MyPageFragment : Fragment() {
 
     private fun initView() = with(binding) {
         // 알림 - 가계부 공유 요청
-        toolbarNotifications.setOnClickListener {
+        /*toolbarNotifications.setOnClickListener {
             navController.navigate(R.id.action_menu_mypage_to_sharedNotificationFragment)
-        }
+        }*/
 
         //현재 사용중인 가계부 이름
-        val title = sharedViewModel.mainLiveCurrentTemplate.value?.templateTitle
-        mypageTvUsingName.text = title
+        /*val title = sharedViewModel.mainLiveCurrentTemplate.value?.templateTitle
+        mypageTvUsingName.text = title*/
 
         getUserName()
         getUserEmail()
@@ -142,9 +142,9 @@ class MyPageFragment : Fragment() {
             showEditNameDialog()
         }
 
-        mypageTvShare.setOnClickListener {
+        /*mypageTvShare.setOnClickListener {
             navController.navigate(R.id.action_menu_mypage_to_sharedTemplateFragment)
-        }
+        }*/
 
         mypageTvBook.setOnClickListener {
             (requireActivity() as MainActivity).showTemplateDialog()
@@ -171,6 +171,8 @@ class MyPageFragment : Fragment() {
             setBackupTime(currentTime)
 
             backupDate()
+
+            showToast(requireContext(), "데이터 저장하기가 완료되었습니다.")
         }
 
         mypageContainerSync.setOnClickListener {
@@ -178,6 +180,8 @@ class MyPageFragment : Fragment() {
             mypageTvSyncDate.text = "$currentTime"
             setSyncTime(currentTime)
             syncData()
+
+            showToast(requireContext(), "데이터 가져오기가 완료되었습니다.")
         }
 
         backupTime()?.let { backupTime ->

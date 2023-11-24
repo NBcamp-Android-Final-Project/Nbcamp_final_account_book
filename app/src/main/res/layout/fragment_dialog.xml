@@ -16,7 +16,7 @@
         android:layout_marginEnd="16dp"
         android:text="선택한 항목을 삭제하시겠습니까?"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/black"
+        android:textColor="@color/text_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

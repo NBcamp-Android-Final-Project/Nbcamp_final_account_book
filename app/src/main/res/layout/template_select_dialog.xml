@@ -12,7 +12,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:text="가계부 선택"
+        android:text="가계부 관리"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,39 +34,38 @@
 
     <TextView
         android:id="@+id/template_tv_cancel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginVertical="20dp"
         android:text="취소"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/template_btn_add"
+        app:layout_constraintEnd_toStartOf="@+id/divider"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/template_select_recycler_view_template_list" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/text_primary"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/template_tv_cancel"
+        app:layout_constraintEnd_toStartOf="@+id/template_btn_add"
+        app:layout_constraintStart_toEndOf="@+id/template_tv_cancel"
+        app:layout_constraintTop_toTopOf="@+id/template_tv_cancel" />
 
     <TextView
         android:id="@+id/template_btn_add"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
         android:text="추가"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/btn_text_color"
+        app:layout_constraintBottom_toBottomOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/template_select_recycler_view_template_list" />
-
-    <ImageView
-        android:id="@+id/template_iv_paid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:src="@drawable/ic_shopping_cart"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/template_select_recycler_view_template_list"
-        tools:ignore="contentDescription" />
+        app:layout_constraintStart_toEndOf="@+id/divider"
+        app:layout_constraintTop_toTopOf="@+id/divider" />
 </androidx.constraintlayout.widget.ConstraintLayout>

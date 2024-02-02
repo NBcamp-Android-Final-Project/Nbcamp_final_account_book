@@ -51,8 +51,9 @@ android {
 dependencies {
 
     // Import the Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
-    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+    // implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-analytics-ktx")
@@ -70,8 +71,8 @@ dependencies {
 
     // Add the dependencies for the Dynamic Links and Analytics libraries
     // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation 'com.google.firebase:firebase-dynamic-links-ktx'
-    implementation 'com.google.firebase:firebase-analytics-ktx'
+    // implementation("com.google.firebase:firebase-dynamic-links-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
     //Firestore
     implementation("com.google.firebase:firebase-firestore")
 

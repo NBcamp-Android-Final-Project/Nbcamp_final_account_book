@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/shape_round"
     android:padding="@dimen/padding"
-    tools:context=".persentation.mypage.mypagedialog.MyPageWithdrawDialog">
+    tools:context=".presentation.mypage.mypagedialog.MyPageWithdrawDialog">
 
     <TextView
         android:id="@+id/withdraw_question"

@@ -6,7 +6,7 @@
     android:paddingHorizontal="20dp"
     android:paddingVertical="10dp"
     android:layout_height="match_parent"
-    tools:context=".persentation.shared.SharedTemplateFragment">
+    tools:context=".presentation.shared.SharedTemplateFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/shared_input_layout"

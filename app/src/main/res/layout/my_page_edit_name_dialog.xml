@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/shape_round"
     android:padding="@dimen/padding"
-    tools:context=".persentation.mypage.mypagedialog.MyPageEditNameDialog">
+    tools:context=".presentation.mypage.mypagedialog.MyPageEditNameDialog">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_name_input_layout"

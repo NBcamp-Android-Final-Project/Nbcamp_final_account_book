@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:overScrollMode="never"
     android:scrollbars="none"
-    tools:context=".persentation.entry.EntryFragment">
+    tools:context=".presentation.entry.EntryFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/entry_layout"

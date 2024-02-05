@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/menu_home"
-        android:name="com.nbcam_final_account_book.persentation.home.HomeFragment"
+        android:name="com.nbcam_final_account_book.presentation.home.HomeFragment"
         android:label="home"
         tools:layout="@layout/home_fragment" />
     <fragment
         android:id="@+id/menu_statistics"
-        android:name="com.nbcam_final_account_book.persentation.chart.ChartFragment"
+        android:name="com.nbcam_final_account_book.presentation.chart.ChartFragment"
         android:label="chart"
         tools:layout="@layout/chart_fragment" />
     <fragment
         android:id="@+id/menu_mypage"
-        android:name="com.nbcam_final_account_book.persentation.mypage.MyPageFragment"
+        android:name="com.nbcam_final_account_book.presentation.mypage.MyPageFragment"
         android:label="mypage"
         tools:layout="@layout/my_page_fragment">
         <action
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/pinFragment"
-        android:name="com.nbcam_final_account_book.persentation.lock.pin.PinFragment"
+        android:name="com.nbcam_final_account_book.presentation.lock.pin.PinFragment"
         android:label="pin_fragment"
         tools:layout="@layout/pin_fragment" >
         <action
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/sharedTemplateFragment"
-        android:name="com.nbcam_final_account_book.persentation.shared.SharedTemplateFragment"
+        android:name="com.nbcam_final_account_book.presentation.shared.SharedTemplateFragment"
         android:label="shared_template_fragment"
         tools:layout="@layout/shared_template_fragment" >
         <action
@@ -50,7 +50,7 @@
     </fragment>
     <fragment
         android:id="@+id/sharedNotificationFragment"
-        android:name="com.nbcam_final_account_book.persentation.shared.notification.SharedNotificationFragment"
+        android:name="com.nbcam_final_account_book.presentation.shared.notification.SharedNotificationFragment"
         android:label="SharedNotificationFragment" >
         <action
             android:id="@+id/action_sharedNotificationFragment_to_menu_mypage"

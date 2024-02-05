@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".persentation.firstpage.signup.EmailVerificationFragment">
+    tools:context=".presentation.firstpage.signup.EmailVerificationFragment">
 
     <TextView
         android:id="@+id/textView"

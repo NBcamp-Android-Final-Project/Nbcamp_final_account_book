@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="20dp"
-    tools:context=".persentation.template.addbudget.TemplateBudgetFragment">
+    tools:context=".presentation.template.addbudget.TemplateBudgetFragment">
 
     <TextView
         android:id="@+id/template_budget_btn_ok"

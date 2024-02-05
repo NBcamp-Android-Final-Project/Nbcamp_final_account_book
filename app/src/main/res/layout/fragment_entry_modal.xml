@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_bottom_sheet"
-    tools:context=".persentation.entry.EntryModalFragment">
+    tools:context=".presentation.entry.EntryModalFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

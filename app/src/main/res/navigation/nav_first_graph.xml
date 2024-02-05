@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.nbcam_final_account_book.persentation.firstpage.splash.SplashFragment"
+        android:name="com.nbcam_final_account_book.presentation.firstpage.splash.SplashFragment"
         android:label="first_splash_fragment"
         tools:layout="@layout/first_splash_fragment" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.nbcam_final_account_book.persentation.firstpage.login.LoginFragment"
+        android:name="com.nbcam_final_account_book.presentation.firstpage.login.LoginFragment"
         android:label="first_login_fragment"
         tools:layout="@layout/first_login_fragment" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.nbcam_final_account_book.persentation.firstpage.signup.SignUpFragment"
+        android:name="com.nbcam_final_account_book.presentation.firstpage.signup.SignUpFragment"
         android:label="sign_up_fragment"
         tools:layout="@layout/first_sign_up_fragment" >
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/emailVerificationFragment"
-        android:name="com.nbcam_final_account_book.persentation.firstpage.signup.EmailVerificationFragment"
+        android:name="com.nbcam_final_account_book.presentation.firstpage.signup.EmailVerificationFragment"
         android:label="fragment_email_verification"
         tools:layout="@layout/fragment_email_verification" >
         <action

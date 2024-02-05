@@ -6,7 +6,7 @@
     app:startDestination="@id/tagFragment">
     <fragment
         android:id="@+id/tagFragment"
-        android:name="com.nbcam_final_account_book.persentation.tag.TagFragment"
+        android:name="com.nbcam_final_account_book.presentation.tag.TagFragment"
         android:label="tag_fragment"
         tools:layout="@layout/tag_fragment" >
         <action
@@ -15,12 +15,12 @@
     </fragment>
     <fragment
         android:id="@+id/editTagFragment"
-        android:name="com.nbcam_final_account_book.persentation.tag.edit.EditTagFragment"
+        android:name="com.nbcam_final_account_book.presentation.tag.edit.EditTagFragment"
         android:label="edit_tag_fragment"
         tools:layout="@layout/edit_tag_fragment" >
         <argument
             android:name="pages"
-            app:argType="com.nbcam_final_account_book.persentation.tag.TagPage"
+            app:argType="com.nbcam_final_account_book.presentation.tag.TagPage"
             android:defaultValue="NEW" />
         <argument
             android:name="tagName"

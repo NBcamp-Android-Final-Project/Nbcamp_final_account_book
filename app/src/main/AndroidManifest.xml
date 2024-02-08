@@ -19,17 +19,17 @@
         android:theme="@style/Theme.Nbcam_Final_Account_Book"
         tools:targetApi="31">
         <activity
-            android:name=".persentation.tag.TagActivity"
+            android:name=".presentation.tag.TagActivity"
             android:exported="false" />
         <activity
-            android:name=".persentation.template.TemplateActivity"
+            android:name=".presentation.template.TemplateActivity"
             android:windowSoftInputMode="stateAlwaysVisible|adjustPan"
             android:exported="false" />
         <activity
-            android:name=".persentation.lock.LockActivity"
+            android:name=".presentation.lock.LockActivity"
             android:exported="false" />
         <activity
-            android:name=".persentation.firstpage.FirstActivity"
+            android:name=".presentation.firstpage.FirstActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,19 +38,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".persentation.main.MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data
-                    android:host="dutoomdynamic.page.link"
-                    android:scheme="https"/>
-            </intent-filter>
         </activity>
         <activity
-            android:name=".persentation.entry.EntryActivity"
+            android:name=".presentation.entry.EntryActivity"
             android:exported="true" />
     </application>
 

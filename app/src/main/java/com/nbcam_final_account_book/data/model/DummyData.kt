@@ -1,8 +1,8 @@
 package com.nbcam_final_account_book.data.model
 
 import androidx.lifecycle.MutableLiveData
-import com.nbcam_final_account_book.persentation.entry.EntryModel
-import com.nbcam_final_account_book.persentation.tag.TagModel
+import com.nbcam_final_account_book.presentation.entry.EntryModel
+import com.nbcam_final_account_book.presentation.tag.TagModel
 import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_INCOME
 import com.nbcam_final_account_book.unit.Unit.INPUT_TYPE_PAY
 

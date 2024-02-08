@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/templateAddFragment"
-        android:name="com.nbcam_final_account_book.persentation.template.addtemplate.TemplateAddFragment"
+        android:name="com.nbcam_final_account_book.presentation.template.addtemplate.TemplateAddFragment"
         android:label="template_add_fragment"
         tools:layout="@layout/template_add_fragment" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/templateBudgetFragment"
-        android:name="com.nbcam_final_account_book.persentation.template.addbudget.TemplateBudgetFragment"
+        android:name="com.nbcam_final_account_book.presentation.template.addbudget.TemplateBudgetFragment"
         android:label="template_budget_fragment"
         tools:layout="@layout/template_budget_fragment" >
         <action
